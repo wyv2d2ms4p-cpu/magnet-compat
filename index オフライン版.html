@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>マグネット互換サーチ</title>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="互換サーチ" />
+<meta name="theme-color" content="#151C24" />
+<meta name="mobile-web-app-capable" content="yes" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23151C24'/%3E%3Cpolygon points='98 34 54 106 88 106 82 146 126 74 92 74' fill='none' stroke='%23E8A33D' stroke-width='9' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23151C24'/%3E%3Cpolygon points='17 5 9 19 15 19 14 27 23 13 16 13' fill='%23E8A33D'/%3E%3C/svg%3E" />
+<style>
+  :root{
+    --bg:#151C24; --panel:#1E2833; --line:#354352; --amber:#E8A33D; --green:#4CAF7D;
+    --ink:#E8ECEF; --sub:#8A99A8; --dim:#5A6675; --sel:#2A2418; --btn:#2A3644;
+    --jp:-apple-system,'Hiragino Sans','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;
+    --mono:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--jp);}
+  .mono{font-family:var(--mono);}
+  .amber{color:var(--amber);} .green{color:var(--green);}
+  .panel{background:var(--panel);border:1px solid var(--line);}
+  button{font-family:inherit;cursor:pointer;color:inherit;}
+  input{font-family:inherit;}
+  input:focus,select:focus{outline:2px solid var(--amber);}
+  svg{flex-shrink:0;}
+  a{color:var(--amber);}
+  .wrap{max-width:760px;margin:0 auto;padding:24px;}
+  .wrap-ref{max-width:900px;margin:0 auto;padding:24px;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+"use strict";
+
+/* ================= データ ================= */
+var ALL_DEVICES = [
+  {id:"MIT-SN10",maker:"三菱電機",model:"S-N10",category:"contactor",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:{w:45,h:115,d:79},holes:{w:35,h:60},capacityClass:"C-2.2kW",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"MIT-SN18",maker:"三菱電機",model:"S-N18",category:"contactor",ratedA:18,ratedKW:3.7,coil:"AC200V",dims:{w:50,h:118,d:80},holes:{w:38,h:63},capacityClass:"C-3.7kW",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"MIT-SN20",maker:"三菱電機",model:"S-N20",category:"contactor",ratedA:18,ratedKW:4,coil:"AC200V",dims:{w:55,h:122,d:81},holes:{w:40,h:65},capacityClass:"C-4kW",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"MIT-SN21",maker:"三菱電機",model:"S-N21",category:"contactor",ratedA:18,ratedKW:4,coil:"AC200V",dims:{w:55,h:122,d:81},holes:{w:40,h:65},capacityClass:"C-4kW",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"MIT-SN25",maker:"三菱電機",model:"S-N25",category:"contactor",ratedA:26,ratedKW:5.5,coil:"AC200V",dims:{w:63,h:127,d:81},holes:{w:48,h:70},capacityClass:"C-5.5kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN35",maker:"三菱電機",model:"S-N35",category:"contactor",ratedA:34,ratedKW:7.5,coil:"AC200V",dims:{w:134,h:162,d:114},holes:{w:100,h:130},capacityClass:"C-7.5kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN50",maker:"三菱電機",model:"S-N50",category:"contactor",ratedA:50,ratedKW:11,coil:"AC200V",dims:{w:134,h:162,d:114},holes:{w:100,h:130},capacityClass:"C-11kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN65",maker:"三菱電機",model:"S-N65",category:"contactor",ratedA:65,ratedKW:15,coil:"AC200V",dims:{w:150,h:168,d:141},holes:{w:115,h:125},capacityClass:"C-15kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN80",maker:"三菱電機",model:"S-N80",category:"contactor",ratedA:80,ratedKW:19,coil:"AC200V",dims:{w:150,h:168,d:141},holes:{w:115,h:125},capacityClass:"C-19kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN95",maker:"三菱電機",model:"S-N95",category:"contactor",ratedA:95,ratedKW:22,coil:"AC200V",dims:{w:170,h:220,d:165},holes:{w:130,h:165},capacityClass:"C-22kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN125",maker:"三菱電機",model:"S-N125",category:"contactor",ratedA:125,ratedKW:30,coil:"AC200V",dims:{w:100,h:150,d:137},holes:{w:75,h:115},capacityClass:"C-30kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN150",maker:"三菱電機",model:"S-N150",category:"contactor",ratedA:150,ratedKW:37,coil:"AC200V",dims:{w:110,h:165,d:145},holes:{w:82,h:128},capacityClass:"C-37kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN180",maker:"三菱電機",model:"S-N180",category:"contactor",ratedA:180,ratedKW:45,coil:"AC200V",dims:{w:130,h:190,d:160},holes:{w:98,h:148},capacityClass:"C-45kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN220",maker:"三菱電機",model:"S-N220",category:"contactor",ratedA:220,ratedKW:55,coil:"AC200V",dims:{w:150,h:210,d:175},holes:{w:113,h:163},capacityClass:"C-55kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN300",maker:"三菱電機",model:"S-N300",category:"contactor",ratedA:300,ratedKW:75,coil:"AC200V",dims:{w:180,h:240,d:190},holes:{w:138,h:188},capacityClass:"C-75kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN400",maker:"三菱電機",model:"S-N400",category:"contactor",ratedA:400,ratedKW:110,coil:"AC200V",dims:{w:163,h:243,d:195},holes:{w:125,h:190},capacityClass:"C-110kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN600",maker:"三菱電機",model:"S-N600",category:"contactor",ratedA:630,ratedKW:160,coil:"AC200V",dims:{w:200,h:290,d:230},holes:{w:155,h:230},capacityClass:"C-160kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"MIT-SN800",maker:"三菱電機",model:"S-N800",category:"contactor",ratedA:800,ratedKW:200,coil:"AC200V",dims:{w:230,h:330,d:260},holes:{w:178,h:260},capacityClass:"C-200kW",mounting:"直接取付",aux:{a:2,b:2}},
+
+  {id:"FUJI-SC03",maker:"富士電機",model:"SC-03",category:"contactor",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:{w:45,h:84,d:85},holes:{w:35,h:60},capacityClass:"C-2.2kW",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"FUJI-SC40",maker:"富士電機",model:"SC-4-0",category:"contactor",ratedA:18,ratedKW:4,coil:"AC200V",dims:{w:55,h:90,d:87},holes:{w:40,h:64},capacityClass:"C-4kW",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"FUJI-SC51",maker:"富士電機",model:"SC-5-1",category:"contactor",ratedA:26,ratedKW:5.5,coil:"AC200V",dims:{w:63,h:96,d:88},holes:{w:47,h:69},capacityClass:"C-5.5kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"FUJI-SCN1",maker:"富士電機",model:"SC-N1",category:"contactor",ratedA:34,ratedKW:7.5,coil:"AC200V",dims:{w:130,h:158,d:110},holes:{w:97,h:126},capacityClass:"C-7.5kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"FUJI-SCN2",maker:"富士電機",model:"SC-N2",category:"contactor",ratedA:50,ratedKW:11,coil:"AC200V",dims:{w:130,h:158,d:110},holes:{w:97,h:126},capacityClass:"C-11kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"FUJI-SCN4",maker:"富士電機",model:"SC-N4",category:"contactor",ratedA:65,ratedKW:15,coil:"AC200V",dims:{w:146,h:163,d:137},holes:{w:112,h:122},capacityClass:"C-15kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"FUJI-SCN5",maker:"富士電機",model:"SC-N5",category:"contactor",ratedA:80,ratedKW:19,coil:"AC200V",dims:{w:146,h:163,d:137},holes:{w:112,h:122},capacityClass:"C-19kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"FUJI-SCN6",maker:"富士電機",model:"SC-N6",category:"contactor",ratedA:95,ratedKW:22,coil:"AC200V",dims:{w:166,h:214,d:160},holes:{w:127,h:160},capacityClass:"C-22kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"FUJI-SCN7",maker:"富士電機",model:"SC-N7",category:"contactor",ratedA:125,ratedKW:30,coil:"AC200V",dims:{w:97,h:146,d:133},holes:{w:73,h:112},capacityClass:"C-30kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"FUJI-SCN10",maker:"富士電機",model:"SC-N10",category:"contactor",ratedA:150,ratedKW:37,coil:"AC200V",dims:{w:107,h:160,d:141},holes:{w:80,h:124},capacityClass:"C-37kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"FUJI-SCN12",maker:"富士電機",model:"SC-N12",category:"contactor",ratedA:220,ratedKW:55,coil:"AC200V",dims:{w:146,h:204,d:170},holes:{w:110,h:158},capacityClass:"C-55kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"FUJI-SCN14",maker:"富士電機",model:"SC-N14",category:"contactor",ratedA:400,ratedKW:110,coil:"AC200V",dims:{w:159,h:236,d:190},holes:{w:121,h:184},capacityClass:"C-110kW",mounting:"直接取付",aux:{a:2,b:2}},
+
+  {id:"OMR-J7KC09",maker:"オムロン",model:"J7KC-09",category:"contactor",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:{w:45,h:82,d:86},holes:{w:35,h:58},capacityClass:"C-2.2kW",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"OMR-J7KC18",maker:"オムロン",model:"J7KC-18",category:"contactor",ratedA:18,ratedKW:4,coil:"AC200V",dims:{w:45,h:88,d:87},holes:{w:35,h:62},capacityClass:"C-4kW",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"OMR-J7KC25",maker:"オムロン",model:"J7KC-25",category:"contactor",ratedA:26,ratedKW:5.5,coil:"AC200V",dims:{w:45,h:94,d:88},holes:{w:35,h:68},capacityClass:"C-5.5kW",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"OMR-J7KC32",maker:"オムロン",model:"J7KC-32",category:"contactor",ratedA:34,ratedKW:7.5,coil:"AC200V",dims:{w:57,h:120,d:110},holes:{w:44,h:95},capacityClass:"C-7.5kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"OMR-J7KC50",maker:"オムロン",model:"J7KC-50",category:"contactor",ratedA:50,ratedKW:11,coil:"AC200V",dims:{w:70,h:130,d:115},holes:{w:55,h:105},capacityClass:"C-11kW",mounting:"直接取付",aux:{a:2,b:2}},
+
+  {id:"TOS-C11J",maker:"東芝",model:"C-11J",category:"contactor",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:{w:46,h:116,d:82},holes:{w:36,h:61},capacityClass:"C-2.2kW",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"TOS-C25J",maker:"東芝",model:"C-25J",category:"contactor",ratedA:26,ratedKW:5.5,coil:"AC200V",dims:{w:64,h:128,d:83},holes:{w:49,h:71},capacityClass:"C-5.5kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"TOS-C50J",maker:"東芝",model:"C-50J",category:"contactor",ratedA:50,ratedKW:11,coil:"AC200V",dims:{w:136,h:164,d:116},holes:{w:102,h:132},capacityClass:"C-11kW",mounting:"直接取付",aux:{a:2,b:2}},
+  {id:"TOS-C65J",maker:"東芝",model:"C-65J",category:"contactor",ratedA:65,ratedKW:15,coil:"AC200V",dims:{w:152,h:170,d:143},holes:{w:117,h:127},capacityClass:"C-15kW",mounting:"直接取付",aux:{a:2,b:2}},
+
+  {id:"PANA-SN10",maker:"パナソニック",model:"SN10",category:"contactor",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:{w:46,h:116,d:80},holes:{w:36,h:61},capacityClass:"C-2.2kW",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,makerExited:true},
+  {id:"PANA-SN25",maker:"パナソニック",model:"SN25",category:"contactor",ratedA:26,ratedKW:5.5,coil:"AC200V",dims:{w:63,h:128,d:82},holes:{w:48,h:71},capacityClass:"C-5.5kW",mounting:"直接取付",aux:{a:2,b:2},discontinued:true,makerExited:true},
+
+  {id:"MIT-MSON10",maker:"三菱電機",model:"MSO-N10",category:"starter",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:{w:46,h:115,d:80},holes:{w:35,h:60},capacityClass:"C-2.2kW",mounting:"DINレール",aux:{a:1,b:1},discontinued:true,successorId:"MIT-MSOT10"},
+  {id:"MIT-MSON10KP",maker:"三菱電機",model:"MSO-N10KP",category:"starter",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:{w:46,h:115,d:80},holes:{w:35,h:60},capacityClass:"C-2.2kW-KP",mounting:"DINレール",aux:{a:1,b:1},discontinued:true,successorId:"MIT-MSOT10KP"},
+  {id:"MIT-MSON20",maker:"三菱電機",model:"MSO-N20",category:"starter",ratedA:18,ratedKW:4,coil:"AC200V",dims:{w:55,h:122,d:82},holes:{w:40,h:65},capacityClass:"C-4kW",mounting:"DINレール",aux:{a:1,b:1},discontinued:true,successorId:"MIT-MSOT21"},
+  {id:"MIT-MSON25",maker:"三菱電機",model:"MSO-N25",category:"starter",ratedA:26,ratedKW:5.5,coil:"AC200V",dims:{w:63,h:127,d:82},holes:{w:48,h:70},capacityClass:"C-5.5kW",mounting:"直接取付",aux:{a:2,b:2},discontinued:true,successorId:"MIT-MSOT25"},
+
+  {id:"MIT-MSOT10",maker:"三菱電機",model:"MSO-T10",category:"starter",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:{w:46,h:115,d:79},holes:{w:35,h:60},capacityClass:"C-2.2kW",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"MIT-MSOT10KP",maker:"三菱電機",model:"MSO-T10KP",category:"starter",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:{w:46,h:115,d:79},holes:{w:35,h:60},capacityClass:"C-2.2kW-KP",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"MIT-MSOT21",maker:"三菱電機",model:"MSO-T21",category:"starter",ratedA:18,ratedKW:4,coil:"AC200V",dims:{w:55,h:122,d:81},holes:{w:40,h:65},capacityClass:"C-4kW",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"MIT-MSOT25",maker:"三菱電機",model:"MSO-T25",category:"starter",ratedA:26,ratedKW:5.5,coil:"AC200V",dims:{w:63,h:127,d:81},holes:{w:48,h:70},capacityClass:"C-5.5kW",mounting:"直接取付",aux:{a:2,b:2}},
+
+  {id:"MIT-THN12",maker:"三菱電機",model:"TH-N12",category:"thermal",ratedA:11,ratedRangeA:"0.1-13",coil:"-",dims:{w:54,h:59,d:80},holes:{w:41,h:44},capacityClass:"T-11A",mounting:"DINレール",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THT18"},
+  {id:"MIT-THN20",maker:"三菱電機",model:"TH-N20",category:"thermal",ratedA:20,ratedRangeA:"0.2-18",coil:"-",dims:{w:45,h:62,d:86},holes:{w:35,h:45},capacityClass:"T-20A",mounting:"DINレール",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THT25"},
+  {id:"MIT-THN60",maker:"三菱電機",model:"TH-N60",category:"thermal",ratedA:36,ratedRangeA:"12-65",coil:"-",dims:{w:55,h:68,d:92},holes:{w:42,h:50},capacityClass:"T-36A",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THT65"},
+  {id:"MIT-THN18",maker:"三菱電機",model:"TH-N18",category:"thermal",ratedA:18,ratedRangeA:"1-18",coil:"-",dims:{w:45,h:62,d:86},holes:{w:35,h:45},capacityClass:"T-18A",mounting:"DINレール",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THT18"},
+
+  {id:"MIT-THT18",maker:"三菱電機",model:"TH-T18",category:"thermal",ratedA:9,ratedRangeA:"0.1-18",coil:"-",dims:{w:45,h:55,d:76.5},holes:{w:35,h:40},capacityClass:"T-9A",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"MIT-THT25",maker:"三菱電機",model:"TH-T25",category:"thermal",ratedA:22,ratedRangeA:"0.2-26",coil:"-",dims:{w:63,h:51,d:79},holes:{w:48,h:38},capacityClass:"T-22A",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"MIT-THT50",maker:"三菱電機",model:"TH-T50",category:"thermal",ratedA:29,ratedRangeA:"24-50",coil:"-",dims:{w:63,h:53,d:80},holes:{w:48,h:40},capacityClass:"T-29A",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"MIT-THT65",maker:"三菱電機",model:"TH-T65",category:"thermal",ratedA:42,ratedRangeA:"12-65",coil:"-",dims:{w:70,h:90,d:95},holes:{w:53,h:68},capacityClass:"T-42A",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"MIT-THT100",maker:"三菱電機",model:"TH-T100",category:"thermal",ratedA:82,ratedRangeA:"54-100",coil:"-",dims:{w:80,h:110,d:110},holes:{w:60,h:84},capacityClass:"T-82A",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"MIT-THT18KP",maker:"三菱電機",model:"TH-T18KP",category:"thermal",ratedA:9,ratedRangeA:"0.1-18",coil:"-",dims:{w:45,h:55,d:76.5},holes:{w:35,h:40},capacityClass:"T-9A-KP",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"MIT-THT25KP",maker:"三菱電機",model:"TH-T25KP",category:"thermal",ratedA:22,ratedRangeA:"0.2-26",coil:"-",dims:{w:63,h:51,d:79},holes:{w:48,h:38},capacityClass:"T-22A-KP",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"MIT-THT50KP",maker:"三菱電機",model:"TH-T50KP",category:"thermal",ratedA:29,ratedRangeA:"24-50",coil:"-",dims:{w:63,h:53,d:80},holes:{w:48,h:40},capacityClass:"T-29A-KP",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"MIT-THT65KP",maker:"三菱電機",model:"TH-T65KP",category:"thermal",ratedA:42,ratedRangeA:"12-65",coil:"-",dims:{w:70,h:90,d:95},holes:{w:53,h:68},capacityClass:"T-42A-KP",mounting:"直接取付",aux:{a:1,b:1}},
+
+  {id:"MIT-THN120",maker:"三菱電機",model:"TH-N120",category:"thermal",ratedA:42,ratedRangeA:"34-100",coil:"-",dims:{w:85,h:115,d:115},holes:{w:64,h:88},capacityClass:"T-N120",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"MIT-THN220RH",maker:"三菱電機",model:"TH-N220RH",category:"thermal",ratedA:82,ratedRangeA:"65-220",coil:"-",dims:{w:110,h:150,d:140},holes:{w:84,h:116},capacityClass:"T-N220RH",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"MIT-THN400RH",maker:"三菱電機",model:"TH-N400RH",category:"thermal",ratedA:105,ratedRangeA:"85-400",coil:"-",dims:{w:130,h:180,d:160},holes:{w:100,h:140},capacityClass:"T-N400RH",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"MIT-THN600",maker:"三菱電機",model:"TH-N600",category:"thermal",ratedA:250,ratedRangeA:"200-800",coil:"-",dims:{w:150,h:210,d:185},holes:{w:116,h:164},capacityClass:"T-N600",mounting:"直接取付",aux:{a:1,b:1}},
+
+  {id:"FUJI-TR0N-9A",maker:"富士電機",model:"TR-0N",category:"thermal",ratedA:9,ratedRangeA:"7-11",coil:"-",dims:{w:45,h:53,d:85},holes:{w:35,h:39},capacityClass:"T-9A",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"FUJI-TR0N",maker:"富士電機",model:"TR-0N",category:"thermal",ratedA:11,ratedRangeA:"7-11",coil:"-",dims:{w:45,h:53,d:85},holes:{w:35,h:39},capacityClass:"T-11A",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"FUJI-TRN2",maker:"富士電機",model:"TR-N2",category:"thermal",ratedA:20,ratedRangeA:"13-20",coil:"-",dims:{w:45,h:60,d:85},holes:{w:35,h:44},capacityClass:"T-20A",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"FUJI-TRN2-22A",maker:"富士電機",model:"TR-N2",category:"thermal",ratedA:22,ratedRangeA:"18-26",coil:"-",dims:{w:45,h:60,d:85},holes:{w:35,h:44},capacityClass:"T-22A",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"FUJI-TRN6-29A",maker:"富士電機",model:"TR-N6",category:"thermal",ratedA:29,ratedRangeA:"24-34",coil:"-",dims:{w:55,h:66,d:91},holes:{w:42,h:48},capacityClass:"T-29A",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"FUJI-TRN6",maker:"富士電機",model:"TR-N6",category:"thermal",ratedA:36,ratedRangeA:"24-36",coil:"-",dims:{w:55,h:66,d:91},holes:{w:42,h:48},capacityClass:"T-36A",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"FUJI-TKN3H",maker:"富士電機",model:"TK-N3H",category:"thermal",ratedA:42,ratedRangeA:"34-50",coil:"-",dims:{w:63,h:100,d:95},holes:{w:48,h:73},capacityClass:"T-42A",mounting:"直接取付",aux:{a:1,b:1}},
+
+  {id:"OMR-J7TC18",maker:"オムロン",model:"J7TC-A-18",category:"thermal",ratedA:9,ratedRangeA:"0.12-18",coil:"-",dims:{w:45,h:52,d:78},holes:{w:35,h:39},capacityClass:"T-9A",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"OMR-J7TC26",maker:"オムロン",model:"J7TC-A-26",category:"thermal",ratedA:22,ratedRangeA:"0.2-26",coil:"-",dims:{w:45,h:52,d:79},holes:{w:35,h:39},capacityClass:"T-22A",mounting:"DINレール",aux:{a:1,b:1}},
+  {id:"OMR-J7TC50",maker:"オムロン",model:"J7TC-A-50",category:"thermal",ratedA:29,ratedRangeA:"24-50",coil:"-",dims:{w:57,h:55,d:82},holes:{w:44,h:42},capacityClass:"T-29A",mounting:"直接取付",aux:{a:1,b:1}},
+
+  {id:"PANA-NTH12",maker:"パナソニック",model:"N-TH12",category:"thermal",ratedA:11,ratedRangeA:"7-11",coil:"-",dims:{w:46,h:56,d:77},holes:{w:36,h:41},capacityClass:"T-11A",mounting:"DINレール",aux:{a:1,b:1},discontinued:true,makerExited:true},
+
+  {id:"MIT-S2S",maker:"三菱電機",model:"S-2S",category:"contactor",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:{w:44,h:114,d:90},holes:{w:34,h:59},capacityClass:"C-2.2kW",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-SN10"},
+  {id:"MIT-S2K",maker:"三菱電機",model:"S-2K",category:"contactor",ratedA:18,ratedKW:4,coil:"AC200V",dims:{w:54,h:121,d:90},holes:{w:39,h:64},capacityClass:"C-4kW",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-SN20"},
+  {id:"MIT-TH8",maker:"三菱電機",model:"TH-8",category:"thermal",ratedA:11,ratedRangeA:"7-11",coil:"-",dims:{w:44,h:53,d:90},holes:{w:34,h:38},capacityClass:"T-11A",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THN12"}
+];
+
+var MAKERS = ALL_DEVICES.map(function(d){return d.maker;}).filter(function(v,i,a){return a.indexOf(v)===i;});
+
+var CATEGORY_META = {
+  contactor:{label:"電磁接触器",unit:"A",primaryLabel:"定格電流"},
+  starter:{label:"電磁開閉器",unit:"A",primaryLabel:"定格電流"},
+  thermal:{label:"サーマルリレー",unit:"A",primaryLabel:"整定電流調整範囲"}
+};
+var MOUNTING = ["直接取付","DINレール"];
+
+var MAKER_REFERENCE = [
+  {maker:"三菱電機",status:"現行",contactor:"S-Tシリーズ(小〜中) / S-Nシリーズ(中〜大 125〜800A)",starter:"MS-T・MSO-T(現行) / MS-N・MSO-N(旧)",thermal:"TH-T(現行) / TH-N(大容量・旧)",note:"小容量のMS-Nは2015年前後にMS-Tへ置換。125〜800Aは現在もMS-N系。高感度形SD-Q。旧世代S-K・S-2xx。"},
+  {maker:"富士電機",status:"現行",contactor:"SC / 新SC(Neo SC)シリーズ(SC-03〜SC-N16)",starter:"SW-…シリーズ",thermal:"TR / TKシリーズ",note:"SCは小〜中容量(フレーム03〜5-1)。標準・廉価形にSK。旧世代SW。"},
+  {maker:"オムロン",status:"現行",contactor:"J7KN / J7KC(新・45mm幅統一・ミラーコンタクト対応)",starter:"J7KC + J7TC 組合せ",thermal:"J7TC / J7TKN / J7TL",note:"コネクタ形J7L、高感度形J7AN。J7KCはセーフティ対応。"},
+  {maker:"東芝",status:"現行",contactor:"Cシリーズ(C-11J〜)",starter:"—",thermal:"—",note:"東芝産業機器システム扱い。"},
+  {maker:"パナソニック",status:"撤退",contactor:"(旧 SN / SKシリーズ)",starter:"—",thermal:"(旧 N-THシリーズ)",note:"2010年3月末に本分野撤退。新品入手不可。三菱・富士への切替が案内されている。"},
+  {maker:"その他",status:"—",contactor:"春日電機 / ケーイーシー(KEC 03〜N16形) / Schneider(TeSys)ほか",starter:"—",thermal:"—",note:"海外系はTeSys(Schneider)、Siemens SIRIUSなど。"}
+];
+
+/* ================= ロジック ================= */
+function dimDiff(a,b){return Math.abs(a.w-b.w)+Math.abs(a.h-b.h)+Math.abs(a.d-b.d);}
+function capacityDisplay(d){
+  var u=(CATEGORY_META[d.category]||{}).unit||"A";
+  if(d.category==="thermal"&&d.ratedRangeA)return d.ratedRangeA+u;
+  return d.ratedA+u;
+}
+function auxLabel(x){return x?(x.a+"a"+x.b+"b"):"-";}
+function findDevice(id){for(var i=0;i<ALL_DEVICES.length;i++){if(ALL_DEVICES[i].id===id)return ALL_DEVICES[i];}return null;}
+function successorChain(d){
+  var chain=[],cur=d,seen={};seen[cur.id]=1;
+  while(cur.successorId){var n=findDevice(cur.successorId);if(!n||seen[n.id])break;chain.push(n);seen[n.id]=1;cur=n;}
+  return chain;
+}
+function computeCompatibles(m,mountInput){
+  if(!m)return [];
+  var actualMounting=mountInput||m.mounting;
+  var arr=ALL_DEVICES.filter(function(a){
+    return a.category===m.category&&a.id!==m.id&&(a.capacityClass===m.capacityClass||a.id===m.successorId);
+  }).map(function(a){
+    var mountingMatch=a.mounting===actualMounting;
+    var auxMatch=!m.aux||(a.aux&&a.aux.a===m.aux.a&&a.aux.b===m.aux.b);
+    var holeMatch=!m.holes||(a.holes&&a.holes.w===m.holes.w&&a.holes.h===m.holes.h);
+    var isSuccessor=a.id===m.successorId;
+    return Object.assign({},a,{diff:dimDiff(a.dims,m.dims),mountingMatch:mountingMatch,auxMatch:auxMatch,holeMatch:holeMatch,isSuccessor:isSuccessor});
+  });
+  arr.sort(function(a,b){
+    if(a.isSuccessor!==b.isSuccessor)return a.isSuccessor?-1:1;
+    var ca=Math.abs(a.ratedA-m.ratedA),cb=Math.abs(b.ratedA-m.ratedA);
+    if(ca!==cb)return ca-cb;
+    if(a.mountingMatch!==b.mountingMatch)return a.mountingMatch?-1:1;
+    if(a.auxMatch!==b.auxMatch)return a.auxMatch?-1:1;
+    if(a.holeMatch!==b.holeMatch)return a.holeMatch?-1:1;
+    return a.diff-b.diff;
+  });
+  return arr;
+}
+function norm(s){return (s||"").replace(/[\s\-]/g,"").toLowerCase();}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+
+/* ================= 状態 ================= */
+var state={view:"search",step:1,category:"contactor",query:"",maker:MAKERS[0],mountInput:"",matchedId:null,notFound:false,mountMissing:false};
+
+function makersFor(cat){return MAKERS.filter(function(m){return ALL_DEVICES.some(function(d){return d.category===cat&&d.maker===m;});});}
+function candidates(){return ALL_DEVICES.filter(function(d){return d.category===state.category&&d.maker===state.maker;});}
+
+/* ================= SVG図 ================= */
+function dimDiagram(dims,holes){
+  var scale=1.4,w=dims.w*scale,h=dims.h*scale;
+  var hw=holes?holes.w*scale:0,hh=holes?holes.h*scale:0;
+  var hx=40+(w-hw)/2,hy=10+(h-hh)/2;
+  var s='<svg width="'+(w+60)+'" height="'+(h+40)+'" style="overflow:visible">';
+  s+='<rect x="40" y="10" width="'+w+'" height="'+h+'" fill="#2A3644" stroke="#E8A33D" stroke-width="1.5" rx="3"/>';
+  if(holes){
+    s+='<rect x="'+hx+'" y="'+hy+'" width="'+hw+'" height="'+hh+'" fill="none" stroke="#4CAF7D" stroke-width="1.2" stroke-dasharray="4 3"/>';
+    s+='<circle cx="'+hx+'" cy="'+hy+'" r="2.5" fill="#4CAF7D"/><circle cx="'+(hx+hw)+'" cy="'+hy+'" r="2.5" fill="#4CAF7D"/>';
+    s+='<circle cx="'+hx+'" cy="'+(hy+hh)+'" r="2.5" fill="#4CAF7D"/><circle cx="'+(hx+hw)+'" cy="'+(hy+hh)+'" r="2.5" fill="#4CAF7D"/>';
+  }
+  s+='<text x="'+(40+w/2)+'" y="'+(h+30)+'" text-anchor="middle" font-size="11" fill="#8A99A8" font-family="ui-monospace,monospace">W '+dims.w+'mm</text>';
+  s+='<text x="20" y="'+(10+h/2)+'" text-anchor="middle" font-size="11" fill="#8A99A8" font-family="ui-monospace,monospace" transform="rotate(-90 20 '+(10+h/2)+')">H '+dims.h+'mm</text>';
+  s+='</svg>';
+  var out='<div style="display:flex;align-items:center;gap:24px;padding:12px 0;flex-wrap:wrap">'+s;
+  out+='<div class="mono" style="font-size:13px;color:var(--sub)">奥行 D<br><span style="color:var(--ink);font-size:16px">'+dims.d+'mm</span></div>';
+  if(holes)out+='<div class="mono" style="font-size:13px;color:var(--sub)"><span style="color:var(--green)">● 取付穴ピッチ</span><br><span style="color:var(--ink);font-size:16px">'+holes.w+' × '+holes.h+'mm</span></div>';
+  out+='</div>';
+  return out;
+}
+function badge(ok,label){
+  return '<span class="mono" style="font-size:11px;padding:2px 8px;border-radius:4px;background:'+(ok?"rgba(76,175,125,0.12)":"rgba(232,163,61,0.12)")+';color:'+(ok?"#4CAF7D":"#E8A33D")+';border:1px solid '+(ok?"#3A6B52":"#7A5A2E")+'">'+(ok?"✓ ":"△ ")+esc(label)+'</span>';
+}
+function specBox(label,value){
+  return '<div style="background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 14px"><div style="font-size:11px;color:var(--sub)">'+esc(label)+'</div><div class="mono" style="font-size:16px;font-weight:600;margin-top:2px">'+esc(value)+'</div></div>';
+}
+
+/* ================= アイコン ================= */
+var IC={
+  search:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
+  book:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>',
+  zap:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8A33D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+  warn:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+  back:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>',
+  check:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
+  refresh:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>'
+};
+
+/* ================= 描画 ================= */
+function tabStyle(active){return 'display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:600;border:'+(active?"1px solid #E8A33D":"1px solid #354352")+';background:'+(active?"#2A2418":"#151C24")+';color:'+(active?"#E8A33D":"#E8ECEF")+';';}
+
+function renderHeader(){
+  return '<div style="border-bottom:1px solid var(--line);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">'
+    +'<div style="display:flex;align-items:center;gap:10px">'+IC.zap
+    +'<div><div style="font-size:18px;font-weight:700;letter-spacing:.5px">マグネット互換サーチ <span class="mono amber" style="font-size:13px">PROTOTYPE</span></div>'
+    +'<div style="font-size:12px;color:var(--sub)">電磁接触器・電磁開閉器・サーマルリレー 互換品検索</div></div></div>'
+    +'<div style="display:flex;gap:6px">'
+    +'<button class="mono" data-act="view" data-v="search" style="'+tabStyle(state.view==="search")+'">'+IC.search+' 互換検索</button>'
+    +'<button class="mono" data-act="view" data-v="reference" style="'+tabStyle(state.view==="reference")+'">'+IC.book+' メーカー型式早見</button>'
+    +'</div></div>';
+}
+
+function renderReference(){
+  var h='<div class="wrap-ref"><div style="font-size:13px;color:var(--sub);margin-bottom:16px">国内主要メーカーの電磁接触器・電磁開閉器・サーマルリレーのシリーズ名を整理した早見表です(参考情報)。</div><div style="display:flex;flex-direction:column;gap:10px">';
+  MAKER_REFERENCE.forEach(function(m){
+    var exited=m.status==="撤退";
+    h+='<div class="panel" style="border-radius:8px;padding:16px">'
+      +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div class="mono" style="font-size:17px;font-weight:700;color:var(--amber)">'+esc(m.maker)+'</div>'
+      +'<span class="mono" style="font-size:11px;padding:2px 8px;border-radius:4px;background:'+(exited?"rgba(232,163,61,0.12)":"rgba(76,175,125,0.12)")+';color:'+(exited?"#E8A33D":"#4CAF7D")+';border:1px solid '+(exited?"#7A5A2E":"#3A6B52")+'">'+esc(m.status)+'</span></div>'
+      +'<div style="display:grid;grid-template-columns:88px 1fr;gap:6px 12px;font-size:13px">'
+      +'<div class="mono" style="color:var(--sub)">接触器</div><div>'+esc(m.contactor)+'</div>'
+      +'<div class="mono" style="color:var(--sub)">開閉器</div><div>'+esc(m.starter)+'</div>'
+      +'<div class="mono" style="color:var(--sub)">サーマル</div><div>'+esc(m.thermal)+'</div></div>'
+      +'<div style="font-size:12px;color:var(--sub);margin-top:10px;padding-top:10px;border-top:1px solid var(--line);line-height:1.6">'+esc(m.note)+'</div></div>';
+  });
+  h+='</div><div style="margin-top:20px;font-size:11px;color:var(--dim);line-height:1.6">※ シリーズ名・世代交代情報は変更される場合があります。選定・発注前に必ず各メーカー最新カタログで確認してください。</div></div>';
+  return h;
+}
+
+function renderStepIndicator(){
+  var steps=[{n:1,label:"既設品を検索"},{n:2,label:"仕様を確認"},{n:3,label:"互換品を表示"}];
+  var h='<div style="display:flex;gap:0;padding:16px 24px 0;max-width:760px;margin:0 auto">';
+  steps.forEach(function(s,i){
+    var on=state.step>=s.n;
+    h+='<div style="display:flex;align-items:center;flex:1">'
+      +'<div class="mono" style="width:26px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:'+(on?"#E8A33D":"#2A3644")+';color:'+(on?"#151C24":"#8A99A8")+'">'+s.n+'</div>'
+      +'<div style="font-size:12px;margin-left:8px;color:'+(on?"#E8ECEF":"#8A99A8")+'">'+s.label+'</div>'
+      +(i<2?'<div style="flex:1;height:1px;background:#354352;margin:0 12px"></div>':'')+'</div>';
+  });
+  return h+'</div>';
+}
+
+function renderSearchStep(){
+  var cands=candidates();
+  var h='<div class="wrap"><div class="panel" style="border-radius:8px;padding:24px">'
+    +'<div style="font-size:13px;color:var(--sub);margin-bottom:16px">既設で使用中の機器の情報を入力してください。</div>';
+  // 区分
+  h+='<div style="margin-bottom:16px"><div style="font-size:12px;color:var(--sub);margin-bottom:6px">区分</div><div style="display:flex;gap:8px;flex-wrap:wrap">';
+  Object.keys(CATEGORY_META).forEach(function(v){
+    var on=state.category===v;
+    h+='<button data-act="cat" data-v="'+v+'" style="flex:1 1 auto;min-width:110px;padding:10px 12px;border-radius:6px;border:'+(on?"1px solid #E8A33D":"1px solid #354352")+';background:'+(on?"#2A2418":"#151C24")+';color:'+(on?"#E8A33D":"#E8ECEF")+';font-size:13px;font-weight:600">'+CATEGORY_META[v].label+'</button>';
+  });
+  h+='</div></div>';
+  // メーカー
+  h+='<div style="margin-bottom:6px;font-size:12px;color:var(--sub)">メーカー</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">';
+  makersFor(state.category).forEach(function(m){
+    var on=state.maker===m;
+    h+='<button class="mono" data-act="maker" data-v="'+esc(m)+'" style="padding:8px 14px;border-radius:6px;border:'+(on?"1px solid #E8A33D":"1px solid #354352")+';background:'+(on?"#2A2418":"#151C24")+';color:'+(on?"#E8A33D":"#E8ECEF")+';font-size:13px;font-weight:600">'+esc(m)+'</button>';
+  });
+  h+='</div>';
+  // 型式チップ
+  h+='<div style="margin-bottom:6px;font-size:12px;color:var(--sub);display:flex;justify-content:space-between"><span>登録されている型式(タップして選択)</span><span class="mono" style="color:var(--dim)">'+cands.length+'件</span></div>';
+  h+='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">';
+  if(cands.length===0)h+='<div style="font-size:12px;color:var(--dim)">このメーカー・区分の登録データはありません。</div>';
+  cands.forEach(function(c){
+    var on=state.query===c.model;
+    var tag=c.discontinued?('<span style="margin-left:6px;color:#8A99A8;font-weight:400">'+(c.makerExited?"(撤退)":"(生産終了)")+'</span>'):'';
+    h+='<button class="mono" data-act="pick" data-v="'+esc(c.model)+'" style="display:flex;flex-direction:column;align-items:flex-start;padding:6px 10px;border-radius:6px;border:'+(on?"1px solid #E8A33D":"1px solid #354352")+';background:'+(on?"#2A2418":"#151C24")+';color:'+(on?"#E8A33D":"#E8ECEF")+';font-size:12px;font-weight:600">'
+      +'<span>'+esc(c.model)+tag+'</span>'
+      +'<span style="font-size:10px;color:#8A99A8;font-weight:400">'+esc(capacityDisplay(c))+(c.ratedKW?" / "+c.ratedKW+"kW":"")+'</span></button>';
+  });
+  h+='</div>';
+  // 入力欄
+  h+='<div style="margin-bottom:6px;font-size:12px;color:var(--sub)">既設品 型式</div>';
+  h+='<input id="queryInput" class="mono" value="'+esc(state.query)+'" placeholder="'+(cands[0]?("例: "+esc(cands[0].model)):"型式を入力")+'" style="width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--line);border-radius:6px;color:var(--ink);font-size:14px">';
+  // 取付方式
+  h+='<div style="margin-top:16px;margin-bottom:6px;font-size:12px;color:var(--sub)">既設品の取付方式(盤内の現物を確認して選択)</div><div style="display:flex;gap:8px">';
+  MOUNTING.forEach(function(m){
+    var on=state.mountInput===m;
+    h+='<button data-act="mount" data-v="'+m+'" style="flex:1;padding:10px 12px;border-radius:6px;border:'+(on?"1px solid #E8A33D":"1px solid #354352")+';background:'+(on?"#2A2418":"#151C24")+';color:'+(on?"#E8A33D":"#E8ECEF")+';font-size:13px;font-weight:600">'+m+'</button>';
+  });
+  h+='</div>';
+  if(state.mountMissing)h+='<div style="margin-top:8px;font-size:12px;color:var(--amber);display:flex;align-items:center;gap:6px">'+IC.warn+' 既設品の取付方式を選択してください。</div>';
+  h+='<div style="margin-top:20px"><button data-act="search" style="width:100%;padding:10px 18px;background:var(--amber);color:#151C24;border:none;border-radius:6px;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px">'+IC.search+' 検索</button></div>';
+  if(state.notFound)h+='<div style="margin-top:14px;display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--amber)">'+IC.warn+'<div>該当する型式がサンプルデータ内に見つかりません。入力候補:<span class="mono"> '+cands.map(function(c){return esc(c.model);}).join(" / ")+'</span></div></div>';
+  h+='</div></div>';
+  return h;
+}
+
+function renderConfirm(){
+  var m=findDevice(state.matchedId);if(!m)return "";
+  var meta=CATEGORY_META[m.category]||{};
+  var h='<div class="wrap"><button data-act="step" data-v="1" style="display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--sub);font-size:12px;padding:0">'+IC.back+' 検索に戻る</button>';
+  h+='<div class="panel" style="border-radius:8px;padding:0;margin-top:12px;overflow:hidden">'
+    +'<div style="background:#232E3A;padding:10px 20px;font-size:12px;color:var(--sub);border-bottom:1px solid var(--line)">この仕様で間違いありませんか?現物の銘板と照合してください。</div><div style="padding:24px">';
+  h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px"><div><div style="font-size:11px;color:var(--sub)">'+esc(m.maker)+'</div><div class="mono" style="font-size:26px;font-weight:700;color:var(--amber)">'+esc(m.model)+'</div></div><div style="font-size:11px;color:var(--sub);text-align:right">'+esc(meta.label||"")+'</div></div>';
+  if(m.discontinued){
+    var inner;
+    if(m.makerExited){inner=esc(m.maker)+'はこの製品分野から事業撤退しており、同メーカーでの後継機種はありません。次の互換品一覧では他メーカー品を候補として表示します。';}
+    else{var ch=successorChain(m);inner=ch.length?('同メーカーの後継機種:<span class="mono green" style="margin-left:4px">'+ch.map(function(d){return esc(d.model);}).join(" → ")+'</span>&nbsp;&nbsp;次の互換品一覧では後継機種を最優先候補として表示します。'):'';}
+    h+='<div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;background:rgba(232,163,61,0.08);border:1px solid #7A5A2E;border-radius:6px;padding:12px;margin-bottom:20px"><span class="amber">'+IC.warn+'</span><div><span class="amber" style="font-weight:700">生産終了品</span>です。'+inner+'</div></div>';
+  }
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">';
+  h+=specBox(meta.primaryLabel||"定格電流",capacityDisplay(m));
+  if(m.ratedKW)h+=specBox("適用モータ容量",m.ratedKW+" kW");
+  if(m.coil&&m.coil!=="-")h+=specBox("操作コイル",m.coil);
+  h+=specBox("取付方式(入力値)",state.mountInput||m.mounting);
+  if(m.aux)h+=specBox("補助接点構成",auxLabel(m.aux));
+  h+='</div>';
+  if(state.mountInput&&state.mountInput!==m.mounting){
+    h+='<div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--amber);margin-bottom:20px;margin-top:-8px">'+IC.warn+'<div>'+esc(m.model)+' のメーカー標準取付方式は「'+esc(m.mounting)+'」です。入力された「'+esc(state.mountInput)+'」はオプション金具等での変更、または品番違いの可能性があります。現物を再確認してください。</div></div>';
+  }
+  h+='<div style="font-size:12px;color:var(--sub);margin-bottom:8px">'+(m.holes?"外形寸法・取付穴寸法(mm)":"外形寸法(mm)")+'</div>'+dimDiagram(m.dims,m.holes);
+  h+='<div style="display:flex;gap:10px;margin-top:24px">'
+    +'<button data-act="step" data-v="3" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;background:var(--green);color:#0F1A14;border:none;border-radius:6px;font-weight:700;font-size:13px">'+IC.check+' はい、この仕様で間違いありません</button>'
+    +'<button data-act="step" data-v="1" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;background:var(--btn);color:var(--ink);border:1px solid var(--line);border-radius:6px;font-weight:600;font-size:13px">'+IC.refresh+' 型式を再入力</button></div>';
+  h+='</div></div></div>';
+  return h;
+}
+
+function renderResult(){
+  var m=findDevice(state.matchedId);if(!m)return "";
+  var meta=CATEGORY_META[m.category]||{};
+  var list=computeCompatibles(m,state.mountInput);
+  var h='<div class="wrap"><button data-act="reset" style="display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--sub);font-size:12px;padding:0">'+IC.back+' 最初から検索</button>';
+  h+='<div style="margin:12px 0 16px;font-size:13px;color:var(--sub)"><span class="mono green">'+esc(m.model)+'</span>('+esc(meta.primaryLabel||"定格")+' '+esc(capacityDisplay(m))+' / '+esc(state.mountInput||m.mounting)+(m.aux?(" / "+auxLabel(m.aux)):"")+')の互換品候補です。主要スペック → 取付方式 → 補助接点構成 → 取付穴寸法 → 外形寸法差 の順で並べています。</div>';
+  if(list.length===0)h+='<div class="panel" style="padding:20px;border-radius:8px;font-size:13px;color:var(--sub)">サンプルデータ内に互換候補が登録されていません。</div>';
+  h+='<div style="display:flex;flex-direction:column;gap:10px">';
+  list.forEach(function(c,idx){
+    var tag=c.isSuccessor?'<span style="margin-left:6px;color:#E8A33D;font-weight:700">メーカー後継品</span>':(idx===0?'<span class="green" style="margin-left:6px">候補No.1</span>':'');
+    h+='<div class="panel" style="border-radius:8px;padding:16px"><div style="display:flex;justify-content:space-between;align-items:center"><div>'
+      +'<div style="font-size:11px;color:var(--sub)">'+esc(c.maker)+tag+'</div>'
+      +'<div class="mono" style="font-size:18px;font-weight:700">'+esc(c.model)+'</div>'
+      +'<div style="font-size:12px;color:var(--sub);margin-top:4px">'+esc(meta.primaryLabel||"定格")+' <span class="mono">'+esc(capacityDisplay(c))+'</span>'+(c.ratedKW?(' / <span class="mono">'+c.ratedKW+'kW</span>'):'')+'&nbsp;&nbsp;・&nbsp;&nbsp;外形 <span class="mono">'+c.dims.w+'×'+c.dims.h+'×'+c.dims.d+'mm</span>'+(c.holes?('&nbsp;&nbsp;・&nbsp;&nbsp;取付穴 <span class="mono">'+c.holes.w+'×'+c.holes.h+'mm</span>'):'')+'</div>'
+      +'<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'+badge(c.mountingMatch,c.mounting)+(m.aux?badge(c.auxMatch,auxLabel(c.aux)):'')+(m.holes?badge(c.holeMatch,c.holes?("穴 "+c.holes.w+"×"+c.holes.h+"mm"):"穴 -"):'')+'</div>'
+      +'</div><div style="text-align:right;flex-shrink:0;padding-left:12px"><div style="font-size:11px;color:var(--sub)">寸法差分</div><div class="mono" style="font-size:14px;color:'+(c.diff===0?"#4CAF7D":"#E8A33D")+'">'+(c.diff===0?"完全一致":("Σ"+c.diff+"mm"))+'</div></div></div></div>';
+  });
+  h+='</div><div style="margin-top:20px;font-size:11px;color:var(--dim);line-height:1.6"><span style="color:var(--sub)">※ 本プロトタイプの数値はサンプル・推定を含みます。△表示は取付方式・補助接点構成・取付穴寸法のいずれかが既設品と異なることを示します。サーマルは標準形/KP形(欠相保護)を別クラスとして区別しています。実際の選定・発注前には必ずメーカー最新カタログおよび現物銘板・取扱説明書で確認してください。</span></div></div>';
+  return h;
+}
+
+function render(){
+  var h=renderHeader();
+  if(state.view==="reference"){h+=renderReference();}
+  else{
+    h+=renderStepIndicator();
+    if(state.step===1)h+=renderSearchStep();
+    else if(state.step===2)h+=renderConfirm();
+    else h+=renderResult();
+  }
+  var root=document.getElementById("app");
+  root.innerHTML='<div style="min-height:100vh;padding-bottom:40px">'+h+'</div>';
+  var qi=document.getElementById("queryInput");
+  if(qi){qi.addEventListener("input",function(){state.query=qi.value;});
+    qi.addEventListener("keydown",function(e){if(e.key==="Enter"){doSearch();}});}
+}
+
+/* ================= 操作 ================= */
+function doSearch(){
+  var qi=document.getElementById("queryInput");
+  if(qi)state.query=qi.value;
+  if(!state.mountInput){state.mountMissing=true;render();return;}
+  state.mountMissing=false;
+  var found=null,cs=candidates();
+  for(var i=0;i<cs.length;i++){if(norm(cs[i].model)===norm(state.query)){found=cs[i];break;}}
+  if(found){state.matchedId=found.id;state.notFound=false;state.step=2;}
+  else{state.notFound=true;state.matchedId=null;}
+  render();
+}
+function resetAll(){state.step=1;state.query="";state.mountInput="";state.matchedId=null;state.notFound=false;state.mountMissing=false;render();}
+
+document.getElementById("app").addEventListener("click",function(e){
+  var t=e.target.closest("[data-act]");if(!t)return;
+  var act=t.getAttribute("data-act"),v=t.getAttribute("data-v");
+  if(act==="view"){state.view=v;}
+  else if(act==="cat"){state.category=v;var av=makersFor(v);if(av.indexOf(state.maker)<0)state.maker=av[0];state.query="";state.notFound=false;}
+  else if(act==="maker"){state.maker=v;state.query="";state.notFound=false;}
+  else if(act==="pick"){state.query=v;state.notFound=false;}
+  else if(act==="mount"){state.mountInput=v;state.mountMissing=false;}
+  else if(act==="search"){doSearch();return;}
+  else if(act==="step"){state.step=parseInt(v,10);}
+  else if(act==="reset"){resetAll();return;}
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
