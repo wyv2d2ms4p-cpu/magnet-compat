@@ -132,7 +132,32 @@ var ALL_DEVICES = [
 
   {id:"MIT-S2S",maker:"三菱電機",model:"S-2S",category:"contactor",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:{w:44,h:114,d:90},holes:{w:34,h:59},capacityClass:"C-2.2kW",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-SN10"},
   {id:"MIT-S2K",maker:"三菱電機",model:"S-2K",category:"contactor",ratedA:18,ratedKW:4,coil:"AC200V",dims:{w:54,h:121,d:90},holes:{w:39,h:64},capacityClass:"C-4kW",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-SN20"},
-  {id:"MIT-TH8",maker:"三菱電機",model:"TH-8",category:"thermal",ratedA:11,ratedRangeA:"7-11",coil:"-",dims:{w:44,h:53,d:90},holes:{w:34,h:38},capacityClass:"T-11A",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THN12"}
+  {id:"MIT-TH8",maker:"三菱電機",model:"TH-8",category:"thermal",ratedA:11,ratedRangeA:"7-11",coil:"-",dims:{w:44,h:53,d:90},holes:{w:34,h:38},capacityClass:"T-11A",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THN12"},
+
+  /* ===== 春日電機(現 パトライト) =====
+     2017年10月1日にパトライトへ吸収合併され解散。旧春日電機製品の取扱説明書は
+     パトライトのサイト(サービス・サポート → ダウンロード)から入手可能。
+     ※ 外形寸法・取付穴ピッチは未入手のため unverified:true とし、
+       寸法・穴の一致判定(✓/△)は行わず「寸法要検証」と表示する。
+       容量クラスの割当ても暫定。カタログ入手後に確定させること。 */
+  {id:"KSG-MUD5",maker:"春日電機",model:"MUD5",category:"contactor",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:null,holes:null,capacityClass:"C-2.2kW",mounting:"直接取付",aux:{a:1,b:0},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-MUF7",maker:"春日電機",model:"MUF7",category:"contactor",ratedA:18,ratedKW:3.7,coil:"AC200V",dims:null,holes:null,capacityClass:"C-3.7kW",mounting:"直接取付",aux:{a:1,b:0},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-MUF104",maker:"春日電機",model:"MUF10-4",category:"contactor",ratedA:18,ratedKW:4,coil:"AC200V",dims:null,holes:null,capacityClass:"C-4kW",mounting:"直接取付",aux:{a:1,b:0},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-MUF105",maker:"春日電機",model:"MUF10-5",category:"contactor",ratedA:26,ratedKW:5.5,coil:"AC200V",dims:null,holes:null,capacityClass:"C-5.5kW",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-MUF18",maker:"春日電機",model:"MUF18",category:"contactor",ratedA:26,ratedKW:5.5,coil:"AC200V",dims:null,holes:null,capacityClass:"C-5.5kW",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-MUF20",maker:"春日電機",model:"MUF20",category:"contactor",ratedA:34,ratedKW:7.5,coil:"AC200V",dims:null,holes:null,capacityClass:"C-7.5kW",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-MUF25",maker:"春日電機",model:"MUF25",category:"contactor",ratedA:50,ratedKW:11,coil:"AC200V",dims:null,holes:null,capacityClass:"C-11kW",mounting:"直接取付",aux:{a:2,b:2},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-MUF35",maker:"春日電機",model:"MUF35",category:"contactor",ratedA:65,ratedKW:15,coil:"AC200V",dims:null,holes:null,capacityClass:"C-15kW",mounting:"直接取付",aux:{a:2,b:2},discontinued:true,makerExited:true,unverified:true},
+
+  {id:"KSG-MUD5H",maker:"春日電機",model:"MUD5H",category:"starter",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:null,holes:null,capacityClass:"C-2.2kW",mounting:"直接取付",aux:{a:1,b:0},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-MUF7H",maker:"春日電機",model:"MUF7H",category:"starter",ratedA:18,ratedKW:3.7,coil:"AC200V",dims:null,holes:null,capacityClass:"C-3.7kW",mounting:"直接取付",aux:{a:1,b:0},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-MUF20H",maker:"春日電機",model:"MUF20H",category:"starter",ratedA:34,ratedKW:7.5,coil:"AC200V",dims:null,holes:null,capacityClass:"C-7.5kW",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-MUF25H",maker:"春日電機",model:"MUF25H",category:"starter",ratedA:50,ratedKW:11,coil:"AC200V",dims:null,holes:null,capacityClass:"C-11kW",mounting:"直接取付",aux:{a:2,b:2},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-MUF35H",maker:"春日電機",model:"MUF35H",category:"starter",ratedA:65,ratedKW:15,coil:"AC200V",dims:null,holes:null,capacityClass:"C-15kW",mounting:"直接取付",aux:{a:2,b:2},discontinued:true,makerExited:true,unverified:true},
+
+  {id:"KSG-HRD010B",maker:"春日電機",model:"HRD010B",category:"thermal",ratedA:11,ratedRangeA:"7-11",coil:"-",dims:null,holes:null,capacityClass:"T-11A",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-HRD018B",maker:"春日電機",model:"HRD018B",category:"thermal",ratedA:18,ratedRangeA:"1-18",coil:"-",dims:null,holes:null,capacityClass:"T-18A",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-HRE35DG",maker:"春日電機",model:"HRE35DG",category:"thermal",ratedA:36,ratedRangeA:"24-36",coil:"-",dims:null,holes:null,capacityClass:"T-36A",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true}
 ];
 
 var MAKERS = ALL_DEVICES.map(function(d){return d.maker;}).filter(function(v,i,a){return a.indexOf(v)===i;});
@@ -150,11 +175,13 @@ var MAKER_REFERENCE = [
   {maker:"オムロン",status:"現行",contactor:"J7KN / J7KC(新・45mm幅統一・ミラーコンタクト対応)",starter:"J7KC + J7TC 組合せ",thermal:"J7TC / J7TKN / J7TL",note:"コネクタ形J7L、高感度形J7AN。J7KCはセーフティ対応。"},
   {maker:"東芝",status:"現行",contactor:"Cシリーズ(C-11J〜)",starter:"—",thermal:"—",note:"東芝産業機器システム扱い。"},
   {maker:"パナソニック",status:"撤退",contactor:"(旧 SN / SKシリーズ)",starter:"—",thermal:"(旧 N-THシリーズ)",note:"2010年3月末に本分野撤退。新品入手不可。三菱・富士への切替が案内されている。"},
-  {maker:"その他",status:"—",contactor:"春日電機 / ケーイーシー(KEC 03〜N16形) / Schneider(TeSys)ほか",starter:"—",thermal:"—",note:"海外系はTeSys(Schneider)、Siemens SIRIUSなど。"}
+  {maker:"春日電機",status:"解散",contactor:"MUD5 / MUF7 / MUF10-4 / MUF10-5 / MUF18 / MUF20 / MUF25 / MUF35(ケース付は末尾N)",starter:"MUD5H・MUF7H・MUF20H ほか(HB=ケースなし、H=ケース付)",thermal:"HRD010B / HRD018B / HRE35DG",note:"2017年10月1日に因幡電機産業傘下のパトライトへ吸収合併され解散。旧春日電機製品の取扱説明書はパトライトのサイト(サービス・サポート→ダウンロード)から入手可。可逆形はHMUF10/HMU12/HMU18/RMUF25/RMUF35。※当アプリの寸法データは未登録。"},
+  {maker:"IDEC(和泉電気)",status:"対象外",contactor:"自社シリーズなし",starter:"—",thermal:"—",note:"操作スイッチ・表示灯・端子台・安全機器が主力で、電磁接触器の自社シリーズは持たない。旧社名は和泉電気(1947年設立、1982年にIDECへ商標変更)。該当型式があれば銘板を確認のうえ追加検討。"},
+  {maker:"その他",status:"—",contactor:"ケーイーシー(KEC 03〜N16形) / Schneider(TeSys) ほか",starter:"—",thermal:"—",note:"海外系はTeSys(Schneider)、Siemens SIRIUSなど。"}
 ];
 
 /* ================= ロジック ================= */
-function dimDiff(a,b){return Math.abs(a.w-b.w)+Math.abs(a.h-b.h)+Math.abs(a.d-b.d);}
+function dimDiff(a,b){if(!a||!b)return null;return Math.abs(a.w-b.w)+Math.abs(a.h-b.h)+Math.abs(a.d-b.d);}
 function capacityDisplay(d){
   var u=(CATEGORY_META[d.category]||{}).unit||"A";
   if(d.category==="thermal"&&d.ratedRangeA)return d.ratedRangeA+u;
@@ -173,11 +200,13 @@ function computeCompatibles(m,mountInput){
   var arr=ALL_DEVICES.filter(function(a){
     return a.category===m.category&&a.id!==m.id&&(a.capacityClass===m.capacityClass||a.id===m.successorId);
   }).map(function(a){
+    var unverified=!!(a.unverified||m.unverified)||!a.dims||!m.dims;
     var mountingMatch=a.mounting===actualMounting;
     var auxMatch=!m.aux||(a.aux&&a.aux.a===m.aux.a&&a.aux.b===m.aux.b);
-    var holeMatch=!m.holes||(a.holes&&a.holes.w===m.holes.w&&a.holes.h===m.holes.h);
+    // 寸法データ未検証の場合は穴の一致判定を行わない(誤った✓表示を防ぐ)
+    var holeMatch=unverified?null:(!m.holes||(a.holes&&a.holes.w===m.holes.w&&a.holes.h===m.holes.h));
     var isSuccessor=a.id===m.successorId;
-    return Object.assign({},a,{diff:dimDiff(a.dims,m.dims),mountingMatch:mountingMatch,auxMatch:auxMatch,holeMatch:holeMatch,isSuccessor:isSuccessor});
+    return Object.assign({},a,{diff:dimDiff(a.dims,m.dims),unverifiedDims:unverified,mountingMatch:mountingMatch,auxMatch:auxMatch,holeMatch:holeMatch,isSuccessor:isSuccessor});
   });
   arr.sort(function(a,b){
     if(a.isSuccessor!==b.isSuccessor)return a.isSuccessor?-1:1;
@@ -185,7 +214,12 @@ function computeCompatibles(m,mountInput){
     if(ca!==cb)return ca-cb;
     if(a.mountingMatch!==b.mountingMatch)return a.mountingMatch?-1:1;
     if(a.auxMatch!==b.auxMatch)return a.auxMatch?-1:1;
+    // 寸法未検証は判定材料が少ないため、検証済み候補の後ろに回す
+    if(a.unverifiedDims!==b.unverifiedDims)return a.unverifiedDims?1:-1;
     if(a.holeMatch!==b.holeMatch)return a.holeMatch?-1:1;
+    if(a.diff===null&&b.diff===null)return 0;
+    if(a.diff===null)return 1;
+    if(b.diff===null)return -1;
     return a.diff-b.diff;
   });
   return arr;
@@ -352,7 +386,11 @@ function renderConfirm(){
   if(state.mountInput&&state.mountInput!==m.mounting){
     h+='<div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--amber);margin-bottom:20px;margin-top:-8px">'+IC.warn+'<div>'+esc(m.model)+' のメーカー標準取付方式は「'+esc(m.mounting)+'」です。入力された「'+esc(state.mountInput)+'」はオプション金具等での変更、または品番違いの可能性があります。現物を再確認してください。</div></div>';
   }
-  h+='<div style="font-size:12px;color:var(--sub);margin-bottom:8px">'+(m.holes?"外形寸法・取付穴寸法(mm)":"外形寸法(mm)")+'</div>'+dimDiagram(m.dims,m.holes);
+  if(!m.dims||m.unverified){
+    h+='<div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;background:rgba(232,163,61,0.08);border:1px solid #7A5A2E;border-radius:6px;padding:12px"><span class="amber">'+IC.warn+'</span><div><span class="amber" style="font-weight:700">寸法データ未登録</span>&nbsp;この型式は外形寸法・取付穴ピッチが未入手のため、寸法図と穴の一致判定は表示しません。互換候補は容量クラスでの一致のみで抽出しています。取付可否は必ずメーカー外形図と現物で確認してください。</div></div>';
+  }else{
+    h+='<div style="font-size:12px;color:var(--sub);margin-bottom:8px">'+(m.holes?"外形寸法・取付穴寸法(mm)":"外形寸法(mm)")+'</div>'+dimDiagram(m.dims,m.holes);
+  }
   h+='<div style="display:flex;gap:10px;margin-top:24px">'
     +'<button data-act="step" data-v="3" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;background:var(--green);color:#0F1A14;border:none;border-radius:6px;font-weight:700;font-size:13px">'+IC.check+' はい、この仕様で間違いありません</button>'
     +'<button data-act="step" data-v="1" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;background:var(--btn);color:var(--ink);border:1px solid var(--line);border-radius:6px;font-weight:600;font-size:13px">'+IC.refresh+' 型式を再入力</button></div>';
@@ -373,9 +411,12 @@ function renderResult(){
     h+='<div class="panel" style="border-radius:8px;padding:16px"><div style="display:flex;justify-content:space-between;align-items:center"><div>'
       +'<div style="font-size:11px;color:var(--sub)">'+esc(c.maker)+tag+'</div>'
       +'<div class="mono" style="font-size:18px;font-weight:700">'+esc(c.model)+'</div>'
-      +'<div style="font-size:12px;color:var(--sub);margin-top:4px">'+esc(meta.primaryLabel||"定格")+' <span class="mono">'+esc(capacityDisplay(c))+'</span>'+(c.ratedKW?(' / <span class="mono">'+c.ratedKW+'kW</span>'):'')+'&nbsp;&nbsp;・&nbsp;&nbsp;外形 <span class="mono">'+c.dims.w+'×'+c.dims.h+'×'+c.dims.d+'mm</span>'+(c.holes?('&nbsp;&nbsp;・&nbsp;&nbsp;取付穴 <span class="mono">'+c.holes.w+'×'+c.holes.h+'mm</span>'):'')+'</div>'
-      +'<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'+badge(c.mountingMatch,c.mounting)+(m.aux?badge(c.auxMatch,auxLabel(c.aux)):'')+(m.holes?badge(c.holeMatch,c.holes?("穴 "+c.holes.w+"×"+c.holes.h+"mm"):"穴 -"):'')+'</div>'
-      +'</div><div style="text-align:right;flex-shrink:0;padding-left:12px"><div style="font-size:11px;color:var(--sub)">寸法差分</div><div class="mono" style="font-size:14px;color:'+(c.diff===0?"#4CAF7D":"#E8A33D")+'">'+(c.diff===0?"完全一致":("Σ"+c.diff+"mm"))+'</div></div></div></div>';
+      +'<div style="font-size:12px;color:var(--sub);margin-top:4px">'+esc(meta.primaryLabel||"定格")+' <span class="mono">'+esc(capacityDisplay(c))+'</span>'+(c.ratedKW?(' / <span class="mono">'+c.ratedKW+'kW</span>'):'')
+      +(c.dims?('&nbsp;&nbsp;・&nbsp;&nbsp;外形 <span class="mono">'+c.dims.w+'×'+c.dims.h+'×'+c.dims.d+'mm</span>'):'&nbsp;&nbsp;・&nbsp;&nbsp;<span class="amber">外形寸法 未登録</span>')
+      +(c.dims&&c.holes?('&nbsp;&nbsp;・&nbsp;&nbsp;取付穴 <span class="mono">'+c.holes.w+'×'+c.holes.h+'mm</span>'):'')+'</div>'
+      +'<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'+badge(c.mountingMatch,c.mounting)+(m.aux?badge(c.auxMatch,auxLabel(c.aux)):'')
+      +(c.unverifiedDims?'<span class="mono" style="font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(232,163,61,0.12);color:#E8A33D;border:1px solid #7A5A2E">? 寸法要検証</span>':(m.holes?badge(c.holeMatch,c.holes?("穴 "+c.holes.w+"×"+c.holes.h+"mm"):"穴 -"):''))+'</div>'
+      +'</div><div style="text-align:right;flex-shrink:0;padding-left:12px"><div style="font-size:11px;color:var(--sub)">寸法差分</div><div class="mono" style="font-size:14px;color:'+(c.diff===null?"#8A99A8":(c.diff===0?"#4CAF7D":"#E8A33D"))+'">'+(c.diff===null?"—":(c.diff===0?"完全一致":("Σ"+c.diff+"mm")))+'</div></div></div></div>';
   });
   h+='</div><div style="margin-top:20px;font-size:11px;color:var(--dim);line-height:1.6"><span style="color:var(--sub)">※ 本プロトタイプの数値はサンプル・推定を含みます。△表示は取付方式・補助接点構成・取付穴寸法のいずれかが既設品と異なることを示します。サーマルは標準形/KP形(欠相保護)を別クラスとして区別しています。実際の選定・発注前には必ずメーカー最新カタログおよび現物銘板・取扱説明書で確認してください。</span></div></div>';
   return h;
