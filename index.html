@@ -96,43 +96,51 @@ var ALL_DEVICES = [
   {id:"MIT-MSOT21",maker:"三菱電機",model:"MSO-T21",category:"starter",ratedA:18,ratedKW:4,coil:"AC200V",dims:{w:55,h:122,d:81},holes:{w:40,h:65},capacityClass:"C-4kW",mounting:"DINレール",aux:{a:1,b:1}},
   {id:"MIT-MSOT25",maker:"三菱電機",model:"MSO-T25",category:"starter",ratedA:26,ratedKW:5.5,coil:"AC200V",dims:{w:63,h:127,d:81},holes:{w:48,h:70},capacityClass:"C-5.5kW",mounting:"直接取付",aux:{a:2,b:2}},
 
-  {id:"MIT-THN12",maker:"三菱電機",model:"TH-N12",category:"thermal",ratedA:11,ratedRangeA:"0.1-13",coil:"-",dims:{w:54,h:59,d:80},holes:{w:41,h:44},capacityClass:"T-11A",mounting:"DINレール",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THT18"},
-  {id:"MIT-THN20",maker:"三菱電機",model:"TH-N20",category:"thermal",ratedA:20,ratedRangeA:"0.2-18",coil:"-",dims:{w:45,h:62,d:86},holes:{w:35,h:45},capacityClass:"T-20A",mounting:"DINレール",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THT25"},
-  {id:"MIT-THN60",maker:"三菱電機",model:"TH-N60",category:"thermal",ratedA:36,ratedRangeA:"12-65",coil:"-",dims:{w:55,h:68,d:92},holes:{w:42,h:50},capacityClass:"T-36A",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THT65"},
-  {id:"MIT-THN18",maker:"三菱電機",model:"TH-N18",category:"thermal",ratedA:18,ratedRangeA:"1-18",coil:"-",dims:{w:45,h:62,d:86},holes:{w:35,h:45},capacityClass:"T-18A",mounting:"DINレール",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THT18"},
+  /* --- 三菱電機 サーマルリレー(2026-07 メーカーカタログ照合済) ---
+     dimVerified:true = 三菱電機 電磁開閉器カタログの外形寸法表と一致を確認した値。
+     mountsOn = 組合せ可能な電磁接触器フレーム。standalone = 単体取付に必要なユニット。
+     ※サーマルリレーは電磁接触器に直付けする構造で、盤への取付穴を単体では持たない。 */
+  {id:"MIT-THN12",maker:"三菱電機",model:"TH-N12",category:"thermal",rangeMin:0.1,rangeMax:13,protect:"1E",mountsOn:["N10","N11","N12"],coil:"-",dims:{w:54,h:59,d:80},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THT18"},
+  {id:"MIT-THN18",maker:"三菱電機",model:"TH-N18",category:"thermal",rangeMin:1,rangeMax:18,protect:"1E",mountsOn:["N18"],coil:"-",dims:{w:45,h:62,d:86},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THT18"},
+  {id:"MIT-THN20",maker:"三菱電機",model:"TH-N20",category:"thermal",rangeMin:0.2,rangeMax:18,protect:"1E",mountsOn:["N20","N21","N25"],coil:"-",dims:{w:63,h:51,d:79},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THT25"},
+  {id:"MIT-THN60",maker:"三菱電機",model:"TH-N60",category:"thermal",rangeMin:12,rangeMax:65,protect:"1E",mountsOn:["N35","N50","N65"],coil:"-",dims:{w:55,h:68,d:92},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THT65"},
 
-  {id:"MIT-THT18",maker:"三菱電機",model:"TH-T18",category:"thermal",ratedA:9,ratedRangeA:"0.1-18",coil:"-",dims:{w:45,h:55,d:76.5},holes:{w:35,h:40},capacityClass:"T-9A",mounting:"DINレール",aux:{a:1,b:1}},
-  {id:"MIT-THT25",maker:"三菱電機",model:"TH-T25",category:"thermal",ratedA:22,ratedRangeA:"0.2-26",coil:"-",dims:{w:63,h:51,d:79},holes:{w:48,h:38},capacityClass:"T-22A",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"MIT-THT50",maker:"三菱電機",model:"TH-T50",category:"thermal",ratedA:29,ratedRangeA:"24-50",coil:"-",dims:{w:63,h:53,d:80},holes:{w:48,h:40},capacityClass:"T-29A",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"MIT-THT65",maker:"三菱電機",model:"TH-T65",category:"thermal",ratedA:42,ratedRangeA:"12-65",coil:"-",dims:{w:70,h:90,d:95},holes:{w:53,h:68},capacityClass:"T-42A",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"MIT-THT100",maker:"三菱電機",model:"TH-T100",category:"thermal",ratedA:82,ratedRangeA:"54-100",coil:"-",dims:{w:80,h:110,d:110},holes:{w:60,h:84},capacityClass:"T-82A",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"MIT-THT18KP",maker:"三菱電機",model:"TH-T18KP",category:"thermal",ratedA:9,ratedRangeA:"0.1-18",coil:"-",dims:{w:45,h:55,d:76.5},holes:{w:35,h:40},capacityClass:"T-9A-KP",mounting:"DINレール",aux:{a:1,b:1}},
-  {id:"MIT-THT25KP",maker:"三菱電機",model:"TH-T25KP",category:"thermal",ratedA:22,ratedRangeA:"0.2-26",coil:"-",dims:{w:63,h:51,d:79},holes:{w:48,h:38},capacityClass:"T-22A-KP",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"MIT-THT50KP",maker:"三菱電機",model:"TH-T50KP",category:"thermal",ratedA:29,ratedRangeA:"24-50",coil:"-",dims:{w:63,h:53,d:80},holes:{w:48,h:40},capacityClass:"T-29A-KP",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"MIT-THT65KP",maker:"三菱電機",model:"TH-T65KP",category:"thermal",ratedA:42,ratedRangeA:"12-65",coil:"-",dims:{w:70,h:90,d:95},holes:{w:53,h:68},capacityClass:"T-42A-KP",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"MIT-THT18",maker:"三菱電機",model:"TH-T18",category:"thermal",rangeMin:0.1,rangeMax:18,protect:"1E",mountsOn:["T10","T12","T20"],standalone:"UT-HZ18",coil:"-",dims:{w:45,h:55,d:76.5},dimVerified:true,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"MIT-THT18KP",maker:"三菱電機",model:"TH-T18KP",category:"thermal",rangeMin:0.1,rangeMax:18,protect:"2E",mountsOn:["T10","T12","T20"],standalone:"UT-HZ18",coil:"-",dims:{w:45,h:55,d:76.5},dimVerified:true,capacityClass:"T-2E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"MIT-THT25",maker:"三菱電機",model:"TH-T25",category:"thermal",rangeMin:0.2,rangeMax:26,protect:"1E",mountsOn:["T21","T25","T35","T50"],standalone:"UN-RM20",coil:"-",dims:{w:63,h:51,d:79},dimVerified:true,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"MIT-THT25KP",maker:"三菱電機",model:"TH-T25KP",category:"thermal",rangeMin:0.2,rangeMax:26,protect:"2E",mountsOn:["T21","T25","T35","T50"],standalone:"UN-RM20",coil:"-",dims:{w:63,h:51,d:79},dimVerified:true,capacityClass:"T-2E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"MIT-THT50",maker:"三菱電機",model:"TH-T50",category:"thermal",rangeMin:24,rangeMax:54,protect:"1E",mountsOn:["T35","T50"],coil:"-",dims:{w:63,h:53,d:80},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"MIT-THT50KP",maker:"三菱電機",model:"TH-T50KP",category:"thermal",rangeMin:24,rangeMax:54,protect:"2E",mountsOn:["T35","T50"],coil:"-",dims:{w:63,h:53,d:80},dimVerified:false,capacityClass:"T-2E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"MIT-THT65",maker:"三菱電機",model:"TH-T65",category:"thermal",rangeMin:12,rangeMax:65,protect:"1E",mountsOn:["T65"],coil:"-",dims:{w:70,h:90,d:95},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"MIT-THT65KP",maker:"三菱電機",model:"TH-T65KP",category:"thermal",rangeMin:12,rangeMax:65,protect:"2E",mountsOn:["T65"],coil:"-",dims:{w:70,h:90,d:95},dimVerified:false,capacityClass:"T-2E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"MIT-THT100",maker:"三菱電機",model:"TH-T100",category:"thermal",rangeMin:54,rangeMax:100,protect:"1E",mountsOn:["T80","T100"],coil:"-",dims:{w:80,h:110,d:110},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
 
-  {id:"MIT-THN120",maker:"三菱電機",model:"TH-N120",category:"thermal",ratedA:42,ratedRangeA:"34-100",coil:"-",dims:{w:85,h:115,d:115},holes:{w:64,h:88},capacityClass:"T-N120",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"MIT-THN220RH",maker:"三菱電機",model:"TH-N220RH",category:"thermal",ratedA:82,ratedRangeA:"65-220",coil:"-",dims:{w:110,h:150,d:140},holes:{w:84,h:116},capacityClass:"T-N220RH",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"MIT-THN400RH",maker:"三菱電機",model:"TH-N400RH",category:"thermal",ratedA:105,ratedRangeA:"85-400",coil:"-",dims:{w:130,h:180,d:160},holes:{w:100,h:140},capacityClass:"T-N400RH",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"MIT-THN600",maker:"三菱電機",model:"TH-N600",category:"thermal",ratedA:250,ratedRangeA:"200-800",coil:"-",dims:{w:150,h:210,d:185},holes:{w:116,h:164},capacityClass:"T-N600",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"MIT-THN120",maker:"三菱電機",model:"TH-N120",category:"thermal",rangeMin:34,rangeMax:100,protect:"1E",mountsOn:["N120"],coil:"-",dims:{w:85,h:115,d:115},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"MIT-THN220RH",maker:"三菱電機",model:"TH-N220RH",category:"thermal",rangeMin:65,rangeMax:220,protect:"1E",mountsOn:["N220"],coil:"-",dims:{w:110,h:150,d:140},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"MIT-THN400RH",maker:"三菱電機",model:"TH-N400RH",category:"thermal",rangeMin:85,rangeMax:400,protect:"1E",mountsOn:["N400"],coil:"-",dims:{w:130,h:180,d:160},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"MIT-THN600",maker:"三菱電機",model:"TH-N600",category:"thermal",rangeMin:200,rangeMax:800,protect:"1E",mountsOn:["N600"],coil:"-",dims:{w:150,h:210,d:185},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
 
-  {id:"FUJI-TR0N-9A",maker:"富士電機",model:"TR-0N",category:"thermal",ratedA:9,ratedRangeA:"7-11",coil:"-",dims:{w:45,h:53,d:85},holes:{w:35,h:39},capacityClass:"T-9A",mounting:"DINレール",aux:{a:1,b:1}},
-  {id:"FUJI-TR0N",maker:"富士電機",model:"TR-0N",category:"thermal",ratedA:11,ratedRangeA:"7-11",coil:"-",dims:{w:45,h:53,d:85},holes:{w:35,h:39},capacityClass:"T-11A",mounting:"DINレール",aux:{a:1,b:1}},
-  {id:"FUJI-TRN2",maker:"富士電機",model:"TR-N2",category:"thermal",ratedA:20,ratedRangeA:"13-20",coil:"-",dims:{w:45,h:60,d:85},holes:{w:35,h:44},capacityClass:"T-20A",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"FUJI-TRN2-22A",maker:"富士電機",model:"TR-N2",category:"thermal",ratedA:22,ratedRangeA:"18-26",coil:"-",dims:{w:45,h:60,d:85},holes:{w:35,h:44},capacityClass:"T-22A",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"FUJI-TRN6-29A",maker:"富士電機",model:"TR-N6",category:"thermal",ratedA:29,ratedRangeA:"24-34",coil:"-",dims:{w:55,h:66,d:91},holes:{w:42,h:48},capacityClass:"T-29A",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"FUJI-TRN6",maker:"富士電機",model:"TR-N6",category:"thermal",ratedA:36,ratedRangeA:"24-36",coil:"-",dims:{w:55,h:66,d:91},holes:{w:42,h:48},capacityClass:"T-36A",mounting:"直接取付",aux:{a:1,b:1}},
-  {id:"FUJI-TKN3H",maker:"富士電機",model:"TK-N3H",category:"thermal",ratedA:42,ratedRangeA:"34-50",coil:"-",dims:{w:63,h:100,d:95},holes:{w:48,h:73},capacityClass:"T-42A",mounting:"直接取付",aux:{a:1,b:1}},
+  /* --- 富士電機 サーマルリレー(2026-07 メーカー製品ページ照合済) ---
+     TR-0N: 単体定格 0.1〜13A / 取付可能な電磁接触器 SC-03,SC-0,SC-05
+     TR-N2: 単体定格 4〜54A  / 取付可能な電磁接触器 SC-N1,SC-N2
+     ※旧データでは1形名を電流値ごとに複数登録していたが、実際は1形名が広い整定範囲を
+       ヒータ定格の呼びでカバーする構造のため、形名単位に統合した。
+     ※外形寸法は未照合(dimVerified:false)。「単独設置用」は別形名(TR-0NH等)。 */
+  {id:"FUJI-TR0N",maker:"富士電機",model:"TR-0N",category:"thermal",rangeMin:0.1,rangeMax:13,protect:"1E",mountsOn:["SC-03","SC-0","SC-05"],coil:"-",dims:{w:45,h:53,d:85},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"FUJI-TR0NH",maker:"富士電機",model:"TR-0NH",category:"thermal",rangeMin:0.1,rangeMax:13,protect:"1E",mountsOn:[],standalone:"単独設置用",coil:"-",dims:{w:45,h:53,d:85},dimVerified:false,capacityClass:"T-1E",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"FUJI-TRN2",maker:"富士電機",model:"TR-N2",category:"thermal",rangeMin:4,rangeMax:54,protect:"1E",mountsOn:["SC-N1","SC-N2"],coil:"-",dims:{w:45,h:60,d:85},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"FUJI-TRN6",maker:"富士電機",model:"TR-N6",category:"thermal",rangeMin:24,rangeMax:65,protect:"1E",mountsOn:["SC-N4","SC-N5","SC-N6"],coil:"-",dims:{w:55,h:66,d:91},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"FUJI-TKN3H",maker:"富士電機",model:"TK-N3H",category:"thermal",rangeMin:34,rangeMax:50,protect:"2E",mountsOn:["SC-N3"],coil:"-",dims:{w:63,h:100,d:95},dimVerified:false,capacityClass:"T-2E",mounting:"接触器直付",aux:{a:1,b:1}},
 
-  {id:"OMR-J7TC18",maker:"オムロン",model:"J7TC-A-18",category:"thermal",ratedA:9,ratedRangeA:"0.12-18",coil:"-",dims:{w:45,h:52,d:78},holes:{w:35,h:39},capacityClass:"T-9A",mounting:"DINレール",aux:{a:1,b:1}},
-  {id:"OMR-J7TC26",maker:"オムロン",model:"J7TC-A-26",category:"thermal",ratedA:22,ratedRangeA:"0.2-26",coil:"-",dims:{w:45,h:52,d:79},holes:{w:35,h:39},capacityClass:"T-22A",mounting:"DINレール",aux:{a:1,b:1}},
-  {id:"OMR-J7TC50",maker:"オムロン",model:"J7TC-A-50",category:"thermal",ratedA:29,ratedRangeA:"24-50",coil:"-",dims:{w:57,h:55,d:82},holes:{w:44,h:42},capacityClass:"T-29A",mounting:"直接取付",aux:{a:1,b:1}},
+  {id:"OMR-J7TC18",maker:"オムロン",model:"J7TC-A-18",category:"thermal",rangeMin:0.12,rangeMax:18,protect:"1E",mountsOn:["J7KC-09","J7KC-18"],coil:"-",dims:{w:45,h:52,d:78},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"OMR-J7TC26",maker:"オムロン",model:"J7TC-A-26",category:"thermal",rangeMin:0.2,rangeMax:26,protect:"1E",mountsOn:["J7KC-25"],coil:"-",dims:{w:45,h:52,d:79},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
+  {id:"OMR-J7TC50",maker:"オムロン",model:"J7TC-A-50",category:"thermal",rangeMin:24,rangeMax:50,protect:"1E",mountsOn:["J7KC-32","J7KC-50"],coil:"-",dims:{w:57,h:55,d:82},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1}},
 
-  {id:"PANA-NTH12",maker:"パナソニック",model:"N-TH12",category:"thermal",ratedA:11,ratedRangeA:"7-11",coil:"-",dims:{w:46,h:56,d:77},holes:{w:36,h:41},capacityClass:"T-11A",mounting:"DINレール",aux:{a:1,b:1},discontinued:true,makerExited:true},
+  {id:"PANA-NTH12",maker:"パナソニック",model:"N-TH12",category:"thermal",rangeMin:7,rangeMax:11,protect:"1E",mountsOn:[],coil:"-",dims:{w:46,h:56,d:77},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},discontinued:true,makerExited:true},
 
   {id:"MIT-S2S",maker:"三菱電機",model:"S-2S",category:"contactor",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:{w:44,h:114,d:90},holes:{w:34,h:59},capacityClass:"C-2.2kW",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-SN10"},
   {id:"MIT-S2K",maker:"三菱電機",model:"S-2K",category:"contactor",ratedA:18,ratedKW:4,coil:"AC200V",dims:{w:54,h:121,d:90},holes:{w:39,h:64},capacityClass:"C-4kW",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-SN20"},
-  {id:"MIT-TH8",maker:"三菱電機",model:"TH-8",category:"thermal",ratedA:11,ratedRangeA:"7-11",coil:"-",dims:{w:44,h:53,d:90},holes:{w:34,h:38},capacityClass:"T-11A",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THN12"},
+  {id:"MIT-TH8",maker:"三菱電機",model:"TH-8",category:"thermal",rangeMin:7,rangeMax:11,protect:"1E",mountsOn:[],coil:"-",dims:{w:44,h:53,d:90},dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},discontinued:true,successorId:"MIT-THN12"},
 
   /* ===== 春日電機(現 パトライト) =====
      2017年10月1日にパトライトへ吸収合併され解散。旧春日電機製品の取扱説明書は
@@ -155,9 +163,78 @@ var ALL_DEVICES = [
   {id:"KSG-MUF25H",maker:"春日電機",model:"MUF25H",category:"starter",ratedA:50,ratedKW:11,coil:"AC200V",dims:null,holes:null,capacityClass:"C-11kW",mounting:"直接取付",aux:{a:2,b:2},discontinued:true,makerExited:true,unverified:true},
   {id:"KSG-MUF35H",maker:"春日電機",model:"MUF35H",category:"starter",ratedA:65,ratedKW:15,coil:"AC200V",dims:null,holes:null,capacityClass:"C-15kW",mounting:"直接取付",aux:{a:2,b:2},discontinued:true,makerExited:true,unverified:true},
 
-  {id:"KSG-HRD010B",maker:"春日電機",model:"HRD010B",category:"thermal",ratedA:11,ratedRangeA:"7-11",coil:"-",dims:null,holes:null,capacityClass:"T-11A",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true},
-  {id:"KSG-HRD018B",maker:"春日電機",model:"HRD018B",category:"thermal",ratedA:18,ratedRangeA:"1-18",coil:"-",dims:null,holes:null,capacityClass:"T-18A",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true},
-  {id:"KSG-HRE35DG",maker:"春日電機",model:"HRE35DG",category:"thermal",ratedA:36,ratedRangeA:"24-36",coil:"-",dims:null,holes:null,capacityClass:"T-36A",mounting:"直接取付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true}
+  {id:"KSG-HRD010B",maker:"春日電機",model:"HRD010B",category:"thermal",rangeMin:7,rangeMax:11,protect:"1E",mountsOn:[],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-HRD018B",maker:"春日電機",model:"HRD018B",category:"thermal",rangeMin:1,rangeMax:18,protect:"1E",mountsOn:[],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true},
+  {id:"KSG-HRE35DG",maker:"春日電機",model:"HRE35DG",category:"thermal",rangeMin:24,rangeMax:36,protect:"1E",mountsOn:[],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},discontinued:true,makerExited:true,unverified:true},
+
+  /* ===== 日立産機システム(2026-07 メーカーカタログ SI-531 2025.2 照合済) =====
+     形式記号: HC=8〜55AF標準形 / M=経済形 / H=65〜800AF / HS=50AF /
+     末尾T=1Eサーマル付、TK=2Eサーマル付、TKS=2ES(遅動形)付、R=可逆形、G=直流操作。
+     サーマル: TRC=HCシリーズ用(フレーム12/32/63)、TR=HS・Hシリーズ用(50B/80B/150B/250B/400B/600B)。
+     1E=過負荷保護、2E=過負荷+欠相保護、S=遅動形(トリップクラス20)。
+     specVerified:true = 定格使用電流・モータ容量をカタログ定格表と照合済。
+     ※外形寸法は同カタログ p34〜 の寸法図が未取得のため dimVerified:false。 */
+  {id:"HIT-HC8M",maker:"日立産機",model:"HC8M",category:"contactor",ratedA:9,ratedKW:1.5,coil:"AC200V",dims:null,holes:null,capacityClass:"C-1.5kW",mounting:"DINレール",aux:{a:1,b:0},unverified:true,specVerified:true,note:"経済形"},
+  {id:"HIT-HC10M",maker:"日立産機",model:"HC10M",category:"contactor",ratedA:12,ratedKW:2.2,coil:"AC200V",dims:null,holes:null,capacityClass:"C-2.2kW",mounting:"DINレール",aux:{a:1,b:0},unverified:true,specVerified:true,note:"経済形"},
+  {id:"HIT-HC8",maker:"日立産機",model:"HC8",category:"contactor",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:null,holes:null,capacityClass:"C-2.2kW",mounting:"DINレール",aux:{a:1,b:0},unverified:true,specVerified:true},
+  {id:"HIT-HC10",maker:"日立産機",model:"HC10",category:"contactor",ratedA:13,ratedKW:2.7,coil:"AC200V",dims:null,holes:null,capacityClass:"C-2.7kW",mounting:"DINレール",aux:{a:1,b:0},unverified:true,specVerified:true},
+  {id:"HIT-HC20",maker:"日立産機",model:"HC20",category:"contactor",ratedA:22,ratedKW:4.5,coil:"AC200V",dims:null,holes:null,capacityClass:"C-4.5kW",mounting:"DINレール",aux:{a:1,b:1},unverified:true,specVerified:true},
+  {id:"HIT-HC35",maker:"日立産機",model:"HC35",category:"contactor",ratedA:32,ratedKW:7.5,coil:"AC200V",dims:null,holes:null,capacityClass:"C-7.5kW",mounting:"DINレール",aux:{a:2,b:2},unverified:true,specVerified:true,note:"電気的耐久性100万回とすることで最大35Aまで使用可"},
+  {id:"HIT-HC55",maker:"日立産機",model:"HC55",category:"contactor",ratedA:55,ratedKW:11,coil:"AC200V",dims:null,holes:null,capacityClass:"C-11kW",mounting:"DINレール",aux:{a:2,b:2},unverified:true,specVerified:true},
+  {id:"HIT-HS50",maker:"日立産機",model:"HS50",category:"contactor",ratedA:50,ratedKW:11,coil:"AC200V",dims:null,holes:null,capacityClass:"C-11kW",mounting:"直接取付",aux:{a:2,b:2},unverified:true,specVerified:true},
+  {id:"HIT-H65C",maker:"日立産機",model:"H65C",category:"contactor",ratedA:65,ratedKW:15,coil:"AC200V",dims:null,holes:null,capacityClass:"C-15kW",mounting:"直接取付",aux:{a:2,b:2},unverified:true,specVerified:true},
+  {id:"HIT-H80C",maker:"日立産機",model:"H80C",category:"contactor",ratedA:80,ratedKW:19,coil:"AC200V",dims:null,holes:null,capacityClass:"C-19kW",mounting:"直接取付",aux:{a:2,b:2},unverified:true,specVerified:true},
+  {id:"HIT-H100C",maker:"日立産機",model:"H100C",category:"contactor",ratedA:100,ratedKW:25,coil:"AC200V",dims:null,holes:null,capacityClass:"C-25kW",mounting:"直接取付",aux:{a:2,b:2},unverified:true,specVerified:true},
+  {id:"HIT-H125C",maker:"日立産機",model:"H125C",category:"contactor",ratedA:125,ratedKW:30,coil:"AC200V",dims:null,holes:null,capacityClass:"C-30kW",mounting:"直接取付",aux:{a:2,b:2},unverified:true,specVerified:true},
+  {id:"HIT-H150C",maker:"日立産機",model:"H150C",category:"contactor",ratedA:150,ratedKW:37,coil:"AC200V",dims:null,holes:null,capacityClass:"C-37kW",mounting:"直接取付",aux:{a:2,b:2},unverified:true,specVerified:true},
+  {id:"HIT-H200C",maker:"日立産機",model:"H200C",category:"contactor",ratedA:180,ratedKW:45,coil:"AC200V",dims:null,holes:null,capacityClass:"C-45kW",mounting:"直接取付",aux:{a:2,b:2},unverified:true,specVerified:true},
+  {id:"HIT-H250C",maker:"日立産機",model:"H250C",category:"contactor",ratedA:240,ratedKW:60,coil:"AC200V",dims:null,holes:null,capacityClass:"C-60kW",mounting:"直接取付",aux:{a:3,b:3},unverified:true,specVerified:true},
+  {id:"HIT-H300C",maker:"日立産機",model:"H300C",category:"contactor",ratedA:300,ratedKW:75,coil:"AC200V",dims:null,holes:null,capacityClass:"C-75kW",mounting:"直接取付",aux:{a:3,b:3},unverified:true,specVerified:true},
+  {id:"HIT-H400C",maker:"日立産機",model:"H400C",category:"contactor",ratedA:400,ratedKW:110,coil:"AC200V",dims:null,holes:null,capacityClass:"C-110kW",mounting:"直接取付",aux:{a:3,b:3},unverified:true,specVerified:true},
+  {id:"HIT-H600C",maker:"日立産機",model:"H600C",category:"contactor",ratedA:600,ratedKW:150,coil:"AC200V",dims:null,holes:null,capacityClass:"C-150kW",mounting:"直接取付",aux:{a:4,b:4},unverified:true,specVerified:true},
+  {id:"HIT-H800C",maker:"日立産機",model:"H800C",category:"contactor",ratedA:800,ratedKW:200,coil:"AC200V",dims:null,holes:null,capacityClass:"C-200kW",mounting:"直接取付",aux:{a:4,b:4},unverified:true,specVerified:true,note:"800AはAC-2定格。AC-3のカゴ形モータ容量表記なし"},
+
+  {id:"HIT-HC10MT",maker:"日立産機",model:"HC10M-T",category:"starter",ratedA:12,ratedKW:2.2,coil:"AC200V",dims:null,holes:null,capacityClass:"C-2.2kW",mounting:"DINレール",aux:{a:1,b:0},unverified:true,specVerified:true,note:"付属サーマル TRC12M-1E"},
+  {id:"HIT-HC10T",maker:"日立産機",model:"HC10-T",category:"starter",ratedA:13,ratedKW:2.7,coil:"AC200V",dims:null,holes:null,capacityClass:"C-2.7kW",mounting:"DINレール",aux:{a:1,b:0},unverified:true,specVerified:true,note:"付属サーマル TRC12-1E"},
+  {id:"HIT-HC20T",maker:"日立産機",model:"HC20-T",category:"starter",ratedA:22,ratedKW:4.5,coil:"AC200V",dims:null,holes:null,capacityClass:"C-4.5kW",mounting:"DINレール",aux:{a:1,b:1},unverified:true,specVerified:true,note:"付属サーマル TRC32-1E"},
+  {id:"HIT-HC20TK",maker:"日立産機",model:"HC20-TK",category:"starter",ratedA:22,ratedKW:4.5,coil:"AC200V",dims:null,holes:null,capacityClass:"C-4.5kW-KP",mounting:"DINレール",aux:{a:1,b:1},unverified:true,specVerified:true,note:"付属サーマル TRC32-2E(欠相保護)"},
+  {id:"HIT-HC35T",maker:"日立産機",model:"HC35-T",category:"starter",ratedA:32,ratedKW:7.5,coil:"AC200V",dims:null,holes:null,capacityClass:"C-7.5kW",mounting:"DINレール",aux:{a:2,b:2},unverified:true,specVerified:true,note:"付属サーマル TRC32-1E"},
+  {id:"HIT-HC55T",maker:"日立産機",model:"HC55-T",category:"starter",ratedA:55,ratedKW:11,coil:"AC200V",dims:null,holes:null,capacityClass:"C-11kW",mounting:"DINレール",aux:{a:2,b:2},unverified:true,specVerified:true,note:"付属サーマル TRC63-1E"},
+  {id:"HIT-HS50T",maker:"日立産機",model:"HS50-T",category:"starter",ratedA:50,ratedKW:11,coil:"AC200V",dims:null,holes:null,capacityClass:"C-11kW",mounting:"直接取付",aux:{a:2,b:2},unverified:true,specVerified:true,note:"付属サーマル TR50B-1E"},
+  {id:"HIT-H65CT",maker:"日立産機",model:"H65C-T",category:"starter",ratedA:65,ratedKW:15,coil:"AC200V",dims:null,holes:null,capacityClass:"C-15kW",mounting:"直接取付",aux:{a:2,b:2},unverified:true,specVerified:true,note:"付属サーマル TR80B-1E"},
+
+  /* 日立サーマル: 整定範囲はカタログ p56/p58(機種と標準仕様・適用表)が未取得のため
+     フレーム値からの推定(rangeVerified:false)。形名と適用接触器は定格表と照合済。 */
+  {id:"HIT-TRC12M",maker:"日立産機",model:"TRC12M-1E",category:"thermal",rangeMin:0.1,rangeMax:12,rangeVerified:false,protect:"1E",mountsOn:["HC8M","HC10M"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"HIT-TRC12",maker:"日立産機",model:"TRC12-1E",category:"thermal",rangeMin:0.1,rangeMax:12,rangeVerified:false,protect:"1E",mountsOn:["HC8","HC10"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"HIT-TRC12-2E",maker:"日立産機",model:"TRC12-2E",category:"thermal",rangeMin:0.1,rangeMax:12,rangeVerified:false,protect:"2E",mountsOn:["HC8","HC10"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-2E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"HIT-TRC32",maker:"日立産機",model:"TRC32-1E",category:"thermal",rangeMin:9,rangeMax:32,rangeVerified:false,protect:"1E",mountsOn:["HC20","HC35"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"HIT-TRC32-2E",maker:"日立産機",model:"TRC32-2E",category:"thermal",rangeMin:9,rangeMax:32,rangeVerified:false,protect:"2E",mountsOn:["HC20","HC35"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-2E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"HIT-TRC63",maker:"日立産機",model:"TRC63-1E",category:"thermal",rangeMin:28,rangeMax:63,rangeVerified:false,protect:"1E",mountsOn:["HC55"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"HIT-TRC63-2E",maker:"日立産機",model:"TRC63-2E",category:"thermal",rangeMin:28,rangeMax:63,rangeVerified:false,protect:"2E",mountsOn:["HC55"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-2E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"HIT-TR50B",maker:"日立産機",model:"TR50B-1E",category:"thermal",rangeMin:12,rangeMax:50,rangeVerified:false,protect:"1E",mountsOn:["HS50"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"HIT-TR80B",maker:"日立産機",model:"TR80B-1E",category:"thermal",rangeMin:34,rangeMax:80,rangeVerified:false,protect:"1E",mountsOn:["H65C","H80C"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"HIT-TR150B",maker:"日立産機",model:"TR150B-1E",category:"thermal",rangeMin:65,rangeMax:150,rangeVerified:false,protect:"1E",mountsOn:["H100C","H125C","H150C"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"HIT-TR250B",maker:"日立産機",model:"TR250B-1E",category:"thermal",rangeMin:130,rangeMax:250,rangeVerified:false,protect:"1E",mountsOn:["H200C","H250C"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true,note:"CTとTR20B-1Eを組合せたセット品"},
+  {id:"HIT-TR400B",maker:"日立産機",model:"TR400B-1E",category:"thermal",rangeMin:200,rangeMax:400,rangeVerified:false,protect:"1E",mountsOn:["H300C","H400C"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true,note:"CTとTR20B-1Eを組合せたセット品"},
+  {id:"HIT-TR600B",maker:"日立産機",model:"TR600B-1E",category:"thermal",rangeMin:320,rangeMax:600,rangeVerified:false,protect:"1E",mountsOn:["H600C"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true,note:"CTとTR20B-1Eを組合せたセット品"},
+  {id:"HIT-TR20B",maker:"日立産機",model:"TR20B-1E",category:"thermal",rangeMin:0.1,rangeMax:20,rangeVerified:false,protect:"1E",mountsOn:["HS20"],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},discontinued:true,unverified:true,note:"250B〜600BではCTと組合せて使用"},
+
+  /* ===== 戸上電機製作所 =====
+     電磁接触器: PAK-□J形(6JC〜50J、6JC〜50JはDINレール対応)。
+     サーマル: T-□形(T-21C・T-35C ほか)、大容量はTJ-220・TJ-400N・T-400・T-600(CT併用)。
+     ※ 定格電流はフレーム値。外形寸法・取付穴は未入手のため unverified。 */
+  {id:"TGM-PAK6JC",maker:"戸上電機",model:"PAK-6JC",category:"contactor",ratedA:11,ratedKW:2.2,coil:"AC200V",dims:null,holes:null,capacityClass:"C-2.2kW",mounting:"DINレール",aux:{a:1,b:1},unverified:true},
+  {id:"TGM-PAK12J",maker:"戸上電機",model:"PAK-12J",category:"contactor",ratedA:18,ratedKW:3.7,coil:"AC200V",dims:null,holes:null,capacityClass:"C-3.7kW",mounting:"DINレール",aux:{a:1,b:1},unverified:true},
+  {id:"TGM-PAK20J",maker:"戸上電機",model:"PAK-20J",category:"contactor",ratedA:18,ratedKW:4,coil:"AC200V",dims:null,holes:null,capacityClass:"C-4kW",mounting:"DINレール",aux:{a:1,b:1},unverified:true},
+  {id:"TGM-PAK25J",maker:"戸上電機",model:"PAK-25J",category:"contactor",ratedA:26,ratedKW:5.5,coil:"AC200V",dims:null,holes:null,capacityClass:"C-5.5kW",mounting:"DINレール",aux:{a:1,b:1},unverified:true},
+  {id:"TGM-PAK35J",maker:"戸上電機",model:"PAK-35J",category:"contactor",ratedA:34,ratedKW:7.5,coil:"AC200V",dims:null,holes:null,capacityClass:"C-7.5kW",mounting:"DINレール",aux:{a:2,b:2},unverified:true},
+  {id:"TGM-PAK50J",maker:"戸上電機",model:"PAK-50J",category:"contactor",ratedA:50,ratedKW:11,coil:"AC200V",dims:null,holes:null,capacityClass:"C-11kW",mounting:"DINレール",aux:{a:2,b:2},unverified:true},
+
+  {id:"TGM-T21C",maker:"戸上電機",model:"T-21C",category:"thermal",rangeMin:0.1,rangeMax:20,protect:"1E",mountsOn:[],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"TGM-T35C",maker:"戸上電機",model:"T-35C",category:"thermal",rangeMin:12,rangeMax:36,protect:"1E",mountsOn:[],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"TGM-TJ220",maker:"戸上電機",model:"TJ-220",category:"thermal",rangeMin:65,rangeMax:220,protect:"1E",mountsOn:[],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true},
+  {id:"TGM-TJ400N",maker:"戸上電機",model:"TJ-400N",category:"thermal",rangeMin:85,rangeMax:400,protect:"1E",mountsOn:[],coil:"-",dims:null,dimVerified:false,capacityClass:"T-1E",mounting:"接触器直付",aux:{a:1,b:1},unverified:true}
 ];
 
 var MAKERS = ALL_DEVICES.map(function(d){return d.maker;}).filter(function(v,i,a){return a.indexOf(v)===i;});
@@ -175,18 +252,55 @@ var MAKER_REFERENCE = [
   {maker:"オムロン",status:"現行",contactor:"J7KN / J7KC(新・45mm幅統一・ミラーコンタクト対応)",starter:"J7KC + J7TC 組合せ",thermal:"J7TC / J7TKN / J7TL",note:"コネクタ形J7L、高感度形J7AN。J7KCはセーフティ対応。"},
   {maker:"東芝",status:"現行",contactor:"Cシリーズ(C-11J〜)",starter:"—",thermal:"—",note:"東芝産業機器システム扱い。"},
   {maker:"パナソニック",status:"撤退",contactor:"(旧 SN / SKシリーズ)",starter:"—",thermal:"(旧 N-THシリーズ)",note:"2010年3月末に本分野撤退。新品入手不可。三菱・富士への切替が案内されている。"},
+  {maker:"日立産機システム",status:"現行",contactor:"HCシリーズ(8〜55AF標準形) / HCM(経済形) / Hシリーズ(65〜800AF) / HS形(旧)",starter:"HC□-T(1Eサーマル付) / HC□-TK(2Eサーマル付)",thermal:"TRCシリーズ(HC用) / TRシリーズ(HS・H用)",note:"形式記号: 末尾T=1Eサーマル付、TK=2Eサーマル付、R=可逆形、G=直流操作、M=経済形。サーマルは1E=過負荷保護、2E=過負荷+欠相保護、S=遅動形(クラス20、IE3モータ向け)。製作範囲8〜800AF。"},
+  {maker:"戸上電機製作所",status:"現行",contactor:"PAK-□J形(PAK-6JC〜PAK-50J)",starter:"標準形・経済形電磁開閉器",thermal:"T-□形(T-21C・T-35C ほか) / 大容量はTJ-220・TJ-400N・T-400・T-600",note:"6JC〜50JはIEC・DIN 35mm幅レール対応。T-400・T-600はT-21CとCTのセット構成、TJ-220・TJ-400NはTJ-35CとCTのセット構成。欠相保護形は8A以上で製作可。"},
   {maker:"春日電機",status:"解散",contactor:"MUD5 / MUF7 / MUF10-4 / MUF10-5 / MUF18 / MUF20 / MUF25 / MUF35(ケース付は末尾N)",starter:"MUD5H・MUF7H・MUF20H ほか(HB=ケースなし、H=ケース付)",thermal:"HRD010B / HRD018B / HRE35DG",note:"2017年10月1日に因幡電機産業傘下のパトライトへ吸収合併され解散。旧春日電機製品の取扱説明書はパトライトのサイト(サービス・サポート→ダウンロード)から入手可。可逆形はHMUF10/HMU12/HMU18/RMUF25/RMUF35。※当アプリの寸法データは未登録。"},
   {maker:"IDEC(和泉電気)",status:"対象外",contactor:"自社シリーズなし",starter:"—",thermal:"—",note:"操作スイッチ・表示灯・端子台・安全機器が主力で、電磁接触器の自社シリーズは持たない。旧社名は和泉電気(1947年設立、1982年にIDECへ商標変更)。該当型式があれば銘板を確認のうえ追加検討。"},
   {maker:"その他",status:"—",contactor:"ケーイーシー(KEC 03〜N16形) / Schneider(TeSys) ほか",starter:"—",thermal:"—",note:"海外系はTeSys(Schneider)、Siemens SIRIUSなど。"}
 ];
 
 /* ================= ロジック ================= */
+// サーマルリレーは「整定電流調整範囲の重なり」と「保護方式(1E/2E)」で互換判定する。
+// 1形名が広い調整範囲をヒータ呼びでカバーする構造のため、単一の容量クラスでは判定できない。
+function rangeOverlap(a,b){
+  if(a.rangeMin==null||b.rangeMin==null)return 0;
+  var lo=Math.max(a.rangeMin,b.rangeMin), hi=Math.min(a.rangeMax,b.rangeMax);
+  if(hi<=lo)return 0;
+  var span=Math.min(a.rangeMax-a.rangeMin, b.rangeMax-b.rangeMin);
+  return span>0?(hi-lo)/span:0;
+}
+function isCompatibleCandidate(a,m){
+  if(a.category!==m.category||a.id===m.id)return false;
+  if(a.id===m.successorId)return true;
+  if(m.category==="thermal"){
+    // 保護方式(1E/2E)が異なるものも候補として表示する。
+    // ただし2E(欠相保護付き)を1E(過負荷のみ)で置換すると欠相保護が失われるため、
+    // 結果側で保護方式の差を必ず明示し、並び順でも同一方式を優先する。
+    return rangeOverlap(a,m)>=0.3;
+  }
+  // 電磁接触器・開閉器はメーカーごとに容量区分の刻みが異なる(例:日立HC10は2.7kW/13A、
+  // 三菱S-N10は2.2kW/11A)。容量クラス名の完全一致では横断比較できないため、
+  // 定格使用電流(AC-3 200V級)が±25%以内に収まるものを候補とする。
+  if(a.ratedA==null||m.ratedA==null)return false;
+  if(m.category==="starter"){
+    // 欠相保護付き(KP/TK)同士でのみ比較する
+    var akp=/-KP$/.test(a.capacityClass||""), mkp=/-KP$/.test(m.capacityClass||"");
+    if(akp!==mkp)return false;
+  }
+  return Math.abs(a.ratedA-m.ratedA)<=m.ratedA*0.25;
+}
+
 function dimDiff(a,b){if(!a||!b)return null;return Math.abs(a.w-b.w)+Math.abs(a.h-b.h)+Math.abs(a.d-b.d);}
 function capacityDisplay(d){
   var u=(CATEGORY_META[d.category]||{}).unit||"A";
-  if(d.category==="thermal"&&d.ratedRangeA)return d.ratedRangeA+u;
-  return d.ratedA+u;
+  if(d.category==="thermal"){
+    if(d.rangeMin!=null)return d.rangeMin+"-"+d.rangeMax+u;
+    if(d.ratedRangeA)return d.ratedRangeA+u;
+  }
+  return (d.ratedA!=null?d.ratedA:"-")+u;
 }
+// サーマルの保護方式ラベル(1E=過負荷保護、2E=過負荷+欠相保護)
+function protectLabel(p){return p==="2E"?"2E 過負荷+欠相":(p==="1E"?"1E 過負荷":(p||"-"));}
 function auxLabel(x){return x?(x.a+"a"+x.b+"b"):"-";}
 function findDevice(id){for(var i=0;i<ALL_DEVICES.length;i++){if(ALL_DEVICES[i].id===id)return ALL_DEVICES[i];}return null;}
 function successorChain(d){
@@ -198,20 +312,50 @@ function computeCompatibles(m,mountInput){
   if(!m)return [];
   var actualMounting=mountInput||m.mounting;
   var arr=ALL_DEVICES.filter(function(a){
-    return a.category===m.category&&a.id!==m.id&&(a.capacityClass===m.capacityClass||a.id===m.successorId);
+    return isCompatibleCandidate(a,m);
   }).map(function(a){
-    var unverified=!!(a.unverified||m.unverified)||!a.dims||!m.dims;
+    var unverified=!!(a.unverified||m.unverified)||!a.dims||!m.dims||a.dimVerified===false||m.dimVerified===false;
     var mountingMatch=a.mounting===actualMounting;
     var auxMatch=!m.aux||(a.aux&&a.aux.a===m.aux.a&&a.aux.b===m.aux.b);
     // 寸法データ未検証の場合は穴の一致判定を行わない(誤った✓表示を防ぐ)
     var holeMatch=unverified?null:(!m.holes||(a.holes&&a.holes.w===m.holes.w&&a.holes.h===m.holes.h));
     var isSuccessor=a.id===m.successorId;
-    return Object.assign({},a,{diff:dimDiff(a.dims,m.dims),unverifiedDims:unverified,mountingMatch:mountingMatch,auxMatch:auxMatch,holeMatch:holeMatch,isSuccessor:isSuccessor});
+    // サーマルリレーの取付互換判定
+    // 整定範囲が同等でも、サーマルは電磁接触器に直付けする構造のため、
+    // 取付インタフェース(取付穴ピッチ・爪位置・端子配置)はメーカー/シリーズごとに異なる。
+    // 適用接触器フレームが共通しているかで、既設接触器を流用できるかを判定する。
+    var fitLevel=null, protectDiff=null;
+    if(m.category==="thermal"){
+      // 保護方式の差分。2E→1E は欠相保護が失われる「機能低下」なので最も強く警告する。
+      if(a.protect===m.protect)protectDiff={level:"same",label:"保護方式 同等("+a.protect+")"};
+      else if(m.protect==="2E"&&a.protect==="1E")protectDiff={level:"down",label:"欠相保護なし・保護機能が低下"};
+      else if(m.protect==="1E"&&a.protect==="2E")protectDiff={level:"up",label:"欠相保護付き・既設より保護強化"};
+      else protectDiff={level:"diff",label:"保護方式相違("+m.protect+"→"+a.protect+")"};
+      var af=a.mountsOn||[], mf=m.mountsOn||[];
+      var shared=af.filter(function(f){return mf.indexOf(f)>=0;});
+      if(shared.length)fitLevel={level:"ok",label:"既設接触器に取付可",frames:shared};
+      else if(a.maker===m.maker)fitLevel={level:"warn",label:"同一メーカーだが適用フレーム相違"};
+      else fitLevel={level:"ng",label:"取付穴ピッチ相違・接触器も交換要"};
+    }
+    return Object.assign({},a,{diff:dimDiff(a.dims,m.dims),unverifiedDims:unverified,mountingMatch:mountingMatch,auxMatch:auxMatch,holeMatch:holeMatch,isSuccessor:isSuccessor,fitLevel:fitLevel,protectDiff:protectDiff});
   });
   arr.sort(function(a,b){
     if(a.isSuccessor!==b.isSuccessor)return a.isSuccessor?-1:1;
-    var ca=Math.abs(a.ratedA-m.ratedA),cb=Math.abs(b.ratedA-m.ratedA);
-    if(ca!==cb)return ca-cb;
+    if(m.category==="thermal"){
+      // 保護方式が同等のものを最優先し、欠相保護が失われる候補は最後に回す
+      var pa={same:0,up:1,diff:2,down:3}[(a.protectDiff||{}).level]||0;
+      var pb={same:0,up:1,diff:2,down:3}[(b.protectDiff||{}).level]||0;
+      if(pa!==pb)return pa-pb;
+      // 既設接触器をそのまま使える候補(取付互換あり)を優先
+      var ra={ok:0,warn:1,ng:2}[(a.fitLevel||{}).level]||0;
+      var rb={ok:0,warn:1,ng:2}[(b.fitLevel||{}).level]||0;
+      if(ra!==rb)return ra-rb;
+      var oa=rangeOverlap(a,m),ob=rangeOverlap(b,m);
+      if(oa!==ob)return ob-oa;
+    }else{
+      var ca=Math.abs(a.ratedA-m.ratedA),cb=Math.abs(b.ratedA-m.ratedA);
+      if(ca!==cb)return ca-cb;
+    }
     if(a.mountingMatch!==b.mountingMatch)return a.mountingMatch?-1:1;
     if(a.auxMatch!==b.auxMatch)return a.auxMatch?-1:1;
     // 寸法未検証は判定材料が少ないため、検証済み候補の後ろに回す
@@ -253,6 +397,22 @@ function dimDiagram(dims,holes){
   if(holes)out+='<div class="mono" style="font-size:13px;color:var(--sub)"><span style="color:var(--green)">● 取付穴ピッチ</span><br><span style="color:var(--ink);font-size:16px">'+holes.w+' × '+holes.h+'mm</span></div>';
   out+='</div>';
   return out;
+}
+// サーマルの取付互換バッジ(整定範囲が合っていても取付できるとは限らない点を明示する)
+function fitBadge(f){
+  var c={ok:["rgba(76,175,125,0.12)","#4CAF7D","#3A6B52","✓ "],
+         warn:["rgba(232,163,61,0.12)","#E8A33D","#7A5A2E","△ "],
+         ng:["rgba(232,163,61,0.12)","#E8A33D","#7A5A2E","! "]}[f.level];
+  var txt=f.label+(f.frames&&f.frames.length?("("+f.frames.join("/")+")"):"");
+  return '<span class="mono" style="font-size:11px;padding:2px 8px;border-radius:4px;background:'+c[0]+';color:'+c[1]+';border:1px solid '+c[2]+'">'+c[3]+esc(txt)+'</span>';
+}
+// 保護方式の差分バッジ。欠相保護の欠落は安全に直結するため最も目立つ表示にする。
+function protectBadge(p){
+  var c={same:["rgba(76,175,125,0.12)","#4CAF7D","#3A6B52","✓ "],
+         up:["rgba(76,175,125,0.12)","#4CAF7D","#3A6B52","+ "],
+         diff:["rgba(232,163,61,0.12)","#E8A33D","#7A5A2E","! "],
+         down:["rgba(214,90,70,0.15)","#E8836B","#8C4436","⚠ "]}[p.level];
+  return '<span class="mono" style="font-size:11px;padding:2px 8px;border-radius:4px;background:'+c[0]+';color:'+c[1]+';border:1px solid '+c[2]+';font-weight:'+(p.level==="down"?"700":"400")+'">'+c[3]+esc(p.label)+'</span>';
 }
 function badge(ok,label){
   return '<span class="mono" style="font-size:11px;padding:2px 8px;border-radius:4px;background:'+(ok?"rgba(76,175,125,0.12)":"rgba(232,163,61,0.12)")+';color:'+(ok?"#4CAF7D":"#E8A33D")+';border:1px solid '+(ok?"#3A6B52":"#7A5A2E")+'">'+(ok?"✓ ":"△ ")+esc(label)+'</span>';
@@ -378,6 +538,11 @@ function renderConfirm(){
   }
   h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">';
   h+=specBox(meta.primaryLabel||"定格電流",capacityDisplay(m));
+  if(m.category==="thermal"){
+    h+=specBox("保護方式",protectLabel(m.protect));
+    if(m.mountsOn&&m.mountsOn.length)h+=specBox("適用接触器フレーム",m.mountsOn.join(" / "));
+    if(m.standalone)h+=specBox("単体取付",m.standalone);
+  }
   if(m.ratedKW)h+=specBox("適用モータ容量",m.ratedKW+" kW");
   if(m.coil&&m.coil!=="-")h+=specBox("操作コイル",m.coil);
   h+=specBox("取付方式(入力値)",state.mountInput||m.mounting);
@@ -386,7 +551,10 @@ function renderConfirm(){
   if(state.mountInput&&state.mountInput!==m.mounting){
     h+='<div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--amber);margin-bottom:20px;margin-top:-8px">'+IC.warn+'<div>'+esc(m.model)+' のメーカー標準取付方式は「'+esc(m.mounting)+'」です。入力された「'+esc(state.mountInput)+'」はオプション金具等での変更、または品番違いの可能性があります。現物を再確認してください。</div></div>';
   }
-  if(!m.dims||m.unverified){
+  if(m.category==="thermal"&&m.mounting==="接触器直付"){
+    h+='<div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;background:rgba(232,163,61,0.08);border:1px solid #7A5A2E;border-radius:6px;padding:12px;margin-bottom:12px"><span class="amber">'+IC.warn+'</span><div>このサーマルリレーは<span class="amber" style="font-weight:700">電磁接触器に直付けする構造</span>で、盤への取付穴を単体では持ちません。互換品を選ぶ際は、組合せる電磁接触器のフレームが合うかが決め手になります'+(m.standalone?('(単体で取付ける場合は '+esc(m.standalone)+' が必要)'):'')+'。</div></div>';
+  }
+  if(!m.dims||m.unverified||m.dimVerified===false){
     h+='<div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;background:rgba(232,163,61,0.08);border:1px solid #7A5A2E;border-radius:6px;padding:12px"><span class="amber">'+IC.warn+'</span><div><span class="amber" style="font-weight:700">寸法データ未登録</span>&nbsp;この型式は外形寸法・取付穴ピッチが未入手のため、寸法図と穴の一致判定は表示しません。互換候補は容量クラスでの一致のみで抽出しています。取付可否は必ずメーカー外形図と現物で確認してください。</div></div>';
   }else{
     h+='<div style="font-size:12px;color:var(--sub);margin-bottom:8px">'+(m.holes?"外形寸法・取付穴寸法(mm)":"外形寸法(mm)")+'</div>'+dimDiagram(m.dims,m.holes);
@@ -404,6 +572,24 @@ function renderResult(){
   var list=computeCompatibles(m,state.mountInput);
   var h='<div class="wrap"><button data-act="reset" style="display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--sub);font-size:12px;padding:0">'+IC.back+' 最初から検索</button>';
   h+='<div style="margin:12px 0 16px;font-size:13px;color:var(--sub)"><span class="mono green">'+esc(m.model)+'</span>('+esc(meta.primaryLabel||"定格")+' '+esc(capacityDisplay(m))+' / '+esc(state.mountInput||m.mounting)+(m.aux?(" / "+auxLabel(m.aux)):"")+')の互換品候補です。主要スペック → 取付方式 → 補助接点構成 → 取付穴寸法 → 外形寸法差 の順で並べています。</div>';
+  if(m.category==="thermal"){
+    h+='<div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;background:rgba(232,163,61,0.08);border:1px solid #7A5A2E;border-radius:6px;padding:12px;margin-bottom:14px"><span class="amber">'+IC.warn+'</span><div style="line-height:1.7">'
+      +'<span class="amber" style="font-weight:700">整定範囲が同等でも、そのまま取付けられるとは限りません。</span><br>'
+      +'サーマルリレーは電磁接触器に直付けする構造で、取付穴ピッチ・爪位置・端子配置がメーカーおよびシリーズごとに異なります。'
+      +'下記は整定電流調整範囲と保護方式で絞り込んだ候補です。各候補のバッジで取付互換を確認してください。<br>'
+      +'<span class="green mono">✓ 既設接触器に取付可</span> … 適用フレームが共通。サーマル単体の交換で対応できます。<br>'
+      +'<span class="amber mono">! 取付穴ピッチ相違</span> … 電磁接触器側も併せて交換が必要です。'
+      +'</div></div>';
+    h+='<div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;background:rgba(214,90,70,0.10);border:1px solid #8C4436;border-radius:6px;padding:12px;margin-bottom:14px"><span style="color:#E8836B">'+IC.warn+'</span><div style="line-height:1.7">'
+      +'<span style="color:#E8836B;font-weight:700">保護方式(1E / 2E)が異なる候補も表示しています。</span><br>'
+      +'1E=過負荷保護のみ、2E=過負荷+欠相保護です。既設が2Eの場合に1E品へ置換すると、'
+      +'<span style="color:#E8836B">欠相(単相運転)時のモータ焼損保護が失われます</span>。'
+      +'三相負荷では欠相保護の有無が事故に直結するため、必ず既設の保護方式と設備要件を確認してください。<br>'
+      +'<span class="green mono">✓ 保護方式 同等</span> … 既設と同じ保護方式です。<br>'
+      +'<span class="green mono">+ 欠相保護付き</span> … 既設(1E)より保護が強化されます。結線と仕様の確認は必要です。<br>'
+      +'<span class="mono" style="color:#E8836B">⚠ 欠相保護なし・保護機能が低下</span> … 原則として代替不可。採用する場合は保護方式の見直しが必要です。'
+      +'</div></div>';
+  }
   if(list.length===0)h+='<div class="panel" style="padding:20px;border-radius:8px;font-size:13px;color:var(--sub)">サンプルデータ内に互換候補が登録されていません。</div>';
   h+='<div style="display:flex;flex-direction:column;gap:10px">';
   list.forEach(function(c,idx){
@@ -414,11 +600,13 @@ function renderResult(){
       +'<div style="font-size:12px;color:var(--sub);margin-top:4px">'+esc(meta.primaryLabel||"定格")+' <span class="mono">'+esc(capacityDisplay(c))+'</span>'+(c.ratedKW?(' / <span class="mono">'+c.ratedKW+'kW</span>'):'')
       +(c.dims?('&nbsp;&nbsp;・&nbsp;&nbsp;外形 <span class="mono">'+c.dims.w+'×'+c.dims.h+'×'+c.dims.d+'mm</span>'):'&nbsp;&nbsp;・&nbsp;&nbsp;<span class="amber">外形寸法 未登録</span>')
       +(c.dims&&c.holes?('&nbsp;&nbsp;・&nbsp;&nbsp;取付穴 <span class="mono">'+c.holes.w+'×'+c.holes.h+'mm</span>'):'')+'</div>'
+      +(c.category==="thermal"&&c.mountsOn&&c.mountsOn.length?('<div style="font-size:12px;color:var(--sub);margin-top:2px">適用接触器 <span class="mono">'+esc(c.mountsOn.join(" / "))+'</span>'+(c.standalone?(' ・単体取付 <span class="mono">'+esc(c.standalone)+'</span>'):'')+'</div>'):'')
       +'<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">'+badge(c.mountingMatch,c.mounting)+(m.aux?badge(c.auxMatch,auxLabel(c.aux)):'')
-      +(c.unverifiedDims?'<span class="mono" style="font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(232,163,61,0.12);color:#E8A33D;border:1px solid #7A5A2E">? 寸法要検証</span>':(m.holes?badge(c.holeMatch,c.holes?("穴 "+c.holes.w+"×"+c.holes.h+"mm"):"穴 -"):''))+'</div>'
+      +(c.protectDiff?protectBadge(c.protectDiff):'')
+      +(c.fitLevel?fitBadge(c.fitLevel):(c.unverifiedDims?'<span class="mono" style="font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(232,163,61,0.12);color:#E8A33D;border:1px solid #7A5A2E">? 寸法要検証</span>':(m.holes?badge(c.holeMatch,c.holes?("穴 "+c.holes.w+"×"+c.holes.h+"mm"):"穴 -"):'')))+'</div>'
       +'</div><div style="text-align:right;flex-shrink:0;padding-left:12px"><div style="font-size:11px;color:var(--sub)">寸法差分</div><div class="mono" style="font-size:14px;color:'+(c.diff===null?"#8A99A8":(c.diff===0?"#4CAF7D":"#E8A33D"))+'">'+(c.diff===null?"—":(c.diff===0?"完全一致":("Σ"+c.diff+"mm")))+'</div></div></div></div>';
   });
-  h+='</div><div style="margin-top:20px;font-size:11px;color:var(--dim);line-height:1.6"><span style="color:var(--sub)">※ 本プロトタイプの数値はサンプル・推定を含みます。△表示は取付方式・補助接点構成・取付穴寸法のいずれかが既設品と異なることを示します。サーマルは標準形/KP形(欠相保護)を別クラスとして区別しています。実際の選定・発注前には必ずメーカー最新カタログおよび現物銘板・取扱説明書で確認してください。</span></div></div>';
+  h+='</div><div style="margin-top:20px;font-size:11px;color:var(--dim);line-height:1.6"><span style="color:var(--sub)">※ サーマルリレーの互換候補は「整定電流調整範囲の重なり」で抽出し、保護方式(1E/2E)が異なるものも表示したうえでバッジで差分を明示しています。取付穴ピッチ・取付インタフェースの一致は保証しません。本プロトタイプの数値はサンプル・推定を含みます。△表示は取付方式・補助接点構成・取付穴寸法のいずれかが既設品と異なることを示します。サーマルは標準形/KP形(欠相保護)を別クラスとして区別しています。実際の選定・発注前には必ずメーカー最新カタログおよび現物銘板・取扱説明書で確認してください。</span></div></div>';
   return h;
 }
 
