@@ -1,0 +1,4425 @@
+[
+  {
+    "id": "OMRON-E3ZT61",
+    "category": "photo",
+    "maker": "オムロン",
+    "model": "E3Z-T61",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "specs": {
+      "sensingDistanceMM": 15000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "OMRON-E3ZR61",
+    "category": "photo",
+    "maker": "オムロン",
+    "model": "E3Z-R61",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "反射板E39-R1S使用時",
+    "specs": {
+      "sensingDistanceMM": 4000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "OMRON-E3ZD61",
+    "category": "photo",
+    "maker": "オムロン",
+    "model": "E3Z-D61",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "specs": {
+      "sensingDistanceMM": 100,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "OMRON-E3ZD62",
+    "category": "photo",
+    "maker": "オムロン",
+    "model": "E3Z-D62",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散ワイド",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "白画用紙300×300mm時",
+    "specs": {
+      "sensingDistanceMM": 1000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "OMRON-E3ZLS61",
+    "category": "photo",
+    "maker": "オムロン",
+    "model": "E3Z-LS61",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-BGS",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "BGS・代表値",
+    "specs": {
+      "sensingDistanceMM": 200,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "距離設定形"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "OMRON-E3ZT81",
+    "category": "photo",
+    "maker": "オムロン",
+    "model": "E3Z-T81",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "specs": {
+      "sensingDistanceMM": 15000,
+      "voltage": "DC12-24V",
+      "outputSpec": "PNP NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "KEYENCE-PZG51N",
+    "category": "photo",
+    "maker": "キーエンス",
+    "model": "PZ-G51N",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "赤色LED/応答500μs",
+    "specs": {
+      "sensingDistanceMM": 20000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "KEYENCE-PZG61N",
+    "category": "photo",
+    "maker": "キーエンス",
+    "model": "PZ-G61N",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "反射板OP-84219使用時",
+    "specs": {
+      "sensingDistanceMM": 4200,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "KEYENCE-PZG101N",
+    "category": "photo",
+    "maker": "キーエンス",
+    "model": "PZ-G101N",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "代表値",
+    "specs": {
+      "sensingDistanceMM": 300,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "KEYENCE-PZM61",
+    "category": "photo",
+    "maker": "キーエンス",
+    "model": "PZ-M61",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 20,
+      "h": 42,
+      "d": 26
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】角型・回帰反射形 0.1〜1.5m。★反射板R-5が必須(旧登録の拡散反射100mmは誤り。拡散反射として発注すると反射板が無く現場停止)",
+    "specs": {
+      "sensingDistanceMM": 1500,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "PANA-CX411",
+    "category": "photo",
+    "maker": "パナソニック",
+    "model": "CX-411",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "投光CX-411E/受光CX-411D・IP67",
+    "specs": {
+      "sensingDistanceMM": 10000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "PANA-CX413",
+    "category": "photo",
+    "maker": "パナソニック",
+    "model": "CX-413",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過長距離",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "長距離30m・強力赤外光",
+    "specs": {
+      "sensingDistanceMM": 30000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "PANA-CX421",
+    "category": "photo",
+    "maker": "パナソニック",
+    "model": "CX-421",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】拡散反射形300mm(白色無光沢紙200x200mm)。旧登録の回帰反射4mは誤り。CX-422=800mm/CX-424=100mm・使用周囲-25〜+55℃",
+    "specs": {
+      "sensingDistanceMM": 300,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "PANA-CX441",
+    "category": "photo",
+    "maker": "パナソニック",
+    "model": "CX-441",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-BGS",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】検出距離2〜50mm(距離設定範囲20〜50mm)・小スポットビーム約ø2mm。旧登録の100mmは過大。⚠拡散反射形/距離設定反射形の呼称が資料により異なり要確認",
+    "specs": {
+      "sensingDistanceMM": 50,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "距離設定形"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "PANA-EQ502",
+    "category": "photo",
+    "maker": "パナソニック",
+    "model": "EQ-502",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-BGS",
+    "dims": {
+      "w": 20,
+      "h": 44,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "距離設定・最大2.5m・フリー電源",
+    "specs": {
+      "sensingDistanceMM": 2500,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "距離設定形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "AZBIL-HP7T11",
+    "category": "photo",
+    "maker": "アズビル",
+    "model": "HP7-T11",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "specs": {
+      "sensingDistanceMM": 15000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "AZBIL-HP7D11",
+    "category": "photo",
+    "maker": "アズビル",
+    "model": "HP7-D11",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "specs": {
+      "sensingDistanceMM": 100,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "AZBIL-HP7G",
+    "category": "photo",
+    "maker": "アズビル",
+    "model": "HP7-G11",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-BGS",
+    "dims": {
+      "w": 20,
+      "h": 44,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "三角測距・長距離750mm",
+    "specs": {
+      "sensingDistanceMM": 750,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "距離設定形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GT1SN",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GT1SN",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "サイドオン・ハイパワー赤外LED・M3ねじ/PNPはGT1SPN",
+    "specs": {
+      "sensingDistanceMM": 1000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GT1N",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GT1N",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "ヘッドオン/PNPはGT1PN",
+    "specs": {
+      "sensingDistanceMM": 1000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GT3N",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GT3N",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "赤外LED 7m/PNPはGT3PN",
+    "specs": {
+      "sensingDistanceMM": 7000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GT3RSN",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GT3RSN",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "赤色LED 10m・光軸調整容易/PNPはGT3RSPN",
+    "specs": {
+      "sensingDistanceMM": 10000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GT7SN",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GT7SN",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "サイドオン/PNPはGT7SPN",
+    "specs": {
+      "sensingDistanceMM": 7000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GSM2RSN",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GSM2RSN",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "リフレクタ形・最小10mm/PNPはGSM2RSPN",
+    "specs": {
+      "sensingDistanceMM": 2000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GS5N",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GS5N",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "近距離広角70mm/PNPはGS5PN・SはGS5SN",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GS20N",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GS20N",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "赤外LED 200mm/PNPはGS20PN",
+    "specs": {
+      "sensingDistanceMM": 200,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GS20RSN",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GS20RSN",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "赤色LED 400mm/PNPはGS20RSPN",
+    "specs": {
+      "sensingDistanceMM": 400,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GSZ3SN",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GSZ3SN",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-限定反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "1〜40mm・背景の影響を受けにくい/PNPはGSZ3SPN",
+    "specs": {
+      "sensingDistanceMM": 40,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "限定反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GSZ3RSN",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GSZ3RSN",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-限定反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "3〜30mm赤色LED/PNPはGSZ3RSPN",
+    "specs": {
+      "sensingDistanceMM": 30,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "限定反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-XNE2T30",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "XNE2-T30",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過長距離",
+    "dims": {
+      "w": 15,
+      "h": 40,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "バリヤ(防爆)透過形30m",
+    "specs": {
+      "sensingDistanceMM": 30000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "IFM-O6H200",
+    "category": "photo",
+    "maker": "ifm",
+    "model": "O6H200",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 15,
+      "h": 42,
+      "d": 32
+    },
+    "mounting": "ブラケット取付",
+    "note": "角型・背景抑制(BGS)・使用周囲-25〜+60℃。⚠ifm O6系はPNP出力が標準。旧登録の「200=NPN/204=PNP」ルールは誤りのため無効化。極性は型式ごとにデータシートで個別確認のこと",
+    "specs": {
+      "sensingDistanceMM": 200,
+      "voltage": "DC10-36V",
+      "outputSpec": "PNP NO/NC(3線式)",
+      "tempMaxC": 60,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "IFM-O6T200",
+    "category": "photo",
+    "maker": "ifm",
+    "model": "O6T200",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散ワイド",
+    "dims": {
+      "w": 15,
+      "h": 42,
+      "d": 32
+    },
+    "mounting": "ブラケット取付",
+    "note": "角型・拡散反射5〜500mm(ifm公式Range 5...500mm)",
+    "specs": {
+      "sensingDistanceMM": 500,
+      "voltage": "DC10-36V",
+      "outputSpec": "PNP NO/NC(3線式)",
+      "tempMaxC": 60,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "IFM-O6P200",
+    "category": "photo",
+    "maker": "ifm",
+    "model": "O6P200",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 15,
+      "h": 42,
+      "d": 32
+    },
+    "mounting": "ブラケット取付",
+    "note": "偏光フィルタ付・Ø80ミラー使用時5m",
+    "specs": {
+      "sensingDistanceMM": 5000,
+      "voltage": "DC10-36V",
+      "outputSpec": "PNP NO/NC(3線式)",
+      "tempMaxC": 60,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "IFM-O6SE200",
+    "category": "photo",
+    "maker": "ifm",
+    "model": "O6S200/O6E200",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 15,
+      "h": 42,
+      "d": 32
+    },
+    "mounting": "ブラケット取付",
+    "note": "投光O6S200/受光O6E200のセット",
+    "specs": {
+      "sensingDistanceMM": 10000,
+      "voltage": "DC10-36V",
+      "outputSpec": "PNP NO/NC(3線式)",
+      "tempMaxC": 60,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "IFM-OGH500",
+    "category": "photo",
+    "maker": "ifm",
+    "model": "OGH500",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 18,
+      "h": 60,
+      "d": 40
+    },
+    "mounting": "ねじ込み型",
+    "note": "M18ステンレス・BGS",
+    "specs": {
+      "sensingDistanceMM": 300,
+      "voltage": "DC10-36V",
+      "outputSpec": "PNP NO/NC(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "IFM-OGP500",
+    "category": "photo",
+    "maker": "ifm",
+    "model": "OGP500",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 18,
+      "h": 60,
+      "d": 40
+    },
+    "mounting": "ねじ込み型",
+    "note": "M18・偏光フィルタ付・Ø80ミラー時5m",
+    "specs": {
+      "sensingDistanceMM": 5000,
+      "voltage": "DC10-36V",
+      "outputSpec": "PNP NO/NC(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "IFM-OGSE500",
+    "category": "photo",
+    "maker": "ifm",
+    "model": "OGS500/OGE500",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過長距離",
+    "dims": {
+      "w": 18,
+      "h": 60,
+      "d": 40
+    },
+    "mounting": "ねじ込み型",
+    "note": "M18・投光OGS500/受光OGE500・25m",
+    "specs": {
+      "sensingDistanceMM": 25000,
+      "voltage": "DC10-36V",
+      "outputSpec": "PNP NO/NC(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-AS",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "ASシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-コの字",
+    "dims": {
+      "w": 30,
+      "h": 45,
+      "d": 15
+    },
+    "mounting": "ブラケット取付",
+    "note": "コの字(溝幅)19/25/30mm・赤色/赤外LED・IP67",
+    "specs": {
+      "sensingDistanceMM": 30,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "コの字形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-BSR80",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "BS-R80",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-判別",
+    "dims": {
+      "w": 20,
+      "h": 45,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "明暗判別・検出距離の規定なし",
+    "specs": {
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH判別系",
+      "detectMethod": "明暗判別"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-CNT100MR",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "CN-T100MR",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過超長距離",
+    "dims": {
+      "w": 30,
+      "h": 60,
+      "d": 30
+    },
+    "mounting": "ブラケット取付",
+    "note": "透過100m・フォトモス出力・電源内蔵形・IP67",
+    "specs": {
+      "sensingDistanceMM": 100000,
+      "voltage": "AC48-240V/DC24-240V",
+      "outputSpec": "フォトモスリレー出力",
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-CS",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "CSシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-カラー",
+    "dims": {
+      "w": 20,
+      "h": 45,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "時分割分光測定33mm・RGB3原色合成光・3色ティーチング・IP54",
+    "specs": {
+      "sensingDistanceMM": 33,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PHカラー",
+      "detectMethod": "色判別"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-CSR85",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "CS-R85",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-カラー",
+    "dims": {
+      "w": 20,
+      "h": 45,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "色比率判別・外部光源(パッシブ式)・1色/3色ティーチング",
+    "specs": {
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PHカラー",
+      "detectMethod": "色判別"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-CSTR85",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "CST-R85",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-カラー",
+    "dims": {
+      "w": 20,
+      "h": 45,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "色比率判別・外部光源・1色ティーチング・分光センシング",
+    "specs": {
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PHカラー",
+      "detectMethod": "色判別"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-DL",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "DLシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-BGS",
+    "dims": {
+      "w": 30,
+      "h": 60,
+      "d": 30
+    },
+    "mounting": "ブラケット取付",
+    "note": "距離設定反射形1000/2000mm・リレー出力可・IP65",
+    "specs": {
+      "sensingDistanceMM": 2000,
+      "voltage": "DC12-24V/AC・DC24-240V",
+      "outputSpec": "NPN/PNP/リレー",
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "距離設定形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-DLS",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "DL-Sシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-BGS",
+    "dims": {
+      "w": 20,
+      "h": 50,
+      "d": 30
+    },
+    "mounting": "ブラケット取付",
+    "note": "距離設定反射形1000/2000mm・IP66・M8コネクタ可",
+    "specs": {
+      "sensingDistanceMM": 2000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "距離設定形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-DLN",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "DLNシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-BGS",
+    "dims": {
+      "w": 15,
+      "h": 40,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "距離設定反射形10〜300mm・赤色4元LED・IP67・M8コネクタ可",
+    "specs": {
+      "sensingDistanceMM": 300,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "距離設定形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-DLNIR",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "DLNシリーズ(赤外光源)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-BGS",
+    "dims": {
+      "w": 15,
+      "h": 40,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "距離設定反射形10〜100/10〜300mm・赤外LED・IP67",
+    "specs": {
+      "sensingDistanceMM": 300,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "距離設定形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GN-T",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GNシリーズ(透過形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "GN-T10CR=10m / GN-T7C=7m。※GNはGNAシリーズに統合(旧型)・使用周囲-25〜+55℃",
+    "specs": {
+      "sensingDistanceMM": 10000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GN-R",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GNシリーズ(偏光リフレクタ形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】GN-M2CR=30mm〜1.3m(偏光リフレクタ形)。旧登録3000mmは代表値",
+    "specs": {
+      "sensingDistanceMM": 1300,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GN-D",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GNシリーズ(拡散反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】GN-R40CR=400mm / GN-R30C=300mm / GN-R7C=70mm",
+    "specs": {
+      "sensingDistanceMM": 400,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GN-Z",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GNシリーズ(限定反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-限定反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】GN-Z3C=1〜40mm / GN-Z3CR=3〜30mm(限定反射形)",
+    "specs": {
+      "sensingDistanceMM": 40,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "限定反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GNA-T",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GNAシリーズ(透過形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "GNA-T10(R)S=10m / GNA-T1S=1m。GN・Gミニ・GミドルをGNAに統合",
+    "specs": {
+      "sensingDistanceMM": 10000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GNA-R",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GNAシリーズ(リフレクタ形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】GNA-M2RS=10mm〜2m(リフレクタ形) / GNA-M2RPS=70mm〜1.3m(偏光)",
+    "specs": {
+      "sensingDistanceMM": 2000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GNA-D",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GNAシリーズ(拡散反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】GNA-R40(R)S=400mm / GNA-R7S=70mm",
+    "specs": {
+      "sensingDistanceMM": 400,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GNA-Z",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GNAシリーズ(限定反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-限定反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "GNA-Z4(R)S=1〜40mm(限定反射形)",
+    "specs": {
+      "sensingDistanceMM": 40,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "限定反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GR",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "GRシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-限定反射",
+    "dims": {
+      "w": 15,
+      "h": 40,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "限定反射形 12/70/90/120mm・赤/緑/青LED選択可・IP67",
+    "specs": {
+      "sensingDistanceMM": 120,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "限定反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GMID-T",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "Gミドルシリーズ(透過形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "IP67・M8コネクタ可",
+    "specs": {
+      "sensingDistanceMM": 7000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GMID-R",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "Gミドルシリーズ(偏光リフレクタ形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "IP67",
+    "specs": {
+      "sensingDistanceMM": 1500,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-GMID-D",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "Gミドルシリーズ(拡散反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "IP67",
+    "specs": {
+      "sensingDistanceMM": 500,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-J-T",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "Jシリーズ(透過形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "電源一体形・リレー出力・タイマ機能あり・IP66",
+    "specs": {
+      "sensingDistanceMM": 10000,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "リレー接点出力",
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-J-R",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "Jシリーズ(偏光リフレクタ形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "電源一体形・リレー出力・IP66",
+    "specs": {
+      "sensingDistanceMM": 3000,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "リレー接点出力",
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-J-D",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "Jシリーズ(拡散反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "電源一体形・リレー出力・IP66",
+    "specs": {
+      "sensingDistanceMM": 700,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "リレー接点出力",
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-LD-T",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "LDシリーズ(透過形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過長距離",
+    "dims": {
+      "w": 20,
+      "h": 50,
+      "d": 30
+    },
+    "mounting": "ブラケット取付",
+    "note": "LD-T20R=20m(レーザ透過形)。絞り/スリットで700mm〜段階変化",
+    "specs": {
+      "sensingDistanceMM": 20000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-LD-R",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "LDシリーズ(偏光リフレクタ形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 20,
+      "h": 50,
+      "d": 30
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】LD-M10R=リフレクタ別に1〜15m。旧登録5000mmは代表値",
+    "specs": {
+      "sensingDistanceMM": 15000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-LD-VF",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "LDシリーズ(バリアブルフォーカス反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-限定反射",
+    "dims": {
+      "w": 20,
+      "h": 50,
+      "d": 30
+    },
+    "mounting": "ブラケット取付",
+    "note": "LD-S20R=30〜300mm(バリアブルフォーカス反射形)",
+    "specs": {
+      "sensingDistanceMM": 300,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "限定反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-LDMX5R",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "LD-MX5R",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 20,
+      "h": 50,
+      "d": 30
+    },
+    "mounting": "ブラケット取付",
+    "note": "偏光リフレクタ形 5000/3000mm・レーザー・IP66",
+    "specs": {
+      "sensingDistanceMM": 5000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-LDS8A",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "LDS-8Aシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-測距",
+    "dims": {
+      "w": 60,
+      "h": 90,
+      "d": 60
+    },
+    "mounting": "ブラケット取付",
+    "note": "位相差方式レーザ距離計 50〜80000mm / 50〜50000mm",
+    "specs": {
+      "sensingDistanceMM": 80000,
+      "voltage": "DC12-24V",
+      "outputSpec": "距離出力",
+      "compatGroup": "PH測距",
+      "detectMethod": "位相差測距"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-MC",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "MCシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-コの字",
+    "dims": {
+      "w": 20,
+      "h": 40,
+      "d": 15
+    },
+    "mounting": "ブラケット取付",
+    "note": "コの字(溝幅)2mm・微小検出・赤/緑/青LED・IP67",
+    "specs": {
+      "sensingDistanceMM": 2,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "コの字形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-MU10",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "MU10シリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-コの字",
+    "dims": {
+      "w": 20,
+      "h": 40,
+      "d": 15
+    },
+    "mounting": "ブラケット取付",
+    "note": "コの字(溝幅)10mm・アナログ出力・緑色LED",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "voltage": "DC12-24V",
+      "outputSpec": "電圧出力/電流出力(アナログ)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "コの字形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NA-T",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NAシリーズ(透過形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過長距離",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "NA-T30=30m / NA-T20R=20m。電源一体AC/DC24-240V・リレー出力",
+    "specs": {
+      "sensingDistanceMM": 30000,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "リレー接点出力",
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NA-R",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NAシリーズ(偏光リフレクタ形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "NA-M7R=30mm〜7m(偏光リフレクタ形)・電源一体・リレー出力",
+    "specs": {
+      "sensingDistanceMM": 7000,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "リレー接点出力",
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NA-D",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NAシリーズ(拡散反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "NA-R10=1m(拡散反射形)・電源一体・リレー出力",
+    "specs": {
+      "sensingDistanceMM": 1000,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "リレー接点出力",
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NALM10RP",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NAL-M10RP",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "偏光リフレクタ形10m・レーザー・リレー出力・IP67",
+    "specs": {
+      "sensingDistanceMM": 10000,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "リレー接点出力",
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NE-T",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NEシリーズ(透過形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】NE-T30D=30m / NE-T10RD=10m。電源一体・リレー出力",
+    "specs": {
+      "sensingDistanceMM": 30000,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NE-R",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NEシリーズ(偏光リフレクタ形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "NE-M5RD=30mm〜5m(偏光リフレクタ形)",
+    "specs": {
+      "sensingDistanceMM": 5000,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NE-D",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NEシリーズ(拡散反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "NE-R10D=1m(拡散反射形)",
+    "specs": {
+      "sensingDistanceMM": 1000,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NEDC-T",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NE-DCシリーズ(透過形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過長距離",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "NE-DC 透過形30m/10m。DC・NPN/PNP 2出力",
+    "specs": {
+      "sensingDistanceMM": 30000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NEDC-R",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NE-DCシリーズ(偏光リフレクタ形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "NE-DC 偏光リフレクタ形5m",
+    "specs": {
+      "sensingDistanceMM": 5000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NEDC-D",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NE-DCシリーズ(拡散反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "NE-DC 拡散反射形1m",
+    "specs": {
+      "sensingDistanceMM": 1000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NE2-T",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NE2シリーズ(透過形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過超長距離",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "NE2-T50=50m / NE2-T30R=30m(シリーズ最長)",
+    "specs": {
+      "sensingDistanceMM": 50000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NE2-R",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NE2シリーズ(偏光リフレクタ形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】NE2-M10R=8m(偏光リフレクタ形)。旧登録30000mmは誤り",
+    "specs": {
+      "sensingDistanceMM": 8000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NE2-D",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NE2シリーズ(拡散反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "NE2-R10=1m(拡散反射形)",
+    "specs": {
+      "sensingDistanceMM": 1000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-NT30F",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "NT30F",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過長距離",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "透過30m・アナログ出力・赤外LED・IP66",
+    "specs": {
+      "sensingDistanceMM": 30000,
+      "voltage": "DC12-24V",
+      "outputSpec": "電圧出力/電流出力(アナログ)",
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-PF-T",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "PFシリーズ(透過形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 15,
+      "h": 40,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "赤色LED・IP67",
+    "specs": {
+      "sensingDistanceMM": 3000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-PF-D",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "PFシリーズ(拡散反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 15,
+      "h": 40,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "赤色LED・IP67",
+    "specs": {
+      "sensingDistanceMM": 300,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-PU",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "PUシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-コの字",
+    "dims": {
+      "w": 20,
+      "h": 40,
+      "d": 15
+    },
+    "mounting": "ブラケット取付",
+    "note": "コの字(溝幅)5/10mm・赤外LED・IP67",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "コの字形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-UM",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "UMシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 8,
+      "h": 20,
+      "d": 10
+    },
+    "mounting": "ブラケット取付",
+    "note": "ウルトラミニ・透過1000/500mm・IP64",
+    "specs": {
+      "sensingDistanceMM": 1000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-UM2-T",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "UM2シリーズ(透過形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 8,
+      "h": 20,
+      "d": 10
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】UM2 透過形 150mm/500mm。⚠旧登録の1000mmは現行UM2に該当なし(旧UM透過1mの混入と思われる)",
+    "specs": {
+      "sensingDistanceMM": 500,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-UM2-D",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "UM2シリーズ(拡散反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 8,
+      "h": 20,
+      "d": 10
+    },
+    "mounting": "ブラケット取付",
+    "note": "【訂正】UM2 拡散反射形 2〜30mm/2〜50mm。旧登録150mmは誤り",
+    "specs": {
+      "sensingDistanceMM": 50,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-UM2-Z",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "UM2シリーズ(限定反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-限定反射",
+    "dims": {
+      "w": 8,
+      "h": 20,
+      "d": 10
+    },
+    "mounting": "ブラケット取付",
+    "note": "UM2 限定反射形 5〜30mm",
+    "specs": {
+      "sensingDistanceMM": 30,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "限定反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-UMS-T",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "UMSシリーズ(透過形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 8,
+      "h": 20,
+      "d": 10
+    },
+    "mounting": "ブラケット取付",
+    "note": "⚠【要確認】UMSという独立シリーズを竹中公式で確認できず(UM/UM2は実在)。型式名の誤記の可能性あり",
+    "specs": {
+      "sensingDistanceMM": 1000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-UMS-D",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "UMSシリーズ(拡散反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 8,
+      "h": 20,
+      "d": 10
+    },
+    "mounting": "ブラケット取付",
+    "note": "⚠【要確認】UMSシリーズを公式で確認できず",
+    "specs": {
+      "sensingDistanceMM": 150,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-UMS-Z",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "UMSシリーズ(限定反射形)",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-限定反射",
+    "dims": {
+      "w": 8,
+      "h": 20,
+      "d": 10
+    },
+    "mounting": "ブラケット取付",
+    "note": "⚠【要確認】UMSシリーズを公式で確認できず",
+    "specs": {
+      "sensingDistanceMM": 50,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "限定反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-UX",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "UXシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 6,
+      "h": 18,
+      "d": 8
+    },
+    "mounting": "ブラケット取付",
+    "note": "旧UX 透過形1m/500mm・超極小",
+    "specs": {
+      "sensingDistanceMM": 1000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-UX3",
+    "category": "photo",
+    "maker": "竹中TAKEX",
+    "model": "UX3シリーズ",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 6,
+      "h": 18,
+      "d": 8
+    },
+    "mounting": "ねじ込み型",
+    "note": "【訂正】UX3-R5V=3〜50mm(拡散反射形・M6サイズ・SUS製)。旧登録500mmは誤り",
+    "specs": {
+      "sensingDistanceMM": 50,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN/PNP(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PL130FA",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PL1-30FA",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過長距離",
+    "dims": {
+      "w": 60,
+      "h": 90,
+      "d": 55
+    },
+    "mounting": "ブラケット取付",
+    "discontinued": true,
+    "successorId": "HOKUYO-PNX705R",
+    "note": "PL1-30A受光器。投光器はPL1-30E。赤外LED・応答30ms以下・ねじ端子M3・端子③-⑥ショートバーで入光/遮光動作切替・動作表示灯赤LED・560g。⚠端子番号と配線色(BU/BN/RD/BK/WH/GY)の対応は公式非公開・要メーカー照会",
+    "specs": {
+      "sensingDistanceMM": 30000,
+      "voltage": "AC100/200V",
+      "outputSpec": "1Cリレー接点(AC250V 5A)",
+      "tempMaxC": 55,
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PL130E",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PL1-30E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過長距離",
+    "dims": {
+      "w": 60,
+      "h": 90,
+      "d": 55
+    },
+    "mounting": "ブラケット取付",
+    "discontinued": true,
+    "successorId": "HOKUYO-PNX705R",
+    "note": "PL1-30A投光器。受光器はPL1-30FA。電源表示灯緑LED・アルミダイカスト・IP65・560g",
+    "specs": {
+      "sensingDistanceMM": 30000,
+      "voltage": "AC100/200V",
+      "outputSpec": "投光器(出力なし)",
+      "tempMaxC": 55,
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PL1H3L",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PL1-H3L",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 60,
+      "h": 90,
+      "d": 55
+    },
+    "mounting": "ブラケット取付",
+    "discontinued": true,
+    "successorId": "HOKUYO-PNX123R",
+    "note": "リフレクタ反射形0.35〜3m・遮光時動作・φ40以上検出・応答30ms以下・IP65・580g",
+    "specs": {
+      "sensingDistanceMM": 3000,
+      "voltage": "AC100/200V",
+      "outputSpec": "1Cリレー接点(AC250V 5A)",
+      "tempMaxC": 55,
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PL1H1R",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PL1-H1R",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 60,
+      "h": 90,
+      "d": 55
+    },
+    "mounting": "ブラケット取付",
+    "discontinued": true,
+    "note": "反射形1.5m以下(30cm□白画用紙)・入光時動作・応答20ms以下・IP65・580g",
+    "specs": {
+      "sensingDistanceMM": 1500,
+      "voltage": "AC100/200V",
+      "outputSpec": "1Cリレー接点(AC250V 5A)",
+      "tempMaxC": 55,
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PL310FA",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PL3-10FA",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過長距離",
+    "dims": {
+      "w": 50,
+      "h": 75,
+      "d": 45
+    },
+    "mounting": "ブラケット取付",
+    "discontinued": true,
+    "successorId": "HOKUYO-PNX705R",
+    "note": "PL3-10A受光器(投光器PL3-10E)・ABS樹脂・応答10ms以下・IP65・約280g",
+    "specs": {
+      "sensingDistanceMM": 30000,
+      "voltage": "AC100/200V",
+      "outputSpec": "1Cリレー接点",
+      "tempMaxC": 55,
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PL3H3L",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PL3-H3L",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 50,
+      "h": 75,
+      "d": 45
+    },
+    "mounting": "ブラケット取付",
+    "discontinued": true,
+    "successorId": "HOKUYO-PNX123R",
+    "note": "リフレクタ反射形0.35〜3m・ABS樹脂・IP65",
+    "specs": {
+      "sensingDistanceMM": 3000,
+      "voltage": "AC100/200V",
+      "outputSpec": "1Cリレー接点",
+      "tempMaxC": 55,
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PL3H1R",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PL3-H1R",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 50,
+      "h": 75,
+      "d": 45
+    },
+    "mounting": "ブラケット取付",
+    "discontinued": true,
+    "note": "反射形1.5m以下・ABS樹脂・IP65",
+    "specs": {
+      "sensingDistanceMM": 1500,
+      "voltage": "AC100/200V",
+      "outputSpec": "1Cリレー接点",
+      "tempMaxC": 55,
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PL3FC",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PL3-FC",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 50,
+      "h": 75,
+      "d": 45
+    },
+    "mounting": "ブラケット取付",
+    "discontinued": true,
+    "note": "PL3-C受光器(投光器PL3-EC)・透過5m・NPN MAX35V 100mA",
+    "specs": {
+      "sensingDistanceMM": 5000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PL3H3C",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PL3-H3C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 50,
+      "h": 75,
+      "d": 45
+    },
+    "mounting": "ブラケット取付",
+    "discontinued": true,
+    "note": "リフレクタ反射形3m・DC12〜24V・NPN",
+    "specs": {
+      "sensingDistanceMM": 3000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PNX705R",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PNX-705R",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過超長距離",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "透過70m(業界最長級)・ライトオン・フリー電源・赤色LED・応答0.5ms以下・IP67・ケーブルφ6.4mm 2m。PL1/PL3の後継候補",
+    "specs": {
+      "sensingDistanceMM": 70000,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "1Cリレー接点(AC250V 3A)",
+      "tempMaxC": 55,
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PNX705L",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PNX-705L",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過超長距離",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "透過70m・ダークオン・フリー電源・IP67",
+    "specs": {
+      "sensingDistanceMM": 70000,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "1Cリレー接点(AC250V 3A)",
+      "tempMaxC": 55,
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PNX705CD",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PNX-705CD",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過超長距離",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "透過70m・DCタイプ・NPN Max100mA/DC30V・配線で動作切替・IP67",
+    "specs": {
+      "sensingDistanceMM": 70000,
+      "voltage": "DC10-30V",
+      "outputSpec": "NPN NO/NC(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PNX123R",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PNX-123R",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "note": "回帰反射0.01〜12m・フリー電源・応答15ms以下・IP67",
+    "specs": {
+      "sensingDistanceMM": 12000,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "1Cリレー接点(AC250V 3A)",
+      "tempMaxC": 55,
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PEY155C",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PEY-155C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "透過15m・NPN(PNPはPEY-155A)・赤色LED・応答0.5ms以下・IP67・-25〜+55℃・取付25.4mm業界標準",
+    "specs": {
+      "sensingDistanceMM": 15000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PEY303C",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PEY-303C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-回帰反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "回帰反射0.01〜3m(反射板RRP-50S-V)・NPN(PNPはPEY-303A)・IP67",
+    "specs": {
+      "sensingDistanceMM": 3000,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "回帰反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PEY601C",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PEY-601C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-拡散",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "拡散反射600mm・NPN(PNPはPEY-601A)・IP67",
+    "specs": {
+      "sensingDistanceMM": 600,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "拡散反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PEY102C",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PEY-102C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-限定反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "限定反射10〜90mm・NPN(PNPはPEY-102A)・IP67",
+    "specs": {
+      "sensingDistanceMM": 90,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "限定反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PEX307C",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PEX-307C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-BGS",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "測距反射(BGS)形・小型・⚠検出距離は代表値。PEX-107Cもあり",
+    "specs": {
+      "sensingDistanceMM": 300,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "距離設定形"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-LEX307C",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "LEX-307C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-BGS",
+    "dims": {
+      "w": 15,
+      "h": 40,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "スポットレーザ・測距反射10〜300mm・可視赤色レーザ655nm 最大3mW・応答0.25ms以下・IP67",
+    "specs": {
+      "sensingDistanceMM": 300,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "距離設定形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-FBX25JC",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "FBX-25JC",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-コの字",
+    "dims": {
+      "w": 25,
+      "h": 45,
+      "d": 15
+    },
+    "mounting": "ブラケット取付",
+    "note": "溝幅25mm・1光軸(2光軸はFBX-25DC)・赤外LED870nm・応答1ms以下・繰返し精度±0.1mm・IP67・制御線(桃)で入光/遮光切替",
+    "specs": {
+      "sensingDistanceMM": 25,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO/NC(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "コの字形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-FC51C",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "FC-51C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-コの字",
+    "dims": {
+      "w": 50,
+      "h": 60,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "溝幅50mm・φ5mm以上検出・応答1ms以下・IP52・ケーブル3m・2光軸はFC-52C",
+    "specs": {
+      "sensingDistanceMM": 50,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO/NC(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "コの字形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-FG31C",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "FG-31C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-コの字",
+    "dims": {
+      "w": 30,
+      "h": 55,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "溝幅30mm・アルミダイカスト・光軸調整不要・位置決め用(溝幅50mmはFG-51C)",
+    "specs": {
+      "sensingDistanceMM": 30,
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "tempMaxC": 55,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PH小型アンプ",
+      "detectMethod": "コの字形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HOKUYO-PD52MA",
+    "category": "photo",
+    "maker": "北陽電機",
+    "model": "PD5-2MA",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PH-BGS",
+    "dims": {
+      "w": 30,
+      "h": 65,
+      "d": 40
+    },
+    "mounting": "ブラケット取付",
+    "discontinued": true,
+    "note": "距離設定式BGS最大2.5m・二分割フォトダイオード方式・フリー電源(1mはPD5-1MA、DC/NPN・PNPはPD5-1MC/2MC)",
+    "specs": {
+      "sensingDistanceMM": 2500,
+      "voltage": "AC/DC24-240V",
+      "outputSpec": "1Cリレー接点",
+      "tempMaxC": 55,
+      "compatGroup": "PH電源内蔵",
+      "detectMethod": "距離設定形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  }
+]

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>FA部品 互換サーチ</title>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="互換サーチ" />
+<meta name="theme-color" content="#151C24" />
+<meta name="mobile-web-app-capable" content="yes" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23151C24'/%3E%3Cpolygon points='98 34 54 106 88 106 82 146 126 74 92 74' fill='none' stroke='%23E8A33D' stroke-width='9' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23151C24'/%3E%3Cpolygon points='17 5 9 19 15 19 14 27 23 13 16 13' fill='%23E8A33D'/%3E%3C/svg%3E" />
+<style>
+:root{
+  --bg:#151C24; --panel:#1E2833; --line:#354352; --amber:#E8A33D; --green:#4CAF7D;
+  --blue:#5B9BD5; --ink:#E8ECEF; --sub:#8A99A8; --dim:#5A6675; --sel:#2A2418; --btn:#2A3644;
+  --jp:-apple-system,'Hiragino Sans','Hiragino Kaku Gothic ProN',Meiryo,sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,'Courier New',monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--jp);
+  font-size:15px;line-height:1.6;-webkit-text-size-adjust:100%;}
+#app{max-width:780px;margin:0 auto;
+  padding:0 max(12px,env(safe-area-inset-left)) max(24px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-right));}
+.mono{font-family:var(--mono);} .amber{color:var(--amber);} .green{color:var(--green);}
+a{color:var(--amber);}
+button{font-family:inherit;cursor:pointer;color:inherit;border:none;background:none;}
+input{font-family:inherit;}
+svg{flex-shrink:0;display:block;margin:8px auto 0;}
+
+header{padding:16px 4px 8px;}
+header h1{margin:0;font-size:17px;font-weight:700;letter-spacing:.02em;}
+header .sub{color:var(--sub);font-size:12px;}
+.sub{color:var(--sub);font-size:12px;}
+
+.steps{display:flex;gap:6px;margin:10px 0 14px;}
+.st{flex:1;display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:6px;
+  background:var(--panel);border:1px solid var(--line);color:var(--dim);font-size:11px;min-width:0;}
+.st.on{border-color:var(--amber);color:var(--ink);background:var(--sel);}
+.st.done{color:var(--sub);}
+.sn{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;
+  border-radius:50%;border:1px solid currentColor;font-size:10px;flex-shrink:0;}
+.sl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:12px;}
+.lbl{display:block;color:var(--sub);font-size:12px;margin-bottom:6px;}
+
+/* カテゴリは大分類を設けず横一列。増えても縦に伸びないよう横スクロールにする */
+.chiprow{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;
+  scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
+.chiprow::-webkit-scrollbar{height:4px;}
+.chiprow::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px;}
+.chip{flex:0 0 auto;scroll-snap-align:start;padding:7px 12px;border-radius:6px;
+  background:var(--btn);border:1px solid var(--line);color:var(--sub);
+  font-size:13px;font-weight:600;white-space:nowrap;}
+.chip.on{background:var(--sel);border-color:var(--amber);color:var(--amber);}
+.chip.sm{font-size:12px;padding:5px 10px;font-weight:400;}
+.chip.empty{opacity:.5;}
+.chip .cnt{margin-left:6px;font-size:10px;color:var(--dim);font-family:var(--mono);}
+.chip.on .cnt{color:var(--amber);}
+
+.searchbar{display:flex;gap:8px;}
+.searchbar input{flex:1;min-width:0;background:var(--bg);border:1px solid var(--line);
+  border-radius:6px;padding:10px;color:var(--ink);font-size:16px;}
+.searchbar input:focus{outline:2px solid var(--amber);}
+
+.btn{padding:10px 14px;border-radius:6px;font-size:14px;font-weight:600;border:1px solid var(--line);background:var(--btn);}
+.btn.primary{background:var(--amber);color:#1A1207;border-color:var(--amber);}
+.btn.ghost{background:transparent;color:var(--sub);}
+.btn.wide{display:block;width:100%;margin-top:8px;}
+
+.rows{display:flex;flex-direction:column;gap:4px;}
+.rows.scroll{max-height:340px;overflow-y:auto;}
+.row{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;text-align:left;
+  padding:8px;border-radius:6px;background:var(--bg);border:1px solid var(--line);}
+.row-main{font-size:14px;} .row-sub{color:var(--sub);font-size:11px;}
+#sug:not(:empty){display:flex;flex-direction:column;gap:4px;margin-top:8px;}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px;}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.maker{color:var(--sub);font-size:12px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;}
+.model{font-size:16px;font-weight:600;} .model.big{font-size:19px;}
+.card-right{text-align:right;flex-shrink:0;}
+.primary-spec{font-size:15px;color:var(--amber);}
+.dim-verdict{font-size:11px;display:block;}
+.dim-verdict.ok{color:var(--green);} .dim-verdict.warn{color:var(--amber);} .dim-verdict.dim{color:var(--dim);}
+
+.badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
+.badge{font-size:10px;padding:2px 7px;border-radius:4px;font-family:var(--mono);
+  border:1px solid var(--line);color:var(--sub);white-space:nowrap;}
+.ev-ok{color:var(--green);border-color:#2E5C45;background:rgba(76,175,125,.10);}
+.ev-warn{color:var(--amber);border-color:#7A5A2E;background:rgba(232,163,61,.10);}
+.ev-dim{color:var(--dim);}
+.b-disc{color:var(--amber);border-color:#7A5A2E;}
+.b-succ{color:var(--amber);border-color:var(--amber);background:var(--sel);}
+.b-cross{color:var(--blue);border-color:#3A5B7A;background:rgba(91,155,213,.10);}
+.ev-note{margin-left:5px;opacity:.75;}
+.evidence{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;}
+.spec{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px;min-width:0;}
+.spec .l{color:var(--sub);font-size:10px;}
+.spec .v{font-size:13px;overflow-wrap:anywhere;}
+
+.cmp{display:flex;flex-direction:column;gap:2px;margin-top:8px;padding:8px 10px;border-radius:6px;
+  border:1px solid var(--line);background:var(--bg);font-size:12px;}
+.cmp b{font-size:11px;color:var(--sub);font-weight:600;}
+.cmp-ok{border-left:3px solid var(--green);}
+.cmp-warn{border-left:3px solid var(--amber);}
+.cmp-info{border-left:3px solid var(--blue);}
+
+.warn{margin-top:8px;padding:9px 10px;border-radius:6px;font-size:12px;
+  background:rgba(232,163,61,.08);border:1px solid #7A5A2E;}
+.warn div + div{margin-top:4px;}
+.note{margin-top:8px;padding:7px 9px;border-radius:6px;background:var(--bg);
+  border:1px solid var(--line);font-size:12px;color:var(--sub);overflow-wrap:anywhere;}
+.dim-none{margin-top:10px;color:var(--dim);font-size:12px;text-align:center;}
+.empty-note{font-size:13px;} .empty-note div{color:var(--sub);font-size:12px;margin-top:6px;}
+.result-head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;}
+.foot{color:var(--dim);font-size:11px;text-align:center;padding:8px 4px 0;}
+
+/* iPhone 標準幅(390px)が主対象。ステップ名を消すと空箱になるので縮めて残す */
+@media (max-width:420px){
+  .grid{grid-template-columns:1fr;}
+  .st{padding:6px;gap:4px;}
+  .sl{font-size:10px;}
+}
+@media (max-width:340px){ .sl{display:none;} }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/*__BUNDLE__*/
+</script>
+</body>
+</html>

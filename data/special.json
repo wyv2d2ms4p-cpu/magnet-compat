@@ -1,0 +1,392 @@
+[
+  {
+    "id": "SEJ-OSA67405G",
+    "category": "special",
+    "maker": "SEJ",
+    "model": "OSA 674.05 G",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "SP-HMD",
+    "dims": {
+      "w": 57,
+      "h": 150,
+      "d": 57
+    },
+    "mounting": "ブラケット取付",
+    "note": "熱間金属検出・検出対象450℃以上・φ57x150・ステンレス・最高周囲75℃・スタンドHM2",
+    "specs": {
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.",
+      "tempMaxC": 75,
+      "detectMethod": "HMD(熱間金属検出)"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-OACF104",
+    "category": "special",
+    "maker": "SEJ",
+    "model": "OACF 104",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "SP-Optic",
+    "dims": {
+      "w": 25,
+      "h": 85,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "光学式・視野角1°・最高290℃・φ25x85・ステンレス・スタンドHM4",
+    "specs": {
+      "voltage": "―",
+      "outputSpec": "―",
+      "tempMaxC": 290,
+      "detectMethod": "Optic(光学式)"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-OACF104H",
+    "category": "special",
+    "maker": "SEJ",
+    "model": "OACF 104H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "SP-Optic",
+    "dims": {
+      "w": 25,
+      "h": 85,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "光学式・視野角1°・最高600℃・φ25x85・ステンレス・スタンドHM4",
+    "specs": {
+      "voltage": "―",
+      "outputSpec": "―",
+      "tempMaxC": 600,
+      "detectMethod": "Optic(光学式)"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-OACF204",
+    "category": "special",
+    "maker": "SEJ",
+    "model": "OACF 204",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "SP-Optic",
+    "dims": {
+      "w": 25,
+      "h": 85,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "光学式・視野角2°・最高290℃・φ25x85・ステンレス・スタンドHM4",
+    "specs": {
+      "voltage": "―",
+      "outputSpec": "―",
+      "tempMaxC": 290,
+      "detectMethod": "Optic(光学式)"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-OACF704",
+    "category": "special",
+    "maker": "SEJ",
+    "model": "OACF 704",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "SP-Optic",
+    "dims": {
+      "w": 25,
+      "h": 85,
+      "d": 25
+    },
+    "mounting": "ブラケット取付",
+    "note": "光学式・視野角7°・最高600℃・φ25x85・ステンレス・スタンドHM4",
+    "specs": {
+      "voltage": "―",
+      "outputSpec": "―",
+      "tempMaxC": 600,
+      "detectMethod": "Optic(光学式)"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PRLLK2m",
+    "category": "special",
+    "maker": "SEJ",
+    "model": "PR-LLK 2m",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "SP-LLK",
+    "dims": {
+      "w": 4,
+      "h": 200,
+      "d": 4
+    },
+    "mounting": "ブラケット取付",
+    "note": "光ファイバ導光路・長さ2m・φ4・ステンレス・最高290℃・HMD/Optic用",
+    "specs": {
+      "voltage": "―",
+      "outputSpec": "―",
+      "tempMaxC": 290,
+      "detectMethod": "LLK(導光路/ライトガイド)",
+      "lightGuideLengthMM": 2000
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PRLLK3m",
+    "category": "special",
+    "maker": "SEJ",
+    "model": "PR-LLK 3m",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "SP-LLK",
+    "dims": {
+      "w": 4,
+      "h": 200,
+      "d": 4
+    },
+    "mounting": "ブラケット取付",
+    "note": "光ファイバ導光路・長さ3m・φ4・ステンレス・最高290℃・HMD/Optic用",
+    "specs": {
+      "voltage": "―",
+      "outputSpec": "―",
+      "tempMaxC": 290,
+      "detectMethod": "LLK(導光路/ライトガイド)",
+      "lightGuideLengthMM": 3000
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PRLLK5m",
+    "category": "special",
+    "maker": "SEJ",
+    "model": "PR-LLK 5m",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "SP-LLK",
+    "dims": {
+      "w": 4,
+      "h": 200,
+      "d": 4
+    },
+    "mounting": "ブラケット取付",
+    "note": "光ファイバ導光路・長さ5m・φ4・ステンレス・最高290℃・HMD/Optic用",
+    "specs": {
+      "voltage": "―",
+      "outputSpec": "―",
+      "tempMaxC": 290,
+      "detectMethod": "LLK(導光路/ライトガイド)",
+      "lightGuideLengthMM": 5000
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PRLLK8m",
+    "category": "special",
+    "maker": "SEJ",
+    "model": "PR-LLK 8m",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "SP-LLK",
+    "dims": {
+      "w": 4,
+      "h": 200,
+      "d": 4
+    },
+    "mounting": "ブラケット取付",
+    "note": "光ファイバ導光路・長さ8m・φ4・ステンレス・最高290℃・HMD/Optic用",
+    "specs": {
+      "voltage": "―",
+      "outputSpec": "―",
+      "tempMaxC": 290,
+      "detectMethod": "LLK(導光路/ライトガイド)",
+      "lightGuideLengthMM": 8000
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PRLLK10m",
+    "category": "special",
+    "maker": "SEJ",
+    "model": "PR-LLK 10m",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "SP-LLK",
+    "dims": {
+      "w": 4,
+      "h": 200,
+      "d": 4
+    },
+    "mounting": "ブラケット取付",
+    "note": "光ファイバ導光路・長さ10m・φ4・ステンレス・最高290℃・HMD/Optic用",
+    "specs": {
+      "voltage": "―",
+      "outputSpec": "―",
+      "tempMaxC": 290,
+      "detectMethod": "LLK(導光路/ライトガイド)",
+      "lightGuideLengthMM": 10000
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PRLLK15m",
+    "category": "special",
+    "maker": "SEJ",
+    "model": "PR-LLK 15m",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "SP-LLK",
+    "dims": {
+      "w": 4,
+      "h": 200,
+      "d": 4
+    },
+    "mounting": "ブラケット取付",
+    "note": "光ファイバ導光路・長さ15m・φ4・ステンレス・最高290℃・HMD/Optic用",
+    "specs": {
+      "voltage": "―",
+      "outputSpec": "―",
+      "tempMaxC": 290,
+      "detectMethod": "LLK(導光路/ライトガイド)",
+      "lightGuideLengthMM": 15000
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-OSA67305G",
+    "category": "special",
+    "maker": "SEJ",
+    "model": "OSA 673.05 G",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "SP-HMD",
+    "dims": {
+      "w": 57,
+      "h": 150,
+      "d": 57
+    },
+    "mounting": "ブラケット取付",
+    "note": "熱間金属検出・反応380℃以上(OSA674.05Gは450℃)・鉄鋼設備の熱間材位置検出用・ステンレス",
+    "specs": {
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.",
+      "tempMaxC": 75,
+      "detectMethod": "HMD(熱間金属検出)"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  }
+]
