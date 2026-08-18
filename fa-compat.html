@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0F1A14">
+<title>FA部品 互換サーチ</title>
+<style>
+  :root{
+    --bg:#0F1A14; --panel:#151C24; --panel2:#2A3644; --amber:#E8A33D; --green:#4CAF7D;
+    --muted:#8A99A8; --dim:#5C6B7A; --border:#354352; --text:#E8ECEF; --blue:#9DBBE8; --blueln:#4C6EA8;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Segoe UI",system-ui,sans-serif;
+    -webkit-text-size-adjust:100%;}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+  .wrap{max-width:760px;margin:0 auto;padding:16px 14px 64px}
+  h1{font-size:19px;margin:0;font-weight:800;letter-spacing:.5px}
+  input,select,button{font-family:inherit}
+  input::placeholder{color:var(--dim)}
+  select,input[type=text]{width:100%;padding:11px 12px;background:var(--panel);color:var(--text);
+    border:1px solid var(--border);border-radius:6px;font-size:13px}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .seg{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 8px;border-radius:8px;
+    font-size:13.5px;font-weight:600;cursor:pointer;background:var(--panel);color:var(--muted);border:1px solid var(--border)}
+  .seg.on{background:var(--amber);color:#0F1A14;font-weight:800;border-color:var(--amber)}
+  .vbtn{flex:1;padding:10px 8px;border-radius:6px;font-size:12px;cursor:pointer;background:var(--panel);
+    color:var(--muted);border:1px solid var(--border)}
+  .vbtn.on{background:var(--amber);color:#0F1A14;font-weight:700;border-color:var(--amber)}
+  .item{width:100%;text-align:left;padding:10px 12px;background:var(--panel);border:1px solid var(--border);
+    border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+  .item .mdl{font-size:13px;color:var(--text);font-weight:600}
+  .item .sub{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60vw}
+  .item .cap{font-size:12px;color:var(--muted);text-align:right;flex-shrink:0;line-height:1.4}
+  .badge{font-size:10px;margin-left:8px}
+  .b-disc{color:var(--amber)} .b-ok{color:var(--green)}
+  .card{padding:16px;background:var(--panel);border:1px solid var(--border);border-radius:8px}
+  .lbl{font-size:11px;color:var(--muted)}
+  .big{font-size:18px;font-weight:700;margin:2px 0 4px}
+  .note{font-size:11px;color:var(--dim);margin-top:4px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin-top:14px;font-size:13px}
+  .field .k{font-size:10.5px;color:var(--muted)} .field .v{font-size:14px;color:var(--text)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .chip{font-size:10.5px;padding:2px 7px;border-radius:4px;border:1px solid var(--blueln);color:var(--blue);background:#141E2C}
+  .tag{padding:3px 8px;border-radius:4px;border:1px solid;background:transparent;font-size:11px}
+  .cmp{margin-top:10px;padding:12px;background:var(--panel);border:1px solid var(--border);border-radius:6px}
+  .cmphead{font-size:12px;margin-bottom:8px;font-weight:700;display:flex;align-items:center;gap:6px}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 8px;font-size:12px}
+  .g3b{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:4px 8px;font-size:12px}
+  .succ{margin:12px 0 6px;padding:12px;background:#12241A;border:1px solid #2E5E3F;border-radius:8px}
+  .btnrow{display:flex;gap:10px;margin-top:14px}
+  .primary{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;background:var(--green);
+    color:#0F1A14;border:none;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer}
+  .ghost{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;background:var(--panel2);
+    color:var(--text);border:1px solid var(--border);border-radius:6px;font-weight:600;font-size:13px;cursor:pointer}
+  .back{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;padding:0;margin-bottom:2px}
+  .foot{margin-top:26px;padding:12px;background:var(--panel);border:1px solid var(--border);border-radius:6px;
+    font-size:10.5px;color:var(--dim);line-height:1.7}
+  .foot b{color:var(--muted)}
+  .empty{padding:20px;text-align:center;color:var(--muted);font-size:13px}
+  .cnt{font-size:11px;color:var(--muted);margin:8px 0}
+  svg{overflow:visible}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+"use strict";
+/* ================= 共通ユーティリティ ================= */
+function kw3(kw){return String(Math.round(kw*10)).padStart(3,"0");}
+function kwDot(kw){return String(kw);}
+function makeId(k,v,kw){return k+"_"+v+"_"+String(kw).replace(".","p");}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+function dimDiff(a,b){return Math.abs(a.w-b.w)+Math.abs(a.h-b.h)+Math.abs(a.d-b.d);}
+
+/* ================= インバータ データ ================= */
+var RATED_A={
+ 200:{0.4:3,0.75:5,1.5:8,2.2:11,3.7:17.5,5.5:25,7.5:33,11:47,15:60,18.5:76,22:90,30:115,37:145,45:175,55:215,75:288,90:346},
+ 400:{0.4:1.5,0.75:2.5,1.5:4,2.2:5.5,3.7:9,5.5:13,7.5:18,11:24,15:31,18.5:39,22:45,30:60,37:75,45:91,55:112,75:150,90:180}
+};
+var FRAME={
+ 0.4:{dims:{w:68,h:130,d:113},holes:{w:56,h:118}},0.75:{dims:{w:68,h:130,d:145},holes:{w:56,h:118}},
+ 1.5:{dims:{w:110,h:130,d:156},holes:{w:96,h:118}},2.2:{dims:{w:110,h:130,d:156},holes:{w:96,h:118}},
+ 3.7:{dims:{w:140,h:130,d:171},holes:{w:128,h:118}},5.5:{dims:{w:180,h:220,d:203},holes:{w:164,h:205}},
+ 7.5:{dims:{w:180,h:220,d:203},holes:{w:164,h:205}},11:{dims:{w:220,h:260,d:203},holes:{w:196,h:238}},
+ 15:{dims:{w:220,h:260,d:203},holes:{w:196,h:238}},18.5:{dims:{w:250,h:400,d:203},holes:{w:226,h:378}},
+ 22:{dims:{w:250,h:400,d:203},holes:{w:226,h:378}},30:{dims:{w:250,h:550,d:283},holes:{w:200,h:530}},
+ 37:{dims:{w:300,h:630,d:283},holes:{w:240,h:605}},45:{dims:{w:300,h:630,d:283},holes:{w:240,h:605}},
+ 55:{dims:{w:340,h:630,d:300},holes:{w:270,h:605}},75:{dims:{w:420,h:740,d:350},holes:{w:340,h:710}},
+ 90:{dims:{w:420,h:740,d:350},holes:{w:340,h:710}}
+};
+var KW_FULL=[0.4,0.75,1.5,2.2,3.7,5.5,7.5,11,15,18.5,22];
+var KW_SMALL=[0.4,0.75,1.5,2.2,3.7,5.5,7.5,11,15];
+var KW_VEC=[0.75,1.5,2.2,3.7,5.5,7.5,11,15,18.5,22,30,37,45,55,75,90];
+var KW_MID=[0.75,1.5,2.2,3.7,5.5,7.5,11,15,18.5,22,30,37,45];
+var KW_REJ=[3.7,5.5,7.5,11,15,22,30,37,45,55,75,90];
+var TERMINALS={
+ mitsubishi:{fwd:"STF",rev:"STR",common:"SD",faultA:"A",faultB:"B",faultC:"C"},
+ fuji:{fwd:"FWD",rev:"REV",common:"CM",faultA:"30A",faultB:"30B",faultC:"30C"},
+ yaskawa:{fwd:"S1",rev:"S2",common:"SC",faultA:"MA",faultB:"MB",faultC:"MC"},
+ hitachi:{fwd:"FW",rev:"RV",common:"CM1",faultA:"AL1",faultB:"AL0",faultC:"AL2"},
+ toshiba:{fwd:"F",rev:"R",common:"CC",faultA:"FLA",faultB:"FLB",faultC:"FLC"},
+ omron:{fwd:"FW",rev:"RV",common:"CM1",faultA:"AL1",faultB:"AL0",faultC:"AL2"},
+ meidensha:{fwd:"FWD",rev:"REV",common:"PS",faultA:"FA",faultB:"FB",faultC:"FC"},
+ reliance:{fwd:"FWD",rev:"REV",common:"COM",faultA:"R1A",faultB:"R1B",faultC:"R1C"}
+};
+var PARAMS={
+ mitsubishi:{accel:"Pr.7",decel:"Pr.8",thermal:"Pr.9",freqUpper:"Pr.1",freqLower:"Pr.2",freqBase:"Pr.3",pgPulse:"Pr.369(FR-A8AP)"},
+ fuji:{accel:"F07",decel:"F08",thermal:"F11",freqUpper:"F15",freqLower:"F16",freqBase:"F04",pgPulse:"P28/o系"},
+ yaskawa:{accel:"C1-01",decel:"C1-02",thermal:"E2-01",freqUpper:"d2-01",freqLower:"d2-02",freqBase:"E1-06",pgPulse:"F1-01"},
+ hitachi:{accel:"F002",decel:"F003",thermal:"b012",freqUpper:"A061",freqLower:"A062",freqBase:"A003",pgPulse:"P011(SJ-FB)"},
+ toshiba:{accel:"ACC",decel:"DEC",thermal:"F601",freqUpper:"UL",freqLower:"LL",freqBase:"F417",pgPulse:"F370"},
+ omron:{accel:"F002",decel:"F003",thermal:"b012",freqUpper:"A061",freqLower:"A062",freqBase:"A003",pgPulse:"P011"},
+ meidensha:{accel:"B01-0",decel:"B01-1",thermal:"C22-0",freqUpper:"A01-1",freqLower:"A01-2",freqBase:"B00-0",pgPulse:"PGパルス設定"},
+ reliance:{accel:"P-01",decel:"P-02",thermal:"P-10",freqUpper:"P-20",freqLower:"P-21",freqBase:"P-05",pgPulse:"P-30★"}
+};
+var V_MODES={
+ mitsubishi:["V/f","アドバンスト磁束ベクトル","リアルセンサレスベクトル","ベクトル制御(PG)"],
+ fuji:["V/f","センサレスベクトル","ベクトル制御(PG)","トルク制御"],
+ yaskawa:["V/f","オープンループベクトル","クローズドループベクトル(PG)"],
+ hitachi:["V/f","0Hz域センサレスベクトル","PGベクトル"],
+ toshiba:["V/f","センサレスベクトル","PGベクトル","PMモータ制御"],
+ meidensha:["V/f","センサレスベクトル","ベクトル制御(PG)","PMモータ制御"],
+ reliance:["V/f","センサレスベクトル","ベクトル制御(PG)","ラインドライブ制御"]
+};
+var INV_SERIES=[
+ {key:"FRE800",maker:"三菱電機",brand:"mitsubishi",label:"FR-E800（汎用・小形）",volts:[200,400],kws:KW_FULL,code:function(kw,v){return"FR-E8"+(v===200?2:4)+"0-"+kwDot(kw)+"K";}},
+ {key:"FRA800",maker:"三菱電機",brand:"mitsubishi",label:"FR-A800（高機能・高性能）",volts:[200,400],kws:KW_FULL,code:function(kw,v){return"FR-A8"+(v===200?2:4)+"0-"+kwDot(kw)+"K";}},
+ {key:"FRF800",maker:"三菱電機",brand:"mitsubishi",label:"FR-F800（ファン・ポンプ用）",volts:[200,400],kws:[1.5,2.2,3.7,5.5,7.5,11,15,18.5,22],code:function(kw,v){return"FR-F8"+(v===200?2:4)+"0-"+kwDot(kw)+"K";}},
+ {key:"ACE_E3",maker:"富士電機",brand:"fuji",label:"FRENIC-Ace（E3・スタンダード）",volts:[200,400],kws:KW_FULL,anchor:true,code:function(kw,v){return"FRN"+kwDot(kw)+"E3S-"+(v===200?2:4)+"J";}},
+ {key:"MINI_C2",maker:"富士電機",brand:"fuji",label:"FRENIC-Mini（C2・小形簡易）",volts:[200,400],kws:KW_SMALL,code:function(kw,v){return"FRN"+kwDot(kw)+"C2S-"+(v===200?2:4)+"J";}},
+ {key:"MEGA_G2",maker:"富士電機",brand:"fuji",label:"FRENIC-MEGA（G2・高機能）",volts:[200,400],kws:KW_FULL,code:function(kw,v){return"FRN"+kwDot(kw)+"G2S-"+(v===200?2:4)+"J";}},
+ {key:"GA700",maker:"安川電機",brand:"yaskawa",label:"GA700（一般産業用・高機能）",volts:[200,400],kws:KW_FULL,code:function(kw,v){return"GA700 "+kwDot(kw)+"kW/"+v+"V";},note:"CIMR-GA形。実形式コードは定格電流ベース。"},
+ {key:"GA500",maker:"安川電機",brand:"yaskawa",label:"GA500（小形・高機能）",volts:[200,400],kws:KW_FULL,code:function(kw,v){return"GA500 "+kwDot(kw)+"kW/"+v+"V";},note:"CIMR-GA形。実形式コードは定格電流ベース。"},
+ {key:"SJ_P1",maker:"日立産機システム",brand:"hitachi",label:"SJシリーズ P1（高機能）",volts:[200,400],kws:KW_FULL,code:function(kw,v){return"SJ-P1 "+kwDot(kw)+"kW/"+v+"V";}},
+ {key:"WJ_C1",maker:"日立産機システム",brand:"hitachi",label:"WJシリーズ C1（標準）",volts:[200,400],kws:KW_SMALL,code:function(kw,v){return"WJ-C1 "+kwDot(kw)+"kW/"+v+"V";}},
+ {key:"VFAS3J",maker:"東芝",brand:"toshiba",label:"TOSVERT VF-AS3J（高機能）",volts:[200,400],kws:KW_FULL,code:function(kw,v){return"VFAS3-"+(v===200?2:4)+kw3(kw)+"P";}},
+ {key:"VFS15",maker:"東芝",brand:"toshiba",label:"TOSVERT VF-S15（多機能・小形）",volts:[200,400],kws:KW_SMALL,code:function(kw,v){return"VFS15-"+(v===200?2:4)+kw3(kw)+"PM";}},
+ {key:"MX2_V2",maker:"オムロン",brand:"omron",label:"3G3MX2-V2（多機能・小形）",volts:[200,400],kws:KW_SMALL,anchor:true,code:function(kw,v){return"3G3MX2-A"+(v===200?2:4)+kw3(kw)+"-V2";}},
+ {key:"RX2",maker:"オムロン",brand:"omron",label:"3G3RX2（高機能・汎用）",volts:[200,400],kws:KW_FULL,code:function(kw,v){return"3G3RX2-A"+(v===200?2:4)+kw3(kw);}},
+ {key:"REJ_DM",maker:"日本リライアンス",brand:"reliance",label:"Drive MuLti（ベクトル制御インバータ）",volts:[400],kws:KW_REJ,code:function(kw,v){return"Drive MuLti "+kwDot(kw)+"kW/"+v+"V";},note:"日本リライアンス(現REJ)。ベクトル制御＋ラインドライブ(ダンサ/ヘルパー制御内蔵)。通信AMX(GV-NET)標準＋USB。汎用用途にも適用可。★容量帯・寸法要確認"}
+];
+var INV_LEGACY=[
+ {key:"FRE700",maker:"三菱電機",brand:"mitsubishi",label:"FR-E700（旧・汎用小形）",volts:[200,400],kws:KW_SMALL,successor:"FRE800",code:function(kw,v){return"FR-E7"+(v===200?2:4)+"0-"+kwDot(kw)+"K";}},
+ {key:"FRD700",maker:"三菱電機",brand:"mitsubishi",label:"FR-D700（旧・簡単小形）",volts:[200,400],kws:[0.4,0.75,1.5,2.2,3.7,5.5,7.5,11,15],successor:"FRE800",code:function(kw,v){return"FR-D7"+(v===200?2:4)+"0-"+kwDot(kw)+"K";}},
+ {key:"FRA700",maker:"三菱電機",brand:"mitsubishi",label:"FR-A700（旧・高機能）",volts:[200,400],kws:KW_FULL,successor:"FRA800",code:function(kw,v){return"FR-A7"+(v===200?2:4)+"0-"+kwDot(kw)+"K";}},
+ {key:"ACE_E2",maker:"富士電機",brand:"fuji",label:"FRENIC-Ace（E2・旧）",volts:[200,400],kws:KW_FULL,successor:"ACE_E3",code:function(kw,v){return"FRN"+kwDot(kw)+"E2S-"+(v===200?2:4)+"J";}},
+ {key:"MINI_C1",maker:"富士電機",brand:"fuji",label:"FRENIC-Mini（C1・旧）",volts:[200,400],kws:KW_SMALL,successor:"MINI_C2",code:function(kw,v){return"FRN"+kwDot(kw)+"C1S-"+(v===200?2:4)+"J";}},
+ {key:"V1000",maker:"安川電機",brand:"yaskawa",label:"V1000（旧・小形高性能）",volts:[200,400],kws:KW_SMALL,successor:"GA500",code:function(kw,v){return"V1000 "+kwDot(kw)+"kW/"+v+"V";}},
+ {key:"A1000",maker:"安川電機",brand:"yaskawa",label:"A1000（旧・高性能）",volts:[200,400],kws:KW_FULL,successor:"GA700",code:function(kw,v){return"A1000 "+kwDot(kw)+"kW/"+v+"V";}},
+ {key:"WJ200",maker:"日立産機システム",brand:"hitachi",label:"WJ200（旧・標準）",volts:[200,400],kws:KW_SMALL,successor:"WJ_C1",code:function(kw,v){return"WJ200-"+kw3(kw)+(v===200?"SF":"HF");}},
+ {key:"SJ700",maker:"日立産機システム",brand:"hitachi",label:"SJ700（旧・高機能）",volts:[200,400],kws:KW_FULL,successor:"SJ_P1",code:function(kw,v){return"SJ700-"+kw3(kw)+(v===200?"L":"H")+"FF2";}},
+ {key:"MX2_V1",maker:"オムロン",brand:"omron",label:"3G3MX2-V1（旧）",volts:[200,400],kws:KW_SMALL,successor:"MX2_V2",code:function(kw,v){return"3G3MX2-A"+(v===200?2:4)+kw3(kw)+"-V1";}},
+ {key:"VFS11",maker:"東芝",brand:"toshiba",label:"VF-S11（旧・多機能小形）",volts:[200,400],kws:KW_SMALL,successor:"VFS15",code:function(kw,v){return"VFS11-"+(v===200?2:4)+kw3(kw)+"PM";}}
+];
+var VEC_SERIES=[
+ {key:"FRA800",maker:"三菱電機",brand:"mitsubishi",label:"FR-A800（高機能・ベクトル対応）",vclass:"高機能汎用（ベクトル）",pgOption:"FR-A8AP",volts:[200,400],kws:KW_VEC,code:function(kw,v){return"FR-A8"+(v===200?2:4)+"0-"+kwDot(kw)+"K";},note:"ベクトル制御(PG)はFR-A8AP装着時に有効。"},
+ {key:"FVG",maker:"富士電機",brand:"fuji",label:"FRENIC-VG（専用ベクトル）",vclass:"専用ベクトル",pgOption:"OPC-VG1-PG",volts:[200,400],kws:KW_VEC,anchor:true,code:function(kw,v){return"FRN"+kwDot(kw)+"VG1S-"+(v===200?2:4);},note:"PG検出回路・トルク制御・位置制御を標準装備。"},
+ {key:"A1000",maker:"安川電機",brand:"yaskawa",label:"A1000（フルベクトル）",vclass:"高機能（フルベクトル）",pgOption:"PG-B3 / PG-X3",volts:[200,400],kws:KW_VEC,code:function(kw,v){return"A1000 "+kwDot(kw)+"kW/"+v+"V";},note:"CLVはPGオプション装着時。CIMR-A形。"},
+ {key:"GA700V",maker:"安川電機",brand:"yaskawa",label:"GA700（ベクトル対応汎用）",vclass:"高機能汎用（ベクトル）",pgOption:"PG-B3 / PG-X3",volts:[200,400],kws:KW_VEC,code:function(kw,v){return"GA700 "+kwDot(kw)+"kW/"+v+"V";},note:"CLVはPGオプション装着時。CIMR-GA形。"},
+ {key:"SJP1V",maker:"日立産機システム",brand:"hitachi",label:"SJシリーズ P1（ベクトル対応）",vclass:"高機能汎用（ベクトル）",pgOption:"SJ-FB",volts:[200,400],kws:KW_VEC,code:function(kw,v){return"SJ-P1 "+kwDot(kw)+"kW/"+v+"V";},note:"0Hz域SLV標準。PGベクトルはSJ-FB装着時。"},
+ {key:"VFAS3V",maker:"東芝",brand:"toshiba",label:"TOSVERT VF-AS3（ベクトル対応）",vclass:"高機能（ベクトル）",pgOption:"PGオプション",volts:[200,400],kws:KW_VEC,code:function(kw,v){return"VFAS3-"+(v===200?2:4)+kw3(kw)+"P";},note:"センサレスベクトル・PMモータ制御対応。"},
+ {key:"VT240S",maker:"明電舎",brand:"meidensha",label:"THYFREC VT240S（6制御モード）",vclass:"高機能汎用（ベクトル）",pgOption:"PGフィードバックカード",volts:[200,400],kws:KW_MID,code:function(kw,v){return"VT240S-"+kwDot(kw)+"kW/"+v+"V";},note:"誘導機/PM対応の6制御モード。"},
+ {key:"REJ_DMV",maker:"日本リライアンス",brand:"reliance",label:"Drive MuLti（ラインドライブ／ベクトル）",vclass:"専用ベクトル/ラインドライブ",pgOption:"AMX(GV-NET)標準／FBオプション",volts:[400],kws:KW_REJ,code:function(kw,v){return"Drive MuLti "+kwDot(kw)+"kW/"+v+"V";},note:"日本リライアンス(現REJ)。速度ループ＋電流/ダンサ/ヘルパー制御を内蔵。通信AMX(GV-NET)標準。★容量帯・寸法要確認"}
+];
+var VEC_LEGACY=[
+ {key:"FRV500",maker:"三菱電機",brand:"mitsubishi",label:"FR-V500（旧・専用ベクトル）",vclass:"専用ベクトル",pgOption:"FR-V5AP",volts:[200,400],kws:KW_MID,successor:"FRA800",code:function(kw,v){return"FR-V5"+(v===200?2:4)+"0-"+kwDot(kw)+"K";}},
+ {key:"VG7S",maker:"富士電機",brand:"fuji",label:"FRENIC5000VG7S（旧・専用ベクトル）",vclass:"専用ベクトル",pgOption:"OPC-VG7-PG",volts:[200,400],kws:KW_MID,successor:"FVG",code:function(kw,v){return"FRN"+kwDot(kw)+"VG7S-"+(v===200?2:4);}},
+ {key:"VSG7",maker:"安川電機",brand:"yaskawa",label:"Varispeed G7（旧・高性能ベクトル）",vclass:"高機能（ベクトル）",pgOption:"PG-B2 / PG-X2",volts:[200,400],kws:KW_MID,successor:"GA700V",code:function(kw,v){return"VS-G7 "+kwDot(kw)+"kW/"+v+"V";}},
+ {key:"SJ700V",maker:"日立産機システム",brand:"hitachi",label:"SJ700（旧・高機能ベクトル）",vclass:"高機能汎用（ベクトル）",pgOption:"SJ-FB",volts:[200,400],kws:KW_VEC,successor:"SJP1V",code:function(kw,v){return"SJ700-"+kw3(kw)+(v===200?"L":"H")+"FF2";}},
+ {key:"VT230S",maker:"明電舎",brand:"meidensha",label:"THYFREC VT230S（旧・ベクトル）",vclass:"高機能汎用（ベクトル）",pgOption:"PGフィードバックカード",volts:[200,400],kws:KW_MID,successor:"VT240S",code:function(kw,v){return"VT230S-"+kwDot(kw)+"kW/"+v+"V";}},
+ {key:"REJ_VZ3",maker:"日本リライアンス",brand:"reliance",label:"VZ3000（旧・ベクトルインバータ）",vclass:"専用ベクトル",pgOption:"PGフィードバックカード",volts:[400],kws:KW_REJ,successor:"REJ_DMV",code:function(kw,v){return"VZ3000 "+kwDot(kw)+"kW/"+v+"V";}},
+ {key:"REJ_BL3",maker:"日本リライアンス",brand:"reliance",label:"BL3000（旧・ベクトルインバータ）",vclass:"専用ベクトル",pgOption:"PGフィードバックカード",volts:[400],kws:KW_REJ,successor:"REJ_DMV",code:function(kw,v){return"BL3000 "+kwDot(kw)+"kW/"+v+"V";}}
+];
+function buildInv(seriesList,legacyList,isVector){
+ var list=[],prefix=isVector?"VINV":"INV";
+ function push(s,kw,v,extra){
+  var f=FRAME[kw];if(!f)return;
+  var base={id:makeId(s.key,v,kw),maker:s.maker,brand:s.brand,series:s.label,model:s.code(kw,v),
+   ratedKW:kw,ratedA:(RATED_A[v]&&RATED_A[v][kw])||null,voltage:"3相"+v+"V",voltClass:v,
+   dims:f.dims,holes:f.holes,capacityClass:prefix+"-"+kw+"kW-"+v+"V",mounting:"壁掛け",
+   controlTerminals:TERMINALS[s.brand],parameters:PARAMS[s.brand],anchor:!!s.anchor,note:s.note||""};
+  if(isVector){base.controlModes=V_MODES[s.brand];base.vclass=s.vclass;base.pgOption=s.pgOption;base.pgFeedback=true;}
+  if(extra)for(var k in extra)base[k]=extra[k];
+  list.push(base);
+ }
+ seriesList.forEach(function(s){s.volts.forEach(function(v){s.kws.forEach(function(kw){push(s,kw,v);});});});
+ legacyList.forEach(function(s){s.volts.forEach(function(v){s.kws.forEach(function(kw){push(s,kw,v,{discontinued:true,successorId:makeId(s.successor,v,kw)});});});});
+ return list;
+}
+var GENERAL_DEVICES=buildInv(INV_SERIES,INV_LEGACY,false);
+var VECTOR_DEVICES=buildInv(VEC_SERIES,VEC_LEGACY,true);
+
+/* ================= サーボ データ ================= */
+var OUT_ALL=[50,100,200,400,750,1000,1500,2000,3000,5000];
+var OUT_MIT=[100,200,400,750,1000,2000,3000,5000];
+function powerBand(w){return w>=1000?(w/1000)+"k":(""+w);}
+function ccS(w,v){return"SV-"+powerBand(w)+"-"+v+"V";}
+function wLabel(w){return w>=1000?(w/1000)+"kW":(w+"W");}
+var FRAME_S={
+ 50:{dims:{w:40,h:160,d:135},holes:{w:28,h:150}},100:{dims:{w:40,h:160,d:135},holes:{w:28,h:150}},
+ 200:{dims:{w:40,h:160,d:170},holes:{w:28,h:150}},400:{dims:{w:55,h:160,d:170},holes:{w:43,h:150}},
+ 750:{dims:{w:60,h:168,d:185},holes:{w:48,h:158}},1000:{dims:{w:70,h:168,d:185},holes:{w:58,h:158}},
+ 1500:{dims:{w:85,h:250,d:200},holes:{w:70,h:235}},2000:{dims:{w:90,h:250,d:220},holes:{w:75,h:235}},
+ 3000:{dims:{w:90,h:250,d:220},holes:{w:75,h:235}},5000:{dims:{w:130,h:300,d:260},holes:{w:110,h:283}}
+};
+var IO={
+ mitsubishi:{son:"SON",alm:"ALM",rdy:"RD"},yaskawa:{son:"/S-ON",alm:"/ALM",rdy:"/S-RDY"},
+ panasonic:{son:"SRV-ON",alm:"ALM",rdy:"S-RDY"},omron:{son:"RUN(/SV-ON)",alm:"/ALM",rdy:"/READY"},
+ fuji:{son:"S-ON",alm:"ALM",rdy:"RDY"},sanyo:{son:"SON",alm:"ALM",rdy:"RDY"},reliance:{son:"SON",alm:"FLT",rdy:"RDY"}
+};
+var MOTOR={
+ mitsubishi:{motor:"HK系（HK-KT/ST/RT）",enc:"26bit ABS"},yaskawa:{motor:"SGM7系（SGM7J/A/G）",enc:"24bit ABS"},
+ yaskawaX:{motor:"SGMX系",enc:"26bit ABS"},panasonic:{motor:"MSMF/MDMF/MHMF",enc:"23bit ABS"},
+ omron:{motor:"R88M-1M/1L",enc:"23bit ABS"},fuji:{motor:"GYS/GYG系",enc:"22bit ABS"},
+ sanyo:{motor:"R2系",enc:"20bit ABS"},reliance:{motor:"REJ ACモータ/BLモータ",enc:"1,000,000p/rev・シリアルABS/インクリ"}
+};
+var MIT_CODE={100:"10",200:"20",400:"40",750:"70",1000:"100",2000:"200",3000:"350",5000:"500"};
+var SV_SERIES=[
+ {key:"J5G",maker:"三菱電機",brand:"mitsubishi",mkey:"mitsubishi",label:"MELSERVO MR-J5-G",iface:"CC-Link IE TSN",ikey:"cclinkietsn",volts:[200,400],outs:OUT_MIT,anchor:true,code:function(w,v){return"MR-J5-"+MIT_CODE[w]+"G"+(v===400?"4":"");},note:"CC-Link IE Field Basicにも対応。実機の3kW/5kW枠は3.5kW/7kW区分。"},
+ {key:"J5B",maker:"三菱電機",brand:"mitsubishi",mkey:"mitsubishi",label:"MELSERVO MR-J5-B",iface:"SSCNET III/H（光）",ikey:"sscnet",volts:[200,400],outs:OUT_MIT,code:function(w,v){return"MR-J5-"+MIT_CODE[w]+"B"+(v===400?"4":"");}},
+ {key:"J5A",maker:"三菱電機",brand:"mitsubishi",mkey:"mitsubishi",label:"MELSERVO MR-J5-A",iface:"パルス列／アナログ",ikey:"pulse",volts:[200,400],outs:OUT_MIT,code:function(w,v){return"MR-J5-"+MIT_CODE[w]+"A"+(v===400?"4":"");}},
+ {key:"J5GN1",maker:"三菱電機",brand:"mitsubishi",mkey:"mitsubishi",label:"MELSERVO MR-J5-G-N1",iface:"EtherCAT",ikey:"ethercat",volts:[200,400],outs:OUT_MIT,code:function(w,v){return"MR-J5-"+MIT_CODE[w]+"G-N1"+(v===400?"4":"");}},
+ {key:"SGX",maker:"安川電機",brand:"yaskawa",mkey:"yaskawaX",label:"Σ-X（EtherCAT）",iface:"EtherCAT",ikey:"ethercat",volts:[200,400],outs:OUT_ALL,code:function(w,v){return"Σ-X "+wLabel(w)+"·EtherCAT/"+v+"V";},note:"実形名(SGDX)は定格電流ベース。"},
+ {key:"SG7M3",maker:"安川電機",brand:"yaskawa",mkey:"yaskawa",label:"Σ-7S（MECHATROLINK-III）",iface:"MECHATROLINK-III",ikey:"mliii",volts:[200,400],outs:OUT_ALL,anchor:true,code:function(w,v){return"SGD7S "+wLabel(w)+"·M-III/"+v+"V";},note:"実形名(SGD7S-□A)は定格電流ベース。"},
+ {key:"SG7AP",maker:"安川電機",brand:"yaskawa",mkey:"yaskawa",label:"Σ-7S（アナログ・パルス）",iface:"パルス列／アナログ",ikey:"pulse",volts:[200,400],outs:OUT_ALL,code:function(w,v){return"SGD7S "+wLabel(w)+"·パルス/"+v+"V";}},
+ {key:"A6B",maker:"パナソニック",brand:"panasonic",mkey:"panasonic",label:"MINAS A6B（EtherCAT）",iface:"EtherCAT",ikey:"ethercat",volts:[100,200,400],outs:OUT_ALL,code:function(w,v){return"MINAS A6B "+wLabel(w)+"/"+v+"V";}},
+ {key:"A6N",maker:"パナソニック",brand:"panasonic",mkey:"panasonic",label:"MINAS A6N（RTEX）",iface:"RTEX",ikey:"rtex",volts:[100,200,400],outs:OUT_ALL,code:function(w,v){return"MINAS A6N "+wLabel(w)+"/"+v+"V";}},
+ {key:"A6SF",maker:"パナソニック",brand:"panasonic",mkey:"panasonic",label:"MINAS A6SF（パルス・汎用）",iface:"パルス列／アナログ",ikey:"pulse",volts:[100,200,400],outs:OUT_ALL,code:function(w,v){return"MINAS A6SF "+wLabel(w)+"/"+v+"V";}},
+ {key:"1SN",maker:"オムロン",brand:"omron",mkey:"omron",label:"OMNUC 1S（EtherCAT）",iface:"EtherCAT",ikey:"ethercat",volts:[100,200,400],outs:OUT_ALL,code:function(w,v){return"R88D-1SN "+wLabel(w)+"/"+v+"V";}},
+ {key:"1SAN",maker:"オムロン",brand:"omron",mkey:"omron",label:"OMNUC 1S（パルス列）",iface:"パルス列／アナログ",ikey:"pulse",volts:[100,200],outs:OUT_ALL,code:function(w,v){return"R88D-1SAN "+wLabel(w)+"/"+v+"V";}},
+ {key:"A7EC",maker:"富士電機",brand:"fuji",mkey:"fuji",label:"ALPHA7（EtherCAT）",iface:"EtherCAT",ikey:"ethercat",volts:[200,400],outs:OUT_ALL,code:function(w,v){return"ALPHA7 "+wLabel(w)+"·EtherCAT/"+v+"V";}},
+ {key:"A7P",maker:"富士電機",brand:"fuji",mkey:"fuji",label:"ALPHA7（パルス列）",iface:"パルス列／アナログ",ikey:"pulse",volts:[200,400],outs:OUT_ALL,code:function(w,v){return"ALPHA7 "+wLabel(w)+"·パルス/"+v+"V";}},
+ {key:"SRAE",maker:"サンヨーデンキ",brand:"sanyo",mkey:"sanyo",label:"SANMOTION R ADVANCED（EtherCAT）",iface:"EtherCAT",ikey:"ethercat",volts:[200,400],outs:OUT_ALL,code:function(w,v){return"SANMOTION R "+wLabel(w)+"·EtherCAT/"+v+"V";}},
+ {key:"SRAP",maker:"サンヨーデンキ",brand:"sanyo",mkey:"sanyo",label:"SANMOTION R（アナログ・パルス）",iface:"パルス列／アナログ",ikey:"pulse",volts:[200],outs:OUT_ALL,code:function(w,v){return"SANMOTION R "+wLabel(w)+"·パルス/"+v+"V";}},
+ {key:"VZ7000",maker:"日本リライアンス",brand:"reliance",mkey:"reliance",label:"VZ7000（デジタルACサーボドライブ）",iface:"SERCOS（IEC/EN61491）",ikey:"sercos",volts:[400],outs:[1500,2000,3000,5000],anchor:true,code:function(w,v){return"VZ7000 "+wLabel(w)+"/"+v+"V";},note:"日本リライアンス(現REJ)。実レンジ1.5kW〜600kWの大容量・多軸同期サーボ。SERCOS標準＋DeviceNet/CC-Link/ControlNet。エンコーダ1,000,000p/rev。本DBは1.5〜5kW帯のみ表示・外形寸法は代表値。"}
+];
+var SV_LEGACY=[
+ {key:"J4A",maker:"三菱電機",brand:"mitsubishi",mkey:"mitsubishi",label:"MR-J4-A（旧・パルス/アナログ）",iface:"パルス列／アナログ",ikey:"pulse",volts:[200,400],outs:OUT_MIT,successor:"J5A",code:function(w,v){return"MR-J4-"+MIT_CODE[w]+"A"+(v===400?"4":"");}},
+ {key:"J4B",maker:"三菱電機",brand:"mitsubishi",mkey:"mitsubishi",label:"MR-J4-B（旧・SSCNET III/H）",iface:"SSCNET III/H（光）",ikey:"sscnet",volts:[200,400],outs:OUT_MIT,successor:"J5B",code:function(w,v){return"MR-J4-"+MIT_CODE[w]+"B"+(v===400?"4":"");}},
+ {key:"J4GF",maker:"三菱電機",brand:"mitsubishi",mkey:"mitsubishi",label:"MR-J4-GF（旧・CC-Link IE）",iface:"CC-Link IE TSN",ikey:"cclinkietsn",volts:[200,400],outs:OUT_MIT,successor:"J5G",code:function(w,v){return"MR-J4-"+MIT_CODE[w]+"GF"+(v===400?"4":"");}},
+ {key:"SGVM2",maker:"安川電機",brand:"yaskawa",mkey:"yaskawa",label:"Σ-V（旧・MECHATROLINK-II）",iface:"MECHATROLINK-II",ikey:"mlii",volts:[200,400],outs:OUT_ALL,successor:"SG7M3",code:function(w,v){return"SGDV "+wLabel(w)+"·M-II/"+v+"V";}},
+ {key:"SGVAP",maker:"安川電機",brand:"yaskawa",mkey:"yaskawa",label:"Σ-V（旧・パルス/アナログ）",iface:"パルス列／アナログ",ikey:"pulse",volts:[200,400],outs:OUT_ALL,successor:"SG7AP",code:function(w,v){return"SGDV "+wLabel(w)+"·パルス/"+v+"V";}},
+ {key:"A5B",maker:"パナソニック",brand:"panasonic",mkey:"panasonic",label:"MINAS A5B（旧・EtherCAT）",iface:"EtherCAT",ikey:"ethercat",volts:[100,200,400],outs:OUT_ALL,successor:"A6B",code:function(w,v){return"MINAS A5B "+wLabel(w)+"/"+v+"V";}},
+ {key:"A5N",maker:"パナソニック",brand:"panasonic",mkey:"panasonic",label:"MINAS A5N（旧・RTEX）",iface:"RTEX",ikey:"rtex",volts:[100,200,400],outs:OUT_ALL,successor:"A6N",code:function(w,v){return"MINAS A5N "+wLabel(w)+"/"+v+"V";}},
+ {key:"G5EC",maker:"オムロン",brand:"omron",mkey:"omron",label:"OMNUC G5（旧・EtherCAT）",iface:"EtherCAT",ikey:"ethercat",volts:[100,200,400],outs:OUT_ALL,successor:"1SN",code:function(w,v){return"R88D-KN "+wLabel(w)+"·ECT/"+v+"V";}},
+ {key:"A5FUJI",maker:"富士電機",brand:"fuji",mkey:"fuji",label:"ALPHA5（旧・パルス）",iface:"パルス列／アナログ",ikey:"pulse",volts:[200,400],outs:OUT_ALL,successor:"A7P",code:function(w,v){return"ALPHA5 "+wLabel(w)+"·パルス/"+v+"V";}}
+];
+function buildServo(){
+ var list=[];
+ function push(s,w,v,extra){
+  var f=FRAME_S[w];if(!f)return;var m=MOTOR[s.mkey]||MOTOR[s.brand];
+  var base={id:makeId(s.key,v,w),maker:s.maker,brand:s.brand,series:s.label,model:s.code(w,v),
+   ratedW:w,ratedLabel:wLabel(w),voltage:v===100?"単相100V":(v===400?"3相400V":"3相/単相200V"),voltClass:v,
+   iface:s.iface,ikey:s.ikey,motor:m.motor,encoder:m.enc,io:IO[s.brand],dims:f.dims,holes:f.holes,
+   capacityClass:ccS(w,v),mounting:"壁掛け（盤内）",anchor:!!s.anchor,note:s.note||""};
+  if(extra)for(var k in extra)base[k]=extra[k];
+  list.push(base);
+ }
+ SV_SERIES.forEach(function(s){s.volts.forEach(function(v){s.outs.forEach(function(w){push(s,w,v);});});});
+ SV_LEGACY.forEach(function(s){s.volts.forEach(function(v){s.outs.forEach(function(w){push(s,w,v,{discontinued:true,successorId:makeId(s.successor,v,w)});});});});
+ return list;
+}
+var SV_CURRENT=buildServo();
+var YASKAWA_DISC=[
+ {name:"DYNASERV",models:"UD1△△3 / UR△AG3 / UR△BG3 / UR5CG3 / UR5H△3 / UR△AP3 / UR△BP3 / U△5CP3",stop:"2016.9.20",parts:"2016.3.20(受付終了)",repair:"2021.9.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"DYNASERV",models:"UR△EG3 / UR△EP3",stop:"2016.9.20",parts:"2016.3.20(受付終了)",repair:"2021.9.20",alt:"なし",altKey:null},
+ {name:"Σ-IIIシリーズ",models:"SGDS",stop:"2015.3.20",parts:"2014.9.20(受付終了)",repair:"2025.3.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"Σ-IIシリーズ",models:"SGDM / SGDH / SGDP / SGDJ / SGDD",stop:"2015.3.20",parts:"2014.9.20(受付終了)",repair:"2025.3.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"Σ-IIシリーズ(オプション)",models:"JUSP-NS100/NS110/NS115/NS300/NS310/NS500/NS600/NJ001/HS001/FC100/LD001/COV03",stop:"2015.3.20",parts:"2014.9.20(受付終了)",repair:"2025.3.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"JUNMAシリーズ",models:"SJDE",stop:"2015.3.20",parts:"2014.9.20(受付終了)",repair:"-",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"Σ-miniシリーズ",models:"SGDF-A1C△ / A2C△ / A3C△ / B3C△ / B5C△ / B9C△",stop:"2013.5.20",parts:"2013.3.20(受付終了)",repair:"2023.5.20",alt:"Σ-7miniシリーズ",altKey:"SGX"},
+ {name:"Σシリーズ",models:"SGD-□□AH/VH/BH/WH/AN/VN/BN/WN",stop:"2008.11.20",parts:"2008.9.20(受付終了)",repair:"2018.11.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"Σシリーズ",models:"SGDA-□□AS/VS/BS/WS/BSM/CS/AP/VP/BP/WP/BPM",stop:"2008.11.20",parts:"2008.9.20(受付終了)",repair:"2018.11.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"Σシリーズ",models:"SGDB-□□AD/VD/DD/AN/AM",stop:"2008.11.20",parts:"2008.9.20(受付終了)",repair:"2018.11.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"大容量Σシリーズ(22kW以上)",models:"SGDB-□□AD / DD",stop:"2008.11.20",parts:"2008.9.20(受付終了)",repair:"2008.11.20",alt:"大容量Σ-Vシリーズ",altKey:null},
+ {name:"Σシリーズ",models:"SGDC-□□DSA",stop:"2008.11.20",parts:"2008.9.20(受付終了)",repair:"2018.11.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"Σシリーズ",models:"SGDE-□□AS/VS/BS/WS/AP/VP/BP/WP",stop:"2008.11.20",parts:"2008.9.20(受付終了)",repair:"2018.11.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"Σシリーズ",models:"SGDL-□□AS/BS/AP/BP",stop:"2008.11.20",parts:"2008.9.20(受付終了)",repair:"2018.11.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"Σシリーズ",models:"DR2-□□AC/BC/ACP/BCP/AC-F/BC-F/ACP-F/BCP-F/AD/BD",stop:"2006.12.20",parts:"2008.6.20",repair:"2016.12.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"HRシリーズ",models:"CACR-HR□□BAB/BB/BBC/SB/SBC/CB/AAB/AB",stop:"2004.9.20",parts:"2007.7.20",repair:"2014.9.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"大容量サーボ(VS-866)",models:"CIMR-SVJ□□",stop:"2002.9.21",parts:"2007.9.20",repair:"2012.9.20",alt:"大容量Σ-Vシリーズ",altKey:null},
+ {name:"CACR-HR",models:"CACR-HR□□UB / VBC",stop:"2001.6.20",parts:"2006.6.20",repair:"2011.6.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"CACR-SR",models:"CACR-SR□□BB/BC/BD/BE/BY/BZ/SB/SZ/TB/TZ/UB/VE",stop:"2000.9.21",parts:"2002.8.6",repair:"2007.3.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"CACR-PR",models:"CACR-PR□□BB/BC/AD",stop:"2000.9.21",parts:"2002.8.6",repair:"2007.3.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"CACR-DR",models:"CACR-DR□□BA / BZ",stop:"2000.9.21",parts:"2002.8.6",repair:"2007.3.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"Σシリーズ",models:"DR1-□□AC/BC/AA/BA",stop:"1998.6.21",parts:"2003.6.20",repair:"2008.6.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"Σシリーズ",models:"SGD-□□AS/BS/AP/BP",stop:"1998.6.21",parts:"2003.6.20",repair:"2008.6.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"CACR-SR",models:"CACR-SR□□AB/AC/AD/AH/AX/AY/AZ/KA",stop:"1996.5.21",parts:"1999.5.20",repair:"2003.5.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"CACR-PR",models:"CACR-PR□□AC/AE/AH/KA",stop:"1996.5.21",parts:"1999.5.20",repair:"2003.5.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"CACR-SR",models:"CACR-SR□□AA / BA",stop:"1995.2.20",parts:"1996.3.20",repair:"1999.9.20",alt:"Σ-Xシリーズ",altKey:"SGX"},
+ {name:"CACR-PR",models:"CACR-PR□□AA / BA",stop:"1995.2.20",parts:"1996.3.20",repair:"1999.9.20",alt:"Σ-Xシリーズ",altKey:"SGX"}
+];
+var DISC_DEVICES=YASKAWA_DISC.map(function(d,i){return{
+ id:"YDISC_"+i,maker:"安川電機",brand:"yaskawa",mkey:"yaskawa",series:d.name,model:d.models,
+ discontinued:true,discRef:true,ratedW:0,ratedLabel:"全容量(□)",voltage:"—",voltClass:-1,
+ iface:"生産中止・代替参照",ikey:"disc",motor:"—",encoder:"—",io:{son:"—",alm:"—",rdy:"—"},
+ dims:{w:40,h:160,d:135},holes:null,capacityClass:"YDISC-"+i,mounting:"—",
+ stop:d.stop,parts:d.parts,repair:d.repair,alt:d.alt,altKey:d.altKey,
+ note:"安川電機の生産中止ACサーボパック。推奨代替: "+d.alt};});
+var SERVO_DEVICES=SV_CURRENT.concat(DISC_DEVICES);
+
+/* ================= 比較定義 ================= */
+var TERMINAL_FUNCTIONS=[{key:"fwd",label:"正転指令"},{key:"rev",label:"逆転指令"},{key:"common",label:"制御入力コモン"},
+ {key:"faultA",label:"異常出力(常開)"},{key:"faultB",label:"異常出力(常閉)"},{key:"faultC",label:"異常出力コモン"}];
+var PARAMETER_FUNCTIONS=[{key:"accel",label:"加速時間"},{key:"decel",label:"減速時間"},
+ {key:"thermal",label:"電子サーマル(モータ定格電流)",note:"接続するモータの銘板定格電流に合わせて必ず再設定"},
+ {key:"freqUpper",label:"上限周波数"},{key:"freqLower",label:"下限周波数"},{key:"freqBase",label:"基底周波数"}];
+var PG_FUNC={key:"pgPulse",label:"PG(エンコーダ)パルス数",note:"PGベクトル使用時はエンコーダのパルス数・極性を必ず設定"};
+
+/* ================= 状態 ================= */
+var S={cat:"inv",invType:"general",step:"search",query:"",maker:"すべて",volt:0,iface:"すべて",matchedId:null};
+var VOLT_INV=[{v:0,label:"すべて"},{v:200,label:"3相200V"},{v:400,label:"3相400V"}];
+var VOLT_SV=[{v:0,label:"すべて"},{v:100,label:"単100V"},{v:200,label:"200V"},{v:400,label:"400V"}];
+
+function activeDevices(){
+ if(S.cat==="servo")return SERVO_DEVICES;
+ return S.invType==="vector"?VECTOR_DEVICES:GENERAL_DEVICES;
+}
+function makerList(){
+ var src=S.cat==="servo"?SV_CURRENT:activeDevices();
+ var set=[];src.forEach(function(d){if(set.indexOf(d.maker)<0)set.push(d.maker);});return set;
+}
+function ifaceList(){var set=[];SV_CURRENT.forEach(function(d){if(set.indexOf(d.iface)<0)set.push(d.iface);});return set;}
+function byId(id){var a=activeDevices();for(var i=0;i<a.length;i++)if(a[i].id===id)return a[i];return null;}
+
+function results(){
+ var q=S.query.trim().toLowerCase().replace(/\s+/g,"");
+ var isSv=S.cat==="servo";
+ return activeDevices().filter(function(d){
+  if(S.maker!=="すべて"&&d.maker!==S.maker)return false;
+  if(S.volt!==0&&d.voltClass!==S.volt)return false;
+  if(isSv&&S.iface!=="すべて"&&d.iface!==S.iface)return false;
+  if(!q)return true;
+  var hay=(d.model+d.series+d.maker+(d.ratedKW||d.ratedLabel||"")+(d.pgOption||"")+(d.iface||"")).toLowerCase().replace(/\s+/g,"");
+  return hay.indexOf(q)>=0;
+ }).slice(0,60);
+}
+function compatibles(m){
+ if(!m||m.discRef)return[];
+ var isVec=(S.cat==="inv"&&S.invType==="vector"),isSv=(S.cat==="servo");
+ var arr=activeDevices().filter(function(a){return a.id!==m.id&&!a.discRef&&(a.capacityClass===m.capacityClass||a.id===m.successorId);})
+ .map(function(a){
+  var holeMatch=a.holes&&m.holes&&a.holes.w===m.holes.w&&a.holes.h===m.holes.h;
+  var pgMatch=!isVec||a.pgOption===m.pgOption;
+  var ifaceMatch=!isSv||a.ikey===m.ikey;
+  var o={};for(var k in a)o[k]=a[k];
+  o.diff=dimDiff(a.dims,m.dims);o.holeMatch=holeMatch;o.pgMatch=pgMatch;o.ifaceMatch=ifaceMatch;
+  o.isSuccessor=(a.id===m.successorId);o.sameMaker=(a.maker===m.maker);return o;
+ });
+ arr.sort(function(a,b){
+  if(a.isSuccessor!==b.isSuccessor)return a.isSuccessor?-1:1;
+  if(isSv&&a.ifaceMatch!==b.ifaceMatch)return a.ifaceMatch?-1:1;
+  if(a.sameMaker!==b.sameMaker)return a.sameMaker?-1:1;
+  if(a.holeMatch!==b.holeMatch)return a.holeMatch?-1:1;
+  return a.diff-b.diff;
+ });
+ return arr;
+}
+function successorChain(m){
+ var chain=[],cur=m,seen={};seen[cur.id]=1;
+ while(cur&&cur.successorId){var next=byId(cur.successorId);if(!next||seen[next.id])break;chain.push(next);seen[next.id]=1;cur=next;}
+ return chain;
+}
+
+/* ================= 描画部品 ================= */
+function chip(m){return '<span class="chip">'+esc(m)+'</span>';}
+function modesHtml(list){if(!list)return"";return '<div class="chips">'+list.map(chip).join("")+'</div>';}
+function field(k,v){return '<div class="field"><div class="k">'+esc(k)+'</div><div class="v mono">'+esc(v)+'</div></div>';}
+function tag(ok,label,neutral){var c=neutral?"var(--muted)":(ok?"var(--green)":"var(--amber)");
+ return '<span class="tag" style="border-color:'+c+';color:'+c+'">'+esc(label)+'</span>';}
+function dimSvg(dims,holes){
+ if(!dims)return"";
+ var scale=Math.min(0.9,220/dims.h),w=dims.w*scale,h=dims.h*scale;
+ var hw=holes?holes.w*scale:0,hh=holes?holes.h*scale:0,hx=40+(w-hw)/2,hy=10+(h-hh)/2;
+ var s='<svg width="'+(w+60)+'" height="'+(h+40)+'">';
+ s+='<rect x="40" y="10" width="'+w+'" height="'+h+'" fill="#2A3644" stroke="#E8A33D" stroke-width="1.5" rx="3"/>';
+ if(holes){s+='<rect x="'+hx+'" y="'+hy+'" width="'+hw+'" height="'+hh+'" fill="none" stroke="#4CAF7D" stroke-width="1.2" stroke-dasharray="4 3"/>';
+  s+='<circle cx="'+hx+'" cy="'+hy+'" r="2.5" fill="#4CAF7D"/><circle cx="'+(hx+hw)+'" cy="'+hy+'" r="2.5" fill="#4CAF7D"/>';
+  s+='<circle cx="'+hx+'" cy="'+(hy+hh)+'" r="2.5" fill="#4CAF7D"/><circle cx="'+(hx+hw)+'" cy="'+(hy+hh)+'" r="2.5" fill="#4CAF7D"/>';}
+ s+='<text x="'+(40+w/2)+'" y="'+(h+30)+'" text-anchor="middle" font-size="11" fill="#8A99A8" font-family="monospace">W '+dims.w+'mm</text>';
+ s+='<text x="20" y="'+(10+h/2)+'" text-anchor="middle" font-size="11" fill="#8A99A8" font-family="monospace" transform="rotate(-90 20 '+(10+h/2)+')">H '+dims.h+'mm</text>';
+ s+='</svg>';
+ var holeTxt=holes?'<div class="mono" style="font-size:13px;color:#8A99A8"><span style="color:#4CAF7D">● 取付穴ピッチ</span><br><span style="color:#E8ECEF;font-size:16px">'+holes.w+' × '+holes.h+'mm</span></div>':"";
+ return '<div style="display:flex;align-items:center;gap:24px;padding:12px 0;flex-wrap:wrap">'+s+
+  '<div class="mono" style="font-size:13px;color:#8A99A8">奥行 D<br><span style="color:#E8ECEF;font-size:16px">'+dims.d+'mm</span></div>'+holeTxt+'</div>';
+}
+function pgCompare(o,n){
+ var changed=o.pgOption!==n.pgOption;
+ var head='<div class="cmphead" style="color:'+(changed?"#E8A33D":"#4CAF7D")+'">'+(changed?"⚠ ":"✓ ")+
+  (changed?"エンコーダ(PG)フィードバックのオプション基板が異なります。PGの結線・カードを必ず交換／再設定してください。":"PGフィードバックのオプション種別は同系です（配線・パルス設定は要再確認）。")+'</div>';
+ var g='<div class="g3"><div class="mono" style="color:#8A99A8">項目</div><div class="mono" style="color:#8A99A8">既設</div><div class="mono" style="color:#8A99A8">この機種</div>'+
+  '<div style="color:#E8ECEF">PGオプション形式</div>'+
+  '<div class="mono" style="color:'+(changed?"#E8A33D":"#8A99A8")+'">'+esc(o.pgOption)+'</div>'+
+  '<div class="mono" style="color:'+(changed?"#E8A33D":"#4CAF7D")+';font-weight:'+(changed?700:400)+'">'+esc(n.pgOption)+(changed?" ←要変更":"")+'</div></div>';
+ return '<div class="cmp">'+head+g+'</div>';
+}
+function wiringCompare(o,n,vector){
+ var rows=TERMINAL_FUNCTIONS.map(function(f){return{label:f.label,o:o.controlTerminals[f.key],n:n.controlTerminals[f.key]};}).filter(function(r){return r.o&&r.n;});
+ var cc=rows.filter(function(r){return r.o!==r.n;}).length;
+ var pf=vector?PARAMETER_FUNCTIONS.concat([PG_FUNC]):PARAMETER_FUNCTIONS;
+ var prows=pf.map(function(f){return{label:f.label,note:f.note,o:o.parameters[f.key],n:n.parameters[f.key]};}).filter(function(r){return r.o&&r.n;});
+ var pc=prows.filter(function(r){return r.o!==r.n;}).length;
+ var h='<div class="cmp">';
+ h+='<div class="cmphead" style="color:'+(cc>0?"#E8A33D":"#4CAF7D")+'">'+(cc>0?"⚠ ":"✓ ")+(cc>0?("制御端子が "+cc+" 箇所で異なります。結線を必ず変更してください。"):"制御端子の名称は同一です。結線はそのまま流用できます。")+'</div>';
+ h+='<div class="g3"><div class="mono" style="color:#8A99A8">機能</div><div class="mono" style="color:#8A99A8">既設(現在の結線)</div><div class="mono" style="color:#8A99A8">この機種(交換後)</div>';
+ rows.forEach(function(r){var ch=r.o!==r.n;h+='<div style="color:#E8ECEF">'+esc(r.label)+'</div><div class="mono" style="color:'+(ch?"#E8A33D":"#8A99A8")+'">'+esc(r.o)+'</div><div class="mono" style="color:'+(ch?"#E8A33D":"#4CAF7D")+';font-weight:'+(ch?700:400)+'">'+esc(r.n)+(ch?" ←変更":"")+'</div>';});
+ h+='</div>';
+ h+='<div style="margin-top:14px;padding-top:12px;border-top:1px solid #354352">';
+ h+='<div class="cmphead" style="color:'+(pc>0?"#E8A33D":"#4CAF7D")+'">'+(pc>0?"⚠ ":"✓ ")+(pc>0?("パラメータ番号が "+pc+" 箇所で異なります。交換後に再設定が必要です。"):"パラメータ番号は同一です(設定値は再確認してください)。")+'</div>';
+ h+='<div class="g3b"><div class="mono" style="color:#8A99A8">設定項目</div><div class="mono" style="color:#8A99A8">既設の設定番号</div><div class="mono" style="color:#8A99A8">この機種の設定番号</div>';
+ prows.forEach(function(r){var ch=r.o!==r.n;h+='<div style="color:#E8ECEF">'+esc(r.label)+(r.note?'<div style="font-size:10px;color:#8A99A8;margin-top:2px">'+esc(r.note)+'</div>':"")+'</div><div class="mono" style="color:'+(ch?"#E8A33D":"#8A99A8")+'">'+esc(r.o)+'</div><div class="mono" style="color:'+(ch?"#E8A33D":"#4CAF7D")+';font-weight:'+(ch?700:400)+'">'+esc(r.n)+(ch?" ←要再設定":"")+'</div>';});
+ h+='</div><div style="font-size:10px;color:#8A99A8;margin-top:8px">※ 番号が同じでも設定値そのものは機種ごとに初期値・仕様が異なる場合があります。'+(vector?"特にベクトル制御ではモータ定数のオートチューニングとPGパルス設定が必須です。":"")+'必ず現地で現在値を控えてから交換・再入力してください。</div>';
+ h+='</div></div>';
+ return h;
+}
+function servoCompare(o,n){
+ var ic=o.ikey!==n.ikey,mc=o.maker!==n.maker,ec=o.encoder!==n.encoder;
+ function row(label,ov,nv,ch,ct){return '<div style="color:#E8ECEF">'+esc(label)+'</div><div class="mono" style="color:'+(ch?"#E8A33D":"#8A99A8")+'">'+esc(ov)+'</div><div class="mono" style="color:'+(ch?"#E8A33D":"#4CAF7D")+';font-weight:'+(ch?700:400)+'">'+esc(nv)+(ch?(ct||""):"")+'</div>';}
+ var h='<div class="cmp">';
+ h+='<div class="cmphead" style="color:'+(ic?"#E8A33D":"#4CAF7D")+'">'+(ic?"⚠ ":"✓ ")+(ic?"指令インタフェースが異なります。上位コントローラ／ネットワーク構成の変更が必要です。":"指令インタフェースは同一です（ケーブル・通信設定は要確認）。")+'</div>';
+ h+='<div class="g3"><div class="mono" style="color:#8A99A8">項目</div><div class="mono" style="color:#8A99A8">既設</div><div class="mono" style="color:#8A99A8">この機種</div>';
+ h+=row("指令I/F(ネットワーク)",o.iface,n.iface,ic," ←要変更");
+ h+=row("適合サーボモータ",o.motor,n.motor,mc," ←要セット交換");
+ h+=row("エンコーダ",o.encoder,n.encoder,ec,"");
+ h+=row("サーボON信号",o.io.son,n.io.son,o.io.son!==n.io.son,"");
+ h+=row("アラーム信号",o.io.alm,n.io.alm,o.io.alm!==n.io.alm,"");
+ h+=row("準備完了信号",o.io.rdy,n.io.rdy,o.io.rdy!==n.io.rdy,"");
+ h+='</div>';
+ if(mc)h+='<div style="font-size:10.5px;color:#E8A33D;margin-top:8px;line-height:1.6">※ メーカーが異なるため、サーボアンプ単体では置換できません。適合サーボモータ・エンコーダ・専用ケーブル一式をセットで交換し、電子ギア比・オートチューニング等のパラメータを再設定してください。</div>';
+ h+='</div>';
+ return h;
+}
+
+/* ================= ビュー ================= */
+function header(){
+ var tabs='<div class="row" style="margin-bottom:12px">'+
+  seg("inv","インバータ")+seg("servo","サーボユニット")+'</div>';
+ return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:22px">🔧</span><h1>FA部品 互換サーチ</h1></div>'+tabs;
+}
+function seg(cat,label){var on=S.cat===cat;return '<button class="seg'+(on?" on":"")+'" onclick="setCat(\''+cat+'\')">'+esc(label)+'</button>';}
+function invSubSel(){
+ function b(t,l){var on=S.invType===t;return '<button class="seg'+(on?" on":"")+'" onclick="setInvType(\''+t+'\')">'+esc(l)+'</button>';}
+ return '<div class="row" style="margin-bottom:12px">'+b("general","汎用インバータ")+b("vector","ベクトルインバータ")+'</div>';
+}
+
+function viewSearch(){
+ var isSv=S.cat==="servo";
+ var makers=makerList();
+ var makerSel='<select onchange="setMaker(this.value)"><option value="すべて">全メーカー</option>'+
+  makers.map(function(m){return '<option value="'+esc(m)+'"'+(S.maker===m?" selected":"")+'>'+esc(m)+'</option>';}).join("")+'</select>';
+ var ifaceSel="";
+ if(isSv){ifaceSel='<select onchange="setIface(this.value)"><option value="すべて">全インタフェース</option>'+
+  ifaceList().map(function(m){return '<option value="'+esc(m)+'"'+(S.iface===m?" selected":"")+'>'+esc(m)+'</option>';}).join("")+
+  '<option value="生産中止・代替参照"'+(S.iface==="生産中止・代替参照"?" selected":"")+'>生産中止・代替参照</option></select>';}
+ var volts=isSv?VOLT_SV:VOLT_INV;
+ var voltBtns='<div class="row" style="'+(isSv?"":"flex:1 1 200px")+'">'+volts.map(function(o){
+  return '<button class="vbtn'+(S.volt===o.v?" on":"")+'" onclick="setVolt('+o.v+')">'+esc(o.label)+'</button>';}).join("")+'</div>';
+ var filters;
+ if(isSv){filters='<div class="row" style="margin-bottom:8px"><div style="flex:1 1 150px">'+makerSel+'</div><div style="flex:1 1 150px">'+ifaceSel+'</div></div>'+
+   '<div style="margin-bottom:10px">'+voltBtns+'</div>';}
+ else{filters='<div class="row" style="margin-bottom:10px"><div style="flex:1 1 160px">'+makerSel+'</div>'+voltBtns+'</div>';}
+ var ph=isSv?"型式で検索（例: MR-J5-40G / SGD7S / SGDM / CACR-SR）":
+  (S.invType==="vector"?"型式で検索（例: FR-A840-3.7K / FRENIC-VG / VT240S / Drive MuLti）":"型式で検索（例: FR-E820-3.7K / FRENIC / GA700 / Drive MuLti）");
+ var sub='';
+ if(S.cat==="inv"){sub=invSubSel();}
+ var desc=isSv?('日本メーカーのACサーボアンプ（'+makers.length+'社）＋安川 生産中止一覧を収録。'):
+  ((S.invType==="vector"?"ベクトル制御インバータ":"汎用インバータ")+'（'+makers.length+'社 / '+activeDevices().length+'型式）の互換をチェック。');
+ var h=header()+sub;
+ h+='<div class="cnt" style="color:#8A99A8;font-size:12px;margin:0 0 4px">'+esc(desc)+'</div>';
+ h+='<div style="font-size:11px;color:#5C6B7A;margin-bottom:14px">収録メーカー: '+esc(makers.join(" / "))+'</div>';
+ h+=filters;
+ h+='<div style="position:relative;margin-bottom:12px"><input id="q" type="text" value="'+esc(S.query)+'" placeholder="'+esc(ph)+'" oninput="onInput(this.value)"></div>';
+ h+='<div class="cnt" id="rcnt"></div><div id="results"></div>';
+ return h;
+}
+function resultItems(){
+ var list=results();var isSv=S.cat==="servo";
+ document.getElementById("rcnt").textContent=list.length+" 件（最大60件表示）";
+ if(!list.length)return '<div class="empty">該当する型式が見つかりません。フィルタや検索語を変えてお試しください。</div>';
+ return list.map(function(d){
+  var badge=(d.discontinued?'<span class="badge b-disc">生産終了</span>':"")+(d.anchor?'<span class="badge b-ok">●公式確認</span>':"");
+  var sub=isSv?(d.maker+"・"+d.iface):(d.maker+"・"+(S.invType==="vector"?d.vclass:d.series));
+  var cap=isSv?(esc(d.ratedLabel)+'<br>'+esc(d.voltage)):(d.ratedKW+'kW<br>'+esc(d.voltage));
+  return '<button class="item" onclick="pick(\''+d.id+'\')"><div style="min-width:0"><div class="mono mdl">'+esc(d.model)+badge+'</div><div class="sub">'+esc(sub)+'</div></div><div class="cap mono">'+cap+'</div></button>';
+ }).join("");
+}
+
+function viewConfirm(){
+ var m=byId(S.matchedId);if(!m)return viewSearch();
+ var isSv=S.cat==="servo",isVec=(S.cat==="inv"&&S.invType==="vector");
+ if(isSv&&m.discRef)return viewConfirmDisc(m);
+ var h='<button class="back" onclick="go(\'search\')">← 検索へ戻る</button>';
+ h+='<div class="card">';
+ h+='<div class="lbl">'+(isSv?"既設サーボアンプ":(isVec?"既設ベクトルインバータ":"既設インバータ"))+'</div>';
+ h+='<div class="mono big">'+esc(m.model)+'</div>';
+ h+='<div style="font-size:12px;color:#8A99A8">'+esc(m.maker)+'・'+esc(m.series)+'</div>';
+ if(m.note)h+='<div class="note">※ '+esc(m.note)+'</div>';
+ if(isVec)h+=modesHtml(m.controlModes);
+ if(isSv)h+='<div style="margin-top:6px">'+chip(m.iface)+'</div>';
+ h+='<div class="grid2">';
+ if(isSv){h+=field("定格出力",m.ratedLabel)+field("電源",m.voltage)+field("指令I/F",m.iface)+field("適合モータ",m.motor)+field("エンコーダ",m.encoder)+field("取付",m.mounting);}
+ else{h+=field("定格出力",m.ratedKW+"kW")+field("定格出力電流",m.ratedA?m.ratedA+"A":"-")+field("電源電圧",m.voltage)+field("取付方式",m.mounting);
+  if(isVec)h+=field("制御分類",m.vclass)+field("PGオプション",m.pgOption);}
+ h+='</div>';
+ h+='<div style="margin-top:10px"><div class="lbl">外形寸法・取付穴</div>'+dimSvg(m.dims,m.holes)+'</div>';
+ h+='</div>';
+ h+='<div class="btnrow"><button class="primary" onclick="go(\'result\')">✓ この機種で互換品を検索</button><button class="ghost" onclick="go(\'search\')">↺ 選び直す</button></div>';
+ return h;
+}
+function viewConfirmDisc(m){
+ var h='<button class="back" onclick="go(\'search\')">← 検索へ戻る</button>';
+ h+='<div class="card">';
+ h+='<div style="font-size:11px;color:#E8A33D;font-weight:700">生産中止機種（安川電機 ACサーボパック）</div>';
+ h+='<div style="font-size:12px;color:#8A99A8;margin-top:4px">'+esc(m.series)+'</div>';
+ h+='<div class="mono" style="font-size:13.5px;color:#E8ECEF;margin:6px 0;line-height:1.6">'+esc(m.model)+'</div>';
+ h+='<div class="succ" style="margin:8px 0 0"><div class="cmphead" style="color:#4CAF7D">✓ 安川電機 推奨代替製品</div><div class="mono" style="font-size:15px;color:#E8ECEF;font-weight:700">'+esc(m.alt)+'</div></div>';
+ h+='<div class="grid2">'+field("製造中止時期",m.stop)+field("保守用部品 供給期限",m.parts)+field("修理品対応期限",m.repair)+field("容量表記",m.ratedLabel)+'</div>';
+ h+='<div style="font-size:10px;color:#8A99A8;margin-top:10px;line-height:1.6">※ □=容量、△=電圧などの付加記号。使用部品・保守部品の状況により期限前でも対応不可となる場合があります。出典: 安川電機 e-メカサイト「生産中止機種/推奨代替機種（ACサーボパック）」。</div>';
+ h+='</div>';
+ h+='<div class="btnrow">';
+ if(m.altKey)h+='<button class="primary" onclick="searchAlt()">🔍 代替（'+esc(m.alt)+'）を検索</button><button class="ghost" onclick="go(\'search\')">↺ 検索へ戻る</button>';
+ else h+='<button class="ghost" style="flex:1" onclick="go(\'search\')">↺ 検索へ戻る</button>';
+ h+='</div>';
+ return h;
+}
+function viewResult(){
+ var m=byId(S.matchedId);if(!m)return viewSearch();
+ var isSv=S.cat==="servo",isVec=(S.cat==="inv"&&S.invType==="vector");
+ var comps=compatibles(m),chain=successorChain(m);
+ var h='<button class="back" onclick="go(\'confirm\')">← 既設情報へ戻る</button>';
+ h+='<div style="margin-top:8px;font-size:13px;color:#8A99A8">既設 <span class="mono" style="color:#E8ECEF">'+esc(m.model)+'</span>（'+(isSv?esc(m.ratedLabel):(m.ratedKW+"kW"))+' / '+(isSv?esc(m.iface):esc(m.voltage))+'）の互換候補</div>';
+ if(chain.length){h+='<div class="succ"><div class="cmphead" style="color:#4CAF7D">✓ メーカー指定の後継機種</div><div class="mono" style="font-size:12px;color:#E8ECEF">'+esc(m.model)+' → '+chain.map(function(s){return esc(s.model);}).join(" → ")+'</div></div>';}
+ h+='<div class="cnt">同一容量クラスで '+comps.length+' 件。'+(isSv?"★指令I/F一致を優先表示。他メーカーはモータ・ケーブルのセット交換が前提。":("★寸法・端子"+(isVec?"・PG・パラメータ":"・パラメータ")+"は要現物確認。"))+'</div>';
+ if(!comps.length){h+='<div class="empty">同一容量クラスの互換候補が見つかりませんでした。</div>';}
+ else{h+=comps.map(function(c){
+  var badge=(c.isSuccessor?'<span class="badge b-ok">後継</span>':"")+(c.anchor?'<span class="badge b-ok">●公式確認</span>':"");
+  var s='<div class="card" style="border-color:'+(c.isSuccessor?"#2E5E3F":"#354352")+';margin-bottom:10px;padding:14px">';
+  s+='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div style="min-width:0"><div class="mono" style="font-size:15px;font-weight:700">'+esc(c.model)+badge+'</div><div style="font-size:11px;color:#8A99A8;margin-top:2px">'+esc(c.maker)+'・'+esc(c.series)+'</div></div>';
+  s+='<div class="mono" style="font-size:12px;color:#8A99A8;text-align:right;flex-shrink:0">'+(isSv?(esc(c.ratedLabel)+'<br>'+esc(c.voltage)):(c.ratedKW+'kW / '+(c.ratedA?c.ratedA+"A":"-")))+'</div></div>';
+  if(isVec)s+=modesHtml(c.controlModes);
+  s+='<div class="chips" style="margin-top:8px">';
+  if(isSv){s+=tag(c.ifaceMatch,c.ifaceMatch?"指令I/F一致":"I/F違い")+tag(c.sameMaker,c.sameMaker?"同一メーカー":"他メーカー(要セット交換)",!c.sameMaker)+tag(c.holeMatch,c.holeMatch?"取付穴一致":"取付穴違い("+c.holes.w+"×"+c.holes.h+")")+tag(c.diff===0,c.diff===0?"外形同一":"外形差 約"+Math.round(c.diff)+"mm");}
+  else{if(isVec)s+=tag(c.pgMatch,c.pgMatch?"PG系同一":"PGオプション違い");s+=tag(c.holeMatch,c.holeMatch?"取付穴一致":"取付穴違い("+c.holes.w+"×"+c.holes.h+")")+tag(c.diff===0,c.diff===0?"外形同一":"外形差 約"+Math.round(c.diff)+"mm")+tag(c.sameMaker,c.sameMaker?"同一メーカー":"他メーカー",!c.sameMaker);}
+  s+='</div>';
+  if(isSv)s+=servoCompare(m,c);
+  else{if(isVec)s+=pgCompare(m,c);s+=wiringCompare(m,c,isVec);}
+  s+='</div>';return s;
+ }).join("");}
+ h+='<button class="ghost" style="width:100%;margin-top:16px" onclick="go(\'search\')">↺ 別の機種を検索</button>';
+ return h;
+}
+function footer(){
+ if(S.cat==="servo"){
+  return '<div class="foot"><b>データについて</b><br>三菱 MR-J5（-G/-B/-A/-G-N1）、安川 Σ-7 SGD7S・Σ-X（EtherCAT）はメーカー公式で確認。パナ MINAS A6／オムロン 1S／富士 ALPHA7／サンヨー SANMOTION R は代表構成。日本リライアンス（現REJ）VZ7000 は SERCOS標準・1.5kW〜600kW・エンコーダ1,000,000p/rev をREJ公式で確認（外形寸法のみ代表値）。安川 生産中止ACサーボパックと推奨代替は安川 e-メカサイトより収録（フィルタ「生産中止・代替参照」で一覧）。<b>サーボはアンプ＋モータ＋エンコーダ＋専用ケーブルが一体の適合セット</b>で、他メーカー単体置換は不可。選定前に必ず各社カタログ・現物銘板で検証してください。</div>';
+ }
+ return '<div class="foot"><b>データについて</b><br>富士 FRENIC-Ace(E3)・FRENIC-VG、三菱 FR-A800、オムロン 3G3MX2/RX2 の型式はメーカー公式で確認。日本リライアンス（現REJ）は Drive MuLti（現行, 通信AMX/GV-NET標準）・VZ3000 / BL3000（旧）を系列確認のうえ収録（容量帯・寸法・端子・パラメータは代表値）。外形寸法・取付穴・制御端子・パラメータ番号は機種ごとに差異があるため、交換前に必ず各社カタログ・取扱説明書PDFと現物銘板で検証してください。ベクトル制御機はモータ定数のオートチューニングとPGパルス設定が必須です。</div>';
+}
+
+/* ================= マウント & イベント ================= */
+function render(){
+ var app=document.getElementById("app");
+ var body;
+ if(S.step==="search")body=viewSearch();
+ else if(S.step==="confirm")body=viewConfirm();
+ else body=viewResult();
+ app.innerHTML=body+footer();
+ if(S.step==="search"){updateResults();var q=document.getElementById("q");if(q&&document.activeElement!==q){/* keep */}}
+ window.scrollTo(0,0);
+}
+function updateResults(){var r=document.getElementById("results");if(r)r.innerHTML=resultItems();}
+function onInput(val){S.query=val;updateResults();}
+function setCat(c){if(S.cat===c)return;S.cat=c;S.step="search";S.matchedId=null;S.query="";S.maker="すべて";S.volt=0;S.iface="すべて";render();}
+function setInvType(t){if(S.invType===t)return;S.invType=t;S.step="search";S.matchedId=null;S.query="";S.maker="すべて";S.volt=0;render();}
+function setMaker(v){S.maker=v;render();}
+function setVolt(v){S.volt=v;render();}
+function setIface(v){S.iface=v;render();}
+function pick(id){S.matchedId=id;S.step="confirm";render();}
+function go(step){if(step==="search"){S.matchedId=(step==="search"?S.matchedId:S.matchedId);}S.step=step;if(step==="search")S.matchedId=null;render();}
+function searchAlt(){var m=byId(S.matchedId);S.query="";S.maker="安川電機";S.volt=0;S.iface="すべて";S.step="search";S.matchedId=null;render();}
+window.setCat=setCat;window.setInvType=setInvType;window.setMaker=setMaker;window.setVolt=setVolt;window.setIface=setIface;
+window.onInput=onInput;window.pick=pick;window.go=go;window.searchAlt=searchAlt;
+render();
+</script>
+</body>
+</html>
