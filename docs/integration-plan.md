@@ -280,8 +280,8 @@ registerCategory({
 | フェーズ | 内容 | 状態 |
 |---|---|---|
 | 0 | `index 3.html` → `index_3.html` リネーム | 完了 |
-| **1a** | **`data/**` へのデータ分離とスキーマ移行。アプリHTMLは無変更** | **完了** |
-| 1b | 統合アプリ本体・`src/categories/*.js`・`build.mjs`。既知の不具合も対応 | 未着手 |
+| 1a | `data/**` へのデータ分離とスキーマ移行。アプリHTMLは無変更 | 完了 |
+| **1b** | **統合アプリ本体・`src/categories/*.mjs`・`build.mjs`。既知の不具合も対応** | **完了** |
 | 2 | fa-compat の実データ化（`_seed` から出典URL付きで昇格） | 未着手 |
 | 3 | 既存431件の `evidence.*.srcUrl` を充実 | 未着手 |
 
@@ -317,3 +317,89 @@ tools/
 node tools/extract.mjs      # data/** を生成
 node tools/verify-data.mjs  # 11項目すべて PASS を確認
 ```
+
+
+---
+
+## フェーズ1b の成果物
+
+```
+src/
+  index.html              … シェル（CSS変数でテーマを一元管理）
+  core/
+    util.mjs              … esc / norm / dimDiff / successorChain / 取付方式の語彙正規化
+    store.mjs             … デバイス保管庫。provisional は読み込み時に除外
+    registry.mjs          … registerCategory とカテゴリ取得
+    compat.mjs            … gate→enrich→rank の枠組みと数値ヘルパー
+    evidence.mjs          … 検証状態の解決と表示
+    ui.mjs                … ウィザード部品・外形図・バッジ・候補カード
+    app.mjs               … 状態・画面遷移・イベント
+  categories/
+    contactor.mjs（接触器・開閉器） thermal.mjs
+    sensor-common.mjs sensors.mjs（近接・光電・超音波・特殊）
+    drive.mjs（インバータ・サーボ／データ0件の枠組み）
+build.mjs                 … 単一HTMLへインライン展開
+dist/index.html           … 配布物（266KB・外部依存ゼロ）
+tools/
+  regress.mjs             … 移行元の判定と突合（回帰チェック）
+  smoke.mjs               … file:// で実際に開いて確認
+  test-extensibility.mjs  … カテゴリ追加が2ファイルで完結することの自動確認
+```
+
+### カテゴリ追加の手順
+
+1. `data/<id>.json` を置く
+2. `src/categories/<id>.mjs` で `registerCategory({...})` する
+3. `node build.mjs`
+
+`build.mjs` はモジュールとデータを自動で拾い、`import` 関係から連結順を決めるため、
+**コアにも `build.mjs` にも手を入れる必要がない**。この保証は
+`tools/test-extensibility.mjs` がダミーカテゴリを実際に追加・ビルド・操作して
+検証し、必ず後始末する。
+
+### 単一HTML化の方式
+
+ES Modules をそのまま `<script type="module">` に置く方式は取らず、`import`/`export`
+を落として1つの古典的スクリプトに連結し IIFE で包む。`file://` でのモジュール解決に
+依存しないため、iPhone のホーム画面に保存したオフライン利用が確実に動く。
+ビルド時に次を検査し、1つでも該当すれば失敗する。
+
+- 連結結果が構文として成立するか（`node:vm` でパース）
+- トップレベル名の衝突（連結後は1スコープに同居するため）
+- `fetch(` / 外部 `<script src>` / 外部スタイルシート / 動的 `import(` の混入
+- `provisional` レコードの混入（誤発注防止の要）
+
+### 既知の不具合の対応結果
+
+| 不具合 | 対応 |
+|---|---|
+| ±30%窓が `m` 基準で非対称 | 大きい方を基準にして対称化（`withinWindow`）。取りこぼしより1件多く見せるほうが安全なため `max` を採用 |
+| `接触器直付` が選択肢に無い | 取付方式の選択肢を実データから導出（`mountingOptions`）。固定配列を廃止したので同種のずれが構造的に起きない |
+| `ブラケット型` / `ブラケット取付` の同義語併存 | コア側の語彙表で正規化（`normalizeMounting`） |
+| `norm()` の `S-N10` / `SN10` 衝突 | 複数一致時は確定させず選ばせる。取り違えの警告を出す |
+| デバイスの `note` が未描画 | 確認画面と候補カードに描画 |
+| NPN/PNP がハードフィルタでない | `gate` へ移動。`NPN/PNP` 選択可能品があるため集合の交わりで判定する |
+| `fa-compat` の寸法比較が常時「一致」 | 寸法の信頼性を `evidence.dims` で判定。未確認なら比較もバッジも出さない |
+
+### 検証
+
+```bash
+npm run check   # データ検証 → ビルド → 回帰 → スモーク → 拡張性
+```
+
+| 種別 | 内容 | 結果 |
+|---|---|---|
+| データ検証 | 移行の非破壊性11項目 | 11/11 PASS |
+| 回帰チェック | 全431型式の候補リストを移行元の判定と突合 | 説明できない差分 0件 |
+| スモーク | `file://` で実際に開いて18項目 | 18/18 PASS |
+| 拡張性 | カテゴリ追加が2ファイルで完結するか | 6/6 PASS |
+
+回帰チェックの差分内訳（いずれも意図した修正）:
+
+- 候補集合が完全一致 349型式（うち並び順のみ変化 138）
+- 窓の対称化で候補が増えた 187件
+- 極性フィルタで候補が減った 174件
+
+差分がゼロであることだけを見ると修正が黙って戻されたときに検出できない
+（修正を外すと移行元と一致してしまう）ため、意図した修正が実際に効いていることも
+併せて検査している。
