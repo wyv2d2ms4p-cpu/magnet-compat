@@ -1,0 +1,12 @@
+{
+  "name": "magnet-compat",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "FA部品 互換サーチ — データ移行ツール (フェーズ1a)",
+  "scripts": {
+    "extract": "node tools/extract.mjs",
+    "verify": "node tools/verify-data.mjs",
+    "build:data": "node tools/extract.mjs && node tools/verify-data.mjs"
+  }
+}

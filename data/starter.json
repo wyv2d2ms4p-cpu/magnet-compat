@@ -1,0 +1,967 @@
+[
+  {
+    "id": "MIT-MSON10",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-N10",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "dims": {
+      "w": 46,
+      "h": 115,
+      "d": 80
+    },
+    "holes": {
+      "w": 35,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "discontinued": true,
+    "successorId": "MIT-MSOT10",
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSON10KP",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-N10KP",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW-KP",
+    "dims": {
+      "w": 46,
+      "h": 115,
+      "d": 80
+    },
+    "holes": {
+      "w": 35,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "discontinued": true,
+    "successorId": "MIT-MSOT10KP",
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSON20",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-N20",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4kW",
+    "dims": {
+      "w": 55,
+      "h": 122,
+      "d": 82
+    },
+    "holes": {
+      "w": 40,
+      "h": 65
+    },
+    "mounting": "DINレール",
+    "discontinued": true,
+    "successorId": "MIT-MSOT21",
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 4,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSON25",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-N25",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-5.5kW",
+    "dims": {
+      "w": 63,
+      "h": 127,
+      "d": 82
+    },
+    "holes": {
+      "w": 48,
+      "h": 70
+    },
+    "mounting": "直接取付",
+    "discontinued": true,
+    "successorId": "MIT-MSOT25",
+    "specs": {
+      "ratedCurrentA": 26,
+      "ratedPowerKW": 5.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSON125",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-N125",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-30kW",
+    "mounting": "直接取付",
+    "note": "構成: S-N125 + TH-N120",
+    "specs": {
+      "ratedCurrentA": 125,
+      "ratedPowerKW": 30,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSOT80",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-T80",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-19kW",
+    "mounting": "直接取付",
+    "note": "構成: S-T80 + TH-T100",
+    "specs": {
+      "ratedCurrentA": 80,
+      "ratedPowerKW": 19,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSOT12",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-T12",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.7kW",
+    "dims": {
+      "w": 45,
+      "h": 115,
+      "d": 79
+    },
+    "holes": {
+      "w": 35,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "note": "構成: S-T12 + TH-T18",
+    "specs": {
+      "ratedCurrentA": 13,
+      "ratedPowerKW": 2.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSOT20",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-T20",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-3.7kW",
+    "dims": {
+      "w": 45,
+      "h": 115,
+      "d": 79
+    },
+    "holes": {
+      "w": 35,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "note": "構成: S-T20 + TH-T18",
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 3.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSOT35",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-T35",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-7.5kW",
+    "mounting": "直接取付",
+    "note": "構成: S-T35 + TH-T50",
+    "specs": {
+      "ratedCurrentA": 35,
+      "ratedPowerKW": 7.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSOT50",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-T50",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "mounting": "直接取付",
+    "note": "構成: S-T50 + TH-T50",
+    "specs": {
+      "ratedCurrentA": 50,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSOT65",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-T65",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-15kW",
+    "mounting": "直接取付",
+    "note": "構成: S-T65 + TH-T65",
+    "specs": {
+      "ratedCurrentA": 65,
+      "ratedPowerKW": 15,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSOT100",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-T100",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-22kW",
+    "mounting": "直接取付",
+    "note": "構成: S-T100 + TH-T100",
+    "specs": {
+      "ratedCurrentA": 100,
+      "ratedPowerKW": 22,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSOT10",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-T10",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "dims": {
+      "w": 45,
+      "h": 115,
+      "d": 79
+    },
+    "holes": {
+      "w": 28,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSOT10KP",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-T10KP",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW-KP",
+    "dims": {
+      "w": 46,
+      "h": 115,
+      "d": 79
+    },
+    "holes": {
+      "w": 35,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSOT21",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-T21",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4kW",
+    "dims": {
+      "w": 63,
+      "h": 128,
+      "d": 82
+    },
+    "holes": {
+      "w": 54,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 4,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-MSOT25",
+    "category": "starter",
+    "maker": "三菱電機",
+    "model": "MSO-T25",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-5.5kW",
+    "dims": {
+      "w": 63,
+      "h": 128,
+      "d": 82
+    },
+    "holes": {
+      "w": 54,
+      "h": 60
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 26,
+      "ratedPowerKW": 5.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUD5H",
+    "category": "starter",
+    "maker": "春日電機",
+    "model": "MUD5H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 0
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUF7H",
+    "category": "starter",
+    "maker": "春日電機",
+    "model": "MUF7H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-3.7kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 3.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 0
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUF20H",
+    "category": "starter",
+    "maker": "春日電機",
+    "model": "MUF20H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-7.5kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 34,
+      "ratedPowerKW": 7.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUF25H",
+    "category": "starter",
+    "maker": "春日電機",
+    "model": "MUF25H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 50,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUF35H",
+    "category": "starter",
+    "maker": "春日電機",
+    "model": "MUF35H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-15kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 65,
+      "ratedPowerKW": 15,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC10MT",
+    "category": "starter",
+    "maker": "日立産機",
+    "model": "HC10M-T",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "mounting": "DINレール",
+    "note": "付属サーマル TRC12M-1E",
+    "specs": {
+      "ratedCurrentA": 12,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 0
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC10T",
+    "category": "starter",
+    "maker": "日立産機",
+    "model": "HC10-T",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.7kW",
+    "mounting": "DINレール",
+    "note": "付属サーマル TRC12-1E",
+    "specs": {
+      "ratedCurrentA": 13,
+      "ratedPowerKW": 2.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 0
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC20T",
+    "category": "starter",
+    "maker": "日立産機",
+    "model": "HC20-T",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4.5kW",
+    "mounting": "DINレール",
+    "note": "付属サーマル TRC32-1E",
+    "specs": {
+      "ratedCurrentA": 22,
+      "ratedPowerKW": 4.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC20TK",
+    "category": "starter",
+    "maker": "日立産機",
+    "model": "HC20-TK",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4.5kW-KP",
+    "mounting": "DINレール",
+    "note": "付属サーマル TRC32-2E(欠相保護)",
+    "specs": {
+      "ratedCurrentA": 22,
+      "ratedPowerKW": 4.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC35T",
+    "category": "starter",
+    "maker": "日立産機",
+    "model": "HC35-T",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-7.5kW",
+    "mounting": "DINレール",
+    "note": "付属サーマル TRC32-1E",
+    "specs": {
+      "ratedCurrentA": 32,
+      "ratedPowerKW": 7.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC55T",
+    "category": "starter",
+    "maker": "日立産機",
+    "model": "HC55-T",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "mounting": "DINレール",
+    "note": "付属サーマル TRC63-1E",
+    "specs": {
+      "ratedCurrentA": 55,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HS50T",
+    "category": "starter",
+    "maker": "日立産機",
+    "model": "HS50-T",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "mounting": "直接取付",
+    "note": "付属サーマル TR50B-1E",
+    "specs": {
+      "ratedCurrentA": 50,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-H65CT",
+    "category": "starter",
+    "maker": "日立産機",
+    "model": "H65C-T",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-15kW",
+    "mounting": "直接取付",
+    "note": "付属サーマル TR80B-1E",
+    "specs": {
+      "ratedCurrentA": 65,
+      "ratedPowerKW": 15,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  }
+]

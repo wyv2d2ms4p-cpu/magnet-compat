@@ -1,0 +1,82 @@
+[
+  {
+    "maker": "三菱電機",
+    "status": "現行",
+    "contactor": "S-Tシリーズ(小〜中) / S-Nシリーズ(中〜大 125〜800A)",
+    "starter": "MS-T・MSO-T(現行) / MS-N・MSO-N(旧)",
+    "thermal": "TH-T(現行) / TH-N(大容量・旧)",
+    "note": "小容量のMS-Nは2015年前後にMS-Tへ置換。125〜800Aは現在もMS-N系。高感度形SD-Q。旧世代S-K・S-2xx。"
+  },
+  {
+    "maker": "富士電機",
+    "status": "現行",
+    "contactor": "SC / 新SC(Neo SC)シリーズ(SC-03〜SC-N16)",
+    "starter": "SW-…シリーズ",
+    "thermal": "TR / TKシリーズ",
+    "note": "SCは小〜中容量(フレーム03〜5-1)。標準・廉価形にSK。旧世代SW。"
+  },
+  {
+    "maker": "オムロン",
+    "status": "現行",
+    "contactor": "J7KN / J7KC(新・45mm幅統一・ミラーコンタクト対応)",
+    "starter": "J7KC + J7TC 組合せ",
+    "thermal": "J7TC / J7TKN / J7TL",
+    "note": "コネクタ形J7L、高感度形J7AN。J7KCはセーフティ対応。"
+  },
+  {
+    "maker": "東芝",
+    "status": "現行",
+    "contactor": "Cシリーズ(C-11J〜)",
+    "starter": "—",
+    "thermal": "—",
+    "note": "東芝産業機器システム扱い。"
+  },
+  {
+    "maker": "パナソニック",
+    "status": "撤退",
+    "contactor": "(旧 SN / SKシリーズ)",
+    "starter": "—",
+    "thermal": "(旧 N-THシリーズ)",
+    "note": "2010年3月末に本分野撤退。新品入手不可。三菱・富士への切替が案内されている。"
+  },
+  {
+    "maker": "日立産機システム",
+    "status": "現行",
+    "contactor": "HCシリーズ(8〜55AF標準形) / HCM(経済形) / Hシリーズ(65〜800AF) / HS形(旧)",
+    "starter": "HC□-T(1Eサーマル付) / HC□-TK(2Eサーマル付)",
+    "thermal": "TRCシリーズ(HC用) / TRシリーズ(HS・H用)",
+    "note": "形式記号: 末尾T=1Eサーマル付、TK=2Eサーマル付、R=可逆形、G=直流操作、M=経済形。サーマルは1E=過負荷保護、2E=過負荷+欠相保護、S=遅動形(クラス20、IE3モータ向け)。製作範囲8〜800AF。"
+  },
+  {
+    "maker": "戸上電機製作所",
+    "status": "現行",
+    "contactor": "PAK-□J形(PAK-6JC〜PAK-50J)",
+    "starter": "標準形・経済形電磁開閉器",
+    "thermal": "T-□形(T-21C・T-35C ほか) / 大容量はTJ-220・TJ-400N・T-400・T-600",
+    "note": "6JC〜50JはIEC・DIN 35mm幅レール対応。T-400・T-600はT-21CとCTのセット構成、TJ-220・TJ-400NはTJ-35CとCTのセット構成。欠相保護形は8A以上で製作可。"
+  },
+  {
+    "maker": "春日電機",
+    "status": "解散",
+    "contactor": "MUD5 / MUF7 / MUF10-4 / MUF10-5 / MUF18 / MUF20 / MUF25 / MUF35(ケース付は末尾N)",
+    "starter": "MUD5H・MUF7H・MUF20H ほか(HB=ケースなし、H=ケース付)",
+    "thermal": "HRD010B / HRD018B / HRE35DG",
+    "note": "2017年10月1日に因幡電機産業傘下のパトライトへ吸収合併され解散。旧春日電機製品の取扱説明書はパトライトのサイト(サービス・サポート→ダウンロード)から入手可。可逆形はHMUF10/HMU12/HMU18/RMUF25/RMUF35。※当アプリの寸法データは未登録。"
+  },
+  {
+    "maker": "IDEC(和泉電気)",
+    "status": "対象外",
+    "contactor": "自社シリーズなし",
+    "starter": "—",
+    "thermal": "—",
+    "note": "操作スイッチ・表示灯・端子台・安全機器が主力で、電磁接触器の自社シリーズは持たない。旧社名は和泉電気(1947年設立、1982年にIDECへ商標変更)。該当型式があれば銘板を確認のうえ追加検討。"
+  },
+  {
+    "maker": "その他",
+    "status": "—",
+    "contactor": "ケーイーシー(KEC 03〜N16形) / Schneider(TeSys) ほか",
+    "starter": "—",
+    "thermal": "—",
+    "note": "海外系はTeSys(Schneider)、Siemens SIRIUSなど。"
+  }
+]

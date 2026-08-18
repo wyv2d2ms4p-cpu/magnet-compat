@@ -1,0 +1,3113 @@
+[
+  {
+    "id": "MIT-ST10",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-T10",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "dims": {
+      "w": 36,
+      "h": 75,
+      "d": 78
+    },
+    "holes": {
+      "w": 28,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 0
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "MIT-ST12",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-T12",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.7kW",
+    "dims": {
+      "w": 43,
+      "h": 75,
+      "d": 78
+    },
+    "holes": {
+      "w": 35,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 13,
+      "ratedPowerKW": 2.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "MIT-ST20",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-T20",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-3.7kW",
+    "dims": {
+      "w": 43,
+      "h": 75,
+      "d": 78
+    },
+    "holes": {
+      "w": 35,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 3.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "MIT-ST21",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-T21",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4kW",
+    "dims": {
+      "w": 63,
+      "h": 81,
+      "d": 81
+    },
+    "holes": {
+      "w": 54,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 20,
+      "ratedPowerKW": 4,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "MIT-ST25",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-T25",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-5.5kW",
+    "dims": {
+      "w": 63,
+      "h": 81,
+      "d": 81
+    },
+    "holes": {
+      "w": 54,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 26,
+      "ratedPowerKW": 5.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "MIT-ST32",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-T32",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-7.5kW",
+    "dims": {
+      "w": 43,
+      "h": 81,
+      "d": 81
+    },
+    "holes": {
+      "w": 30,
+      "h": 60
+    },
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 32,
+      "ratedPowerKW": 7.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "MIT-ST35",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-T35",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-7.5kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 35,
+      "ratedPowerKW": 7.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-ST50",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-T50",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 50,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-ST65",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-T65",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-15kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 65,
+      "ratedPowerKW": 15,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-ST80",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-T80",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-19kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 80,
+      "ratedPowerKW": 19,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-ST100",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-T100",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-22kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 100,
+      "ratedPowerKW": 22,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN10",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N10",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "mounting": "DINレール",
+    "discontinued": true,
+    "successorId": "MIT-ST10",
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN18",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N18",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-3.7kW",
+    "mounting": "DINレール",
+    "discontinued": true,
+    "successorId": "MIT-ST20",
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 3.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN20",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N20",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4kW",
+    "mounting": "DINレール",
+    "discontinued": true,
+    "successorId": "MIT-ST21",
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 4,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN21",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N21",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4kW",
+    "mounting": "DINレール",
+    "discontinued": true,
+    "successorId": "MIT-ST21",
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 4,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN25",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N25",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-5.5kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "successorId": "MIT-ST25",
+    "specs": {
+      "ratedCurrentA": 26,
+      "ratedPowerKW": 5.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN35",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N35",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-7.5kW",
+    "dims": {
+      "w": 134,
+      "h": 162,
+      "d": 114
+    },
+    "holes": {
+      "w": 100,
+      "h": 130
+    },
+    "mounting": "直接取付",
+    "discontinued": true,
+    "successorId": "MIT-ST35",
+    "specs": {
+      "ratedCurrentA": 34,
+      "ratedPowerKW": 7.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN50",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N50",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "dims": {
+      "w": 134,
+      "h": 162,
+      "d": 114
+    },
+    "holes": {
+      "w": 100,
+      "h": 130
+    },
+    "mounting": "直接取付",
+    "discontinued": true,
+    "successorId": "MIT-ST50",
+    "specs": {
+      "ratedCurrentA": 50,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN65",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N65",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-15kW",
+    "dims": {
+      "w": 150,
+      "h": 168,
+      "d": 141
+    },
+    "holes": {
+      "w": 115,
+      "h": 125
+    },
+    "mounting": "直接取付",
+    "discontinued": true,
+    "successorId": "MIT-ST65",
+    "specs": {
+      "ratedCurrentA": 65,
+      "ratedPowerKW": 15,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN80",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N80",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-19kW",
+    "dims": {
+      "w": 150,
+      "h": 168,
+      "d": 141
+    },
+    "holes": {
+      "w": 115,
+      "h": 125
+    },
+    "mounting": "直接取付",
+    "discontinued": true,
+    "successorId": "MIT-ST80",
+    "specs": {
+      "ratedCurrentA": 80,
+      "ratedPowerKW": 19,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN95",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N95",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-22kW",
+    "dims": {
+      "w": 170,
+      "h": 220,
+      "d": 165
+    },
+    "holes": {
+      "w": 130,
+      "h": 165
+    },
+    "mounting": "直接取付",
+    "discontinued": true,
+    "successorId": "MIT-ST100",
+    "specs": {
+      "ratedCurrentA": 95,
+      "ratedPowerKW": 22,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN125",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N125",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-30kW",
+    "dims": {
+      "w": 100,
+      "h": 150,
+      "d": 137
+    },
+    "holes": {
+      "w": 75,
+      "h": 115
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 125,
+      "ratedPowerKW": 30,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN150",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N150",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-37kW",
+    "dims": {
+      "w": 110,
+      "h": 165,
+      "d": 145
+    },
+    "holes": {
+      "w": 82,
+      "h": 128
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 150,
+      "ratedPowerKW": 37,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN180",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N180",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-45kW",
+    "dims": {
+      "w": 130,
+      "h": 190,
+      "d": 160
+    },
+    "holes": {
+      "w": 98,
+      "h": 148
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 180,
+      "ratedPowerKW": 45,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN220",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N220",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-55kW",
+    "dims": {
+      "w": 150,
+      "h": 210,
+      "d": 175
+    },
+    "holes": {
+      "w": 113,
+      "h": 163
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 220,
+      "ratedPowerKW": 55,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN300",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N300",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-75kW",
+    "dims": {
+      "w": 180,
+      "h": 240,
+      "d": 190
+    },
+    "holes": {
+      "w": 138,
+      "h": 188
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 300,
+      "ratedPowerKW": 75,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN400",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N400",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-110kW",
+    "dims": {
+      "w": 163,
+      "h": 243,
+      "d": 195
+    },
+    "holes": {
+      "w": 125,
+      "h": 190
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 400,
+      "ratedPowerKW": 110,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN600",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N600",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-160kW",
+    "dims": {
+      "w": 200,
+      "h": 290,
+      "d": 230
+    },
+    "holes": {
+      "w": 155,
+      "h": 230
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 630,
+      "ratedPowerKW": 160,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN800",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-200kW",
+    "dims": {
+      "w": 230,
+      "h": 330,
+      "d": 260
+    },
+    "holes": {
+      "w": 178,
+      "h": 260
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 800,
+      "ratedPowerKW": 200,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SC03",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-03",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "widthMM": 44
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SC0",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-0",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.7kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 13,
+      "ratedPowerKW": 2.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "widthMM": 44
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SC05",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-05",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.7kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 13,
+      "ratedPowerKW": 2.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "widthMM": 54
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SC40",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-4-0",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-3.7kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 3.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "widthMM": 54
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SC41",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-4-1",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 19,
+      "ratedPowerKW": 4,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 54
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SC51",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-5-1",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 19,
+      "ratedPowerKW": 4,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 65
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN1",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N1",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-5.5kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 26,
+      "ratedPowerKW": 5.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 74
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN2",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N2",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-7.5kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 35,
+      "ratedPowerKW": 7.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 74
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN2S",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N2S",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 50,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 88
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN3",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-15kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 65,
+      "ratedPowerKW": 15,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 88
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN4",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N4",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-18.5kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 80,
+      "ratedPowerKW": 18.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 97
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN5",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N5",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-22kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 93,
+      "ratedPowerKW": 22,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 97
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN6",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N6",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-30kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 125,
+      "ratedPowerKW": 30,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN7",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N7",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-37kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 152,
+      "ratedPowerKW": 37,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 119
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN8",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N8",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-45kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 180,
+      "ratedPowerKW": 45,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 141
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN10",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N10",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-55kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 220,
+      "ratedPowerKW": 55,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 141
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN11",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N11",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-75kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 300,
+      "ratedPowerKW": 75,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 167
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN12",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N12",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-110kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 400,
+      "ratedPowerKW": 110,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 167
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN14",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N14",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-150kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 600,
+      "ratedPowerKW": 150,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 305
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-SCN16",
+    "category": "contactor",
+    "maker": "富士電機",
+    "model": "SC-N16",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-200kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 800,
+      "ratedPowerKW": 200,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      },
+      "widthMM": 305
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "OMR-J7KC09",
+    "category": "contactor",
+    "maker": "オムロン",
+    "model": "J7KC-09",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "dims": {
+      "w": 45,
+      "h": 82,
+      "d": 86
+    },
+    "holes": {
+      "w": 35,
+      "h": 58
+    },
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "OMR-J7KC18",
+    "category": "contactor",
+    "maker": "オムロン",
+    "model": "J7KC-18",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4kW",
+    "dims": {
+      "w": 45,
+      "h": 88,
+      "d": 87
+    },
+    "holes": {
+      "w": 35,
+      "h": 62
+    },
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 4,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "OMR-J7KC25",
+    "category": "contactor",
+    "maker": "オムロン",
+    "model": "J7KC-25",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-5.5kW",
+    "dims": {
+      "w": 45,
+      "h": 94,
+      "d": 88
+    },
+    "holes": {
+      "w": 35,
+      "h": 68
+    },
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 26,
+      "ratedPowerKW": 5.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "OMR-J7KC32",
+    "category": "contactor",
+    "maker": "オムロン",
+    "model": "J7KC-32",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-7.5kW",
+    "dims": {
+      "w": 57,
+      "h": 120,
+      "d": 110
+    },
+    "holes": {
+      "w": 44,
+      "h": 95
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 34,
+      "ratedPowerKW": 7.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "OMR-J7KC50",
+    "category": "contactor",
+    "maker": "オムロン",
+    "model": "J7KC-50",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "dims": {
+      "w": 70,
+      "h": 130,
+      "d": 115
+    },
+    "holes": {
+      "w": 55,
+      "h": 105
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 50,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "TOS-C11J",
+    "category": "contactor",
+    "maker": "東芝",
+    "model": "C-11J",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "dims": {
+      "w": 46,
+      "h": 116,
+      "d": 82
+    },
+    "holes": {
+      "w": 36,
+      "h": 61
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "TOS-C25J",
+    "category": "contactor",
+    "maker": "東芝",
+    "model": "C-25J",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-5.5kW",
+    "dims": {
+      "w": 64,
+      "h": 128,
+      "d": 83
+    },
+    "holes": {
+      "w": 49,
+      "h": 71
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 26,
+      "ratedPowerKW": 5.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "TOS-C50J",
+    "category": "contactor",
+    "maker": "東芝",
+    "model": "C-50J",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "dims": {
+      "w": 136,
+      "h": 164,
+      "d": 116
+    },
+    "holes": {
+      "w": 102,
+      "h": 132
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 50,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "TOS-C65J",
+    "category": "contactor",
+    "maker": "東芝",
+    "model": "C-65J",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-15kW",
+    "dims": {
+      "w": 152,
+      "h": 170,
+      "d": 143
+    },
+    "holes": {
+      "w": 117,
+      "h": 127
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 65,
+      "ratedPowerKW": 15,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "PANA-SN10",
+    "category": "contactor",
+    "maker": "パナソニック",
+    "model": "SN10",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "dims": {
+      "w": 46,
+      "h": 116,
+      "d": 80
+    },
+    "holes": {
+      "w": 36,
+      "h": 61
+    },
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "PANA-SN25",
+    "category": "contactor",
+    "maker": "パナソニック",
+    "model": "SN25",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-5.5kW",
+    "dims": {
+      "w": 63,
+      "h": 128,
+      "d": 82
+    },
+    "holes": {
+      "w": 48,
+      "h": 71
+    },
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 26,
+      "ratedPowerKW": 5.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-S2S",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-2S",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "dims": {
+      "w": 44,
+      "h": 114,
+      "d": 90
+    },
+    "holes": {
+      "w": 34,
+      "h": 59
+    },
+    "mounting": "直接取付",
+    "discontinued": true,
+    "successorId": "MIT-SN10",
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-S2K",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-2K",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4kW",
+    "dims": {
+      "w": 54,
+      "h": 121,
+      "d": 90
+    },
+    "holes": {
+      "w": 39,
+      "h": 64
+    },
+    "mounting": "直接取付",
+    "discontinued": true,
+    "successorId": "MIT-SN20",
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 4,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUD5",
+    "category": "contactor",
+    "maker": "春日電機",
+    "model": "MUD5",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 0
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUF7",
+    "category": "contactor",
+    "maker": "春日電機",
+    "model": "MUF7",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-3.7kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 3.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 0
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUF104",
+    "category": "contactor",
+    "maker": "春日電機",
+    "model": "MUF10-4",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 4,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 0
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUF105",
+    "category": "contactor",
+    "maker": "春日電機",
+    "model": "MUF10-5",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-5.5kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 26,
+      "ratedPowerKW": 5.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUF18",
+    "category": "contactor",
+    "maker": "春日電機",
+    "model": "MUF18",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-5.5kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 26,
+      "ratedPowerKW": 5.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUF20",
+    "category": "contactor",
+    "maker": "春日電機",
+    "model": "MUF20",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-7.5kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 34,
+      "ratedPowerKW": 7.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUF25",
+    "category": "contactor",
+    "maker": "春日電機",
+    "model": "MUF25",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 50,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-MUF35",
+    "category": "contactor",
+    "maker": "春日電機",
+    "model": "MUF35",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-15kW",
+    "mounting": "直接取付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "ratedCurrentA": 65,
+      "ratedPowerKW": 15,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC8M",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "HC8M",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-1.5kW",
+    "mounting": "DINレール",
+    "note": "経済形",
+    "specs": {
+      "ratedCurrentA": 8,
+      "ratedPowerKW": 1.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 0
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC10M",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "HC10M",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "mounting": "DINレール",
+    "note": "経済形",
+    "specs": {
+      "ratedCurrentA": 12,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 0
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC8",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "HC8",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 0
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC10",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "HC10",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.7kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 13,
+      "ratedPowerKW": 2.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 0
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC20",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "HC20",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4.5kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 22,
+      "ratedPowerKW": 4.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC35",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "HC35",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-7.5kW",
+    "mounting": "DINレール",
+    "note": "電気的耐久性100万回とすることで最大35Aまで使用可",
+    "specs": {
+      "ratedCurrentA": 32,
+      "ratedPowerKW": 7.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HC55",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "HC55",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 55,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-HS50",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "HS50",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 50,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-H65C",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "H65C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-15kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 65,
+      "ratedPowerKW": 15,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-H80C",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "H80C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-19kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 80,
+      "ratedPowerKW": 19,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-H100C",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "H100C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-25kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 100,
+      "ratedPowerKW": 25,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-H125C",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "H125C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-30kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 125,
+      "ratedPowerKW": 30,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-H150C",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "H150C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-37kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 150,
+      "ratedPowerKW": 37,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-H200C",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "H200C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-45kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 180,
+      "ratedPowerKW": 45,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-H250C",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "H250C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-60kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 240,
+      "ratedPowerKW": 60,
+      "coil": "AC200V",
+      "aux": {
+        "a": 3,
+        "b": 3
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-H300C",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "H300C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-75kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 300,
+      "ratedPowerKW": 75,
+      "coil": "AC200V",
+      "aux": {
+        "a": 3,
+        "b": 3
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-H400C",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "H400C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-110kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 400,
+      "ratedPowerKW": 110,
+      "coil": "AC200V",
+      "aux": {
+        "a": 3,
+        "b": 3
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-H600C",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "H600C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-150kW",
+    "mounting": "直接取付",
+    "specs": {
+      "ratedCurrentA": 600,
+      "ratedPowerKW": 150,
+      "coil": "AC200V",
+      "aux": {
+        "a": 4,
+        "b": 4
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "HIT-H800C",
+    "category": "contactor",
+    "maker": "日立産機",
+    "model": "H800C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-200kW",
+    "mounting": "直接取付",
+    "note": "800AはAC-2定格。AC-3のカゴ形モータ容量表記なし",
+    "specs": {
+      "ratedCurrentA": 800,
+      "ratedPowerKW": 200,
+      "coil": "AC200V",
+      "aux": {
+        "a": 4,
+        "b": 4
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TGM-PAK6JC",
+    "category": "contactor",
+    "maker": "戸上電機",
+    "model": "PAK-6JC",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-2.2kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 11,
+      "ratedPowerKW": 2.2,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "TGM-PAK12J",
+    "category": "contactor",
+    "maker": "戸上電機",
+    "model": "PAK-12J",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-3.7kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 3.7,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "TGM-PAK20J",
+    "category": "contactor",
+    "maker": "戸上電機",
+    "model": "PAK-20J",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-4kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 18,
+      "ratedPowerKW": 4,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "TGM-PAK25J",
+    "category": "contactor",
+    "maker": "戸上電機",
+    "model": "PAK-25J",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-5.5kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 26,
+      "ratedPowerKW": 5.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 1,
+        "b": 1
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "TGM-PAK35J",
+    "category": "contactor",
+    "maker": "戸上電機",
+    "model": "PAK-35J",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-7.5kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 34,
+      "ratedPowerKW": 7.5,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "TGM-PAK50J",
+    "category": "contactor",
+    "maker": "戸上電機",
+    "model": "PAK-50J",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "C-11kW",
+    "mounting": "DINレール",
+    "specs": {
+      "ratedCurrentA": 50,
+      "ratedPowerKW": 11,
+      "coil": "AC200V",
+      "aux": {
+        "a": 2,
+        "b": 2
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  }
+]

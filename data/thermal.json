@@ -1,0 +1,1855 @@
+[
+  {
+    "id": "MIT-THN12",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-N12",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 54,
+      "h": 59,
+      "d": 80
+    },
+    "mounting": "接触器直付",
+    "discontinued": true,
+    "successorId": "MIT-THT18",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-N10"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.12,
+        "max": 11
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THN18",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-N18",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 45,
+      "h": 62,
+      "d": 86
+    },
+    "mounting": "接触器直付",
+    "discontinued": true,
+    "successorId": "MIT-THT18",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-N18"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 1,
+        "max": 18
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THN20",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-N20",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 63,
+      "h": 51,
+      "d": 79
+    },
+    "mounting": "接触器直付",
+    "discontinued": true,
+    "successorId": "MIT-THT25",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-N20",
+        "S-N21",
+        "S-N25"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.24,
+        "max": 15
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THN60",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-N60",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 55,
+      "h": 68,
+      "d": 92
+    },
+    "mounting": "接触器直付",
+    "discontinued": true,
+    "successorId": "MIT-THT65",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-N35",
+        "S-N50",
+        "S-N65"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 12,
+        "max": 65
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THT18",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-T18",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 45,
+      "h": 55,
+      "d": 76.5
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-T10",
+        "S-T12",
+        "S-T20"
+      ],
+      "standalone": "UT-HZ18",
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.12,
+        "max": 15
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THT18KP",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-T18KP",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-2E",
+    "dims": {
+      "w": 45,
+      "h": 55,
+      "d": 76.5
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "2E",
+      "mountsOn": [
+        "S-T10",
+        "S-T12",
+        "S-T20"
+      ],
+      "standalone": "UT-HZ18",
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.12,
+        "max": 15
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THT25",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-T25",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 63,
+      "h": 51,
+      "d": 79
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-T21",
+        "S-T25"
+      ],
+      "standalone": "UN-RM20",
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.24,
+        "max": 22
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THT25KP",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-T25KP",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-2E",
+    "dims": {
+      "w": 63,
+      "h": 51,
+      "d": 79
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "2E",
+      "mountsOn": [
+        "S-T21",
+        "S-T25"
+      ],
+      "standalone": "UN-RM20",
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.24,
+        "max": 22
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THT50",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-T50",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 63,
+      "h": 53,
+      "d": 80
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-T35",
+        "S-T50"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 24,
+        "max": 54
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THT50KP",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-T50KP",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-2E",
+    "dims": {
+      "w": 63,
+      "h": 53,
+      "d": 80
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "2E",
+      "mountsOn": [
+        "S-T35",
+        "S-T50"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 24,
+        "max": 54
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THT65",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-T65",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 70,
+      "h": 90,
+      "d": 95
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-T65"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 12,
+        "max": 65
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THT65KP",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-T65KP",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-2E",
+    "dims": {
+      "w": 70,
+      "h": 90,
+      "d": 95
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "2E",
+      "mountsOn": [
+        "S-T65"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 12,
+        "max": 65
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THT100",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-T100",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 80,
+      "h": 110,
+      "d": 110
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-T80",
+        "S-T100"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 54,
+        "max": 100
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THN120",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-N120",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 85,
+      "h": 115,
+      "d": 115
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-N125"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 34,
+        "max": 100
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THN220RH",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-N220RH",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 110,
+      "h": 150,
+      "d": 140
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-N220"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 65,
+        "max": 220
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THN400RH",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-N400RH",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 130,
+      "h": 180,
+      "d": 160
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-N400"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 85,
+        "max": 400
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THN600",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-N600",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 150,
+      "h": 210,
+      "d": 185
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-N600"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 200,
+        "max": 800
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-TR0N",
+    "category": "thermal",
+    "maker": "富士電機",
+    "model": "TR-0N",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 45,
+      "h": 53,
+      "d": 85
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "SC-03",
+        "SC-0",
+        "SC-05"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.1,
+        "max": 13
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-TR0NH",
+    "category": "thermal",
+    "maker": "富士電機",
+    "model": "TR-0NH",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 45,
+      "h": 53,
+      "d": 85
+    },
+    "mounting": "直接取付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [],
+      "standalone": "単独設置用",
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.1,
+        "max": 13
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-TRN2",
+    "category": "thermal",
+    "maker": "富士電機",
+    "model": "TR-N2",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 45,
+      "h": 60,
+      "d": 85
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "SC-N1",
+        "SC-N2"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 4,
+        "max": 54
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-TRN6",
+    "category": "thermal",
+    "maker": "富士電機",
+    "model": "TR-N6",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 55,
+      "h": 66,
+      "d": 91
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "SC-N4",
+        "SC-N5"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 24,
+        "max": 65
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "FUJI-TKN3H",
+    "category": "thermal",
+    "maker": "富士電機",
+    "model": "TK-N3H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-2E",
+    "dims": {
+      "w": 63,
+      "h": 100,
+      "d": 95
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "2E",
+      "mountsOn": [
+        "SC-N2S",
+        "SC-N3"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 34,
+        "max": 50
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "OMR-J7TC18",
+    "category": "thermal",
+    "maker": "オムロン",
+    "model": "J7TC-A-18",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 45,
+      "h": 52,
+      "d": 78
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "J7KC-09",
+        "J7KC-18"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.12,
+        "max": 18
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "OMR-J7TC26",
+    "category": "thermal",
+    "maker": "オムロン",
+    "model": "J7TC-A-26",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 45,
+      "h": 52,
+      "d": 79
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "J7KC-25"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.2,
+        "max": 26
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "OMR-J7TC50",
+    "category": "thermal",
+    "maker": "オムロン",
+    "model": "J7TC-A-50",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 57,
+      "h": 55,
+      "d": 82
+    },
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "J7KC-32",
+        "J7KC-50"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 24,
+        "max": 50
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "PANA-NTH12",
+    "category": "thermal",
+    "maker": "パナソニック",
+    "model": "N-TH12",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 46,
+      "h": 56,
+      "d": 77
+    },
+    "mounting": "接触器直付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 7,
+        "max": 11
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-TH8",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-8",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "dims": {
+      "w": 44,
+      "h": 53,
+      "d": 90
+    },
+    "mounting": "接触器直付",
+    "discontinued": true,
+    "successorId": "MIT-THN12",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 7,
+        "max": 11
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-HRD010B",
+    "category": "thermal",
+    "maker": "春日電機",
+    "model": "HRD010B",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 7,
+        "max": 11
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-HRD018B",
+    "category": "thermal",
+    "maker": "春日電機",
+    "model": "HRD018B",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 1,
+        "max": 18
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "KSG-HRE35DG",
+    "category": "thermal",
+    "maker": "春日電機",
+    "model": "HRE35DG",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "discontinued": true,
+    "makerExited": true,
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 24,
+        "max": 36
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "HIT-TRC12M",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TRC12M-1E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "HC8M",
+        "HC10M"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.1,
+        "max": 12
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TRC12",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TRC12-1E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "HC8",
+        "HC10"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.1,
+        "max": 12
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TRC12-2E",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TRC12-2E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-2E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "2E",
+      "mountsOn": [
+        "HC8",
+        "HC10"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.1,
+        "max": 12
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TRC32",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TRC32-1E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "HC20",
+        "HC35"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 9,
+        "max": 32
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TRC32-2E",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TRC32-2E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-2E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "2E",
+      "mountsOn": [
+        "HC20",
+        "HC35"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 9,
+        "max": 32
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TRC63",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TRC63-1E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "HC55"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 28,
+        "max": 63
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TRC63-2E",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TRC63-2E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-2E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "2E",
+      "mountsOn": [
+        "HC55"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 28,
+        "max": 63
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TR50B",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TR50B-1E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "HS50"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 12,
+        "max": 50
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TR80B",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TR80B-1E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "H65C",
+        "H80C"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 34,
+        "max": 80
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TR150B",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TR150B-1E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "H100C",
+        "H125C",
+        "H150C"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 65,
+        "max": 150
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TR250B",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TR250B-1E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "note": "CTとTR20B-1Eを組合せたセット品",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "H200C",
+        "H250C"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 130,
+        "max": 250
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TR400B",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TR400B-1E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "note": "CTとTR20B-1Eを組合せたセット品",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "H300C",
+        "H400C"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 200,
+        "max": 400
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TR600B",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TR600B-1E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "note": "CTとTR20B-1Eを組合せたセット品",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "H600C"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 320,
+        "max": 600
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "HIT-TR20B",
+    "category": "thermal",
+    "maker": "日立産機",
+    "model": "TR20B-1E",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "discontinued": true,
+    "note": "250B〜600BではCTと組合せて使用",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "HS50"
+      ],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.1,
+        "max": 20
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "TGM-T21C",
+    "category": "thermal",
+    "maker": "戸上電機",
+    "model": "T-21C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 0.1,
+        "max": 20
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "TGM-T35C",
+    "category": "thermal",
+    "maker": "戸上電機",
+    "model": "T-35C",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 12,
+        "max": 36
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "TGM-TJ220",
+    "category": "thermal",
+    "maker": "戸上電機",
+    "model": "TJ-220",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 65,
+        "max": 220
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "TGM-TJ400N",
+    "category": "thermal",
+    "maker": "戸上電機",
+    "model": "TJ-400N",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "T-1E",
+    "mounting": "接触器直付",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [],
+      "coil": "-",
+      "aux": {
+        "a": 1,
+        "b": 1
+      },
+      "setRangeA": {
+        "min": 85,
+        "max": 400
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  }
+]

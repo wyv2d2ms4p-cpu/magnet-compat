@@ -1,0 +1,4298 @@
+[
+  {
+    "id": "OMRON-E2EX1R5E1",
+    "category": "proximity",
+    "maker": "オムロン",
+    "model": "E2E-X1R5E1",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M8",
+    "dims": {
+      "w": 8,
+      "h": 30,
+      "d": 8
+    },
+    "mounting": "ねじ込み型",
+    "specs": {
+      "sensingDistanceMM": 1.5,
+      "threadSize": "M8",
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "OMRON-E2EX4D1",
+    "category": "proximity",
+    "maker": "オムロン",
+    "model": "E2E-X4D1",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M12",
+    "dims": {
+      "w": 12,
+      "h": 50,
+      "d": 12
+    },
+    "mounting": "ねじ込み型",
+    "specs": {
+      "sensingDistanceMM": 4,
+      "threadSize": "M12",
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "OMRON-E2EX8D1",
+    "category": "proximity",
+    "maker": "オムロン",
+    "model": "E2E-X8D1",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M18",
+    "dims": {
+      "w": 18,
+      "h": 54,
+      "d": 18
+    },
+    "mounting": "ねじ込み型",
+    "specs": {
+      "sensingDistanceMM": 8,
+      "threadSize": "M18",
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "OMRON-E2EX12C318",
+    "category": "proximity",
+    "maker": "オムロン",
+    "model": "E2E-X12C318",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M18-L",
+    "dims": {
+      "w": 18,
+      "h": 60,
+      "d": 18
+    },
+    "mounting": "ねじ込み型",
+    "note": "非シールド(検出距離長め)",
+    "specs": {
+      "sensingDistanceMM": 12,
+      "threadSize": "M18",
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "OMRON-E2EX20MD1",
+    "category": "proximity",
+    "maker": "オムロン",
+    "model": "E2E-X20MD1",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M30",
+    "dims": {
+      "w": 30,
+      "h": 60,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "M30",
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "OMRON-E2EX40MD1",
+    "category": "proximity",
+    "maker": "オムロン",
+    "model": "E2E-X40MD1",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M30-L",
+    "dims": {
+      "w": 30,
+      "h": 66,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "非シールド(長距離)",
+    "specs": {
+      "sensingDistanceMM": 40,
+      "threadSize": "M30",
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "OMRON-E2EX4D82",
+    "category": "proximity",
+    "maker": "オムロン",
+    "model": "E2E-X4D82",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M12",
+    "dims": {
+      "w": 12,
+      "h": 52,
+      "d": 12
+    },
+    "mounting": "ねじ込み型",
+    "discontinued": true,
+    "successorId": "OMRON-E2EX4D1",
+    "specs": {
+      "sensingDistanceMM": 4,
+      "threadSize": "M12",
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "赤",
+        "minus": "黒",
+        "out": "白"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "AZBIL-FL7M2J6HD",
+    "category": "proximity",
+    "maker": "アズビル",
+    "model": "FL7M-2J6HD",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M8",
+    "dims": {
+      "w": 8,
+      "h": 30,
+      "d": 8
+    },
+    "mounting": "ねじ込み型",
+    "specs": {
+      "sensingDistanceMM": 2,
+      "threadSize": "M8",
+      "voltage": "DC(2線)",
+      "outputSpec": "2線式 NO",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "AZBIL-FL7M3J6HD",
+    "category": "proximity",
+    "maker": "アズビル",
+    "model": "FL7M-3J6HD",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M12",
+    "dims": {
+      "w": 12,
+      "h": 50,
+      "d": 12
+    },
+    "mounting": "ねじ込み型",
+    "specs": {
+      "sensingDistanceMM": 3,
+      "threadSize": "M12",
+      "voltage": "DC(2線)",
+      "outputSpec": "2線式 NO",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "AZBIL-FL7M7J6HD",
+    "category": "proximity",
+    "maker": "アズビル",
+    "model": "FL7M-7J6HD",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M18",
+    "dims": {
+      "w": 18,
+      "h": 54,
+      "d": 18
+    },
+    "mounting": "ねじ込み型",
+    "specs": {
+      "sensingDistanceMM": 7,
+      "threadSize": "M18",
+      "voltage": "DC(2線)",
+      "outputSpec": "2線式 NO",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "AZBIL-FL7M10J6D",
+    "category": "proximity",
+    "maker": "アズビル",
+    "model": "FL7M-10J6D",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M30",
+    "dims": {
+      "w": 30,
+      "h": 60,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "M30",
+      "voltage": "DC(2線)",
+      "outputSpec": "2線式 NO",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "KEYENCE-EV108M",
+    "category": "proximity",
+    "maker": "キーエンス",
+    "model": "EV-108M",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M8",
+    "dims": {
+      "w": 8,
+      "h": 30,
+      "d": 8
+    },
+    "mounting": "ねじ込み型",
+    "specs": {
+      "sensingDistanceMM": 2,
+      "threadSize": "M8",
+      "voltage": "DC(2線)",
+      "outputSpec": "2線式",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "KEYENCE-EV118M",
+    "category": "proximity",
+    "maker": "キーエンス",
+    "model": "EV-118M",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M18",
+    "dims": {
+      "w": 18,
+      "h": 54,
+      "d": 18
+    },
+    "mounting": "ねじ込み型",
+    "note": "【訂正】M18シールド 5.0mm±10%(旧登録7mmは誤りの可能性)。⚠キーエンス公式仕様表で最終確認を推奨",
+    "specs": {
+      "sensingDistanceMM": 5,
+      "threadSize": "M18",
+      "voltage": "DC(2線)",
+      "outputSpec": "2線式",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "KEYENCE-EZP4",
+    "category": "proximity",
+    "maker": "キーエンス",
+    "model": "EZ-P4",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M12",
+    "dims": {
+      "w": 12,
+      "h": 48,
+      "d": 12
+    },
+    "mounting": "ねじ込み型",
+    "specs": {
+      "sensingDistanceMM": 4,
+      "threadSize": "M12",
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "PANA-GX4M",
+    "category": "proximity",
+    "maker": "パナソニック",
+    "model": "GX-4M",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-GX4M",
+    "dims": {
+      "w": 12,
+      "h": 51,
+      "d": 12
+    },
+    "mounting": "ねじ込み型",
+    "discontinued": true,
+    "note": "⚠【要確認】この型式はパナソニック公式で実在を確認できず。命名規則ではGX-4M=M4相当だが不明。円柱GXは終了品(後継は角型GX-F/H系)",
+    "specs": {
+      "sensingDistanceMM": 4,
+      "threadSize": "M4?",
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "PANA-GX8M",
+    "category": "proximity",
+    "maker": "パナソニック",
+    "model": "GX-8M",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M8",
+    "dims": {
+      "w": 8,
+      "h": 30,
+      "d": 8
+    },
+    "mounting": "ねじ込み型",
+    "discontinued": true,
+    "note": "【訂正】GX-8M=M8サイズ(旧登録M18/8mmは誤り。命名はGX-12M=M12/GX-18M=M18/GX-30M=M30)。生産終了・⚠検出距離は要確認",
+    "specs": {
+      "sensingDistanceMM": 1.5,
+      "threadSize": "M8",
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "PANA-GXF8B",
+    "category": "proximity",
+    "maker": "パナソニック",
+    "model": "GX-F8B",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-角8",
+    "dims": {
+      "w": 8,
+      "h": 25,
+      "d": 5
+    },
+    "mounting": "ブラケット型",
+    "note": "角型・薄型",
+    "specs": {
+      "sensingDistanceMM": 1.6,
+      "threadSize": "角型",
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX角型"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "PANA-GXF12B",
+    "category": "proximity",
+    "maker": "パナソニック",
+    "model": "GX-F12B",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-角12",
+    "dims": {
+      "w": 12,
+      "h": 28,
+      "d": 7
+    },
+    "mounting": "ブラケット型",
+    "specs": {
+      "sensingDistanceMM": 2.5,
+      "threadSize": "角型",
+      "voltage": "DC12-24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX角型"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "IFM-IE5343",
+    "category": "proximity",
+    "maker": "ifm",
+    "model": "IE5343",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M8",
+    "dims": {
+      "w": 8,
+      "h": 37,
+      "d": 8
+    },
+    "mounting": "ねじ込み型",
+    "note": "埋込可(flush)・応答1kHz・2mケーブル",
+    "specs": {
+      "sensingDistanceMM": 3,
+      "threadSize": "M8",
+      "voltage": "DC10-30V",
+      "outputSpec": "PNP/NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "IFM-IFC200",
+    "category": "proximity",
+    "maker": "ifm",
+    "model": "IFC200",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M12",
+    "dims": {
+      "w": 12,
+      "h": 45,
+      "d": 12
+    },
+    "mounting": "ねじ込み型",
+    "note": "埋込可(flush)・M12コネクタ",
+    "specs": {
+      "sensingDistanceMM": 4,
+      "threadSize": "M12",
+      "voltage": "DC10-30V",
+      "outputSpec": "PNP/NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "IFM-IGC200",
+    "category": "proximity",
+    "maker": "ifm",
+    "model": "IGC200",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M18",
+    "dims": {
+      "w": 18,
+      "h": 46,
+      "d": 18
+    },
+    "mounting": "ねじ込み型",
+    "note": "埋込可(flush)",
+    "specs": {
+      "sensingDistanceMM": 8,
+      "threadSize": "M18",
+      "voltage": "DC10-30V",
+      "outputSpec": "PNP/NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "IFM-IIC200",
+    "category": "proximity",
+    "maker": "ifm",
+    "model": "IIC200",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-M30",
+    "dims": {
+      "w": 30,
+      "h": 50,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "埋込可(flush)",
+    "specs": {
+      "sensingDistanceMM": 15,
+      "threadSize": "M30",
+      "voltage": "DC10-36V",
+      "outputSpec": "PNP NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX円柱"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "IFM-IM5132",
+    "category": "proximity",
+    "maker": "ifm",
+    "model": "IM5132",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-角40",
+    "dims": {
+      "w": 40,
+      "h": 66,
+      "d": 40
+    },
+    "mounting": "ブラケット型",
+    "note": "□40角型・オールメタル(K=1)",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "角型",
+      "voltage": "DC10-30V",
+      "outputSpec": "PNP NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "PX角型"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I40431",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-404.31",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-4mm",
+    "dims": {
+      "w": 26,
+      "h": 40,
+      "d": 12
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 4,
+      "threadSize": "角型",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PU60531",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PU-605.31",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-5mm",
+    "dims": {
+      "w": 18,
+      "h": 60,
+      "d": 18
+    },
+    "mounting": "ねじ込み型",
+    "note": "最高周囲70℃・金属埋込可・真鍮/Niメッキ",
+    "specs": {
+      "sensingDistanceMM": 5,
+      "threadSize": "M18",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I21031",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-210.31",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 20,
+      "h": 76,
+      "d": 20
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "φ20",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I21031H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-210.31H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 20,
+      "h": 76,
+      "d": 20
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "φ20",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 100,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR21031",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-210.31",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 20,
+      "h": 75,
+      "d": 20
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "φ20",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PU61031",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PU-610.31",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 30,
+      "h": 60,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "最高周囲70℃・金属埋込可・真鍮/Niメッキ",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "M30",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR21931HTF",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-219.31HTF",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-19mm",
+    "dims": {
+      "w": 35,
+      "h": 90,
+      "d": 35
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PTFE",
+    "specs": {
+      "sensingDistanceMM": 19,
+      "threadSize": "φ35",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 100,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I22031",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-220.31",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I22030",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-220.30",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.C.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I22031H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-220.31H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 100,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I22030H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-220.30H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.C.(DC3線式)",
+      "tempMaxC": 100,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR22031",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-220.31",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR22030",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-220.30",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.C.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR22031H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-220.31H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 100,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR25031",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-250.31",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-50mm",
+    "dims": {
+      "w": 80,
+      "h": 40,
+      "d": 80
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 50,
+      "threadSize": "φ80",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR20331",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-203.31",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 150,
+      "h": 108,
+      "d": 43
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "角型",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR20331H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-203.31H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 150,
+      "h": 108,
+      "d": 43
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "角型",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 100,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-98090300",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "9809-0300",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 50,
+      "h": 100,
+      "d": 50
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・アルミダイキャスト",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "角型",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-98090400",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "9809-0400",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 50,
+      "h": 100,
+      "d": 50
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・アルミダイキャスト",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "角型",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-98090500",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "9809-0500",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 50,
+      "h": 100,
+      "d": 50
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・アルミダイキャスト",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "角型",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR20631",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-206.31",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-100mm",
+    "dims": {
+      "w": 170,
+      "h": 68,
+      "d": 170
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 100,
+      "threadSize": "角型",
+      "voltage": "DC(3線+アース)",
+      "outputSpec": "N.O.(DC3線式+アース)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-K61531",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "K-615.31",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ静電-15mm",
+    "dims": {
+      "w": 30,
+      "h": 80,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "静電容量式・最高周囲70℃・金属埋込可・真鍮/Crメッキ",
+    "specs": {
+      "sensingDistanceMM": 15,
+      "threadSize": "M30",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PRK610A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PRK-610.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ静電-15mm",
+    "dims": {
+      "w": 30,
+      "h": 70,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "静電容量式・最高周囲70℃・金属埋込可・真鍮/Niメッキ",
+    "specs": {
+      "sensingDistanceMM": 15,
+      "threadSize": "M30",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-K22095",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "K-220.95",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ静電-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "静電容量式・最高周囲70℃・金属埋込不可・PPE樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PRK220A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PRK-220.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ静電-20mm",
+    "dims": {
+      "w": 32,
+      "h": 70,
+      "d": 32
+    },
+    "mounting": "ねじ込み型",
+    "note": "静電容量式・最高周囲70℃・金属埋込不可・PPO樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "M32",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I40495",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-404.95",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-4mm",
+    "dims": {
+      "w": 26,
+      "h": 40,
+      "d": 12
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 4,
+      "threadSize": "角型",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR605A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-605.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-5mm",
+    "dims": {
+      "w": 18,
+      "h": 62,
+      "d": 18
+    },
+    "mounting": "ねじ込み型",
+    "note": "最高周囲70℃・金属埋込可・真鍮/Niメッキ",
+    "specs": {
+      "sensingDistanceMM": 5,
+      "threadSize": "M18",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR605A2H150",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-605.A2H150",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-5mm",
+    "dims": {
+      "w": 18,
+      "h": 76,
+      "d": 18
+    },
+    "mounting": "ねじ込み型",
+    "note": "最高周囲150℃・金属埋込可・真鍮/Niメッキ",
+    "specs": {
+      "sensingDistanceMM": 5,
+      "threadSize": "M18",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.C.(AC/DC2線式)",
+      "tempMaxC": 150
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PU60595",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PU-605.95",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-5mm",
+    "dims": {
+      "w": 18,
+      "h": 60,
+      "d": 18
+    },
+    "mounting": "ねじ込み型",
+    "note": "最高周囲70℃・金属埋込可・真鍮/Niメッキ",
+    "specs": {
+      "sensingDistanceMM": 5,
+      "threadSize": "M18",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR308A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-308.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-8mm",
+    "dims": {
+      "w": 0,
+      "h": 0,
+      "d": 0
+    },
+    "mounting": "ブラケット型",
+    "note": "形状要確認・最高周囲70℃・金属埋込不可・真鍮/Niメッキ",
+    "specs": {
+      "sensingDistanceMM": 8,
+      "threadSize": "―",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I21095",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-210.95",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 20,
+      "h": 76,
+      "d": 20
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "φ20",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I21095H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-210.95H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 20,
+      "h": 76,
+      "d": 20
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "φ20",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR210A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-210.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 20,
+      "h": 75,
+      "d": 20
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "φ20",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR210A3H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-210.A3H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 20,
+      "h": 75,
+      "d": 20
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "φ20",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PA61095",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PA-610.95",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 30,
+      "h": 80,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "最高周囲70℃・金属埋込可・真鍮/Crメッキ",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "M30",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PA61094",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PA-610.94",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 30,
+      "h": 80,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "最高周囲70℃・金属埋込可・真鍮/Crメッキ",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "M30",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.C.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR610A2",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-610.A2",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 30,
+      "h": 80,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "最高周囲70℃・金属埋込可・真鍮/Niメッキ",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "M30",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.C.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR610A3H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-610.A3H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 30,
+      "h": 80,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "最高周囲100℃・金属埋込可・真鍮/Niメッキ",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "M30",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PU61095",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PU-610.95",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 30,
+      "h": 60,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "最高周囲70℃・金属埋込可・真鍮/Niメッキ",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "M30",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR219A3HTF",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-219.A3HTF",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-19mm",
+    "dims": {
+      "w": 35,
+      "h": 90,
+      "d": 35
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PTFE",
+    "specs": {
+      "sensingDistanceMM": 19,
+      "threadSize": "φ35",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR219A2HTF",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-219.A2HTF",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-19mm",
+    "dims": {
+      "w": 35,
+      "h": 90,
+      "d": 35
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PTFE",
+    "specs": {
+      "sensingDistanceMM": 19,
+      "threadSize": "φ35",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.C.(AC/DC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR219A3H1",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-219.A3H1",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-19mm",
+    "dims": {
+      "w": 35,
+      "h": 90,
+      "d": 35
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲120℃・金属埋込不可・PTFE",
+    "specs": {
+      "sensingDistanceMM": 19,
+      "threadSize": "φ35",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 120
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR219A2H1",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-219.A2H1",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-19mm",
+    "dims": {
+      "w": 35,
+      "h": 90,
+      "d": 35
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲120℃・金属埋込不可・PTFE",
+    "specs": {
+      "sensingDistanceMM": 19,
+      "threadSize": "φ35",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.C.(AC/DC2線式)",
+      "tempMaxC": 120
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR219A3H1PTFE",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-219.A3H1-PTFE",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-19mm",
+    "dims": {
+      "w": 35,
+      "h": 90,
+      "d": 35
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲120℃・金属埋込不可・PTFE(PTFEケーブル)",
+    "specs": {
+      "sensingDistanceMM": 19,
+      "threadSize": "φ35",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 120
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR219A2H1PTFEcable",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-219.A2H1-PTFEcable",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-19mm",
+    "dims": {
+      "w": 35,
+      "h": 90,
+      "d": 35
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲120℃・金属埋込不可・PTFE(PTFEケーブル)",
+    "specs": {
+      "sensingDistanceMM": 19,
+      "threadSize": "φ35",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.C.(AC/DC2線式)",
+      "tempMaxC": 120
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I22095",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-220.95",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I22094",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-220.94",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.C.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I22095H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-220.95H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I22094H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-220.94H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.C.(AC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR220A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-220.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR220A2",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-220.A2",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.C.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR220A3H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-220.A3H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR220A2H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-220.A2H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.C.(AC/DC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR620A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-620.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 36,
+      "h": 70,
+      "d": 36
+    },
+    "mounting": "ねじ込み型",
+    "note": "最高周囲70℃・金属埋込可・真鍮/Niメッキ",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "PG36",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR320A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-320.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 38,
+      "h": 80,
+      "d": 38
+    },
+    "mounting": "ねじ込み型",
+    "note": "最高周囲70℃・金属埋込不可・真鍮/Niメッキ",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "M38",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR125A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-125.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-25mm",
+    "dims": {
+      "w": 54,
+      "h": 45,
+      "d": 54
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込可・アルミニウム",
+    "specs": {
+      "sensingDistanceMM": 25,
+      "threadSize": "φ54",
+      "voltage": "AC/DC(2線+アース)",
+      "outputSpec": "N.O.(AC/DC2線式+アース)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I14565W",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-145.65W",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-45mm",
+    "dims": {
+      "w": 150,
+      "h": 64,
+      "d": 150
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込可・アルミニウム",
+    "specs": {
+      "sensingDistanceMM": 45,
+      "threadSize": "角型",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR145A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-145.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-45mm",
+    "dims": {
+      "w": 100,
+      "h": 55,
+      "d": 100
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込可・アルミニウム",
+    "specs": {
+      "sensingDistanceMM": 45,
+      "threadSize": "φ100",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR145A3H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-145.A3H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-45mm",
+    "dims": {
+      "w": 100,
+      "h": 55,
+      "d": 100
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込可・アルミニウム",
+    "specs": {
+      "sensingDistanceMM": 45,
+      "threadSize": "φ100",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR145A3W",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-145.A3W",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-45mm",
+    "dims": {
+      "w": 150,
+      "h": 64,
+      "d": 150
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込可・アルミニウム",
+    "specs": {
+      "sensingDistanceMM": 45,
+      "threadSize": "角型",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR145A2W",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-145.A2W",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-45mm",
+    "dims": {
+      "w": 150,
+      "h": 64,
+      "d": 150
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込可・アルミニウム",
+    "specs": {
+      "sensingDistanceMM": 45,
+      "threadSize": "角型",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.C.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I450A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-450.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-50mm",
+    "dims": {
+      "w": 80,
+      "h": 92,
+      "d": 80
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込可・PPS樹脂",
+    "specs": {
+      "sensingDistanceMM": 50,
+      "threadSize": "角型",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I450A2",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-450.A2",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-50mm",
+    "dims": {
+      "w": 80,
+      "h": 92,
+      "d": 80
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込可・PPS樹脂",
+    "specs": {
+      "sensingDistanceMM": 50,
+      "threadSize": "角型",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.C.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR050A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-050.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-50mm",
+    "dims": {
+      "w": 80,
+      "h": 100,
+      "d": 30
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 50,
+      "threadSize": "角型",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR250A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-250.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-50mm",
+    "dims": {
+      "w": 80,
+      "h": 40,
+      "d": 80
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 50,
+      "threadSize": "φ80",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR250A2",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-250.A2",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-50mm",
+    "dims": {
+      "w": 80,
+      "h": 40,
+      "d": 80
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 50,
+      "threadSize": "φ80",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.C.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-20365S",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "203.65S",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 95,
+      "h": 40,
+      "d": 95
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PPE樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "φ95",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-20365J",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "203.65J",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 95,
+      "h": 120,
+      "d": 33
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PPE樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "角型",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR203A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-203.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 150,
+      "h": 108,
+      "d": 43
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "角型",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR203A2",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-203.A2",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 150,
+      "h": 108,
+      "d": 43
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "角型",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.C.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR203A3H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-203.A3H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 150,
+      "h": 108,
+      "d": 43
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "角型",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR070A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-070.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 110,
+      "h": 43,
+      "d": 110
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "φ110",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR070A3H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-070.A3H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 110,
+      "h": 43,
+      "d": 110
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "φ110",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR070A3H1",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-070.A3H1",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 110,
+      "h": 43,
+      "d": 110
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲120℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "φ110",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 120
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR070A2",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-070.A2",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 110,
+      "h": 43,
+      "d": 110
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "φ110",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.C.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-20664",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "206.64",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-100mm",
+    "dims": {
+      "w": 175,
+      "h": 68,
+      "d": 175
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PPE樹脂",
+    "specs": {
+      "sensingDistanceMM": 100,
+      "threadSize": "角型",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR206A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-206.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-100mm",
+    "dims": {
+      "w": 170,
+      "h": 68,
+      "d": 170
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 100,
+      "threadSize": "角型",
+      "voltage": "AC(2線+アース)",
+      "outputSpec": "N.O.(AC2線式+アース)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR206A2",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-206.A2",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-100mm",
+    "dims": {
+      "w": 170,
+      "h": 68,
+      "d": 170
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲70℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 100,
+      "threadSize": "角型",
+      "voltage": "AC(2線+アース)",
+      "outputSpec": "N.C.(AC2線式+アース)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR206A3H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-206.A3H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-100mm",
+    "dims": {
+      "w": 170,
+      "h": 68,
+      "d": 170
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 100,
+      "threadSize": "角型",
+      "voltage": "AC(2線+アース)",
+      "outputSpec": "N.O.(AC2線式+アース)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR206A2H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-206.A2H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-100mm",
+    "dims": {
+      "w": 170,
+      "h": 68,
+      "d": 170
+    },
+    "mounting": "ブラケット型",
+    "note": "最高周囲100℃・金属埋込不可・PBT樹脂",
+    "specs": {
+      "sensingDistanceMM": 100,
+      "threadSize": "角型",
+      "voltage": "AC(2線+アース)",
+      "outputSpec": "N.C.(AC2線式+アース)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I21595HTF",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-215.95HTF",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-15mm",
+    "dims": {
+      "w": 35,
+      "h": 90,
+      "d": 35
+    },
+    "mounting": "ブラケット型",
+    "discontinued": true,
+    "successorId": "SEJ-PR219A3HTF",
+    "note": "最高周囲100℃・金属埋込不可・PTFE",
+    "specs": {
+      "sensingDistanceMM": 15,
+      "threadSize": "φ35",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-20365R",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "203.65R",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 0,
+      "h": 0,
+      "d": 0
+    },
+    "mounting": "ブラケット型",
+    "discontinued": true,
+    "successorId": "SEJ-PR203A3",
+    "note": "形状要確認・最高周囲70℃・金属埋込不可・PPE樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "―",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-20364R",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "203.64R",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 0,
+      "h": 0,
+      "d": 0
+    },
+    "mounting": "ブラケット型",
+    "discontinued": true,
+    "successorId": "SEJ-PR203A2",
+    "note": "形状要確認・最高周囲70℃・金属埋込不可・PPE樹脂",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "―",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.C.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-20665",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "206.65",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-100mm",
+    "dims": {
+      "w": 0,
+      "h": 0,
+      "d": 0
+    },
+    "mounting": "ブラケット型",
+    "discontinued": true,
+    "successorId": "SEJ-PR206A3",
+    "note": "形状要確認・最高周囲70℃・金属埋込不可・PPE樹脂",
+    "specs": {
+      "sensingDistanceMM": 100,
+      "threadSize": "―",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-IKU210103",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "IKU-2101.03",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJバー",
+    "dims": {
+      "w": 200,
+      "h": 480,
+      "d": 50
+    },
+    "mounting": "ブラケット型",
+    "note": "大面積バーセンサ・検出面200x1000mm・プラスチック・最高70℃・金属埋込不可",
+    "specs": {
+      "sensingDistanceMM": 250,
+      "threadSize": "バー(面)",
+      "voltage": "AC(3線)",
+      "outputSpec": "N.O.",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-IKU25103",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "IKU-251.03",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJバー",
+    "dims": {
+      "w": 200,
+      "h": 480,
+      "d": 50
+    },
+    "mounting": "ブラケット型",
+    "note": "大面積バーセンサ・検出面200x500mm・プラスチック・最高70℃・金属埋込不可",
+    "specs": {
+      "sensingDistanceMM": 220,
+      "threadSize": "バー(面)",
+      "voltage": "AC(3線)",
+      "outputSpec": "N.O.",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-IKU23103",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "IKU-231.03",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJバー",
+    "dims": {
+      "w": 200,
+      "h": 480,
+      "d": 50
+    },
+    "mounting": "ブラケット型",
+    "note": "大面積バーセンサ・検出面200x300mm・プラスチック・最高70℃・金属埋込不可",
+    "specs": {
+      "sensingDistanceMM": 160,
+      "threadSize": "バー(面)",
+      "voltage": "AC(3線)",
+      "outputSpec": "N.O.",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-IKU34105G",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "IKU-341.05 G",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJバー",
+    "dims": {
+      "w": 200,
+      "h": 480,
+      "d": 50
+    },
+    "mounting": "ブラケット型",
+    "note": "大面積バーセンサ・検出面86x480mm・プラスチック・最高70℃・金属埋込不可",
+    "specs": {
+      "threadSize": "バー(面)",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR31531",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-315.31",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-15mm",
+    "dims": {
+      "w": 30,
+      "h": 80,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "誘導形15mm・真鍮Niメッキ・最高周囲70℃・金属埋込不可",
+    "specs": {
+      "sensingDistanceMM": 15,
+      "threadSize": "M30",
+      "voltage": "DC(2線)",
+      "outputSpec": "N.O.(DC2線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I22041",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-220.41",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "discontinued": true,
+    "successorId": "SEJ-I22031",
+    "note": "旧タイホー工業時代の型式(2000年1月にSEJへ全業務委譲)。銘板DC20-70V・5Mケーブル。末尾41は現行体系に無く、旧AC番号.65/.64→現行.95/.94の改番実績と奇数=N.O./偶数=N.C.の規則から【推定】直流N.O.。⚠DC20-70Vは直流2線式のレンジに近く、2線ならPR-220.A3が配線互換。現物の配線本数を確認しSEJ(03-5803-7151)へ型式照会のこと",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "DC20-70V",
+      "outputSpec": "N.O.(電源方式 要確認)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I21030",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-210.30",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 20,
+      "h": 76,
+      "d": 20
+    },
+    "mounting": "ブラケット型",
+    "note": "現行品(2025年2月時点の継続ラインナップで確認)。10mm・直流3線NPN・ノルマルクローズ・φ20x76・PBT樹脂・非シールド。N.O.はI-210.31、高温100℃はI-210.30H",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "φ20",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.C.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I22065",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-220.65",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "discontinued": true,
+    "successorId": "SEJ-I22095",
+    "note": "旧型式。2018年4月の型式番号変更によりI-220.95へ改番・製造中止。中古流通に実機多数",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.O.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-I22064",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "I-220.64",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-20mm",
+    "dims": {
+      "w": 34,
+      "h": 80,
+      "d": 34
+    },
+    "mounting": "ブラケット型",
+    "discontinued": true,
+    "successorId": "SEJ-I22094",
+    "note": "旧型式。2018年4月の型式番号変更によりI-220.94へ改番・製造中止",
+    "specs": {
+      "sensingDistanceMM": 20,
+      "threadSize": "φ34",
+      "voltage": "AC(2線)",
+      "outputSpec": "N.C.(AC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR315A3",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-315.A3",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-15mm",
+    "dims": {
+      "w": 30,
+      "h": 80,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "M30x80・真鍮ニッケルメッキ・非シールド。N.C.はPR-315.A2、100℃はPR-315.A3H",
+    "specs": {
+      "sensingDistanceMM": 15,
+      "threadSize": "M30",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR315A2",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-315.A2",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-15mm",
+    "dims": {
+      "w": 30,
+      "h": 80,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "M30x80・真鍮ニッケルメッキ・非シールド",
+    "specs": {
+      "sensingDistanceMM": 15,
+      "threadSize": "M30",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.C.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR315A3H",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-315.A3H",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-15mm",
+    "dims": {
+      "w": 30,
+      "h": 80,
+      "d": 30
+    },
+    "mounting": "ねじ込み型",
+    "note": "高温100℃仕様・M30x80",
+    "specs": {
+      "sensingDistanceMM": 15,
+      "threadSize": "M30",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.O.(AC/DC2線式)",
+      "tempMaxC": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR21930HTF",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-219.30HTF",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-19mm",
+    "dims": {
+      "w": 35,
+      "h": 90,
+      "d": 35
+    },
+    "mounting": "ブラケット型",
+    "note": "PTFE・耐薬品/高温100℃・N.O.はPR-219.31HTF",
+    "specs": {
+      "sensingDistanceMM": 19,
+      "threadSize": "φ35",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.C.(DC3線式)",
+      "tempMaxC": 100,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-PR210A2",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "PR-210.A2",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-10mm",
+    "dims": {
+      "w": 20,
+      "h": 75,
+      "d": 20
+    },
+    "mounting": "ブラケット型",
+    "note": "⚠カタログのN.O.(PR-210.A3)に対する対応N.C.品として登録・要確認",
+    "specs": {
+      "sensingDistanceMM": 10,
+      "threadSize": "φ20",
+      "voltage": "AC/DC(2線)",
+      "outputSpec": "N.C.(AC/DC2線式)",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "SEJ-98090600",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "9809-0600",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJ-70mm",
+    "dims": {
+      "w": 50,
+      "h": 100,
+      "d": 50
+    },
+    "mounting": "ブラケット型",
+    "note": "□50x□100・アルミダイキャスト・感度調整可(9809-0300/0400/0500と同系)",
+    "specs": {
+      "sensingDistanceMM": 70,
+      "threadSize": "角型",
+      "voltage": "DC(3線)",
+      "outputSpec": "N.O.(DC3線式)",
+      "tempMaxC": 70,
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "SEJ-98000159",
+    "category": "proximity",
+    "maker": "SEJ",
+    "model": "9800-0159",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "PX-SEJリング",
+    "dims": {
+      "w": 60,
+      "h": 60,
+      "d": 40
+    },
+    "mounting": "ブラケット型",
+    "note": "リングセンサ。リング内を通過する物体を検出。⚠動作距離・電源・出力は要メーカー確認",
+    "specs": {
+      "threadSize": "リング",
+      "voltage": "⚠要確認",
+      "outputSpec": "⚠要確認",
+      "tempMaxC": 70
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  }
+]

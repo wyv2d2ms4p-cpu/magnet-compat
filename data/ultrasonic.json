@@ -1,0 +1,230 @@
+[
+  {
+    "id": "TAKEX-UST50",
+    "category": "ultrasonic",
+    "maker": "竹中TAKEX",
+    "model": "US-T50",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "US-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "超小形汎用・応答10ms・感度ボリウム付/PNPはUS-T50PN",
+    "specs": {
+      "sensingDistanceMM": 500,
+      "voltage": "DC24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "US超音波",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-UST50PN",
+    "category": "ultrasonic",
+    "maker": "竹中TAKEX",
+    "model": "US-T50PN",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "US-透過",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "US-T50のPNP出力版",
+    "specs": {
+      "sensingDistanceMM": 500,
+      "voltage": "DC24V",
+      "outputSpec": "PNP NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "US超音波",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-USR25",
+    "category": "ultrasonic",
+    "maker": "竹中TAKEX",
+    "model": "US-R25",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "US-反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "検出範囲60〜250mm・応答30/50ms/PNPはUS-R25PN",
+    "specs": {
+      "sensingDistanceMM": 250,
+      "voltage": "DC24V",
+      "outputSpec": "NPN NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "US超音波",
+      "detectMethod": "反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-USR25PN",
+    "category": "ultrasonic",
+    "maker": "竹中TAKEX",
+    "model": "US-R25PN",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "US-反射",
+    "dims": {
+      "w": 11,
+      "h": 31,
+      "d": 20
+    },
+    "mounting": "ブラケット取付",
+    "note": "US-R25のPNP出力版",
+    "specs": {
+      "sensingDistanceMM": 250,
+      "voltage": "DC24V",
+      "outputSpec": "PNP NO(3線式)",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "US超音波",
+      "detectMethod": "反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified"
+      },
+      "dims": {
+        "state": "verified"
+      },
+      "specs": {
+        "state": "verified"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-UST04AN",
+    "category": "ultrasonic",
+    "maker": "竹中TAKEX",
+    "model": "US-T04AN",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "US-透過",
+    "dims": {
+      "w": 18,
+      "h": 50,
+      "d": 18
+    },
+    "mounting": "ねじ込み型",
+    "note": "小型M18シリンダ形・薄いフィルム/継ぎ目検出・アンプ内蔵アナログ・⚠距離要確認",
+    "specs": {
+      "sensingDistanceMM": 400,
+      "voltage": "DC12-24V",
+      "outputSpec": "アナログ出力",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "US超音波",
+      "detectMethod": "透過形"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  },
+  {
+    "id": "TAKEX-USS25AN",
+    "category": "ultrasonic",
+    "maker": "竹中TAKEX",
+    "model": "US-S25AN",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "US-反射",
+    "dims": {
+      "w": 18,
+      "h": 50,
+      "d": 18
+    },
+    "mounting": "ねじ込み型",
+    "note": "シリンダ形アナログ出力・液面/オイル面検出・⚠距離要確認",
+    "specs": {
+      "sensingDistanceMM": 250,
+      "voltage": "DC12-24V",
+      "outputSpec": "アナログ出力",
+      "cableColors": {
+        "plus": "茶",
+        "minus": "青",
+        "out": "黒"
+      },
+      "compatGroup": "US超音波",
+      "detectMethod": "反射形"
+    },
+    "evidence": {
+      "model": {
+        "state": "estimated"
+      },
+      "dims": {
+        "state": "estimated"
+      },
+      "specs": {
+        "state": "estimated"
+      }
+    }
+  }
+]
