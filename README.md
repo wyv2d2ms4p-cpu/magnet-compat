@@ -17,7 +17,7 @@ npm run check      # データ検証 → ビルド → 回帰 → スモーク �
 | コマンド | 内容 |
 |---|---|
 | `npm run build` | `src/**` と `data/**` を単一HTMLへインライン展開 |
-| `npm run verify` | 移行元HTMLとのデータ突合（12項目） |
+| `npm run verify` | 移行元HTMLとのデータ突合＋追加レコードの規約検査（13項目） |
 | `npm run regress` | 全431型式の候補リストを移行元の判定と突合 |
 | `npm run smoke` | `file://` で実際に開いて動作確認（29項目） |
 | `npm run test:ext` | カテゴリ追加が2ファイルで完結することの確認 |
@@ -45,6 +45,28 @@ registerCategory({
   summary: (d) => [{ label: '定格トルク', value: `${d.specs.torqueNm}N·m` }],
 });
 ```
+
+## データを増やす
+
+フェーズ2以降のデータ拡充は、カテゴリごとにサブエージェント
+`compat-researcher`（`.claude/agents/compat-researcher.md`）を1体ずつ起動して行う。
+各エージェントは**自分の担当カテゴリの `data/<category>.json` だけ**を編集するので、
+カテゴリ単位で並列に走らせられる。
+
+```
+> compat-researcher で inverter のデータを拡充して
+```
+
+追加レコードには機械的な受け入れ条件がある（`npm run verify` の「追加レコードの規約」）。
+
+- `modelStatus` は `catalog-confirmed`
+- `evidence.model.state` は `verified`
+- **`evidence.model` に `srcUrl` か `srcNote`（カタログ番号など）が必須。**
+  出典の無い型式は検証で落ちるので、レビュー前に止まる
+- `specs` のキーは `tools/schema-map.mjs` の `SPEC_MAP` に宣言されたものだけ
+
+`tools/extract.mjs` は移行元HTMLから `data/**` を作り直すため、追加分を消してしまう。
+追加レコードが残っている状態では停止する（本当に作り直すときだけ `--force`）。
 
 ## データの約束
 

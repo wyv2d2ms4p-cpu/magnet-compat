@@ -113,7 +113,13 @@ export const EVIDENCE_ASPECTS = ['model', 'dims', 'specs'];
 /** modelStatus の2値 */
 export const MODEL_STATUS = { CONFIRMED: 'catalog-confirmed', PROVISIONAL: 'provisional' };
 
-/** 期待される件数（移行元を node:vm で評価して確定させた実測値） */
+/**
+ * 移行時点の件数（移行元を node:vm で評価して確定させた実測値）。
+ *
+ * これは**移行の非破壊性を測る基準線**であって、上限ではない。フェーズ2以降に
+ * 出典付きで追加されたレコードは移行元に対応が無いので、この件数には含めず
+ * 「追加分」として別に数える（verify-data.mjs 参照）。
+ */
 export const EXPECTED_COUNTS = {
   contactor: 95, starter: 29, thermal: 48,
   proximity: 123, photo: 118, ultrasonic: 6, special: 12,
@@ -185,3 +191,29 @@ export function discontinuedSeriesIds(rows) {
     return id;
   });
 }
+
+/**
+ * レコードのトップレベルに置いてよいキー。
+ *
+ * フェーズ2以降に追加されるレコードの検査に使う。綴り間違い（`sucessorId` など）は
+ * 黙って無視されて機能しないだけなので、宣言に無いキーは検証で落とす。
+ */
+export const RECORD_KEYS = [
+  'id', 'category', 'maker', 'model', 'series', 'modelStatus', 'modelScope',
+  'compatKey', 'dims', 'holes', 'mounting', 'discontinued', 'makerExited',
+  'successorId', 'note', 'specs', 'evidence',
+];
+
+/**
+ * 追加レコード（移行元に対応が無いレコード）の受け入れ条件。
+ *
+ * 「実在確認が取れた型式だけを候補に出す」がこのリポジトリの一番の約束なので、
+ * 出典の無いレコードは機械的に弾く。人手のレビューだけに頼らない。
+ */
+export const ADDED_RECORD_RULES = {
+  modelStatus: MODEL_STATUS.CONFIRMED,
+  /** evidence.model.state はこれであること（実在確認が取れている、の意味） */
+  modelEvidenceState: 'verified',
+  /** evidence.model にこのいずれかが必要（出典URL または カタログ番号などの注記） */
+  sourceKeys: ['srcUrl', 'srcNote'],
+};
