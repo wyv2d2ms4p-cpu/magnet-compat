@@ -19,7 +19,7 @@ npm run check      # データ検証 → ビルド → 回帰 → スモーク �
 | `npm run build` | `src/**` と `data/**` を単一HTMLへインライン展開 |
 | `npm run verify` | 移行元HTMLとのデータ突合＋追加レコードの規約検査（13項目） |
 | `npm run regress` | 全431型式の候補リストを移行元の判定と突合 |
-| `npm run smoke` | `file://` で実際に開いて動作確認（29項目） |
+| `npm run smoke` | `file://` で実際に開いて動作確認（37項目） |
 | `npm run test:ext` | カテゴリ追加が2ファイルで完結することの確認 |
 
 ## カテゴリを追加する
@@ -97,6 +97,7 @@ data/                カテゴリ別JSON
   reference/         デバイスではない参照情報
 tools/               移行・検証スクリプト
 docs/integration-plan.md   現状分析と統合方針
+docs/mitsubishi-fr-e800-verified.md   三菱 FREQROL-E800 の公式確認済み情報（出典と未取得項目）
 index.html  index_3.html  fa-compat.html   統合前の旧アプリ（参照用）
 ```
 

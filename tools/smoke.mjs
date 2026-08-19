@@ -140,11 +140,36 @@ check('シリーズ単位の行では互換判定をせず理由を説明する'
   (await page.$$('.card')).length === 0 && servoResult.includes('型式ごとの互換判定は行いません'));
 check('代替シリーズをメーカー案内として出す', servoResult.includes('Σ-Xシリーズ'));
 
-/* ---- インバータ: 生成データは出さない ---- */
+/* ---- インバータ: 出典付きで昇格した実データだけを出す ---- */
 await gotoCategory('inverter');
+const invCount = await page.$eval('[data-act="cat"][data-v="inverter"] .cnt', (e) => Number(e.textContent));
+check('インバータが実在確認済み13件で表示される', invCount === 13, `実際 ${invCount}件`);
+check('インバータで「データが未登録」と出ない', !(await page.textContent('#app')).includes('実在確認済みのデータが未登録'));
+
+await page.click('[data-act="browse"]');
+await page.waitForSelector('.rows .row');
+const invModels = await page.$$eval('.rows .row .mono', (els) => els.map((e) => e.textContent.trim()));
+check('公式形名（末尾 -1 まで）で登録されている',
+  invModels.length === 13 && invModels.every((m) => /^FR-E820-[\d.]+K-1$/.test(m)), invModels.join(' '));
+// _seed の生成データは末尾 -1 が欠けている。昇格時にそれをコピーしていないことを見る
+check('生成データ由来の末尾欠け形名（FR-E820-0.4K）が出ない',
+  !invModels.some((m) => /K$/.test(m)), invModels.filter((m) => /K$/.test(m)).join(' '));
+
+await search('FR-E820-3.7K-1');
+await page.waitForSelector('.model.big');
 const invText = await page.textContent('#app');
-check('インバータは実データ0件のまま生成型式を出さない',
-  invText.includes('実在確認済みのデータが未登録') && !invText.includes('FR-E820'));
+check('FR-E820-3.7K-1 で確認画面に進む', (await page.textContent('.model.big')) === 'FR-E820-3.7K-1');
+check('公式未取得の定格出力電流を数値で出さない', !/\d+(\.\d+)?A/.test(invText), (invText.match(/\d+(\.\d+)?A/) || [])[0]);
+check('公式確認済みの適用モータ容量は出る', invText.includes('3.7kW'));
+check('寸法未取得なので外形図を描かない', (await page.$('#app svg')) === null);
+
+// norm() はハイフンと小数点を落とすため 1.5K-1 と 15K-1 が同じ綴りになる。確定させず選ばせる
+await gotoCategory('inverter');
+await search('FR-E820-15K-1');
+await page.waitForTimeout(120);
+const invAmbiguous = await page.$$('[data-act="pick"]');
+check('1.5K と 15K を取り違えず選ばせる',
+  (await page.textContent('#app')).includes('取り違え') && invAmbiguous.length >= 2, `候補 ${invAmbiguous.length}件`);
 
 /* ---- 既知の不具合5件の修正確認 ---- */
 
