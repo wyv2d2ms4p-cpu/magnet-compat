@@ -16,11 +16,12 @@ const categories = [];
  *   enrich(a, m)         … バッジ用の派生値（任意）
  *   summary(d)           … 確認画面のスペック欄（任意）
  *   detailPanels(m, c)   … カテゴリ固有の詳細比較（任意）
+ *   emptyNote(m)         … 候補0件のときの説明（任意・HTML）
  */
 export function registerCategory(def) {
   if (!def.id || !def.label) throw new Error('カテゴリには id と label が必要です');
   if (categories.some((c) => c.id === def.id)) throw new Error(`カテゴリ重複: ${def.id}`);
-  categories.push({ enrich: () => ({}), summary: () => [], detailPanels: () => [], specDefs: [], ...def });
+  categories.push({ enrich: () => ({}), summary: () => [], detailPanels: () => [], emptyNote: () => '', specDefs: [], ...def });
   return def;
 }
 

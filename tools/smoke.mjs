@@ -57,13 +57,38 @@ await page.waitForSelector('#app .chiprow');
 check('JSエラーなしで起動する', consoleErrors.length === 0, consoleErrors[0]);
 check('外部ネットワークアクセスが発生しない', external.length === 0, external[0]);
 
-// カテゴリチップが9つ、横一列で出る
+// カテゴリチップが9つ出る
 const chips = await page.$$eval('.chiprow [data-act="cat"]', (els) => els.map((e) => e.textContent.trim()));
 check('カテゴリチップが9つ並ぶ', chips.length === 9, `実際: ${chips.length} / ${chips.join(',')}`);
+check('カテゴリチップに件数バッジが付く', (await page.$$('.chiprow.cats .cnt')).length === 9);
 
-// チップ行が縦に折り返していないこと（横スクロールで収める設計）
-const rowHeight = await page.$eval('.chiprow', (e) => e.getBoundingClientRect().height);
-check('チップ行が1行に収まる（縦に伸びない）', rowHeight < 80, `高さ ${rowHeight}px`);
+// 折り返して全件が見えること（横スクロールだと画面外のカテゴリに気づけない）
+const chipRow = await page.$eval('.chiprow.cats', (e) => ({
+  scrollW: e.scrollWidth, clientW: e.clientWidth,
+  overflowX: getComputedStyle(e).overflowX,
+}));
+check('カテゴリ行が横スクロールしない', chipRow.scrollW <= chipRow.clientW + 1 && chipRow.overflowX !== 'auto' && chipRow.overflowX !== 'scroll',
+  `scrollWidth ${chipRow.scrollW} / clientWidth ${chipRow.clientW} / overflow-x ${chipRow.overflowX}`);
+
+const hidden = await page.$$eval('.chiprow.cats .chip', (els) => {
+  const row = els[0].parentElement.getBoundingClientRect();
+  return els.filter((e) => {
+    const r = e.getBoundingClientRect();
+    return r.right > row.right + 1 || r.left < row.left - 1;
+  }).length;
+});
+check('9カテゴリすべてが行内に収まる（画面外に隠れない）', hidden === 0, `はみ出し ${hidden}件`);
+
+// ステータスバーとの重なり対策（black-translucent + viewport-fit=cover）
+const safeTop = await page.evaluate(() => {
+  const styles = [...document.styleSheets[0].cssRules].map((r) => r.cssText).join('\n');
+  return {
+    declared: /#app\s*\{[^}]*padding:\s*env\(safe-area-inset-top\)/.test(styles),
+    computed: getComputedStyle(document.getElementById('app')).paddingTop,
+  };
+});
+check('上端に safe-area の余白を取る（iOSのステータスバーとタイトルの重なり）',
+  safeTop.declared && safeTop.computed === '0px', `宣言=${safeTop.declared} ブラウザでの実値=${safeTop.computed}`);
 
 /* ---- 接触器: 検索 → 確認 → 結果 ---- */
 await page.fill('#q', 'S-T10');
@@ -94,6 +119,32 @@ const llk = specialRows.find((t) => t.includes('PR-LLK 2m'));
 const osa = specialRows.find((t) => t.includes('OSA 674'));
 check('導光路品は長さが出る (PR-LLK 2m → 2m)', !!llk && llk.includes('2m'), llk);
 check('熱間金属検出は「―」になる (0mm と表示しない)', !!osa && osa.includes('―') && !osa.includes('0mm'), osa);
+
+/* ---- サーボ: 安川の生産中止シリーズ27件 ---- */
+await gotoCategory('servo');
+const servoCount = await page.$eval('[data-act="cat"][data-v="servo"] .cnt', (e) => Number(e.textContent));
+check('サーボが27件で表示される', servoCount === 27, `実際 ${servoCount}件`);
+check('サーボで「データが未登録」と出ない', !(await page.textContent('#app')).includes('実在確認済みのデータが未登録'));
+
+await search('SGDM');
+await page.waitForSelector('.model.big');
+const servoText = await page.textContent('#app');
+check('SGDM から生産中止シリーズに到達できる', (await page.textContent('.model.big')).includes('SGDM'));
+check('シリーズ単位であることを明示する', servoText.includes('シリーズ単位'));
+check('生産中止日と修理対応期限が出る', servoText.includes('2015.3.20') && servoText.includes('2025.3.20'), servoText.includes('2025.3.20') ? '' : '修理期限が無い');
+
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForTimeout(150);
+const servoResult = await page.textContent('#app');
+check('シリーズ単位の行では互換判定をせず理由を説明する',
+  (await page.$$('.card')).length === 0 && servoResult.includes('型式ごとの互換判定は行いません'));
+check('代替シリーズをメーカー案内として出す', servoResult.includes('Σ-Xシリーズ'));
+
+/* ---- インバータ: 生成データは出さない ---- */
+await gotoCategory('inverter');
+const invText = await page.textContent('#app');
+check('インバータは実データ0件のまま生成型式を出さない',
+  invText.includes('実在確認済みのデータが未登録') && !invText.includes('FR-E820'));
 
 /* ---- 既知の不具合5件の修正確認 ---- */
 

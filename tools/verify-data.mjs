@@ -14,6 +14,7 @@ import {
   TOP_LEVEL, SPEC_MAP, THERMAL_RANGE, SPECIAL_LLK_METHOD, SPECIAL_DISTANCE_KEY,
   EVIDENCE_SOURCE_KEYS, DROPPED, EVIDENCE_STATES, EVIDENCE_ASPECTS,
   MODEL_STATUS, EXPECTED_COUNTS, generatedId,
+  DISCONTINUED_SERIES, discontinuedSeriesIds,
 } from './schema-map.mjs';
 
 const DATA = join(REPO_ROOT, 'data');
@@ -60,7 +61,6 @@ for (const c of [...REAL_CATEGORIES, 'inverter', 'servo']) migrated[c] = load(`$
 const seedInv = load('_seed/inverter-generated.json');
 const seedSv = load('_seed/servo-generated.json');
 const refMakers = load('reference/makers.json');
-const refDisc = load('reference/servo-discontinued.json');
 
 const allMigrated = [...REAL_CATEGORIES.flatMap((c) => migrated[c]), ...seedInv, ...seedSv];
 const byId = new Map(allMigrated.map((r) => [r.id, r]));
@@ -94,7 +94,6 @@ check('件数一致', (fail) => {
     _seed_inverter: seedInv.length,
     _seed_servo: seedSv.length,
     reference_makers: refMakers.length,
-    reference_servoDiscontinued: refDisc.length,
   };
   for (const [k, expected] of Object.entries(EXPECTED_COUNTS)) {
     if (actual[k] !== expected) fail(`${k}: 期待 ${expected} / 実際 ${actual[k]}`);
@@ -233,8 +232,8 @@ check('data/** のどこにも ratedA が存在しない', (fail) => {
     }
   };
   walk(allMigrated, 'data');
+  walk(migrated.servo, 'data/servo');
   walk(refMakers, 'reference/makers');
-  walk(refDisc, 'reference/servo-discontinued');
 });
 
 // ---- 7. センチネル消滅 ---------------------------------------------------
@@ -307,7 +306,7 @@ check('evidence が3側面そろい、状態が3値のいずれか', (fail) => {
 // ---- 10. modelStatus 規則 ------------------------------------------------
 
 check('modelStatus の付与規則', (fail) => {
-  for (const c of REAL_CATEGORIES) {
+  for (const c of [...REAL_CATEGORIES, 'servo']) {
     for (const r of migrated[c]) {
       if (r.modelStatus !== MODEL_STATUS.CONFIRMED) fail(`data/${c}.json ${r.id}: ${r.modelStatus}`);
     }
@@ -318,6 +317,65 @@ check('modelStatus の付与規則', (fail) => {
   // anchor（シリーズ単位の継承バッジ）が残っていないこと
   const anchored = [...seedInv, ...seedSv].filter((r) => 'anchor' in r || 'anchor' in (r.specs ?? {}));
   if (anchored.length) fail(`anchor が ${anchored.length} 件残っている`);
+});
+
+// ---- 11. 安川の生産中止シリーズ27件 --------------------------------------
+
+/**
+ * 1a で data/reference/servo-discontinued.json に置いたまま、どこからも描画されて
+ * いなかった27件。サーボのレコードとして data/servo.json に入っていることを、
+ * extract.mjs の変換コードを使わずに移行元と突合する。
+ */
+check('安川の生産中止シリーズ27件がサーボのレコードになっている', (fail) => {
+  const D = DISCONTINUED_SERIES;
+  const rows = fa.servoDiscontinued;
+  const ids = discontinuedSeriesIds(rows);
+  const dst = migrated.servo;
+
+  if (new Set(ids).size !== ids.length) fail('導出したIDに重複がある');
+  if (dst.length !== rows.length) {
+    fail(`件数: 移行元 ${rows.length} / data/servo.json ${dst.length}`);
+    return;
+  }
+
+  const absent = (v) => v === undefined || v === null || D.ABSENT.includes(String(v).trim());
+
+  rows.forEach((src, i) => {
+    const r = dst.find((x) => x.id === ids[i]);
+    if (!r) { fail(`${ids[i]} が data/servo.json に無い`); return; }
+
+    if (r.category !== D.category) fail(`${r.id}.category=${r.category}`);
+    if (r.maker !== D.maker) fail(`${r.id}.maker=${r.maker}`);
+    if (r.modelScope !== D.modelScope) fail(`${r.id}.modelScope=${r.modelScope}`);
+    if (r.discontinued !== true) fail(`${r.id}.discontinued が true でない`);
+    if (r.dims || r.holes) fail(`${r.id}: 移行元に無い寸法を持っている`);
+
+    // 移行元の全キーが宣言のいずれかに属し、値が1文字も変わっていないこと
+    for (const [key, value] of Object.entries(src)) {
+      if (key in D.DROPPED) continue;
+      const top = D.TOP_LEVEL[key];
+      const spec = D.SPEC_MAP[key];
+      if (!top && !spec) { fail(`未知のキー: YASKAWA_DISC.${key}`); continue; }
+      if (absent(value)) {
+        // "-" / "なし" は番兵。キーごと落ちているのが正
+        if (top ? top in r : spec in (r.specs ?? {})) fail(`${r.id}: 番兵 "${value}" が ${top || spec} に残っている`);
+        continue;
+      }
+      const actual = top ? r[top] : r.specs?.[spec];
+      if (actual !== value) fail(`${r.id}.${key}: "${value}" ≠ "${actual}"`);
+    }
+
+    // 移行先に移行元由来でないスペックが増えていないこと
+    for (const k of Object.keys(r.specs ?? {})) {
+      if (!Object.values(D.SPEC_MAP).includes(k)) fail(`${r.id}.specs.${k} は移行元に対応が無い`);
+    }
+
+    for (const aspect of EVIDENCE_ASPECTS) {
+      if (r.evidence?.[aspect]?.state !== D.EVIDENCE[aspect]) {
+        fail(`${r.id}: evidence.${aspect} 期待 ${D.EVIDENCE[aspect]} / 実際 ${r.evidence?.[aspect]?.state}`);
+      }
+    }
+  });
 });
 
 // ---- 追加: アプリ本体が無変更であること ----------------------------------
@@ -336,6 +394,6 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`検証成功: ${checkNo} / ${checkNo} 項目すべて PASS`);
-console.log(`  実データ ${REAL_CATEGORIES.reduce((n, c) => n + migrated[c].length, 0)} 件 (catalog-confirmed)`);
+console.log(`  実データ ${[...REAL_CATEGORIES, 'servo'].reduce((n, c) => n + migrated[c].length, 0)} 件 (catalog-confirmed)`);
 console.log(`  凍結データ ${seedInv.length + seedSv.length} 件 (provisional・既定非表示)`);
-console.log(`  参照データ ${refMakers.length + refDisc.length} 件`);
+console.log(`  参照データ ${refMakers.length} 件`);

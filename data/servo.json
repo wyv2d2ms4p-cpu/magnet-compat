@@ -1,1 +1,783 @@
-[]
+[
+  {
+    "id": "SVD_UD13_2016",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "UD1△△3 / UR△AG3 / UR△BG3 / UR5CG3 / UR5H△3 / UR△AP3 / UR△BP3 / U△5CP3",
+    "series": "DYNASERV",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2016.9.20",
+      "partsOrderUntil": "2016.3.20(受付終了)",
+      "repairUntil": "2021.9.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_UREG3_2016",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "UR△EG3 / UR△EP3",
+    "series": "DYNASERV",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2016.9.20",
+      "partsOrderUntil": "2016.3.20(受付終了)",
+      "repairUntil": "2021.9.20"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_SGDS_2015",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "SGDS",
+    "series": "Σ-IIIシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2015.3.20",
+      "partsOrderUntil": "2014.9.20(受付終了)",
+      "repairUntil": "2025.3.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_SGDM_2015",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "SGDM / SGDH / SGDP / SGDJ / SGDD",
+    "series": "Σ-IIシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2015.3.20",
+      "partsOrderUntil": "2014.9.20(受付終了)",
+      "repairUntil": "2025.3.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_JUSPNS100_2015",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "JUSP-NS100/NS110/NS115/NS300/NS310/NS500/NS600/NJ001/HS001/FC100/LD001/COV03",
+    "series": "Σ-IIシリーズ(オプション)",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2015.3.20",
+      "partsOrderUntil": "2014.9.20(受付終了)",
+      "repairUntil": "2025.3.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_SJDE_2015",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "SJDE",
+    "series": "JUNMAシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2015.3.20",
+      "partsOrderUntil": "2014.9.20(受付終了)",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_SGDFA1C_2013",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "SGDF-A1C△ / A2C△ / A3C△ / B3C△ / B5C△ / B9C△",
+    "series": "Σ-miniシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2013.5.20",
+      "partsOrderUntil": "2013.3.20(受付終了)",
+      "repairUntil": "2023.5.20",
+      "altSeries": "Σ-7miniシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_SGDAH_2008",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "SGD-□□AH/VH/BH/WH/AN/VN/BN/WN",
+    "series": "Σシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2008.11.20",
+      "partsOrderUntil": "2008.9.20(受付終了)",
+      "repairUntil": "2018.11.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_SGDAAS_2008",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "SGDA-□□AS/VS/BS/WS/BSM/CS/AP/VP/BP/WP/BPM",
+    "series": "Σシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2008.11.20",
+      "partsOrderUntil": "2008.9.20(受付終了)",
+      "repairUntil": "2018.11.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_SGDBAD_2008",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "SGDB-□□AD/VD/DD/AN/AM",
+    "series": "Σシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2008.11.20",
+      "partsOrderUntil": "2008.9.20(受付終了)",
+      "repairUntil": "2018.11.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_SGDBAD_2008_2",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "SGDB-□□AD / DD",
+    "series": "大容量Σシリーズ(22kW以上)",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2008.11.20",
+      "partsOrderUntil": "2008.9.20(受付終了)",
+      "repairUntil": "2008.11.20",
+      "altSeries": "大容量Σ-Vシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_SGDCDSA_2008",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "SGDC-□□DSA",
+    "series": "Σシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2008.11.20",
+      "partsOrderUntil": "2008.9.20(受付終了)",
+      "repairUntil": "2018.11.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_SGDEAS_2008",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "SGDE-□□AS/VS/BS/WS/AP/VP/BP/WP",
+    "series": "Σシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2008.11.20",
+      "partsOrderUntil": "2008.9.20(受付終了)",
+      "repairUntil": "2018.11.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_SGDLAS_2008",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "SGDL-□□AS/BS/AP/BP",
+    "series": "Σシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2008.11.20",
+      "partsOrderUntil": "2008.9.20(受付終了)",
+      "repairUntil": "2018.11.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_DR2AC_2006",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "DR2-□□AC/BC/ACP/BCP/AC-F/BC-F/ACP-F/BCP-F/AD/BD",
+    "series": "Σシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2006.12.20",
+      "partsOrderUntil": "2008.6.20",
+      "repairUntil": "2016.12.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_CACRHRBAB_2004",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "CACR-HR□□BAB/BB/BBC/SB/SBC/CB/AAB/AB",
+    "series": "HRシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2004.9.20",
+      "partsOrderUntil": "2007.7.20",
+      "repairUntil": "2014.9.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_CIMRSVJ_2002",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "CIMR-SVJ□□",
+    "series": "大容量サーボ(VS-866)",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2002.9.21",
+      "partsOrderUntil": "2007.9.20",
+      "repairUntil": "2012.9.20",
+      "altSeries": "大容量Σ-Vシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_CACRHRUB_2001",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "CACR-HR□□UB / VBC",
+    "series": "CACR-HR",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2001.6.20",
+      "partsOrderUntil": "2006.6.20",
+      "repairUntil": "2011.6.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_CACRSRBB_2000",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "CACR-SR□□BB/BC/BD/BE/BY/BZ/SB/SZ/TB/TZ/UB/VE",
+    "series": "CACR-SR",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2000.9.21",
+      "partsOrderUntil": "2002.8.6",
+      "repairUntil": "2007.3.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_CACRPRBB_2000",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "CACR-PR□□BB/BC/AD",
+    "series": "CACR-PR",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2000.9.21",
+      "partsOrderUntil": "2002.8.6",
+      "repairUntil": "2007.3.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_CACRDRBA_2000",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "CACR-DR□□BA / BZ",
+    "series": "CACR-DR",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "2000.9.21",
+      "partsOrderUntil": "2002.8.6",
+      "repairUntil": "2007.3.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_DR1AC_1998",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "DR1-□□AC/BC/AA/BA",
+    "series": "Σシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "1998.6.21",
+      "partsOrderUntil": "2003.6.20",
+      "repairUntil": "2008.6.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_SGDAS_1998",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "SGD-□□AS/BS/AP/BP",
+    "series": "Σシリーズ",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "1998.6.21",
+      "partsOrderUntil": "2003.6.20",
+      "repairUntil": "2008.6.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_CACRSRAB_1996",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "CACR-SR□□AB/AC/AD/AH/AX/AY/AZ/KA",
+    "series": "CACR-SR",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "1996.5.21",
+      "partsOrderUntil": "1999.5.20",
+      "repairUntil": "2003.5.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_CACRPRAC_1996",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "CACR-PR□□AC/AE/AH/KA",
+    "series": "CACR-PR",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "1996.5.21",
+      "partsOrderUntil": "1999.5.20",
+      "repairUntil": "2003.5.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_CACRSRAA_1995",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "CACR-SR□□AA / BA",
+    "series": "CACR-SR",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "1995.2.20",
+      "partsOrderUntil": "1996.3.20",
+      "repairUntil": "1999.9.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  },
+  {
+    "id": "SVD_CACRPRAA_1995",
+    "category": "servo",
+    "maker": "安川電機",
+    "model": "CACR-PR□□AA / BA",
+    "series": "CACR-PR",
+    "modelStatus": "catalog-confirmed",
+    "modelScope": "series",
+    "discontinued": true,
+    "specs": {
+      "discontinuedAt": "1995.2.20",
+      "partsOrderUntil": "1996.3.20",
+      "repairUntil": "1999.9.20",
+      "altSeries": "Σ-Xシリーズ"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "安川電機 サーボ生産中止機種一覧"
+      }
+    }
+  }
+]

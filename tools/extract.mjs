@@ -11,6 +11,7 @@ import { REPO_ROOT, readMagnet, readSensor, readFa } from './read-sources.mjs';
 import {
   SPEC_MAP, THERMAL_RANGE, SPECIAL_LLK_METHOD, SPECIAL_DISTANCE_KEY,
   MODEL_STATUS, EXPECTED_COUNTS, generatedId,
+  DISCONTINUED_SERIES, discontinuedSeriesIds,
 } from './schema-map.mjs';
 
 const DATA = join(REPO_ROOT, 'data');
@@ -139,6 +140,45 @@ function transformGenerated(src, category) {
   };
 }
 
+/**
+ * 安川電機の生産中止一覧（YASKAWA_DISC）→ サーボのレコード。
+ *
+ * 生成物ではなくメーカー公表の実データなので catalog-confirmed。ただし1行が
+ * シリーズ単位のマスク（`SGDM / SGDH / SGDP`）なので modelScope で明示し、
+ * 個別型式と同列に扱わせない。値が無いことを表す "-" / "なし" はキーごと落とす
+ * （`ratedA:0` を番兵にしていた失敗と同じ轍を踏まないため）。
+ */
+function transformDiscontinuedSeries(src, id) {
+  const D = DISCONTINUED_SERIES;
+  const present = (v) => v !== undefined && v !== null && !D.ABSENT.includes(String(v).trim());
+
+  const top = {};
+  for (const [from, to] of Object.entries(D.TOP_LEVEL)) {
+    if (present(src[from])) top[to] = src[from];
+  }
+  const specs = {};
+  for (const [from, to] of Object.entries(D.SPEC_MAP)) {
+    if (present(src[from])) specs[to] = src[from];
+  }
+
+  const aspect = (name) => {
+    const state = D.EVIDENCE[name];
+    return state === 'verified' ? { state, srcNote: D.SRC_NOTE } : { state };
+  };
+
+  return compact({
+    id,
+    category: D.category,
+    maker: D.maker,
+    ...top,
+    modelStatus: MODEL_STATUS.CONFIRMED,
+    modelScope: D.modelScope,
+    discontinued: true,
+    specs,
+    evidence: { model: aspect('model'), dims: aspect('dims'), specs: aspect('specs') },
+  });
+}
+
 function writeJson(relPath, value) {
   const abs = join(DATA, relPath);
   mkdirSync(join(abs, '..'), { recursive: true });
@@ -164,7 +204,7 @@ const sensor = readSensor();
 const fa = readFa();
 console.log(`  index.html      ${magnet.devices.length} 件 (+ メーカー参照 ${magnet.makerReference.length} 件)`);
 console.log(`  index_3.html    ${sensor.devices.length} 件`);
-console.log(`  fa-compat.html  生成 ${fa.inverterGenerated.length + fa.servoGenerated.length} 件 (+ 参照 ${fa.servoDiscontinued.length} 件)`);
+console.log(`  fa-compat.html  生成 ${fa.inverterGenerated.length + fa.servoGenerated.length} 件 (+ 安川生産中止 ${fa.servoDiscontinued.length} 件)`);
 
 console.log('\ndata/ を書き出し中...');
 
@@ -173,16 +213,18 @@ const byCategory = groupByCategory([
   ...sensor.devices.map(transformSensor),
 ]);
 
-// 実データのカテゴリ。inverter/servo は実在確認済みが0件なので空配列で場所だけ作る
+// 実データのカテゴリ。inverter は実在確認済みが0件なので空配列で場所だけ作る
 for (const category of ['contactor', 'starter', 'thermal', 'proximity', 'photo', 'ultrasonic', 'special']) {
   writeJson(`${category}.json`, byCategory.get(category) ?? []);
 }
 writeJson('inverter.json', []);
-writeJson('servo.json', []);
+
+// 安川の生産中止シリーズ27件はメーカー公表の実データ。サーボのレコードとして書き出す
+const discIds = discontinuedSeriesIds(fa.servoDiscontinued);
+writeJson('servo.json', fa.servoDiscontinued.map((row, i) => transformDiscontinuedSeries(row, discIds[i])));
 
 // 参照データ（デバイスではないので native な形のまま保持）
 writeJson('reference/makers.json', magnet.makerReference);
-writeJson('reference/servo-discontinued.json', fa.servoDiscontinued);
 
 // 生成データの凍結。出典URLが付いたものだけが今後 data/ へ昇格する
 writeJson('_seed/inverter-generated.json', fa.inverterGenerated.map((d) => transformGenerated(d, 'inverter')));
@@ -191,11 +233,10 @@ writeJson('_seed/servo-generated.json', fa.servoGenerated.map((d) => transformGe
 // 件数の自己チェック（詳細な検証は tools/verify-data.mjs）
 const actual = {
   ...Object.fromEntries([...byCategory].map(([k, v]) => [k, v.length])),
-  inverter: 0, servo: 0,
+  inverter: 0, servo: fa.servoDiscontinued.length,
   _seed_inverter: fa.inverterGenerated.length,
   _seed_servo: fa.servoGenerated.length,
   reference_makers: magnet.makerReference.length,
-  reference_servoDiscontinued: fa.servoDiscontinued.length,
 };
 const mismatched = Object.entries(EXPECTED_COUNTS).filter(([k, v]) => actual[k] !== v);
 if (mismatched.length) {

@@ -123,13 +123,24 @@ for (const c of listCategoryData()) {
 }
 const reference = {
   makers: JSON.parse(readFileSync(join(DATA, 'reference/makers.json'), 'utf8')),
-  servoDiscontinued: JSON.parse(readFileSync(join(DATA, 'reference/servo-discontinued.json'), 'utf8')),
 };
 
 // _seed（実在未確認）は配布物に含めない。誤発注防止の要なので明示的に検査する。
 const shipped = new Set(devices.map((d) => d.modelStatus));
 if (shipped.has('provisional')) {
   throw new Error('provisional なレコードが data/*.json に混入しています（配布物に含めてはいけません）');
+}
+
+/*
+ * アプリ側の読み込みは catalog-confirmed だけを通すホワイトリスト（store.mjs）。
+ * 安全側の既定だが、modelStatus の付け忘れや綴り間違いも同じ経路で黙って消える
+ * （サーボが0件表示になっていたときに真っ先に疑うべき挙動がこれ）。
+ * 落ちるなら静かにではなくビルド時に落とす。
+ */
+const badStatus = devices.filter((d) => d.modelStatus !== 'catalog-confirmed');
+if (badStatus.length) {
+  const shown = badStatus.slice(0, 5).map((d) => `${d.id}: ${JSON.stringify(d.modelStatus)}`).join(', ');
+  throw new Error(`modelStatus が catalog-confirmed でないレコードが ${badStatus.length} 件あります（アプリに表示されません）: ${shown}`);
 }
 
 // ---- モジュール ----------------------------------------------------------
