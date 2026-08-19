@@ -7,10 +7,16 @@
  * 始まり、出典URL付きで昇格したものから順に表示される（現在は三菱 FREQROL-E800
  * の40機種。docs/mitsubishi-fr-e800-verified.md 参照）。
  *
- * 昇格したレコードは公式で確認できた項目しか持たない。FR-E800 は定格出力電流が
- * 公式資料で未取得のため specs.ratedCurrentA を持たず、gate が引く主スペックが
- * 欠けるので互換候補は出ない（「該当なし」を 0 で埋めない約束の帰結）。
- * 型式・容量・電圧クラスの確認と後継検索には使える。
+ * 昇格したレコードは公式で確認できた項目しか持たない。FR-E800 の40機種は
+ * 専用カタログ L(名)06130-J p.81-83 から定格出力電流と定格容量(kVA)を取得済みで、
+ * gate が引く主スペック specs.ratedCurrentA が揃ったため互換候補が算出できる。
+ * 外形寸法は未取得なので dims 由来のバッジは「要検証」のまま出る。
+ *
+ * 定格は **ND定格**（Pr.570 多重定格選択の初期設定）で統一する。形名の容量表記と
+ * 4桁電流コード（FR-E820-3.7K-1 ≡ FR-E820-0175 ＝ 17.5A）がND基準なので、
+ * 形名から引ける値と specs が一致する。LD定格は登録しない。ratedCurrentA という
+ * 名前はどちらの定格かを語らず、多重定格を持たない接触器カテゴリとも共有している
+ * ため、同じキー空間にLD値を並べると取り違えの入口になる。
  *
  * 残る27件は安川サーボの生産中止一覧（メーカー公表の実データ）で、
  * data/servo.json に入っている。1行が `SGDM / SGDH / SGDP` や
@@ -35,6 +41,7 @@ registerCategory({
   specDefs: [
     { key: 'ratedCurrentA', label: '定格出力電流', unit: 'A', primary: true, format: (v) => `${num(v)}A`, distance: (a, b) => Math.abs(a - b) },
     { key: 'ratedPowerKW', label: '適用モータ容量', unit: 'kW', format: (v) => `${num(v)}kW` },
+    { key: 'ratedCapacityKVA', label: '定格容量', unit: 'kVA', format: (v) => `${num(v)}kVA` },
   ],
   gate(a, m) {
     if (a.id === m.successorId) return true;
@@ -61,6 +68,7 @@ registerCategory({
     return [
       { label: '定格出力電流', value: d.specs?.ratedCurrentA != null ? `${num(d.specs.ratedCurrentA)}A` : '―' },
       { label: '適用モータ容量', value: d.specs?.ratedPowerKW != null ? `${num(d.specs.ratedPowerKW)}kW` : '―' },
+      { label: '定格容量', value: d.specs?.ratedCapacityKVA != null ? `${num(d.specs.ratedCapacityKVA)}kVA` : '―' },
       { label: '電源電圧', value: d.specs?.voltage || '―' },
     ];
   },

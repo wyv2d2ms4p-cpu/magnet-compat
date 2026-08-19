@@ -11,7 +11,7 @@
 ```bash
 npm install        # playwright のみ（テスト用）
 npm run build      # dist/index.html を生成
-npm run check      # データ検証 → ビルド → 回帰 → スモーク → 拡張性
+npm run check      # データ検証 → ビルド → 回帰 → 互換判定 → スモーク → 拡張性
 ```
 
 | コマンド | 内容 |
@@ -19,7 +19,8 @@ npm run check      # データ検証 → ビルド → 回帰 → スモーク �
 | `npm run build` | `src/**` と `data/**` を単一HTMLへインライン展開 |
 | `npm run verify` | 移行元HTMLとのデータ突合＋追加レコードの規約検査（14項目） |
 | `npm run regress` | 全431型式の候補リストを移行元の判定と突合 |
-| `npm run smoke` | `file://` で実際に開いて動作確認（51項目） |
+| `npm run test:compat` | インバータの互換判定（電圧クラス・電源相数・容量帯の窓）を直接検証 |
+| `npm run smoke` | `file://` で実際に開いて動作確認（60項目） |
 | `npm run test:ext` | カテゴリ追加が2ファイルで完結することの確認 |
 
 ## カテゴリを追加する
@@ -63,7 +64,9 @@ registerCategory({
 - `evidence.model.state` は `verified`
 - **`evidence.model` に `srcUrl` か `srcNote`（カタログ番号など）が必須。**
   出典の無い型式は検証で落ちるので、レビュー前に止まる
-- `specs` のキーは `tools/schema-map.mjs` の `SPEC_MAP` に宣言されたものだけ
+- `specs` のキーは `tools/schema-map.mjs` の `SPEC_MAP` に宣言されたものだけ。
+  移行元に無いスペックを新しく足すときは `ADDED_SPEC_KEYS` に宣言する
+  （`SPEC_MAP` は移行元キーとの対応表なので、対応の無い左辺を混ぜない）
 
 `tools/extract.mjs` は移行元HTMLから `data/**` を作り直すため、追加分を消してしまう。
 追加レコードが残っている状態では停止する（本当に作り直すときだけ `--force`）。
@@ -73,6 +76,13 @@ registerCategory({
 - **スペックは名前に単位を含める。** `ratedCurrentA` / `sensingDistanceMM` /
   `lightGuideLengthMM` のように、フィールド名だけで物理量が決まるようにする。
   かつて `ratedA` が電流・検出距離・導光路長を兼ねていた問題への対応。
+- **同じ物理量に複数の定格がある場合は、1つだけを選んで全件そろえる。**
+  インバータの多重定格（ND / LD）は `ratedCurrentA` / `ratedCapacityKVA` に
+  **ND定格だけ**を入れる。形名の容量表記と4桁電流コードがND基準なので、
+  形名から引ける値と `specs` が一致する。`ratedCurrentA` という名前はどちらの
+  定格かを語らず、多重定格を持たない接触器カテゴリともキーを共有しているため、
+  同じキー空間にLD値を並べると `ratedA` と同じ取り違えを招く。
+  低減値（周囲温度40℃超・PWM2kHz以上の括弧付き）も通常定格ではないので入れない。
 - **「該当なし」は 0 ではなくキーの不在で表す。** `0` を番兵に使うと、
   ガードを1つ忘れた瞬間に「0同士だから完全一致」という誤判定になる。
 - **`evidence` は側面ごとに持つ。** `model` / `dims` / `specs` それぞれに
@@ -95,8 +105,8 @@ registerCategory({
   15K 側と完全一致して曖昧一致リストを素通りする。
 - **同じ綴りに読める型式が並ぶときは、見分ける材料を必ず併記する。**
   曖昧一致リストは候補どうしで値が割れているスペックを選んで全行に出す。
-  主スペック固定にすると、それが未登録のカテゴリ（インバータの定格出力電流は
-  全件未取得）で全行が系列名になり、区別できるのが取り違えている型式だけになる。
+  主スペック固定にすると、それが未登録のカテゴリで全行が系列名になり、
+  区別できるのが取り違えている型式だけになる。
   `npm run verify` はこの見分けがつかない衝突をビルド前に落とす。
 
 ## リポジトリ構成
@@ -110,6 +120,7 @@ data/                カテゴリ別JSON
 tools/               移行・検証スクリプト
 docs/integration-plan.md   現状分析と統合方針
 docs/mitsubishi-fr-e800-verified.md   三菱 FREQROL-E800 の公式確認済み情報（出典と未取得項目）
+docs/mitsubishi-fr-e800-ratings.md    同上の定格データ（L(名)06130-J p.81-83 から抽出）
 index.html  index_3.html  fa-compat.html   統合前の旧アプリ（参照用）
 ```
 
