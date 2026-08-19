@@ -14,7 +14,7 @@ import {
   TOP_LEVEL, SPEC_MAP, THERMAL_RANGE, SPECIAL_LLK_METHOD, SPECIAL_DISTANCE_KEY,
   EVIDENCE_SOURCE_KEYS, DROPPED, EVIDENCE_STATES, EVIDENCE_ASPECTS,
   MODEL_STATUS, EXPECTED_COUNTS, generatedId,
-  DISCONTINUED_SERIES, discontinuedSeriesIds,
+  DISCONTINUED_SERIES, discontinuedSeriesIds, RECORD_KEYS, ADDED_RECORD_RULES,
 } from './schema-map.mjs';
 
 const DATA = join(REPO_ROOT, 'data');
@@ -56,14 +56,12 @@ const sensor = readSensor();
 const fa = readFa();
 
 const REAL_CATEGORIES = ['contactor', 'starter', 'thermal', 'proximity', 'photo', 'ultrasonic', 'special'];
+const DATA_CATEGORIES = [...REAL_CATEGORIES, 'inverter', 'servo'];
 const migrated = {};
-for (const c of [...REAL_CATEGORIES, 'inverter', 'servo']) migrated[c] = load(`${c}.json`);
+for (const c of DATA_CATEGORIES) migrated[c] = load(`${c}.json`);
 const seedInv = load('_seed/inverter-generated.json');
 const seedSv = load('_seed/servo-generated.json');
 const refMakers = load('reference/makers.json');
-
-const allMigrated = [...REAL_CATEGORIES.flatMap((c) => migrated[c]), ...seedInv, ...seedSv];
-const byId = new Map(allMigrated.map((r) => [r.id, r]));
 
 /**
  * 移行元レコード。生成データにはカテゴリを補い、IDには schema-map.mjs が宣言する
@@ -82,15 +80,34 @@ const sourceRecords = [
   ...fa.servoGenerated.map((d) => applyGeneratedId(d, 'servo')),
 ];
 
+/**
+ * 移行由来のレコードと、フェーズ2以降に追加されたレコードを切り分ける。
+ *
+ * この検証の目的は「移行が非破壊であること」なので、件数やID集合の突合は
+ * 移行由来のぶんだけを対象にする。あとから出典付きで足されたレコードは
+ * 移行元に対応が無くて当たり前なので、別の規約（下の「追加レコード」の検査）で見る。
+ */
+const discIds = new Set(discontinuedSeriesIds(fa.servoDiscontinued));
+const sourceIds = new Set([...sourceRecords.map((d) => d.id), ...discIds]);
+const isAdded = (r) => !sourceIds.has(r.id);
+
+const dataRecords = DATA_CATEGORIES.flatMap((c) => migrated[c]);
+const addedByCategory = Object.fromEntries(DATA_CATEGORIES.map((c) => [c, migrated[c].filter(isAdded)]));
+const added = dataRecords.filter(isAdded);
+
+/** data/ に入る全レコード（移行由来＋追加分）＋凍結中の _seed */
+const allRecords = [...dataRecords, ...seedInv, ...seedSv];
+const allMigrated = allRecords.filter((r) => !isAdded(r));
+const byId = new Map(allRecords.map((r) => [r.id, r]));
+
 console.log('検証中...\n');
 
 // ---- 1. 件数一致 ---------------------------------------------------------
 
-check('件数一致', (fail) => {
+check('件数一致（移行由来のぶん。追加レコードは別勘定）', (fail) => {
+  const migratedOnly = (c) => migrated[c].filter((r) => !isAdded(r)).length;
   const actual = {
-    ...Object.fromEntries(REAL_CATEGORIES.map((c) => [c, migrated[c].length])),
-    inverter: migrated.inverter.length,
-    servo: migrated.servo.length,
+    ...Object.fromEntries(DATA_CATEGORIES.map((c) => [c, migratedOnly(c)])),
     _seed_inverter: seedInv.length,
     _seed_servo: seedSv.length,
     reference_makers: refMakers.length,
@@ -98,9 +115,10 @@ check('件数一致', (fail) => {
   for (const [k, expected] of Object.entries(EXPECTED_COUNTS)) {
     if (actual[k] !== expected) fail(`${k}: 期待 ${expected} / 実際 ${actual[k]}`);
   }
-  // 移行元の総数と移行先の総数が一致すること
-  if (sourceRecords.length !== allMigrated.length) {
-    fail(`総件数: 移行元 ${sourceRecords.length} / 移行先 ${allMigrated.length}`);
+  // 移行元の総数と移行先の総数が一致すること（27件の生産中止シリーズは 11 で見る）
+  const migratedInData = allMigrated.filter((r) => !discIds.has(r.id)).length;
+  if (sourceRecords.length !== migratedInData) {
+    fail(`総件数: 移行元 ${sourceRecords.length} / 移行先 ${migratedInData}`);
   }
 });
 
@@ -108,13 +126,15 @@ check('件数一致', (fail) => {
 
 check('ID集合一致・重複なし・衝突なし', (fail) => {
   const srcIds = setOf(sourceRecords, (d) => d.id);
-  const dstIds = setOf(allMigrated, (d) => d.id);
+  // 生産中止シリーズ27件は 11 で個別に突合するのでここでは対象外
+  const dstIds = setOf(allMigrated.filter((r) => !discIds.has(r.id)), (d) => d.id);
   const { onlyA, onlyB } = diffSets(srcIds, dstIds);
   for (const id of onlyA.slice(0, 5)) fail(`移行先に無いID: ${id}`);
   for (const id of onlyB.slice(0, 5)) fail(`移行元に無いID: ${id}`);
 
   if (srcIds.size !== sourceRecords.length) fail(`移行元にID重複あり (${sourceRecords.length - srcIds.size} 件)`);
-  if (dstIds.size !== allMigrated.length) fail(`移行先にID重複あり (${allMigrated.length - dstIds.size} 件)`);
+  const allIds = setOf(allRecords, (d) => d.id);
+  if (allIds.size !== allRecords.length) fail(`移行先にID重複あり (${allRecords.length - allIds.size} 件)`);
 
   // 3データセット間のID衝突
   const mag = setOf(magnet.devices, (d) => d.id);
@@ -231,8 +251,7 @@ check('data/** のどこにも ratedA が存在しない', (fail) => {
       }
     }
   };
-  walk(allMigrated, 'data');
-  walk(migrated.servo, 'data/servo');
+  walk(allRecords, 'data');
   walk(refMakers, 'reference/makers');
 });
 
@@ -249,7 +268,7 @@ check('ratedA:0 由来のレコードが距離系キーを持たない', (fail) 
   }
   // 量的スペックに 0 が残っていないこと
   const quantitative = ['sensingDistanceMM', SPECIAL_DISTANCE_KEY, 'ratedCurrentA', 'ratedPowerKW', 'ratedPowerW'];
-  for (const r of allMigrated) {
+  for (const r of allRecords) {
     for (const k of quantitative) {
       if (r.specs?.[k] === 0) fail(`${r.id}.specs.${k} が 0`);
     }
@@ -259,7 +278,7 @@ check('ratedA:0 由来のレコードが距離系キーを持たない', (fail) 
 // ---- 8. 参照整合性 -------------------------------------------------------
 
 check('successorId と mountsOn が解決する', (fail) => {
-  for (const r of allMigrated) {
+  for (const r of allRecords) {
     if (r.successorId && !byId.has(r.successorId)) fail(`${r.id}.successorId → ${r.successorId} が存在しない`);
   }
   const modelsByCategory = new Set(migrated.contactor.concat(migrated.starter).map((d) => d.model));
@@ -273,7 +292,7 @@ check('successorId と mountsOn が解決する', (fail) => {
 // ---- 9. evidence 網羅 ----------------------------------------------------
 
 check('evidence が3側面そろい、状態が3値のいずれか', (fail) => {
-  for (const r of allMigrated) {
+  for (const r of allRecords) {
     for (const aspect of EVIDENCE_ASPECTS) {
       const state = r.evidence?.[aspect]?.state;
       if (!state) { fail(`${r.id}: evidence.${aspect} が無い`); continue; }
@@ -306,7 +325,7 @@ check('evidence が3側面そろい、状態が3値のいずれか', (fail) => {
 // ---- 10. modelStatus 規則 ------------------------------------------------
 
 check('modelStatus の付与規則', (fail) => {
-  for (const c of [...REAL_CATEGORIES, 'servo']) {
+  for (const c of DATA_CATEGORIES) {
     for (const r of migrated[c]) {
       if (r.modelStatus !== MODEL_STATUS.CONFIRMED) fail(`data/${c}.json ${r.id}: ${r.modelStatus}`);
     }
@@ -378,6 +397,56 @@ check('安川の生産中止シリーズ27件がサーボのレコードにな�
   });
 });
 
+// ---- 12. 追加レコードの規約 ----------------------------------------------
+
+/**
+ * フェーズ2以降に追加されたレコード（移行元に対応が無いもの）の受け入れ検査。
+ *
+ * このリポジトリの一番の約束は「実在確認が取れた型式だけを候補に出す」こと。
+ * 出典の無いレコードは人手のレビューを待たずにここで落とす。
+ * 追加が0件でも検査は走る（規約が生きていることを示すため）。
+ */
+check(`追加レコードの規約（現在 ${added.length} 件）`, (fail) => {
+  const R = ADDED_RECORD_RULES;
+
+  for (const c of DATA_CATEGORIES) {
+    const specKeys = new Set([
+      ...Object.values(SPEC_MAP[c] ?? {}),
+      ...(c === 'thermal' ? [THERMAL_RANGE.to] : []),
+      ...(c === 'special' ? [SPECIAL_DISTANCE_KEY] : []),
+      // サーボは生産中止シリーズと同じ枠（生産中止日・修理期限など）も持てる
+      ...(c === 'servo' ? Object.values(DISCONTINUED_SERIES.SPEC_MAP) : []),
+    ]);
+
+    for (const r of addedByCategory[c]) {
+      const at = `data/${c}.json ${r.id ?? '(id無し)'}`;
+      if (!r.id) fail(`${at}: id が無い`);
+      if (r.category !== c) fail(`${at}: category="${r.category}" がファイルと一致しない`);
+      if (!r.maker || !r.model) fail(`${at}: maker / model は必須`);
+      if (r.modelStatus !== R.modelStatus) fail(`${at}: modelStatus="${r.modelStatus}" は不可（${R.modelStatus} のみ）`);
+
+      for (const k of Object.keys(r)) {
+        if (!RECORD_KEYS.includes(k)) fail(`${at}: 未知のトップレベルキー "${k}"`);
+      }
+      for (const k of Object.keys(r.specs ?? {})) {
+        if (!specKeys.has(k)) fail(`${at}: specs.${k} は ${c} の宣言に無い（schema-map.mjs を確認）`);
+      }
+
+      // 出典。実在確認の根拠が無いレコードは入れない
+      const model = r.evidence?.model;
+      if (model?.state !== R.modelEvidenceState) {
+        fail(`${at}: evidence.model.state="${model?.state}"（追加レコードは ${R.modelEvidenceState} であること）`);
+      }
+      if (!R.sourceKeys.some((k) => String(model?.[k] ?? '').trim())) {
+        fail(`${at}: 出典が無い（evidence.model に ${R.sourceKeys.join(' か ')} が必要）`);
+      }
+      if (model?.srcUrl && !/^https?:\/\//.test(model.srcUrl)) {
+        fail(`${at}: evidence.model.srcUrl="${model.srcUrl}" がURLでない`);
+      }
+    }
+  }
+});
+
 // ---- 追加: アプリ本体が無変更であること ----------------------------------
 
 check('移行元HTMLが3つとも存在し読み取れる（1a では変更しない）', (fail) => {
@@ -394,6 +463,6 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`検証成功: ${checkNo} / ${checkNo} 項目すべて PASS`);
-console.log(`  実データ ${[...REAL_CATEGORIES, 'servo'].reduce((n, c) => n + migrated[c].length, 0)} 件 (catalog-confirmed)`);
+console.log(`  実データ ${dataRecords.length} 件 (catalog-confirmed) … 移行由来 ${dataRecords.length - added.length} 件 + 追加 ${added.length} 件`);
 console.log(`  凍結データ ${seedInv.length + seedSv.length} 件 (provisional・既定非表示)`);
 console.log(`  参照データ ${refMakers.length} 件`);

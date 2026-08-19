@@ -5,7 +5,7 @@
  *
  *   node tools/extract.mjs
  */
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { REPO_ROOT, readMagnet, readSensor, readFa } from './read-sources.mjs';
 import {
@@ -179,8 +179,33 @@ function transformDiscontinuedSeries(src, id) {
   });
 }
 
+const FORCE = process.argv.includes('--force');
+
+/**
+ * 追加レコードの上書き防止。
+ *
+ * このスクリプトは移行元HTMLから data/** を作り直す（冪等）。フェーズ2以降に
+ * 出典付きで追加されたレコードは移行元に存在しないので、そのまま走らせると
+ * **調査して足したぶんが黙って消える**。既存ファイルにしか無いIDを見つけたら止める。
+ * 移行のやり直しなど、消してよいと分かっている場合だけ --force を付ける。
+ */
+function assertNoAdditionsLost(abs, relPath, next) {
+  if (FORCE || !existsSync(abs)) return;
+  const prev = JSON.parse(readFileSync(abs, 'utf8'));
+  if (!Array.isArray(prev) || !Array.isArray(next)) return;
+  const nextIds = new Set(next.map((r) => r?.id).filter(Boolean));
+  const lost = prev.filter((r) => r?.id && !nextIds.has(r.id)).map((r) => r.id);
+  if (!lost.length) return;
+  throw new Error(
+    `data/${relPath} には移行元に無いレコードが ${lost.length} 件あります（${lost.slice(0, 5).join(', ')}）。\n` +
+    'このまま書き出すと消えます。フェーズ2以降に追加したレコードのはずなので、\n' +
+    '本当に作り直す場合だけ `node tools/extract.mjs --force` を使ってください。',
+  );
+}
+
 function writeJson(relPath, value) {
   const abs = join(DATA, relPath);
+  assertNoAdditionsLost(abs, relPath, value);
   mkdirSync(join(abs, '..'), { recursive: true });
   writeFileSync(abs, JSON.stringify(value, null, 2) + '\n', 'utf8');
   const n = Array.isArray(value) ? value.length : 1;
