@@ -247,8 +247,11 @@ registerCategory({
 
 ### UI構成
 
-**大分類タブは設けず、カテゴリチップを横一列**に並べる（統合直後は9カテゴリ）。
-チップ行は横スクロール可（`overflow-x:auto`）とし、折り返しで縦に伸びないようにする。
+**大分類タブは設けず、カテゴリチップを並べる**（統合直後は9カテゴリ）。
+
+当初は横一列＋横スクロール（`overflow-x:auto`）にしていたが、実機で
+**画面外のカテゴリに気づけない**ことが分かったため折り返し表示に変更した。
+iPhone 標準幅で9カテゴリが4行に収まり、横スクロールは発生しない。
 カテゴリ数が15を超えたあたりで入口画面または上位タブを再検討する。
 
 ---
@@ -282,7 +285,7 @@ registerCategory({
 | 0 | `index 3.html` → `index_3.html` リネーム | 完了 |
 | 1a | `data/**` へのデータ分離とスキーマ移行。アプリHTMLは無変更 | 完了 |
 | **1b** | **統合アプリ本体・`src/categories/*.mjs`・`build.mjs`。既知の不具合も対応** | **完了** |
-| 2 | fa-compat の実データ化（`_seed` から出典URL付きで昇格） | 未着手 |
+| 2 | fa-compat の実データ化（`_seed` から出典URL付きで昇格） | 着手（安川の生産中止27件を `data/servo.json` へ。インバータは未着手） |
 | 3 | 既存431件の `evidence.*.srcUrl` を充実 | 未着手 |
 
 ### フェーズ1a の成果物
@@ -291,8 +294,8 @@ registerCategory({
 data/
   contactor.json (95)   starter.json (29)   thermal.json (48)
   proximity.json (123)  photo.json (118)    ultrasonic.json (6)   special.json (12)
-  inverter.json (0)     servo.json (0)
-  reference/makers.json (10)  reference/servo-discontinued.json (27)
+  inverter.json (0)     servo.json (27 … 安川の生産中止シリーズ)
+  reference/makers.json (10)
   _seed/inverter-generated.json (904)  _seed/servo-generated.json (536)
 tools/
   schema-map.mjs    … 移行仕様の宣言（唯一の仕様）
@@ -310,6 +313,14 @@ tools/
 シリーズ単位マスクだった。デバイスレコードに押し込むと `ratedW:0`・`voltClass:-1`
 というセンチネル濫用になるため、参照データとして別ファイルに置いている。
 1b でインバータ/サーボのカテゴリを表示するにはフェーズ2が前提。
+
+> **【1a の判断ミス・フェーズ2で修正】** この27件を
+> `data/reference/servo-discontinued.json` に逃がした結果、配布物には埋め込まれる
+> のに描画する経路がどこにも無く、サーボは0件表示のままだった。
+> センチネル濫用を避ける判断は正しかったが、避け方が誤り。持たない量は
+> **キーの不在**で表せる（本書の方針1でそう決めている）ので、レコード化しても
+> `ratedW:0` は生まれない。現在は `data/servo.json` の27件として表示し、
+> シリーズ単位であることは `modelScope:"series"` で明示している。
 
 ### 検証
 
@@ -337,7 +348,7 @@ src/
   categories/
     contactor.mjs（接触器・開閉器） thermal.mjs
     sensor-common.mjs sensors.mjs（近接・光電・超音波・特殊）
-    drive.mjs（インバータ・サーボ／データ0件の枠組み）
+    drive.mjs（インバータ／サーボ）
 build.mjs                 … 単一HTMLへインライン展開
 dist/index.html           … 配布物（266KB・外部依存ゼロ）
 tools/
@@ -403,3 +414,48 @@ npm run check   # データ検証 → ビルド → 回帰 → スモーク → 
 差分がゼロであることだけを見ると修正が黙って戻されたときに検出できない
 （修正を外すと移行元と一致してしまう）ため、意図した修正が実際に効いていることも
 併せて検査している。
+
+---
+
+## フェーズ2（着手分）— 安川の生産中止シリーズ27件
+
+### 直した不具合
+
+| 症状 | 原因 | 対応 |
+|---|---|---|
+| サーボが0件表示（「実在確認済みのデータが未登録です」） | 27件を `data/reference/` に置いたが、参照データを描画する経路が無かった。配布物には埋め込まれていたので**データはあるのに一度も画面に出ない**状態 | `data/servo.json` のレコードとして扱う。`tools/extract.mjs` が `YASKAWA_DISC` から生成し、`tools/verify-data.mjs` が独立実装で突合する（検証11項目 → 12項目） |
+| iOSホーム画面から起動するとタイトルにステータスバーが重なる | `black-translucent` + `viewport-fit=cover` でページが画面最上端から始まるのに `#app` の上余白が `0` 固定だった | `padding-top:env(safe-area-inset-top)`。併せて左右の inset が入れ替わっていたのも修正 |
+| カテゴリタブが横スクロールで、隠れた項目に気づけない | `overflow-x:auto` の1行レイアウト | 折り返し（`flex-wrap`）。件数バッジは維持 |
+
+### シリーズ単位マスクの扱い
+
+27件は1行が `SGDM / SGDH / SGDP` や `CACR-SR□□BB/BC` というワイルドカード付きの
+**シリーズ単位マスク**で、個別の発注可能型式ではない。この性質を
+`modelScope:"series"` として持たせ、コア側で次のように扱う。
+
+- `computeCompatibles` が基準にも候補にも採らない（カテゴリ側に再実装させない。
+  `ratedA:0` のガードを各アプリで書き直していた失敗を繰り返さないため）
+- 確認画面に「シリーズ単位の記載」の注意書きとバッジを出す
+- 候補0件の理由をカテゴリが説明する（`emptyNote`）。
+  サーボはメーカー案内の代替シリーズを併記する
+- 持たない量（定格出力・電圧クラス・寸法）は**キーの不在**で表す。
+  `ratedW:0` / `voltClass:-1` のセンチネルは作らない
+
+`catalog-confirmed` にしたのは、生成物ではなくメーカー公表値を人手で起こした
+データだからで、既存431件と同じ扱い（`srcUrl` の付与はフェーズ3の対象）。
+
+### provisional 判定の再確認
+
+読み込み側（`store.loadDevices`）は `catalog-confirmed` だけを通すホワイトリスト。
+安全側の既定として正しいが、**`modelStatus` の付け忘れや綴り間違いも同じ経路で
+黙って消える**（今回の0件表示で最初に疑うべき挙動がこれだった）。
+`build.mjs` に検査を足し、`data/*.json` に `catalog-confirmed` 以外があれば
+ビルド時に落とすようにした。生成物1440件は従来どおり `_seed/` のままで、
+配布物にも `provisional` は1件も入らない。
+
+### インバータは0件のまま
+
+27件はすべて安川電機のサーボ。インバータには実在確認の取れたレコードが
+1件も無いため、カテゴリは0件表示のままで正しい。
+`data/_seed/inverter-generated.json` の904件は組み合わせ生成物であり、
+出典URLが付いたものから `data/inverter.json` へ昇格させる。

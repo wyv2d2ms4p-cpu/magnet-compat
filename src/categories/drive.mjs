@@ -1,20 +1,21 @@
 /**
  * インバータ / サーボユニット。
  *
- * 現時点で実データは0件。移行元の1467件のうち1440件は buildInv/buildServo による
- * 組み合わせ生成物で実在確認が取れておらず、data/_seed/ に provisional として
- * 凍結してある（誤発注防止のため候補に出さない）。残る27件は安川サーボの
- * 生産中止シリーズ参照行で、SGDM / CACR-SR□□BB のようなワイルドカード付きの
- * シリーズ単位マスクであり個別の発注可能型式ではないため、
- * data/reference/servo-discontinued.json に参照情報として分離してある。
+ * 移行元の1467件のうち1440件は buildInv/buildServo による組み合わせ生成物で
+ * 実在確認が取れていない。data/_seed/ に provisional として凍結してあり、
+ * 誤発注防止のため配布物にも入れない。インバータの実データはこの結果0件で、
+ * 出典URL付きで昇格したものから順に表示されるようになる。
  *
- * カテゴリの枠組みだけ先に用意しておき、フェーズ2で出典URL付きの実データが
- * 入り次第そのまま動きはじめる。
+ * 残る27件は安川サーボの生産中止一覧（メーカー公表の実データ）で、
+ * data/servo.json に入っている。1行が `SGDM / SGDH / SGDP` や
+ * `CACR-SR□□BB/BC` というワイルドカード付きのシリーズ単位マスクなので
+ * `modelScope:"series"` が付いており、コアが互換判定から除外する。
+ * 「その型式がいつ生産中止になり、いつまで修理できるか」を引くための行。
  */
 import { registerCategory } from '../core/registry.mjs';
 import { withinWindow, preferTrue, ascending, logRatio } from '../core/compat.mjs';
 import { evidenceRank } from '../core/evidence.mjs';
-import { num } from '../core/util.mjs';
+import { num, esc } from '../core/util.mjs';
 
 registerCategory({
   id: 'inverter',
@@ -83,12 +84,33 @@ registerCategory({
     );
   },
   summary(d) {
+    // 生産中止シリーズは寸法も定格も持たない。持っている行だけを出す
+    if (d.modelScope === 'series') {
+      return [
+        { label: 'シリーズ', value: d.series || '―' },
+        { label: '生産中止', value: d.specs?.discontinuedAt || '―' },
+        { label: '補修部品 受付終了', value: d.specs?.partsOrderUntil || '―' },
+        { label: '修理対応 期限', value: d.specs?.repairUntil || '受付終了' },
+        { label: 'メーカー案内の代替', value: d.specs?.altSeries || 'なし' },
+      ];
+    }
     return [
       { label: '定格出力', value: d.specs?.ratedPowerW != null ? (d.specs.ratedPowerW >= 1000 ? `${num(d.specs.ratedPowerW / 1000)}kW` : `${num(d.specs.ratedPowerW)}W`) : '―' },
       { label: '指令インタフェース', value: d.specs?.iface || '―' },
       { label: '電源電圧', value: d.specs?.voltage || '―' },
       { label: 'エンコーダ', value: d.specs?.encoder || '―' },
     ];
+  },
+  emptyNote(m) {
+    if (m.modelScope !== 'series') return '';
+    const alt = m.specs?.altSeries;
+    const lead = alt
+      ? `メーカーが案内する代替は <b class="amber">${esc(alt)}</b> です。`
+      : 'メーカーが案内する代替シリーズはありません。';
+    return `<b class="amber">この行はシリーズ単位のため、型式ごとの互換判定は行いません。</b>
+      <div>${lead}
+      置換にはアンプ・モータ・エンコーダ・指令インタフェースの組み合わせが関わるため、
+      現物の銘板から個別型式を確定させたうえでメーカー選定資料で確認してください。</div>`;
   },
   detailPanels(m, c) {
     if (c.ifaceMatch) return [];

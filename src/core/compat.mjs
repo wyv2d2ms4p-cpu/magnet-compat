@@ -66,8 +66,13 @@ export function ascending(a, b) {
 export function computeCompatibles(m, category, ctx = {}) {
   const wanted = normalizeMounting(ctx.mounting) || m.mounting;
 
+  // シリーズ単位のレコード（型式マスク）は個別の発注可能型式ではないので、
+  // 基準にも候補にもしない。カテゴリ側で毎回書くと1つ忘れた時点で穴が開くため、
+  // ratedA:0 の番兵ガードと同じ轍を踏まないようここで一度だけ落とす。
+  if (isSeriesScope(m)) return [];
+
   const enriched = devicesOf(m.category)
-    .filter((a) => a.id !== m.id && category.gate(a, m, ctx))
+    .filter((a) => a.id !== m.id && !isSeriesScope(a) && category.gate(a, m, ctx))
     .map((a) => {
       const trustworthy = dimsTrustworthy(a, m);
       return {
@@ -84,6 +89,11 @@ export function computeCompatibles(m, category, ctx = {}) {
 
   enriched.sort((a, b) => category.rank(a, b, m, ctx));
   return enriched;
+}
+
+/** シリーズ単位のマスク（`SGDM / SGDH` や `CACR-SR□□BB`）かどうか */
+export function isSeriesScope(d) {
+  return d?.modelScope === 'series';
 }
 
 /** 型式から1件引く。曖昧な場合の扱いは呼び出し側に委ねる。 */

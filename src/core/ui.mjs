@@ -52,12 +52,27 @@ export function dimDiagram(dims, holes) {
 /** 生産終了 / メーカー撤退 / 検証状態の見出しバッジ */
 export function statusBadges(d) {
   let h = '';
+  if (d.modelScope === 'series') h += '<span class="badge b-scope">シリーズ単位</span>';
   if (d.discontinued) h += '<span class="badge b-disc">生産終了</span>';
   if (d.makerExited) h += '<span class="badge b-disc">メーカー撤退</span>';
   if (stateOf(d, 'specs') !== 'verified' || stateOf(d, 'dims') !== 'verified') {
     h += '<span class="badge ev-warn">要確認</span>';
   }
   return h;
+}
+
+/**
+ * シリーズ単位のレコードであることの注意書き。
+ *
+ * 安川の生産中止一覧は1行が `SGDM / SGDH / SGDP` や `CACR-SR□□BB/BC` という
+ * ワイルドカード付きのマスクで、個別の発注可能型式ではない。型式欄をそのまま
+ * 発注番号と読まれると誤発注になるため、確認画面で明示する。
+ */
+export function scopeNote(d) {
+  if (d.modelScope !== 'series') return '';
+  return `<div class="warn"><div>⚠ この行は<b class="amber">シリーズ単位の記載</b>です
+    （<span class="mono">□</span> <span class="mono">△</span> は容量などのワイルドカード）。
+    個別の発注可能型式ではないので、実機の銘板で型式を確認してください。</div></div>`;
 }
 
 /** デバイスの note。移行元では一度も描画されていなかった。 */
@@ -74,7 +89,10 @@ export function noteBox(d) {
  * そのカテゴリの見出しスペック（電流／検出距離／導光路長など）が必ず表示される。
  */
 export function specGrid(category, d) {
-  const declared = category.specDefs.map((s) => ({ label: s.label, value: formatSpec(s, d) }));
+  const declared = category.specDefs
+    .map((s) => ({ label: s.label, value: formatSpec(s, d) }))
+    // シリーズ単位の行は個別型式の定格を持たない。「― だけの枠」を並べても読めない
+    .filter((r) => !(d.modelScope === 'series' && r.value === '―'));
   const rows = [];
   for (const r of [...declared, ...category.summary(d)]) {
     if (rows.some((x) => x.label === r.label)) continue;

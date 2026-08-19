@@ -3,7 +3,7 @@ import { esc, norm, mountingOptions, successorChain } from './util.mjs';
 import { store, devicesOf, makersOf } from './store.mjs';
 import { allCategories, getCategory, primarySpec, formatSpec } from './registry.mjs';
 import { computeCompatibles } from './compat.mjs';
-import { candidateCard, specGrid, dimDiagram, statusBadges, noteBox, warningBox } from './ui.mjs';
+import { candidateCard, specGrid, dimDiagram, statusBadges, noteBox, warningBox, scopeNote } from './ui.mjs';
 import { evidenceRow } from './evidence.mjs';
 
 const S = {
@@ -106,9 +106,14 @@ function steps() {
   }).join('')}</div>`;
 }
 
-/** カテゴリチップ。大分類は設けず横一列。増えても縦に伸びないよう横スクロールにする。 */
+/**
+ * カテゴリチップ。大分類は設けず全カテゴリを並べる。
+ *
+ * 以前は横一列＋横スクロールにしていたが、スマホでは画面外のカテゴリに
+ * 気づけない（スクロールバーも出ない）。折り返して全件を一度に見せる。
+ */
 function categoryChips() {
-  return `<div class="chiprow" role="tablist">${allCategories().map((c) => {
+  return `<div class="chiprow cats" role="tablist">${allCategories().map((c) => {
     const n = devicesOf(c.id).length;
     const on = c.id === S.cat ? ' on' : '';
     const dis = n === 0 ? ' empty' : '';
@@ -124,9 +129,12 @@ function makerChips() {
 
 function deviceRow(d, act) {
   const ps = primarySpec(category());
+  // 主スペックを持たない行（シリーズ単位のマスクなど）は「―」だけになるので系列名を出す
+  const spec = formatSpec(ps, d);
+  const sub = spec === '―' && d.series ? d.series : spec;
   return `<button class="row" data-act="${act}" data-v="${esc(d.id)}">
     <span class="row-main"><span class="mono">${esc(d.model)}</span> ${statusBadges(d)}</span>
-    <span class="row-sub">${esc(d.maker)} ・ ${esc(formatSpec(ps, d))}</span>
+    <span class="row-sub">${esc(d.maker)} ・ ${esc(sub)}</span>
   </button>`;
 }
 
@@ -180,6 +188,7 @@ function viewConfirm() {
           <div class="model mono big">${esc(m.model)}</div>
         </div>
       </div>
+      ${scopeNote(m)}
       ${noteBox(m)}
       ${warningBox(m)}
       ${chain.length ? `<div class="cmp cmp-info"><b>後継品</b><span>${[m, ...chain].map((d) => esc(d.model)).join(' → ')}</span></div>` : ''}
@@ -188,9 +197,9 @@ function viewConfirm() {
       ${m.evidence?.dims?.state === 'verified' && m.dims ? dimDiagram(m.dims, m.holes) : '<div class="dim-none">外形寸法は未確認のため図を表示しません。</div>'}
     </div>
     <div class="panel">
-      <label class="lbl">取付方式（既設に合わせて選択）</label>
+      ${options.length ? `<label class="lbl">取付方式（既設に合わせて選択）</label>
       <div class="chiprow">${options.map((o) =>
-        `<button class="chip sm${(S.mounting || m.mounting) === o ? ' on' : ''}" data-act="mount" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+        `<button class="chip sm${(S.mounting || m.mounting) === o ? ' on' : ''}" data-act="mount" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>` : ''}
       <button class="btn primary wide" data-act="step" data-v="3">この仕様で互換品を表示</button>
       <button class="btn ghost wide" data-act="step" data-v="1">型式を選び直す</button>
     </div>`;
@@ -211,10 +220,13 @@ function viewResult() {
     <div class="sub">互換品候補 ${list.length}件</div>
   </div>`;
 
+  // 0件の理由はカテゴリごとに違う。説明を持っているカテゴリにはそれを言わせる
+  const empty = cat.emptyNote(m) ||
+    `<b class="amber">互換候補が登録されていません。</b>
+     <div>電気的に成立しない組み合わせ（出力極性・配線本数の相違）は候補から除外しています。</div>`;
   const body = list.length
     ? list.map((c, i) => candidateCard(cat, m, c, i)).join('')
-    : `<div class="panel empty-note"><b class="amber">互換候補が登録されていません。</b>
-       <div>電気的に成立しない組み合わせ（出力極性・配線本数の相違）は候補から除外しています。</div></div>`;
+    : `<div class="panel empty-note">${empty}</div>`;
 
   return `${head}${body}
     <div class="panel">
