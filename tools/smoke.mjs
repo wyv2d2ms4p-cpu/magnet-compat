@@ -179,13 +179,58 @@ const singleText = await page.textContent('#app');
 check('単相200V入力機の電源電圧が「単相200V」と出る', singleText.includes('単相200V'));
 check('単相入力機はモータ出力が3相200Vであることを注記する', singleText.includes('出力は3相200V'));
 
-// norm() はハイフンと小数点を落とすため 1.5K-1 と 15K-1 が同じ綴りになる。確定させず選ばせる
+/* ---- 容量の取り違え防止（normLoose で同じ綴りになる型式） ---- */
+
+/**
+ * normLoose はハイフンと小数点を落とすため 1.5K-1 と 15K-1 が同じ綴りになる。
+ * 確定させずに選ばせるだけでなく、選ぶための材料（容量）が実際に出ていること。
+ * インバータの主スペック（定格出力電流）は全件未登録なので、主スペック任せだと
+ * 両方の行が「FREQROL-E800」になり、区別できるのが取り違えている型式だけになる。
+ */
+async function ambiguousRows() {
+  await page.waitForSelector('.rows [data-act="pick"]');
+  return page.$$eval('.rows [data-act="pick"]', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
+}
+
+for (const q of ['FR-E820-15K-1', 'FR-E820-1.5K-1']) {
+  await gotoCategory('inverter');
+  await search(q);
+  const rows = await ambiguousRows();
+  const text = (await page.textContent('#app')).replace(/\s+/g, ' ');
+  check(`「${q}」で確定させず選ばせる`, text.includes('取り違え') && rows.length >= 2, `候補 ${rows.length}件`);
+  check(`「${q}」の候補に 1.5kW と 15kW が併記される`,
+    rows.some((t) => t.includes('1.5kW')) && rows.some((t) => t.includes('15kW')), rows.join(' | '));
+  check(`「${q}」で何倍違うのかを警告に書く`, text.includes('10倍違います'), text.slice(0, 200));
+  check(`「${q}」に完全一致する候補へバッジが付く`,
+    rows[0].includes('入力と完全一致') && rows[0].includes(q), rows[0]);
+}
+
+// 小数点を省いた入力は 15K と完全一致するが、それを根拠に確定させてはいけない
 await gotoCategory('inverter');
-await search('FR-E820-15K-1');
-await page.waitForTimeout(120);
-const invAmbiguous = await page.$$('[data-act="pick"]');
-check('1.5K と 15K を取り違えず選ばせる',
-  (await page.textContent('#app')).includes('取り違え') && invAmbiguous.length >= 2, `候補 ${invAmbiguous.length}件`);
+await search('FRE82015K1');
+const dotless = await ambiguousRows();
+check('小数点を省いた入力でも確定させず両方を見せる',
+  dotless.length >= 2 && dotless.some((t) => t.includes('1.5kW')) && dotless.some((t) => t.includes('15kW')),
+  dotless.join(' | '));
+
+// 曖昧一致（うろ覚え入力）は維持されていること。ドットを省いても引ける
+await gotoCategory('proximity');
+await search('I21031');
+await page.waitForSelector('.model.big');
+check('ドットを省いた入力で I-210.31 に到達できる（曖昧一致の維持）',
+  (await page.textContent('.model.big')).includes('I-210.31'));
+
+// サジェストと Enter の母集団が一致していること（メーカー絞り込みに引きずられない）
+await gotoCategory('contactor');
+await page.click('[data-act="browse"]');
+await page.click('[data-act="maker"][data-v="パナソニック"]');
+await page.fill('#q', 'S-N10');
+await page.dispatchEvent('#q', 'input');
+await page.waitForTimeout(60);
+const sugModels = await page.$$eval('#sug [data-act="pick"]', (els) => els.map((e) => e.textContent));
+check('メーカー絞り込み中でもサジェストがカテゴリ全体を見る',
+  sugModels.some((t) => t.includes('S-N10')) && sugModels.some((t) => t.includes('SN10')),
+  sugModels.join(' | '));
 
 /* ---- 既知の不具合5件の修正確認 ---- */
 

@@ -7,9 +7,12 @@
  *
  *   node tools/verify-data.mjs
  */
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { REPO_ROOT, readMagnet, readSensor, readFa } from './read-sources.mjs';
+import { normLoose } from '../src/core/util.mjs';
+import { getCategory, distinguishingSpec } from '../src/core/registry.mjs';
 import {
   TOP_LEVEL, SPEC_MAP, THERMAL_RANGE, SPECIAL_LLK_METHOD, SPECIAL_DISTANCE_KEY,
   EVIDENCE_SOURCE_KEYS, DROPPED, EVIDENCE_STATES, EVIDENCE_ASPECTS,
@@ -47,6 +50,18 @@ function diffSets(a, b) {
   const onlyA = [...a].filter((x) => !b.has(x));
   const onlyB = [...b].filter((x) => !a.has(x));
   return { onlyA, onlyB };
+}
+
+/**
+ * カテゴリ定義を登録する。
+ *
+ * 検索の衝突検査は「UIが実際に何を見分ける材料として出せるか」を見るので、
+ * 表示に使う specDefs の宣言そのものを参照する必要がある。build.mjs と同じく
+ * src/categories/*.mjs を全部読む（カテゴリ追加時にここを直さなくて済む）。
+ */
+const CATEGORY_DIR = join(REPO_ROOT, 'src', 'categories');
+for (const f of readdirSync(CATEGORY_DIR).filter((x) => x.endsWith('.mjs')).sort()) {
+  await import(pathToFileURL(join(CATEGORY_DIR, f)).href);
 }
 
 // ---- 読み込み ------------------------------------------------------------
@@ -447,6 +462,48 @@ check(`追加レコードの規約（現在 ${added.length} 件）`, (fail) => {
   }
 });
 
+// ---- 13. 検索の正規化衝突 ------------------------------------------------
+
+/**
+ * norm の緩いほう（normLoose）で同じ綴りになる型式の組を洗い出す。
+ *
+ * 検索は normLoose で候補を集めるので、同一カテゴリ内で衝突する組は
+ * 必ず曖昧一致リストに並ぶ。並んだときに見分けられなければ意味がないので、
+ * 「識別スペックが取れる」か「メーカーが違う」かのどちらかを満たすことを要求する。
+ * 個別の型式を名指しで潰しても、データが増えれば再発するのでここで機械的に止める。
+ */
+function collisionGroups(records) {
+  const g = new Map();
+  for (const r of records) {
+    const k = `${r.category}|${normLoose(r.model)}`;
+    if (!g.has(k)) g.set(k, []);
+    g.get(k).push(r);
+  }
+  return [...g].filter(([, v]) => v.length > 1);
+}
+
+const publishable = dataRecords.filter((r) => r.modelStatus === MODEL_STATUS.CONFIRMED);
+const publishedCollisions = collisionGroups(publishable);
+
+check(`検索で同じ綴りになる型式に見分ける材料がある（衝突 ${publishedCollisions.length} 組）`, (fail) => {
+  for (const [key, group] of publishedCollisions) {
+    const cat = getCategory(group[0].category);
+    if (!cat) { fail(`${key}: カテゴリ定義 ${group[0].category} が見つからない`); continue; }
+    const sd = distinguishingSpec(cat, group);
+    const makers = new Set(group.map((r) => r.maker));
+    if (sd || makers.size > 1) continue;
+    fail(`${key}: ${group.map((r) => r.model).join(' / ')}`
+      + ' … 割れているスペックもメーカー差も無く、曖昧一致リストで見分けられない');
+  }
+});
+
+/**
+ * _seed は配布物に入らないので検査は落とさないが、昇格した瞬間に衝突するものは
+ * 昇格前に見えていないと困る（1.5K/15K 系は全メーカーの型式表に潜んでいる）。
+ */
+const seedCollisions = collisionGroups([...publishable, ...seedInv, ...seedSv])
+  .filter(([, v]) => v.some((r) => r.modelStatus !== MODEL_STATUS.CONFIRMED));
+
 // ---- 追加: アプリ本体が無変更であること ----------------------------------
 
 check('移行元HTMLが3つとも存在し読み取れる（1a では変更しない）', (fail) => {
@@ -465,4 +522,11 @@ if (failures.length) {
 console.log(`検証成功: ${checkNo} / ${checkNo} 項目すべて PASS`);
 console.log(`  実データ ${dataRecords.length} 件 (catalog-confirmed) … 移行由来 ${dataRecords.length - added.length} 件 + 追加 ${added.length} 件`);
 console.log(`  凍結データ ${seedInv.length + seedSv.length} 件 (provisional・既定非表示)`);
+if (seedCollisions.length) {
+  console.log(`  ⚠ _seed に検索衝突 ${seedCollisions.length} 組 … 昇格時に曖昧一致リストへ並ぶ`);
+  for (const [key, group] of seedCollisions.slice(0, 5)) {
+    console.log(`      ${key}: ${group.map((r) => r.model).join(' / ')}`);
+  }
+  if (seedCollisions.length > 5) console.log(`      ... 他 ${seedCollisions.length - 5} 組`);
+}
 console.log(`  参照データ ${refMakers.length} 件`);

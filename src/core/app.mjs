@@ -1,7 +1,7 @@
 /** 状態・画面遷移・イベント。 */
-import { esc, norm, mountingOptions, successorChain } from './util.mjs';
+import { esc, normLoose, normExact, num, mountingOptions, successorChain } from './util.mjs';
 import { store, devicesOf, makersOf } from './store.mjs';
-import { allCategories, getCategory, primarySpec, formatSpec } from './registry.mjs';
+import { allCategories, getCategory, primarySpec, distinguishingSpec, formatSpec, formatSpecValue } from './registry.mjs';
 import { computeCompatibles } from './compat.mjs';
 import { candidateCard, specGrid, dimDiagram, statusBadges, noteBox, warningBox, scopeNote } from './ui.mjs';
 import { evidenceRow } from './evidence.mjs';
@@ -35,24 +35,37 @@ function filtered() {
 /* ---------- 検索 ---------- */
 
 /**
- * 型式名で引く。
+ * 検索欄が見る母集団。
  *
- * norm() はハイフンを落とすため、三菱 S-N10 とパナソニック SN10 が同じ文字列に
- * 正規化される。移行元は先頭一致の1件を無条件に採用していたため、検索欄からは
- * 後者に到達できなかった。ここでは複数一致したら確定させず、選ばせる。
+ * メーカーチップは一覧パネルの絞り込みであって検索欄の絞り込みではない。
+ * 以前は lookup() がカテゴリ全体を、suggestions() が絞り込み後を見ており、
+ * サジェストに出ない型式が Enter では出るという食い違いがあった。画面外の
+ * 絞り込みで候補が消えると取り違えの温床になるので、どちらもカテゴリ全体を見る。
+ */
+function searchPool() {
+  return devicesOf(S.cat);
+}
+
+/**
+ * 型式名で引く。集めるのは normLoose、見分けるのは normExact。
+ *
+ * normLoose はハイフンも小数点も落とすため、三菱 S-N10 とパナソニック SN10、
+ * FR-E820-1.5K-1（1.5kW）と FR-E820-15K-1（15kW）が同じ綴りになる。移行元は
+ * 先頭一致の1件を無条件に採用していたため、前者では後者の型式に到達できず、
+ * インバータでは10倍容量の違う機種を黙って掴んでいた。
+ * ここでは複数一致したら確定させず、必ず選ばせる。
  */
 function lookup(query) {
-  const q = norm(query);
-  if (!q) return { hits: [] };
-  const pool = devicesOf(S.cat);
-  const exact = pool.filter((d) => norm(d.model) === q);
-  if (exact.length) return { hits: exact };
-  const partial = pool.filter((d) => norm(d.model).includes(q));
-  return { hits: partial };
+  const q = normLoose(query);
+  if (!q) return [];
+  const pool = searchPool();
+  const exact = pool.filter((d) => normLoose(d.model) === q);
+  if (exact.length) return exact;
+  return pool.filter((d) => normLoose(d.model).includes(q));
 }
 
 function doSearch() {
-  const { hits } = lookup(S.q);
+  const hits = lookup(S.q);
   S.ambiguous = [];
   S.notFound = false;
   if (hits.length === 1) {
@@ -60,14 +73,24 @@ function doSearch() {
     return;
   }
   if (hits.length > 1) {
-    // 同名に正規化される型式が複数ある。取り違えを防ぐため選ばせる
-    S.ambiguous = hits.slice(0, 20);
+    // loose では同じ綴りになる型式が複数ある。取り違えを防ぐため選ばせる。
+    // normExact が入力と一致する候補は先頭に出すが、それでも確定はさせない。
+    // 小数点を省いた入力（FRE82015K1）は 1.5K ではなく 15K と exact 一致するため、
+    // 一致を根拠に確定させると「黙って10倍の機種を掴む」経路が復活する。
+    S.ambiguous = [...hits]
+      .sort((a, b) => Number(isExactInput(b)) - Number(isExactInput(a)))
+      .slice(0, 20);
     render();
     return;
   }
   S.notFound = true;
   S.browse = true;
   render();
+}
+
+/** 入力の綴りと（小数点まで含めて）完全に一致するか */
+function isExactInput(d) {
+  return normExact(d.model) === normExact(S.q);
 }
 
 function select(id) {
@@ -79,11 +102,11 @@ function select(id) {
 }
 
 function suggestions() {
-  const q = norm(S.q);
+  const q = normLoose(S.q);
   if (q.length < 2) return [];
-  const pool = filtered();
-  const pre = pool.filter((d) => norm(d.model).indexOf(q) === 0);
-  const mid = pool.filter((d) => norm(d.model).indexOf(q) > 0);
+  const pool = searchPool();
+  const pre = pool.filter((d) => normLoose(d.model).indexOf(q) === 0);
+  const mid = pool.filter((d) => normLoose(d.model).indexOf(q) > 0);
   return [...pre, ...mid].slice(0, 12);
 }
 
@@ -127,15 +150,65 @@ function makerChips() {
     `<button class="chip sm${m === S.maker ? ' on' : ''}" data-act="maker" data-v="${esc(m)}">${esc(m)}</button>`).join('')}</div>`;
 }
 
-function deviceRow(d, act) {
-  const ps = primarySpec(category());
-  // 主スペックを持たない行（シリーズ単位のマスクなど）は「―」だけになるので系列名を出す
-  const spec = formatSpec(ps, d);
-  const sub = spec === '―' && d.series ? d.series : spec;
+/**
+ * 一覧の1行。
+ *
+ * opts.spec を渡すと、主スペックではなくそのスペックをラベル付きで副表示にする。
+ * 曖昧一致リストが「候補どうしで値が割れているスペック」を出すために使う。
+ * 主スペック任せにすると、インバータのように主スペック（定格出力電流）が
+ * 全件未登録のカテゴリで副表示が系列名に落ち、1.5kW と 15kW が同じ見た目になる。
+ */
+function deviceRow(d, act, opts = {}) {
+  const sd = opts.spec || primarySpec(category());
+  const spec = formatSpec(sd, d);
+  let sub;
+  if (opts.spec) {
+    // 識別用の指定時は「―」であること自体が識別材料なので、系列名にすり替えない
+    sub = `${esc(opts.spec.label)} ${esc(spec)}`;
+  } else {
+    // 主スペックを持たない行（シリーズ単位のマスクなど）は「―」だけになるので系列名を出す
+    sub = esc(spec === '―' && d.series ? d.series : spec);
+  }
+  const exact = opts.exact ? '<span class="badge b-exact">入力と完全一致</span>' : '';
   return `<button class="row" data-act="${act}" data-v="${esc(d.id)}">
-    <span class="row-main"><span class="mono">${esc(d.model)}</span> ${statusBadges(d)}</span>
-    <span class="row-sub">${esc(d.maker)} ・ ${esc(sub)}</span>
+    <span class="row-main"><span class="mono">${esc(d.model)}</span> ${exact}${statusBadges(d)}</span>
+    <span class="row-sub">${esc(d.maker)} ・ ${sub}</span>
   </button>`;
+}
+
+/**
+ * 曖昧一致リスト。
+ *
+ * 「取り違えを防ぐため選んでください」と言う以上、見分ける材料を必ず添える。
+ * 候補どうしで値が割れているスペックを1つ選んで全行に併記し、その差が大きい
+ * ときは何倍違うのかまで警告文に書く（1.5kW と 15kW の取り違えは誤発注になる）。
+ */
+function ambiguousPanel() {
+  if (!S.ambiguous.length) return '';
+  const sd = distinguishingSpec(category(), S.ambiguous);
+  // 全候補が完全一致（S-N10 / SN10 のようにハイフン差だけの組）ならバッジは選別の
+  // 役に立たないので出さない。一部だけが一致するときに絞り込みの手がかりになる
+  const exactCount = S.ambiguous.filter(isExactInput).length;
+  const marksExact = exactCount > 0 && exactCount < S.ambiguous.length;
+  const rows = S.ambiguous
+    .map((d) => deviceRow(d, 'pick', { spec: sd, exact: marksExact && isExactInput(d) }))
+    .join('');
+  return `<div class="warn"><div>⚠ 入力と同じ綴りに読める型式が ${S.ambiguous.length} 件あります。
+      ${spreadNote(sd, S.ambiguous)}取り違えを防ぐため、目的の型式を選んでください。</div></div>
+    <div class="rows">${rows}</div>`;
+}
+
+/** 識別スペックの開きが大きいときに、何倍違うのかを名指しする */
+function spreadNote(sd, devices) {
+  if (!sd) return '';
+  const vals = devices.map((d) => d.specs?.[sd.key]).filter((v) => typeof v === 'number' && v > 0);
+  if (vals.length < 2) return '';
+  const lo = Math.min(...vals);
+  const hi = Math.max(...vals);
+  const ratio = hi / lo;
+  if (ratio < 2) return '';
+  return `<b class="amber">${esc(sd.label)}が ${esc(formatSpecValue(sd, lo))} と ${esc(formatSpecValue(sd, hi))} で
+    約${num(Math.round(ratio * 10) / 10)}倍違います。</b>`;
 }
 
 function viewSearch() {
@@ -154,8 +227,7 @@ function viewSearch() {
       </div>
       <div id="sug">${sug.length ? sug.map((d) => deviceRow(d, 'pick')).join('') : ''}</div>
       ${S.notFound ? '<div class="warn"><div>該当する型式が見つかりませんでした。下の一覧から選んでください。</div></div>' : ''}
-      ${S.ambiguous.length ? `<div class="warn"><div>⚠ 同じ綴りに正規化される型式が ${S.ambiguous.length} 件あります。取り違えを防ぐため、目的の型式を選んでください。</div></div>
-        <div class="rows">${S.ambiguous.map((d) => deviceRow(d, 'pick')).join('')}</div>` : ''}
+      ${ambiguousPanel()}
     </div>`;
 
   if (empty) {
