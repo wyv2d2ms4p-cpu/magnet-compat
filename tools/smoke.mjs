@@ -212,9 +212,10 @@ check('単相入力機の候補は単相入力機だけ',
 
 /**
  * normLoose はハイフンと小数点を落とすため 1.5K-1 と 15K-1 が同じ綴りになる。
- * 確定させずに選ばせるだけでなく、選ぶための材料が実際に出ていること。
- * 識別材料は「候補どうしで値が割れている最初のスペック」なので、定格出力電流が
- * 登録された今は 8A と 60A が並ぶ（未登録だった間は適用モータ容量に落ちていた）。
+ * 確定させずに選ばせるだけでなく、選ぶための材料（容量）が実際に出ていること。
+ * 識別材料は specDefs の宣言順で最初に値が割れたスペックなので、判定に使う
+ * 定格出力電流ではなく適用モータ容量が出る。現場の保全員は銘板やモータ側から
+ * 型式に入るため、8A / 60A より 1.5kW / 15kW のほうが即断できる。
  */
 async function ambiguousRows() {
   await page.waitForSelector('.rows [data-act="pick"]');
@@ -227,9 +228,12 @@ for (const q of ['FR-E820-15K-1', 'FR-E820-1.5K-1']) {
   const rows = await ambiguousRows();
   const text = (await page.textContent('#app')).replace(/\s+/g, ' ');
   check(`「${q}」で確定させず選ばせる`, text.includes('取り違え') && rows.length >= 2, `候補 ${rows.length}件`);
-  check(`「${q}」の候補に 8A と 60A が併記される`,
-    rows.some((t) => t.includes('8A')) && rows.some((t) => t.includes('60A')), rows.join(' | '));
-  check(`「${q}」で何倍違うのかを警告に書く`, text.includes('約7.5倍違います'), text.slice(0, 200));
+  check(`「${q}」の候補に 1.5kW と 15kW が併記される`,
+    rows.some((t) => t.includes('1.5kW')) && rows.some((t) => t.includes('15kW')), rows.join(' | '));
+  check(`「${q}」で何倍違うのかを警告に書く`, text.includes('10倍違います'), text.slice(0, 200));
+  // 判定に使う主スペックは定格出力電流のまま。識別材料だけを容量にしている
+  check(`「${q}」の識別材料が電流ではなく容量で出る`,
+    rows.every((t) => t.includes('適用モータ容量')) && !rows.some((t) => /\d+A\b/.test(t)), rows.join(' | '));
   check(`「${q}」に完全一致する候補へバッジが付く`,
     rows[0].includes('入力と完全一致') && rows[0].includes(q), rows[0]);
 }
@@ -239,7 +243,7 @@ await gotoCategory('inverter');
 await search('FRE82015K1');
 const dotless = await ambiguousRows();
 check('小数点を省いた入力でも確定させず両方を見せる',
-  dotless.length >= 2 && dotless.some((t) => t.includes('8A')) && dotless.some((t) => t.includes('60A')),
+  dotless.length >= 2 && dotless.some((t) => t.includes('1.5kW')) && dotless.some((t) => t.includes('15kW')),
   dotless.join(' | '));
 
 // 曖昧一致（うろ覚え入力）は維持されていること。ドットを省いても引ける

@@ -326,7 +326,9 @@ function primarySpec(category) {
  * 全行が「―」になり、区別できるのが取り違えている型式文字列だけになる
  * （インバータは主スペックの定格出力電流が全40件で未登録だった時期があり、
  *   そのあいだ見分ける材料になれるのは適用モータ容量だけだった）。
- * specDefs の宣言順に見て、最初に値が割れたものを返す。
+ * specDefs の宣言順に見て、最初に値が割れたものを返す。宣言順は「見分けやすさ」を
+ * 表すので、判定に使う主スペック（primary）が先頭とはかぎらない。インバータは
+ * 判定を定格出力電流で行いつつ、識別材料には適用モータ容量を先に出す。
  *
  * 全スペックが同値なら null。呼び出し側は主スペックとメーカー表示に委ねる
  * （S-N10 / SN10 は容量が同じでメーカーが違う、という組がこれにあたる）。
@@ -1159,9 +1161,20 @@ registerCategory({
   id: 'inverter',
   label: 'インバータ',
   group: 'drive',
+  /**
+   * 宣言順は「見分けやすさ」の順。主スペック（判定に使う値）とは別で、
+   * `primary` フラグのほうが主スペックを決める。
+   *
+   * 適用モータ容量を先頭に置くのは、曖昧一致リストの識別材料が
+   * `distinguishingSpec` によって宣言順の先頭から選ばれるため。現場の保全員は
+   * 設備の銘板やモータ側から型式に入ることが多く、`FR-E820-1.5K-1` と
+   * `FR-E820-15K-1` の取り違えは「1.5kW / 15kW」なら即断できるが、
+   * 「8A / 60A」だとモータ容量からの変換が一段挟まる。判定は定格出力電流で
+   * 行いつつ、人が見分ける材料は容量を出す。並べ替えないこと。
+   */
   specDefs: [
-    { key: 'ratedCurrentA', label: '定格出力電流', unit: 'A', primary: true, format: (v) => `${num(v)}A`, distance: (a, b) => Math.abs(a - b) },
     { key: 'ratedPowerKW', label: '適用モータ容量', unit: 'kW', format: (v) => `${num(v)}kW` },
+    { key: 'ratedCurrentA', label: '定格出力電流', unit: 'A', primary: true, format: (v) => `${num(v)}A`, distance: (a, b) => Math.abs(a - b) },
     { key: 'ratedCapacityKVA', label: '定格容量', unit: 'kVA', format: (v) => `${num(v)}kVA` },
   ],
   gate(a, m) {

@@ -22,7 +22,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { loadDevices, devicesOf } from '../src/core/store.mjs';
-import { getCategory } from '../src/core/registry.mjs';
+import { getCategory, primarySpec, distinguishingSpec } from '../src/core/registry.mjs';
 import { computeCompatibles, withinWindow } from '../src/core/compat.mjs';
 import '../src/categories/drive.mjs';
 
@@ -184,7 +184,22 @@ for (const m of all) {
 }
 check('全40件を通して電源相数の違う候補が1件も出ない', phaseLeak.length === 0, phaseLeak.slice(0, 3).join(' / '));
 
-/* ---- 4. 寸法未取得でも判定が壊れない ---- */
+/* ---- 4. 判定に使う値と、人が見分ける値を分けている ---- */
+
+/**
+ * 主スペック（judgment）は定格出力電流のまま、曖昧一致リストの識別材料（human）は
+ * 適用モータ容量。後者は specDefs の宣言順で決まるので、並べ替えると黙って変わる。
+ * FR-E820-1.5K-1 と FR-E820-15K-1 は normLoose で同じ綴りになる実際の組。
+ */
+check('判定に使う主スペックは定格出力電流', primarySpec(cat).key === 'ratedCurrentA', primarySpec(cat).key);
+
+const confusable = [get('FR-E820-1.5K-1'), get('FR-E820-15K-1')];
+check('曖昧一致リストの識別材料は適用モータ容量（銘板から即断できるほう）',
+  distinguishingSpec(cat, confusable).key === 'ratedPowerKW', distinguishingSpec(cat, confusable).key);
+check('識別材料は 1.5kW と 15kW で 10倍差になる',
+  confusable.map((d) => d.specs.ratedPowerKW).join('/') === '1.5/15');
+
+/* ---- 5. 寸法未取得でも判定が壊れない ---- */
 
 check('寸法未確認なので寸法差は算出せず null のまま',
   computeCompatibles(get('FR-E820-3.7K-1'), cat).every((c) => c.dimsTrustworthy === false && c.diff === null));

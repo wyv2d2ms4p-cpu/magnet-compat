@@ -38,9 +38,20 @@ registerCategory({
   id: 'inverter',
   label: 'インバータ',
   group: 'drive',
+  /**
+   * 宣言順は「見分けやすさ」の順。主スペック（判定に使う値）とは別で、
+   * `primary` フラグのほうが主スペックを決める。
+   *
+   * 適用モータ容量を先頭に置くのは、曖昧一致リストの識別材料が
+   * `distinguishingSpec` によって宣言順の先頭から選ばれるため。現場の保全員は
+   * 設備の銘板やモータ側から型式に入ることが多く、`FR-E820-1.5K-1` と
+   * `FR-E820-15K-1` の取り違えは「1.5kW / 15kW」なら即断できるが、
+   * 「8A / 60A」だとモータ容量からの変換が一段挟まる。判定は定格出力電流で
+   * 行いつつ、人が見分ける材料は容量を出す。並べ替えないこと。
+   */
   specDefs: [
-    { key: 'ratedCurrentA', label: '定格出力電流', unit: 'A', primary: true, format: (v) => `${num(v)}A`, distance: (a, b) => Math.abs(a - b) },
     { key: 'ratedPowerKW', label: '適用モータ容量', unit: 'kW', format: (v) => `${num(v)}kW` },
+    { key: 'ratedCurrentA', label: '定格出力電流', unit: 'A', primary: true, format: (v) => `${num(v)}A`, distance: (a, b) => Math.abs(a - b) },
     { key: 'ratedCapacityKVA', label: '定格容量', unit: 'kVA', format: (v) => `${num(v)}kVA` },
   ],
   gate(a, m) {
