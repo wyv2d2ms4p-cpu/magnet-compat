@@ -39,10 +39,34 @@ export function primarySpec(category) {
   return category.specDefs.find((s) => s.primary) || category.specDefs[0] || null;
 }
 
-/** スペック値の表示。キーが無ければ「―」（旧 ratedA:0 センチネルの置き換え） */
-export function formatSpec(specDef, device) {
-  if (!specDef) return '―';
-  const v = device.specs?.[specDef.key];
-  if (v == null) return '―';
+/**
+ * 候補集合の中で値が割れているスペックを1つ選ぶ。
+ *
+ * 曖昧一致リストは「取り違えを防ぐため選んでください」と言う以上、見分ける材料を
+ * 出さなければ意味がない。主スペック固定にすると、その値が未登録のカテゴリで
+ * 全行が「―」になり、区別できるのが取り違えている型式文字列だけになる
+ * （インバータの主スペックは定格出力電流だが、公式未取得のため全40件が未登録）。
+ * specDefs の宣言順に見て、最初に値が割れたものを返す。
+ *
+ * 全スペックが同値なら null。呼び出し側は主スペックとメーカー表示に委ねる
+ * （S-N10 / SN10 は容量が同じでメーカーが違う、という組がこれにあたる）。
+ */
+export function distinguishingSpec(category, devices) {
+  if (!category || devices.length < 2) return null;
+  for (const sd of category.specDefs) {
+    const seen = new Set(devices.map((d) => JSON.stringify(d.specs?.[sd.key] ?? null)));
+    if (seen.size > 1) return sd;
+  }
+  return null;
+}
+
+/** スペック値の表示。値が無ければ「―」（旧 ratedA:0 センチネルの置き換え） */
+export function formatSpecValue(specDef, v) {
+  if (!specDef || v == null) return '―';
   return specDef.format ? specDef.format(v) : `${v}${specDef.unit || ''}`;
+}
+
+/** デバイスのスペック値の表示。キーが無ければ「―」 */
+export function formatSpec(specDef, device) {
+  return formatSpecValue(specDef, specDef ? device.specs?.[specDef.key] : null);
 }
