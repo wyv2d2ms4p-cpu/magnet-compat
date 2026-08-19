@@ -414,5 +414,869 @@
         "checkedAt": "2026-08-19"
       }
     }
+  },
+  {
+    "id": "INV_FRE840_0p4K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E840-0.4K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-0.4kW-400V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 0.4,
+      "voltage": "3相400V",
+      "voltClass": 400
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE840_0p75K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E840-0.75K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-0.75kW-400V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 0.75,
+      "voltage": "3相400V",
+      "voltClass": 400
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE840_1p5K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E840-1.5K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-1.5kW-400V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 1.5,
+      "voltage": "3相400V",
+      "voltClass": 400
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE840_2p2K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E840-2.2K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-2.2kW-400V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 2.2,
+      "voltage": "3相400V",
+      "voltClass": 400
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE840_3p7K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E840-3.7K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-3.7kW-400V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 3.7,
+      "voltage": "3相400V",
+      "voltClass": 400
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE840_5p5K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E840-5.5K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-5.5kW-400V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 5.5,
+      "voltage": "3相400V",
+      "voltClass": 400
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE840_7p5K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E840-7.5K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-7.5kW-400V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 7.5,
+      "voltage": "3相400V",
+      "voltClass": 400
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE840_11K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E840-11K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-11kW-400V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 11,
+      "voltage": "3相400V",
+      "voltClass": 400
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE840_15K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E840-15K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-15kW-400V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 15,
+      "voltage": "3相400V",
+      "voltClass": 400
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE840_18p5K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E840-18.5K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-18.5kW-400V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 18.5,
+      "voltage": "3相400V",
+      "voltClass": 400
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE840_22K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E840-22K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-22kW-400V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 22,
+      "voltage": "3相400V",
+      "voltClass": 400
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE860_0p75K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E860-0.75K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-0.75kW-575V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 0.75,
+      "voltage": "3相575V",
+      "voltClass": 575
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE860_1p5K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E860-1.5K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-1.5kW-575V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 1.5,
+      "voltage": "3相575V",
+      "voltClass": 575
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE860_2p2K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E860-2.2K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-2.2kW-575V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 2.2,
+      "voltage": "3相575V",
+      "voltClass": 575
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE860_3p7K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E860-3.7K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-3.7kW-575V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 3.7,
+      "voltage": "3相575V",
+      "voltClass": 575
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE860_5p5K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E860-5.5K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-5.5kW-575V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 5.5,
+      "voltage": "3相575V",
+      "voltClass": 575
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE860_7p5K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E860-7.5K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-7.5kW-575V",
+    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 7.5,
+      "voltage": "3相575V",
+      "voltClass": 575
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE820S_0p1K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E820S-0.1K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-0.1kW-単相200V",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 0.1,
+      "voltage": "単相200V",
+      "voltClass": 200
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE820S_0p2K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E820S-0.2K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-0.2kW-単相200V",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 0.2,
+      "voltage": "単相200V",
+      "voltClass": 200
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE820S_0p4K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E820S-0.4K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-0.4kW-単相200V",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 0.4,
+      "voltage": "単相200V",
+      "voltClass": 200
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE820S_0p75K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E820S-0.75K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-0.75kW-単相200V",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 0.75,
+      "voltage": "単相200V",
+      "voltClass": 200
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE820S_1p5K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E820S-1.5K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-1.5kW-単相200V",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 1.5,
+      "voltage": "単相200V",
+      "voltClass": 200
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE820S_2p2K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E820S-2.2K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-2.2kW-単相200V",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 2.2,
+      "voltage": "単相200V",
+      "voltClass": 200
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE810W_0p1K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E810W-0.1K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-0.1kW-単相100V",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 0.1,
+      "voltage": "単相100V",
+      "voltClass": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE810W_0p2K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E810W-0.2K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-0.2kW-単相100V",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 0.2,
+      "voltage": "単相100V",
+      "voltClass": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE810W_0p4K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E810W-0.4K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-0.4kW-単相100V",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 0.4,
+      "voltage": "単相100V",
+      "voltClass": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
+  },
+  {
+    "id": "INV_FRE810W_0p75K_1",
+    "category": "inverter",
+    "maker": "三菱電機",
+    "model": "FR-E810W-0.75K-1",
+    "series": "FREQROL-E800",
+    "modelStatus": "catalog-confirmed",
+    "compatKey": "INV-0.75kW-単相100V",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "specs": {
+      "ratedPowerKW": 0.75,
+      "voltage": "単相100V",
+      "voltClass": 100
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
+        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "checkedAt": "2026-08-19"
+      }
+    }
   }
 ]

@@ -143,14 +143,22 @@ check('代替シリーズをメーカー案内として出す', servoResult.incl
 /* ---- インバータ: 出典付きで昇格した実データだけを出す ---- */
 await gotoCategory('inverter');
 const invCount = await page.$eval('[data-act="cat"][data-v="inverter"] .cnt', (e) => Number(e.textContent));
-check('インバータが実在確認済み13件で表示される', invCount === 13, `実際 ${invCount}件`);
+check('インバータが実在確認済み40件で表示される', invCount === 40, `実際 ${invCount}件`);
 check('インバータで「データが未登録」と出ない', !(await page.textContent('#app')).includes('実在確認済みのデータが未登録'));
 
 await page.click('[data-act="browse"]');
 await page.waitForSelector('.rows .row');
 const invModels = await page.$$eval('.rows .row .mono', (els) => els.map((e) => e.textContent.trim()));
 check('公式形名（末尾 -1 まで）で登録されている',
-  invModels.length === 13 && invModels.every((m) => /^FR-E820-[\d.]+K-1$/.test(m)), invModels.join(' '));
+  invModels.length === 40 && invModels.every((m) => /^FR-E8(20|40|60|20S|10W)-[\d.]+K-1$/.test(m)), invModels.join(' '));
+// 5つの電圧クラスが揃っている（3相200/400/575V・単相200/100V）
+const invByClass = (re) => invModels.filter((m) => re.test(m)).length;
+check('電圧クラス別の機種数が容量表と一致する',
+  invByClass(/^FR-E820-/) === 13 && invByClass(/^FR-E840-/) === 11 && invByClass(/^FR-E860-/) === 6
+  && invByClass(/^FR-E820S-/) === 6 && invByClass(/^FR-E810W-/) === 4,
+  `E820 ${invByClass(/^FR-E820-/)} / E840 ${invByClass(/^FR-E840-/)} / E860 ${invByClass(/^FR-E860-/)} / E820S ${invByClass(/^FR-E820S-/)} / E810W ${invByClass(/^FR-E810W-/)}`);
+// FR-E846 は SCE 仕様のみで末尾 -1 の標準仕様品が無い
+check('ラインアップに無い FR-E846 を出さない', !invModels.some((m) => /^FR-E846-/.test(m)));
 // _seed の生成データは末尾 -1 が欠けている。昇格時にそれをコピーしていないことを見る
 check('生成データ由来の末尾欠け形名（FR-E820-0.4K）が出ない',
   !invModels.some((m) => /K$/.test(m)), invModels.filter((m) => /K$/.test(m)).join(' '));
@@ -162,6 +170,14 @@ check('FR-E820-3.7K-1 で確認画面に進む', (await page.textContent('.model
 check('公式未取得の定格出力電流を数値で出さない', !/\d+(\.\d+)?A/.test(invText), (invText.match(/\d+(\.\d+)?A/) || [])[0]);
 check('公式確認済みの適用モータ容量は出る', invText.includes('3.7kW'));
 check('寸法未取得なので外形図を描かない', (await page.$('#app svg')) === null);
+
+// 単相入力機は電源相数が違う。出力が3相200Vであることを注記から読めること
+await gotoCategory('inverter');
+await search('FR-E820S-0.75K-1');
+await page.waitForSelector('.model.big');
+const singleText = await page.textContent('#app');
+check('単相200V入力機の電源電圧が「単相200V」と出る', singleText.includes('単相200V'));
+check('単相入力機はモータ出力が3相200Vであることを注記する', singleText.includes('出力は3相200V'));
 
 // norm() はハイフンと小数点を落とすため 1.5K-1 と 15K-1 が同じ綴りになる。確定させず選ばせる
 await gotoCategory('inverter');

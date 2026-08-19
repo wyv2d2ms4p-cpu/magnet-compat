@@ -4,10 +4,10 @@
  * 移行元の1467件のうち1440件は buildInv/buildServo による組み合わせ生成物で
  * 実在確認が取れていない。data/_seed/ に provisional として凍結してあり、
  * 誤発注防止のため配布物にも入れない。インバータの実データはこの結果0件から
- * 始まり、出典URL付きで昇格したものから順に表示される（現在は三菱 FR-E820
- * の3相200V 13機種。docs/mitsubishi-fr-e800-verified.md 参照）。
+ * 始まり、出典URL付きで昇格したものから順に表示される（現在は三菱 FREQROL-E800
+ * の40機種。docs/mitsubishi-fr-e800-verified.md 参照）。
  *
- * 昇格したレコードは公式で確認できた項目しか持たない。FR-E820 は定格出力電流が
+ * 昇格したレコードは公式で確認できた項目しか持たない。FR-E800 は定格出力電流が
  * 公式資料で未取得のため specs.ratedCurrentA を持たず、gate が引く主スペックが
  * 欠けるので互換候補は出ない（「該当なし」を 0 で埋めない約束の帰結）。
  * 型式・容量・電圧クラスの確認と後継検索には使える。
@@ -23,6 +23,11 @@ import { withinWindow, preferTrue, ascending, logRatio } from '../core/compat.mj
 import { evidenceRank } from '../core/evidence.mjs';
 import { num, esc } from '../core/util.mjs';
 
+/** 電源相数。単相入力機と3相入力機は電圧クラスが同じでも置換できない。 */
+function supplyPhase(d) {
+  return /単相/.test(d.specs?.voltage || '') ? 1 : 3;
+}
+
 registerCategory({
   id: 'inverter',
   label: 'インバータ',
@@ -34,6 +39,10 @@ registerCategory({
   gate(a, m) {
     if (a.id === m.successorId) return true;
     if (a.specs?.voltClass !== m.specs?.voltClass) return false;
+    // 電圧クラスだけでは電源相数が区別できない。FR-E820S(単相200V入力) は
+    // モータへの出力が3相200Vなので FR-E820(3相200V入力) と同じ 200 クラスだが、
+    // 電源が違うので置換できない。voltClass の数値比較に任せると通ってしまう。
+    if (supplyPhase(a) !== supplyPhase(m)) return false;
     return withinWindow(a.specs?.ratedCurrentA, m.specs?.ratedCurrentA, 0.3);
   },
   enrich(a, m) {
