@@ -11,7 +11,8 @@
     "build": "node build.mjs",
     "regress": "node tools/regress.mjs",
     "smoke": "node tools/smoke.mjs",
-    "check": "node tools/verify-data.mjs && node build.mjs && node tools/regress.mjs && node tools/smoke.mjs && node tools/test-extensibility.mjs",
+    "test:compat": "node tools/test-compat.mjs",
+    "check": "node tools/verify-data.mjs && node build.mjs && node tools/regress.mjs && node tools/test-compat.mjs && node tools/smoke.mjs && node tools/test-extensibility.mjs",
     "test:ext": "node tools/test-extensibility.mjs"
   },
   "devDependencies": {

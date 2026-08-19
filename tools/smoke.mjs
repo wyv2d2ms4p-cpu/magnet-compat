@@ -167,25 +167,55 @@ await search('FR-E820-3.7K-1');
 await page.waitForSelector('.model.big');
 const invText = await page.textContent('#app');
 check('FR-E820-3.7K-1 で確認画面に進む', (await page.textContent('.model.big')) === 'FR-E820-3.7K-1');
-check('公式未取得の定格出力電流を数値で出さない', !/\d+(\.\d+)?A/.test(invText), (invText.match(/\d+(\.\d+)?A/) || [])[0]);
+check('ND定格の定格出力電流が出る (17.5A)', invText.includes('17.5A'), (invText.match(/[\d.]+A/) || [])[0]);
+check('ND定格の定格容量が出る (7kVA)', invText.includes('7kVA'), (invText.match(/[\d.]+kVA/) || [])[0]);
 check('公式確認済みの適用モータ容量は出る', invText.includes('3.7kW'));
+// カタログの括弧付き(16.5A)は周囲温度40℃超・PWM2kHz以上の低減値、19.6A は LD定格
+check('括弧付きの低減値(16.5A)を通常定格として出さない', !invText.includes('16.5A'));
+check('LD定格(19.6A)を出さない', !invText.includes('19.6A'));
 check('寸法未取得なので外形図を描かない', (await page.$('#app svg')) === null);
+
+// 主スペックが揃ったので、インバータで初めて候補算出まで到達する
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForTimeout(200);
+const invCards = await page.$$eval('.card', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ')));
+check('インバータで互換候補が表示される', invCards.length > 0, `${invCards.length}件`);
+check('候補は同じ電圧クラス(3相200V)の型式だけ',
+  invCards.every((t) => /FR-E820-/.test(t) && !/FR-E8(40|60|20S|10W)-/.test(t)), invCards.join(' | '));
+check('寸法未確認の候補には「寸法未確認」と出る', invCards.every((t) => t.includes('寸法未確認')));
 
 // 単相入力機は電源相数が違う。出力が3相200Vであることを注記から読めること
 await gotoCategory('inverter');
-await search('FR-E820S-0.75K-1');
+await search('FR-E820S-1.5K-1');
 await page.waitForSelector('.model.big');
 const singleText = await page.textContent('#app');
 check('単相200V入力機の電源電圧が「単相200V」と出る', singleText.includes('単相200V'));
 check('単相入力機はモータ出力が3相200Vであることを注記する', singleText.includes('出力は3相200V'));
+
+/**
+ * 電源相数の一致条件（PR #6）が画面上でも効いていること。
+ *
+ * FR-E820S-1.5K-1（単相200V入力）と FR-E820-1.5K-1（3相200V入力）は
+ * voltClass=200・定格出力電流=8.0A で完全に同値なので、相数を見なければ
+ * 候補の先頭に並ぶ。ここは定格が入って初めて実際に検証できるようになった。
+ */
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForTimeout(200);
+const singleCards = await page.$$eval('.card', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ')));
+check('単相200V入力機でも候補が出る', singleCards.length > 0, `${singleCards.length}件`);
+check('単相入力機の候補に3相入力の FR-E820 が混ざらない（電源相数の一致条件）',
+  singleCards.every((t) => !/FR-E820-\d/.test(t)), singleCards.join(' | '));
+check('単相入力機の候補は単相入力機だけ',
+  singleCards.every((t) => /FR-E820S-/.test(t)), singleCards.join(' | '));
 
 /* ---- 容量の取り違え防止（normLoose で同じ綴りになる型式） ---- */
 
 /**
  * normLoose はハイフンと小数点を落とすため 1.5K-1 と 15K-1 が同じ綴りになる。
  * 確定させずに選ばせるだけでなく、選ぶための材料（容量）が実際に出ていること。
- * インバータの主スペック（定格出力電流）は全件未登録なので、主スペック任せだと
- * 両方の行が「FREQROL-E800」になり、区別できるのが取り違えている型式だけになる。
+ * 識別材料は specDefs の宣言順で最初に値が割れたスペックなので、判定に使う
+ * 定格出力電流ではなく適用モータ容量が出る。現場の保全員は銘板やモータ側から
+ * 型式に入るため、8A / 60A より 1.5kW / 15kW のほうが即断できる。
  */
 async function ambiguousRows() {
   await page.waitForSelector('.rows [data-act="pick"]');
@@ -201,6 +231,9 @@ for (const q of ['FR-E820-15K-1', 'FR-E820-1.5K-1']) {
   check(`「${q}」の候補に 1.5kW と 15kW が併記される`,
     rows.some((t) => t.includes('1.5kW')) && rows.some((t) => t.includes('15kW')), rows.join(' | '));
   check(`「${q}」で何倍違うのかを警告に書く`, text.includes('10倍違います'), text.slice(0, 200));
+  // 判定に使う主スペックは定格出力電流のまま。識別材料だけを容量にしている
+  check(`「${q}」の識別材料が電流ではなく容量で出る`,
+    rows.every((t) => t.includes('適用モータ容量')) && !rows.some((t) => /\d+A\b/.test(t)), rows.join(' | '));
   check(`「${q}」に完全一致する候補へバッジが付く`,
     rows[0].includes('入力と完全一致') && rows[0].includes(q), rows[0]);
 }

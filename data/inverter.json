@@ -7,8 +7,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.1kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 0.8,
+      "ratedCapacityKVA": 0.3,
       "ratedPowerKW": 0.1,
       "voltage": "3相200V",
       "voltClass": 200
@@ -25,8 +27,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -39,8 +41,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.2kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 1.5,
+      "ratedCapacityKVA": 0.6,
       "ratedPowerKW": 0.2,
       "voltage": "3相200V",
       "voltClass": 200
@@ -57,8 +61,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -71,8 +75,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.4kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 3,
+      "ratedCapacityKVA": 1.2,
       "ratedPowerKW": 0.4,
       "voltage": "3相200V",
       "voltClass": 200
@@ -89,8 +95,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -103,8 +109,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.75kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 5,
+      "ratedCapacityKVA": 2,
       "ratedPowerKW": 0.75,
       "voltage": "3相200V",
       "voltClass": 200
@@ -121,8 +129,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -135,8 +143,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-1.5kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 8,
+      "ratedCapacityKVA": 3.2,
       "ratedPowerKW": 1.5,
       "voltage": "3相200V",
       "voltClass": 200
@@ -153,8 +163,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -167,8 +177,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-2.2kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 11,
+      "ratedCapacityKVA": 4.4,
       "ratedPowerKW": 2.2,
       "voltage": "3相200V",
       "voltClass": 200
@@ -185,8 +197,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -199,8 +211,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-3.7kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 17.5,
+      "ratedCapacityKVA": 7,
       "ratedPowerKW": 3.7,
       "voltage": "3相200V",
       "voltClass": 200
@@ -217,8 +231,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -231,8 +245,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-5.5kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 24,
+      "ratedCapacityKVA": 9.6,
       "ratedPowerKW": 5.5,
       "voltage": "3相200V",
       "voltClass": 200
@@ -249,8 +265,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -263,8 +279,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-7.5kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 33,
+      "ratedCapacityKVA": 13.1,
       "ratedPowerKW": 7.5,
       "voltage": "3相200V",
       "voltClass": 200
@@ -281,8 +299,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -295,8 +313,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-11kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 47,
+      "ratedCapacityKVA": 18.7,
       "ratedPowerKW": 11,
       "voltage": "3相200V",
       "voltClass": 200
@@ -313,8 +333,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -327,8 +347,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-15kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 60,
+      "ratedCapacityKVA": 23.9,
       "ratedPowerKW": 15,
       "voltage": "3相200V",
       "voltClass": 200
@@ -345,8 +367,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -359,8 +381,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-18.5kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 76,
+      "ratedCapacityKVA": 30.3,
       "ratedPowerKW": 18.5,
       "voltage": "3相200V",
       "voltClass": 200
@@ -377,8 +401,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -391,8 +415,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-22kW-200V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 90,
+      "ratedCapacityKVA": 35.9,
       "ratedPowerKW": 22,
       "voltage": "3相200V",
       "voltClass": 200
@@ -409,8 +435,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相200V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -423,8 +449,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.4kW-400V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 1.6,
+      "ratedCapacityKVA": 1.2,
       "ratedPowerKW": 0.4,
       "voltage": "3相400V",
       "voltClass": 400
@@ -441,8 +469,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相400V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -455,8 +483,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.75kW-400V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 2.6,
+      "ratedCapacityKVA": 2,
       "ratedPowerKW": 0.75,
       "voltage": "3相400V",
       "voltClass": 400
@@ -473,8 +503,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相400V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -487,8 +517,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-1.5kW-400V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 4,
+      "ratedCapacityKVA": 3,
       "ratedPowerKW": 1.5,
       "voltage": "3相400V",
       "voltClass": 400
@@ -505,8 +537,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相400V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -519,8 +551,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-2.2kW-400V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 6,
+      "ratedCapacityKVA": 4.6,
       "ratedPowerKW": 2.2,
       "voltage": "3相400V",
       "voltClass": 400
@@ -537,8 +571,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相400V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -551,8 +585,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-3.7kW-400V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 9.5,
+      "ratedCapacityKVA": 7.2,
       "ratedPowerKW": 3.7,
       "voltage": "3相400V",
       "voltClass": 400
@@ -569,8 +605,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相400V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -583,8 +619,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-5.5kW-400V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 12,
+      "ratedCapacityKVA": 9.1,
       "ratedPowerKW": 5.5,
       "voltage": "3相400V",
       "voltClass": 400
@@ -601,8 +639,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相400V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -615,8 +653,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-7.5kW-400V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 17,
+      "ratedCapacityKVA": 13,
       "ratedPowerKW": 7.5,
       "voltage": "3相400V",
       "voltClass": 400
@@ -633,8 +673,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相400V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -647,8 +687,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-11kW-400V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 23,
+      "ratedCapacityKVA": 17.5,
       "ratedPowerKW": 11,
       "voltage": "3相400V",
       "voltClass": 400
@@ -665,8 +707,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相400V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -679,8 +721,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-15kW-400V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 30,
+      "ratedCapacityKVA": 22.9,
       "ratedPowerKW": 15,
       "voltage": "3相400V",
       "voltClass": 400
@@ -697,8 +741,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相400V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -711,8 +755,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-18.5kW-400V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 38,
+      "ratedCapacityKVA": 29,
       "ratedPowerKW": 18.5,
       "voltage": "3相400V",
       "voltClass": 400
@@ -729,8 +775,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相400V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -743,8 +789,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-22kW-400V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 44,
+      "ratedCapacityKVA": 33.5,
       "ratedPowerKW": 22,
       "voltage": "3相400V",
       "voltClass": 400
@@ -761,8 +809,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.81（3相400V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -775,8 +823,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.75kW-575V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 1.7,
+      "ratedCapacityKVA": 1.7,
       "ratedPowerKW": 0.75,
       "voltage": "3相575V",
       "voltClass": 575
@@ -793,8 +843,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.82（3相575V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -807,8 +857,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-1.5kW-575V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 2.7,
+      "ratedCapacityKVA": 2.7,
       "ratedPowerKW": 1.5,
       "voltage": "3相575V",
       "voltClass": 575
@@ -825,8 +877,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.82（3相575V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -839,8 +891,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-2.2kW-575V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 4,
+      "ratedCapacityKVA": 4,
       "ratedPowerKW": 2.2,
       "voltage": "3相575V",
       "voltClass": 575
@@ -857,8 +911,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.82（3相575V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -871,8 +925,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-3.7kW-575V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 6.1,
+      "ratedCapacityKVA": 6.1,
       "ratedPowerKW": 3.7,
       "voltage": "3相575V",
       "voltClass": 575
@@ -889,8 +945,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.82（3相575V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -903,8 +959,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-5.5kW-575V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 9,
+      "ratedCapacityKVA": 9,
       "ratedPowerKW": 5.5,
       "voltage": "3相575V",
       "voltClass": 575
@@ -921,8 +979,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.82（3相575V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -935,8 +993,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-7.5kW-575V",
-    "note": "定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "定格出力電流・定格容量はND定格（Pr.570 多重定格選択の初期設定。過負荷 150% 60s / 200% 3s）の値。LD定格は登録していない。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 12,
+      "ratedCapacityKVA": 12,
       "ratedPowerKW": 7.5,
       "voltage": "3相575V",
       "voltClass": 575
@@ -953,8 +1013,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.82（3相575V）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -967,8 +1027,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.1kW-単相200V",
-    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・定格容量はND定格の値（単相入力仕様品にLD定格の設定はない）。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 0.8,
+      "ratedCapacityKVA": 0.3,
       "ratedPowerKW": 0.1,
       "voltage": "単相200V",
       "voltClass": 200
@@ -985,8 +1047,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.83（単相200V入力）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -999,8 +1061,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.2kW-単相200V",
-    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・定格容量はND定格の値（単相入力仕様品にLD定格の設定はない）。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 1.5,
+      "ratedCapacityKVA": 0.6,
       "ratedPowerKW": 0.2,
       "voltage": "単相200V",
       "voltClass": 200
@@ -1017,8 +1081,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.83（単相200V入力）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -1031,8 +1095,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.4kW-単相200V",
-    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・定格容量はND定格の値（単相入力仕様品にLD定格の設定はない）。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 3,
+      "ratedCapacityKVA": 1.2,
       "ratedPowerKW": 0.4,
       "voltage": "単相200V",
       "voltClass": 200
@@ -1049,8 +1115,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.83（単相200V入力）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -1063,8 +1129,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.75kW-単相200V",
-    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・定格容量はND定格の値（単相入力仕様品にLD定格の設定はない）。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 5,
+      "ratedCapacityKVA": 2,
       "ratedPowerKW": 0.75,
       "voltage": "単相200V",
       "voltClass": 200
@@ -1081,8 +1149,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.83（単相200V入力）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -1095,8 +1163,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-1.5kW-単相200V",
-    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・定格容量はND定格の値（単相入力仕様品にLD定格の設定はない）。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 8,
+      "ratedCapacityKVA": 3.2,
       "ratedPowerKW": 1.5,
       "voltage": "単相200V",
       "voltClass": 200
@@ -1113,8 +1183,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.83（単相200V入力）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -1127,8 +1197,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-2.2kW-単相200V",
-    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・定格容量はND定格の値（単相入力仕様品にLD定格の設定はない）。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 11,
+      "ratedCapacityKVA": 4.4,
       "ratedPowerKW": 2.2,
       "voltage": "単相200V",
       "voltClass": 200
@@ -1145,8 +1217,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.83（単相200V入力）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -1159,8 +1231,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.1kW-単相100V",
-    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・定格容量はND定格の値（単相入力仕様品にLD定格の設定はない）。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 0.8,
+      "ratedCapacityKVA": 0.3,
       "ratedPowerKW": 0.1,
       "voltage": "単相100V",
       "voltClass": 100
@@ -1177,8 +1251,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.83（単相100V入力）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -1191,8 +1265,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.2kW-単相100V",
-    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・定格容量はND定格の値（単相入力仕様品にLD定格の設定はない）。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 1.5,
+      "ratedCapacityKVA": 0.6,
       "ratedPowerKW": 0.2,
       "voltage": "単相100V",
       "voltClass": 100
@@ -1209,8 +1285,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.83（単相100V入力）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -1223,8 +1299,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.4kW-単相100V",
-    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・定格容量はND定格の値（単相入力仕様品にLD定格の設定はない）。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 3,
+      "ratedCapacityKVA": 1.2,
       "ratedPowerKW": 0.4,
       "voltage": "単相100V",
       "voltClass": 100
@@ -1241,8 +1319,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.83（単相100V入力）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }
@@ -1255,8 +1333,10 @@
     "series": "FREQROL-E800",
     "modelStatus": "catalog-confirmed",
     "compatKey": "INV-0.75kW-単相100V",
-    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。互換判定は定格出力電流を用いるため、この型式では候補を算出しない。",
+    "note": "電源は単相入力だが、モータへの出力は3相200V。定格出力電流・定格容量はND定格の値（単相入力仕様品にLD定格の設定はない）。外形寸法・取付穴ピッチ・質量・取付方式は公式資料で未確認のため未登録。",
     "specs": {
+      "ratedCurrentA": 5,
+      "ratedCapacityKVA": 2,
       "ratedPowerKW": 0.75,
       "voltage": "単相100V",
       "voltClass": 100
@@ -1273,8 +1353,8 @@
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/drv/inv/pmerit/fr_e/e800/model_name_configuration.html",
-        "srcNote": "インバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 形名構成・容量表",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/dl/fa/document/catalog/inv/l-06130/l060130j.pdf",
+        "srcNote": "FR-E800カタログ L(名)06130-J（2025年12月発行）p.81-83「4 標準仕様 － 定格」のうち p.83（単相100V入力）。定格出力電流・定格容量はND定格の値で、括弧付きの低減値（周囲温度40℃超・PWM 2kHz以上）は含まない。適用モータ容量・電圧クラスはインバータ総合カタログ L(名)06020-P（2026年6月発行）p.16 容量表",
         "checkedAt": "2026-08-19"
       }
     }

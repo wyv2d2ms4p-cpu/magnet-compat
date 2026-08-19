@@ -41,6 +41,24 @@ export const SPEC_MAP = {
 };
 
 /**
+ * 移行元に対応が無く、追加レコードだけが持つ specs キー。
+ *
+ * SPEC_MAP は「移行元キー → 移行先キー」の対応表なので、移行元に存在しない
+ * スペックをそこへ書くと、対応の無い左辺が混ざって突合の仕様が読めなくなる。
+ * フェーズ2以降に公式資料から足したスペックはこちらに宣言し、
+ * verify-data.mjs の「追加レコードの規約」がホワイトリストとして参照する。
+ */
+export const ADDED_SPEC_KEYS = {
+  /**
+   * ratedCapacityKVA … 定格容量(kVA)。
+   * インバータの多重定格(ND/LD)のうち **ND定格** の値だけを入れる。
+   * 主スペックの ratedCurrentA も同じくND定格で、形名の容量表記・電流コードが
+   * ND基準であることに合わせてある。LD定格は登録しない（README「データの約束」）。
+   */
+  inverter: ['ratedCapacityKVA'],
+};
+
+/**
  * thermal の rangeMin/rangeMax は specs.setRangeA:{min,max} へ集約する。
  * 1対1でないため SPEC_MAP と分けて宣言する。
  */

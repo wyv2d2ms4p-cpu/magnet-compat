@@ -16,7 +16,7 @@ import { getCategory, distinguishingSpec } from '../src/core/registry.mjs';
 import {
   TOP_LEVEL, SPEC_MAP, THERMAL_RANGE, SPECIAL_LLK_METHOD, SPECIAL_DISTANCE_KEY,
   EVIDENCE_SOURCE_KEYS, DROPPED, EVIDENCE_STATES, EVIDENCE_ASPECTS,
-  MODEL_STATUS, EXPECTED_COUNTS, generatedId,
+  MODEL_STATUS, EXPECTED_COUNTS, generatedId, ADDED_SPEC_KEYS,
   DISCONTINUED_SERIES, discontinuedSeriesIds, RECORD_KEYS, ADDED_RECORD_RULES,
 } from './schema-map.mjs';
 
@@ -282,7 +282,7 @@ check('ratedA:0 由来のレコードが距離系キーを持たない', (fail) 
     }
   }
   // 量的スペックに 0 が残っていないこと
-  const quantitative = ['sensingDistanceMM', SPECIAL_DISTANCE_KEY, 'ratedCurrentA', 'ratedPowerKW', 'ratedPowerW'];
+  const quantitative = ['sensingDistanceMM', SPECIAL_DISTANCE_KEY, 'ratedCurrentA', 'ratedCapacityKVA', 'ratedPowerKW', 'ratedPowerW'];
   for (const r of allRecords) {
     for (const k of quantitative) {
       if (r.specs?.[k] === 0) fail(`${r.id}.specs.${k} が 0`);
@@ -427,6 +427,7 @@ check(`追加レコードの規約（現在 ${added.length} 件）`, (fail) => {
   for (const c of DATA_CATEGORIES) {
     const specKeys = new Set([
       ...Object.values(SPEC_MAP[c] ?? {}),
+      ...(ADDED_SPEC_KEYS[c] ?? []),
       ...(c === 'thermal' ? [THERMAL_RANGE.to] : []),
       ...(c === 'special' ? [SPECIAL_DISTANCE_KEY] : []),
       // サーボは生産中止シリーズと同じ枠（生産中止日・修理期限など）も持てる
