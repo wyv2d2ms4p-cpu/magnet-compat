@@ -11,13 +11,14 @@
 ```bash
 npm install        # playwright のみ（テスト用）
 npm run build      # dist/index.html を生成
-npm run check      # データ検証 → ビルド → 回帰 → 互換判定 → スモーク → 拡張性
+npm run check      # データ検証 → legacy検証 → ビルド → 回帰 → 互換判定 → スモーク → 拡張性
 ```
 
 | コマンド | 内容 |
 |---|---|
 | `npm run build` | `src/**` と `data/**` を単一HTMLへインライン展開 |
 | `npm run verify` | 移行元HTMLとのデータ突合＋追加レコードの規約検査（14項目） |
+| `npm run verify:legacy` | `data/legacy/*.tsv` の列構成・型式重複・後継型式の実在検査（7項目） |
 | `npm run regress` | 全431型式の候補リストを移行元の判定と突合 |
 | `npm run test:compat` | インバータの互換判定（電圧クラス・電源相数・容量帯の窓）を直接検証 |
 | `npm run smoke` | `file://` で実際に開いて動作確認（62項目） |
@@ -122,6 +123,7 @@ src/                 アプリのソース（core / categories / シェル）
 data/                カテゴリ別JSON
   _seed/             実在未確認のため配布しない台帳
   reference/         デバイスではない参照情報
+  legacy/            旧機種→後継の対応表（TSV・`npm run verify:legacy` が検査）
 tools/               移行・検証スクリプト
 docs/integration-plan.md   現状分析と統合方針
 docs/mitsubishi-fr-e800-verified.md   三菱 FREQROL-E800 の公式確認済み情報（出典と未取得項目）
