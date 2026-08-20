@@ -21,7 +21,7 @@ npm run check      # データ検証 → legacy検証 → ビルド → 回帰 �
 | `npm run verify:legacy` | `data/legacy/*.tsv` の列構成・型式重複・後継型式の実在検査（7項目） |
 | `npm run regress` | 全431型式の候補リストを移行元の判定と突合 |
 | `npm run test:compat` | インバータの互換判定（電圧クラス・電源相数・容量帯の窓）を直接検証 |
-| `npm run smoke` | `file://` で実際に開いて動作確認（62項目） |
+| `npm run smoke` | `file://` で実際に開いて動作確認（63項目） |
 | `npm run test:ext` | カテゴリ追加が2ファイルで完結することの確認 |
 
 ## カテゴリを追加する

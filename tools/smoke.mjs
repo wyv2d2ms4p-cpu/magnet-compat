@@ -143,25 +143,43 @@ check('代替シリーズをメーカー案内として出す', servoResult.incl
 /* ---- インバータ: 出典付きで昇格した実データだけを出す ---- */
 await gotoCategory('inverter');
 const invCount = await page.$eval('[data-act="cat"][data-v="inverter"] .cnt', (e) => Number(e.textContent));
-check('インバータが実在確認済み40件で表示される', invCount === 40, `実際 ${invCount}件`);
+// 現行品 FR-E800 が40件、生産終了の旧機種 FR-E700 が30件
+check('インバータが実在確認済み70件で表示される', invCount === 70, `実際 ${invCount}件`);
 check('インバータで「データが未登録」と出ない', !(await page.textContent('#app')).includes('実在確認済みのデータが未登録'));
 
 await page.click('[data-act="browse"]');
 await page.waitForSelector('.rows .row');
 const invModels = await page.$$eval('.rows .row .mono', (els) => els.map((e) => e.textContent.trim()));
-check('公式形名（末尾 -1 まで）で登録されている',
-  invModels.length === 40 && invModels.every((m) => /^FR-E8(20|40|60|20S|10W)-[\d.]+K-1$/.test(m)), invModels.join(' '));
-// 5つの電圧クラスが揃っている（3相200/400/575V・単相200/100V）
+/**
+ * 形名の綴りは世代で違う。FR-E800 は末尾の `-1`（インバータ本体の仕様コード）まで
+ * 含めるのが公式形名で、FR-E700 にはそれが無い（`FR-E720-3.7K` で1つの公式形名）。
+ * どちらも「その世代の公式形名どおり」であることを、世代ごとの綴りで見る。
+ */
+const e800Models = invModels.filter((m) => /^FR-E8/.test(m));
+const e700Models = invModels.filter((m) => /^FR-E7/.test(m));
+check('公式形名で登録されている（FR-E800 は末尾 -1 まで／FR-E700 は容量記号まで）',
+  invModels.length === 70
+  && e800Models.length === 40 && e800Models.every((m) => /^FR-E8(20|40|60|20S|10W)-[\d.]+K-1$/.test(m))
+  && e700Models.length === 30 && e700Models.every((m) => /^FR-E7(20|40|20S|10W)-[\d.]+K$/.test(m)),
+  invModels.join(' '));
+// 5つの電圧クラスが揃っている（3相200/400/575V・単相200/100V）。
+// 旧機種は575V機が無く4クラス（置換え資料 BCN-C21002-214C の対応表どおり）
 const invByClass = (re) => invModels.filter((m) => re.test(m)).length;
 check('電圧クラス別の機種数が容量表と一致する',
   invByClass(/^FR-E820-/) === 13 && invByClass(/^FR-E840-/) === 11 && invByClass(/^FR-E860-/) === 6
   && invByClass(/^FR-E820S-/) === 6 && invByClass(/^FR-E810W-/) === 4,
   `E820 ${invByClass(/^FR-E820-/)} / E840 ${invByClass(/^FR-E840-/)} / E860 ${invByClass(/^FR-E860-/)} / E820S ${invByClass(/^FR-E820S-/)} / E810W ${invByClass(/^FR-E810W-/)}`);
+check('旧機種も電圧クラス別の機種数が置換え資料と一致する',
+  invByClass(/^FR-E720-/) === 11 && invByClass(/^FR-E740-/) === 9
+  && invByClass(/^FR-E720S-/) === 6 && invByClass(/^FR-E710W-/) === 4,
+  `E720 ${invByClass(/^FR-E720-/)} / E740 ${invByClass(/^FR-E740-/)} / E720S ${invByClass(/^FR-E720S-/)} / E710W ${invByClass(/^FR-E710W-/)}`);
 // FR-E846 は SCE 仕様のみで末尾 -1 の標準仕様品が無い
 check('ラインアップに無い FR-E846 を出さない', !invModels.some((m) => /^FR-E846-/.test(m)));
-// _seed の生成データは末尾 -1 が欠けている。昇格時にそれをコピーしていないことを見る
+// _seed の生成データは末尾 -1 が欠けている。昇格時にそれをコピーしていないことを見る。
+// 旧機種は末尾がKで終わるのが公式形名なので、この検査は FR-E800 側にだけ課す
+const e800Dropped = e800Models.filter((m) => /K$/.test(m));
 check('生成データ由来の末尾欠け形名（FR-E820-0.4K）が出ない',
-  !invModels.some((m) => /K$/.test(m)), invModels.filter((m) => /K$/.test(m)).join(' '));
+  e800Dropped.length === 0, e800Dropped.join(' '));
 
 await search('FR-E820-3.7K-1');
 await page.waitForSelector('.model.big');

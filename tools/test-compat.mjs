@@ -15,6 +15,12 @@
  * 「電流コード ＝ ND定格出力電流 × 10」で全電圧クラス一貫していることを使う。
  * LD定格を誤って入れると、この検算が合わなくなる。
  *
+ * 生産終了の旧機種（FR-E700）は、置換え資料 BCN-C21002-214C にしか載っておらず
+ * 定格出力電流・定格容量を持たない。件数と定格の検査は現行品（FR-E800）と分けて
+ * 数えるが、**現行品に対する要求は緩めない**。旧機種が gate を通れるのは
+ * 後継品バイパス（`a.id === m.successorId`）だけなので、候補が後継1件に閉じることと、
+ * 現行品を基準にしたときに旧機種が混ざらないことを両方向から固定する。
+ *
  *   node tools/test-compat.mjs
  */
 import { readFileSync } from 'node:fs';
@@ -54,13 +60,36 @@ console.log(`インバータ ${all.length} 件で互換判定を実行\n`);
 
 /* ---- 1. ND定格が全件そろっている ---- */
 
-check('40件すべてが定格出力電流と定格容量を持つ',
-  all.length === 40 && all.every((d) => typeof d.specs?.ratedCurrentA === 'number' && typeof d.specs?.ratedCapacityKVA === 'number'),
-  all.filter((d) => d.specs?.ratedCurrentA == null || d.specs?.ratedCapacityKVA == null).map((d) => d.model).join(' '));
+/**
+ * 現行品（FR-E800）と旧機種（FR-E700）を分けて見る。
+ *
+ * 旧機種は置換え資料 BCN-C21002-214C からしか起こせず、同資料に定格出力電流も
+ * 定格容量も記載が無いため、キーごと不在にしてある（`0` で埋めない）。
+ * 「全件が定格を持つ」を丸ごと外すと、現行品の定格が欠けても気づけなくなるので、
+ * 現行品に対する要求はそのまま残し、旧機種には「持たないこと」を要求する。
+ */
+const current = all.filter((d) => !d.discontinued);
+const legacy = all.filter((d) => d.discontinued);
+const hasSpec = (d, key) => typeof d.specs?.[key] === 'number';
+
+check('現行品40件すべてが定格出力電流と定格容量を持つ',
+  all.length === 70 && current.length === 40
+  && current.every((d) => hasSpec(d, 'ratedCurrentA') && hasSpec(d, 'ratedCapacityKVA')),
+  `全 ${all.length} / 現行 ${current.length} / 欠け `
+  + current.filter((d) => !hasSpec(d, 'ratedCurrentA') || !hasSpec(d, 'ratedCapacityKVA')).map((d) => d.model).join(' '));
+
+check('旧機種30件は定格出力電流・定格容量をキーごと持たず、適用モータ容量だけを持つ',
+  legacy.length === 30
+  && legacy.every((d) => !('ratedCurrentA' in (d.specs ?? {})) && !('ratedCapacityKVA' in (d.specs ?? {}))
+    && hasSpec(d, 'ratedPowerKW')),
+  `旧機種 ${legacy.length} / 違反 `
+  + legacy.filter((d) => 'ratedCurrentA' in (d.specs ?? {}) || 'ratedCapacityKVA' in (d.specs ?? {}) || !hasSpec(d, 'ratedPowerKW'))
+    .map((d) => `${d.model}:${JSON.stringify(d.specs)}`).join(' '));
 
 /**
  * 形名の4桁電流コード（L(名)06130-J の「電流コード」列）。
  * 定格表とは別の列なので、転記ミス・LD値の混入・括弧付き低減値の混入を検出できる。
+ * 旧機種の形名（FR-E720-3.7K）には電流コードが無いので、現行品だけを突き合わせる。
  */
 const CURRENT_CODE = {
   'FR-E820-0.1K-1': '0008', 'FR-E820-0.2K-1': '0015', 'FR-E820-0.4K-1': '0030',
@@ -84,11 +113,11 @@ const CURRENT_CODE = {
   'FR-E810W-0.75K-1': '0050',
 };
 
-const codeMismatch = all.filter((d) => {
+const codeMismatch = current.filter((d) => {
   const code = CURRENT_CODE[d.model];
   return !code || Math.round(d.specs.ratedCurrentA * 10) !== Number(code);
 });
-check('定格出力電流が形名の4桁電流コード（＝ND定格電流×10）と一致する',
+check('現行品の定格出力電流が形名の4桁電流コード（＝ND定格電流×10）と一致する',
   Object.keys(CURRENT_CODE).length === 40 && codeMismatch.length === 0,
   codeMismatch.map((d) => `${d.model}: ${d.specs.ratedCurrentA}A ≠ ${CURRENT_CODE[d.model]}`).join(' / '));
 
@@ -122,22 +151,54 @@ check('FR-E820-3.7K-1 の候補に FR-E820-2.2K-1 は入らない（窓の外側
 check('候補は全件が同じ電圧クラス',
   all.every((m) => computeCompatibles(m, cat).every((c) => c.specs.voltClass === m.specs.voltClass)));
 
-check('候補は全件が定格出力電流の±30%窓に収まる',
+/**
+ * 窓の検査は、gate の後継品バイパス（`a.id === m.successorId` は無条件に通す）を
+ * 通った辺には課さない。旧機種は定格出力電流を持たないので、窓では後継へ辿れない。
+ * バイパスした辺そのものは「旧機種の候補は後継1件だけ」で別に固定する。
+ */
+check('後継品リンク以外の候補は全件が定格出力電流の±30%窓に収まる',
   all.every((m) => computeCompatibles(m, cat)
+    .filter((c) => c.id !== m.successorId)
     .every((c) => withinWindow(c.specs.ratedCurrentA, m.specs.ratedCurrentA, 0.3))));
 
-// 窓は大きいほうを基準にしてあるので、A→B が候補なら B→A も候補になる
+// 窓は大きいほうを基準にしてあるので、A→B が候補なら B→A も候補になる。
+// 後継品リンクだけは片方向の辺（旧機種→後継）なので対象から外す。
 const asymmetric = [];
 for (const m of all) {
   for (const c of computeCompatibles(m, cat)) {
+    if (c.id === m.successorId) continue;
     if (!candidates(c.model).includes(m.model)) asymmetric.push(`${m.model} → ${c.model}`);
   }
 }
-check('候補の関係が対称（A→B なら B→A）', asymmetric.length === 0, asymmetric.slice(0, 3).join(' / '));
+check('候補の関係が対称（A→B なら B→A。後継品リンクを除く）', asymmetric.length === 0, asymmetric.slice(0, 3).join(' / '));
 
 check('自分自身は候補に入らない', all.every((m) => !candidates(m.model).includes(m.model)));
 
-/* ---- 3. 電源相数の一致条件（PR #6）---- */
+/* ---- 3. 旧機種（FR-E700）は後継品へ一方向に辿るだけ ---- */
+
+/**
+ * 旧機種は主スペック（定格出力電流）を持たないので、窓の判定には一切かからない。
+ * 通るのは gate 先頭の後継品バイパスだけで、候補は登録した後継1件に閉じる。
+ * 逆に現行品を基準にしたときは、旧機種が候補に混ざらない（後継バイパスは
+ * 旧機種側にしか張られておらず、窓は旧機種の定格が無いので false になる）。
+ */
+const legacyWrong = legacy.filter((d) => {
+  const cs = computeCompatibles(d, cat);
+  return cs.length !== 1 || cs[0].id !== d.successorId;
+});
+check('旧機種30件の候補は登録した後継品ちょうど1件',
+  legacyWrong.length === 0,
+  legacyWrong.slice(0, 3).map((d) => `${d.model}: ${candidates(d.model).join(',') || '(0件)'}`).join(' / '));
+
+check('FR-E720-3.7K の候補は FR-E820-3.7K-1 の1件だけ',
+  candidates('FR-E720-3.7K').join(' ') === 'FR-E820-3.7K-1', candidates('FR-E720-3.7K').join(' '));
+
+const legacyLeak = current.filter((m) => computeCompatibles(m, cat).some((c) => c.discontinued));
+check('現行品を基準にしたとき候補に旧機種が1件も混ざらない',
+  legacyLeak.length === 0,
+  legacyLeak.slice(0, 3).map((m) => `${m.model}: ${candidates(m.model).join(',')}`).join(' / '));
+
+/* ---- 4. 電源相数の一致条件（PR #6）---- */
 
 /**
  * FR-E820S-1.5K-1（単相200V入力）と FR-E820-1.5K-1（3相200V入力）は
@@ -182,9 +243,9 @@ for (const m of all) {
     if (phase(c) !== phase(m)) phaseLeak.push(`${m.model} → ${c.model}`);
   }
 }
-check('全40件を通して電源相数の違う候補が1件も出ない', phaseLeak.length === 0, phaseLeak.slice(0, 3).join(' / '));
+check('全70件を通して電源相数の違う候補が1件も出ない', phaseLeak.length === 0, phaseLeak.slice(0, 3).join(' / '));
 
-/* ---- 4. 判定に使う値と、人が見分ける値を分けている ---- */
+/* ---- 5. 判定に使う値と、人が見分ける値を分けている ---- */
 
 /**
  * 主スペック（judgment）は定格出力電流のまま、曖昧一致リストの識別材料（human）は
@@ -199,7 +260,7 @@ check('曖昧一致リストの識別材料は適用モータ容量（銘板か�
 check('識別材料は 1.5kW と 15kW で 10倍差になる',
   confusable.map((d) => d.specs.ratedPowerKW).join('/') === '1.5/15');
 
-/* ---- 5. 寸法未取得でも判定が壊れない ---- */
+/* ---- 6. 寸法未取得でも判定が壊れない ---- */
 
 check('寸法未確認なので寸法差は算出せず null のまま',
   computeCompatibles(get('FR-E820-3.7K-1'), cat).every((c) => c.dimsTrustworthy === false && c.diff === null));
