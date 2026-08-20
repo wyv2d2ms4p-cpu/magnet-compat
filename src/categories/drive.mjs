@@ -4,8 +4,10 @@
  * 移行元の1467件のうち1440件は buildInv/buildServo による組み合わせ生成物で
  * 実在確認が取れていない。data/_seed/ に provisional として凍結してあり、
  * 誤発注防止のため配布物にも入れない。インバータの実データはこの結果0件から
- * 始まり、出典URL付きで昇格したものから順に表示される（現在は三菱 FREQROL-E800
- * の40機種。docs/mitsubishi-fr-e800-verified.md 参照）。
+ * 始まり、出典URL付きで昇格したものから順に表示される（現在は三菱 FREQROL のみで、
+ * 現行品 FR-E800 と生産終了品 FR-E700 の両方を含む。件数は tools/smoke.mjs と
+ * tools/test-compat.mjs が持つ。docs/mitsubishi-fr-e800-verified.md と
+ * docs/fr-e700-to-e800-replacement.md 参照）。
  *
  * 昇格したレコードは公式で確認できた項目しか持たない。FR-E800 の40機種は
  * 専用カタログ L(名)06130-J p.81-83 から定格出力電流と定格容量(kVA)を取得済みで、
