@@ -75,6 +75,27 @@ export function scopeNote(d) {
     個別の発注可能型式ではないので、実機の銘板で型式を確認してください。</div></div>`;
 }
 
+/**
+ * 生産終了品であることの注意書き。
+ *
+ * ②の確認画面は型式を最大文字で見せる画面なので、ここに「新規発注できない」と
+ * 書かれていなければ、その型式がそのまま発注番号として読まれる。
+ * 後継は successorId から byId で解決する（型式名を文面に直書きしない。
+ * データ側の後継指定が変われば表示もそのまま追随する）。
+ *
+ * 置換えに条件が付くレコードでは、その条件を同じ枠に併記する。
+ * FR-E720-3.7K の「置換えに FR-E8AT03 が必要」がそれで、後継の型式だけを見て
+ * 発注するとアタッチメントが無く既設の穴に取り付けられない。
+ */
+export function discontinuedNote(d, byId) {
+  if (!d.discontinued) return '';
+  const succ = d.successorId ? byId?.get(d.successorId) : null;
+  const succLine = succ ? `後継は <b class="amber mono">${esc(succ.model)}</b> です。` : '';
+  const cond = d.note ? `<div>⚠ ${esc(d.note)}</div>` : '';
+  return `<div class="warn"><div>⚠ この型式は<b class="amber">生産終了</b>です。
+    新規発注はできません。${succLine}</div>${cond}</div>`;
+}
+
 /** デバイスの note。移行元では一度も描画されていなかった。 */
 export function noteBox(d) {
   if (!d.note) return '';

@@ -226,6 +226,30 @@ check('単相入力機の候補に3相入力の FR-E820 が混ざらない（電
 check('単相入力機の候補は単相入力機だけ',
   singleCards.every((t) => /FR-E820S-/.test(t)), singleCards.join(' | '));
 
+/* ---- 生産終了品の表示（発注してはいけない型式を目立たせる） ---- */
+
+/**
+ * FR-E720-3.7K は生産終了品で、置換えには FR-E8AT03（取付互換アタッチメント）が要る。
+ *
+ * ②では後継型式と置換えの条件が同じ警告枠に出ること、③では型式が最大文字で出る
+ * 結果ヘッダに「生産終了」バッジが付くこと。③のバッジが無いと、画面で一番目立つのが
+ * 「発注してはいけない型式」になる。
+ */
+await gotoCategory('inverter');
+await search('FR-E720-3.7K');
+await page.waitForSelector('.model.big');
+check('FR-E720-3.7K で確認画面に進む', (await page.textContent('.model.big')) === 'FR-E720-3.7K');
+const discWarns = await page.$$eval('.warn', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
+check('②画面の警告に、生産終了・後継型式・置換えの条件が揃って出る',
+  discWarns.some((t) => t.includes('生産終了') && t.includes('FR-E820-3.7K-1') && t.includes('FR-E8AT03')),
+  discWarns.join(' | '));
+
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForTimeout(200);
+const resultHeadBadges = await page.$$eval('.result-head .badge', (els) => els.map((e) => e.textContent.trim()));
+check('③画面の結果ヘッダに「生産終了」バッジが出る',
+  resultHeadBadges.some((t) => t.includes('生産終了')), `バッジ: ${resultHeadBadges.join(' / ') || 'なし'}`);
+
 /* ---- 容量の取り違え防止（normLoose で同じ綴りになる型式） ---- */
 
 /**

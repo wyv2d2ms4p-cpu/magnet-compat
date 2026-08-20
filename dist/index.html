@@ -604,6 +604,27 @@ function scopeNote(d) {
     個別の発注可能型式ではないので、実機の銘板で型式を確認してください。</div></div>`;
 }
 
+/**
+ * 生産終了品であることの注意書き。
+ *
+ * ②の確認画面は型式を最大文字で見せる画面なので、ここに「新規発注できない」と
+ * 書かれていなければ、その型式がそのまま発注番号として読まれる。
+ * 後継は successorId から byId で解決する（型式名を文面に直書きしない。
+ * データ側の後継指定が変われば表示もそのまま追随する）。
+ *
+ * 置換えに条件が付くレコードでは、その条件を同じ枠に併記する。
+ * FR-E720-3.7K の「置換えに FR-E8AT03 が必要」がそれで、後継の型式だけを見て
+ * 発注するとアタッチメントが無く既設の穴に取り付けられない。
+ */
+function discontinuedNote(d, byId) {
+  if (!d.discontinued) return '';
+  const succ = d.successorId ? byId?.get(d.successorId) : null;
+  const succLine = succ ? `後継は <b class="amber mono">${esc(succ.model)}</b> です。` : '';
+  const cond = d.note ? `<div>⚠ ${esc(d.note)}</div>` : '';
+  return `<div class="warn"><div>⚠ この型式は<b class="amber">生産終了</b>です。
+    新規発注はできません。${succLine}</div>${cond}</div>`;
+}
+
 /** デバイスの note。移行元では一度も描画されていなかった。 */
 function noteBox(d) {
   if (!d.note) return '';
@@ -932,6 +953,10 @@ function viewConfirm() {
 
   const options = mountingOptions(devicesOf(S.cat));
   const chain = successorChain(m, store.byId);
+  const disc = discontinuedNote(m, store.byId);
+  // 生産終了の警告が note（置換えの条件）を取り込んでいるときは、
+  // 直下の noteBox と同じ文が2枠続くので出さない
+  const note = disc && m.note ? '' : noteBox(m);
 
   return `<div class="panel">
       <div class="card-head">
@@ -941,7 +966,8 @@ function viewConfirm() {
         </div>
       </div>
       ${scopeNote(m)}
-      ${noteBox(m)}
+      ${disc}
+      ${note}
       ${warningBox(m)}
       ${chain.length ? `<div class="cmp cmp-info"><b>後継品</b><span>${[m, ...chain].map((d) => esc(d.model)).join(' → ')}</span></div>` : ''}
       ${specGrid(cat, m)}
@@ -964,9 +990,11 @@ function viewResult() {
   const ps = primarySpec(cat);
   const list = computeCompatibles(m, cat, { mounting: S.mounting });
 
+  // 型式を画面で最大に見せる場所なので、生産終了バッジは他の呼び出し箇所と同様にここでも出す。
+  // バッジが無いと「発注してはいけない型式」が一番目立つ見た目になる。
   const head = `<div class="panel">
     <div class="result-head">
-      <span class="mono big">${esc(m.model)}</span>
+      <span class="mono big">${esc(m.model)}</span>${statusBadges(m)}
       <span class="sub">${esc(m.maker)} ・ ${esc(formatSpec(ps, m))}</span>
     </div>
     <div class="sub">互換品候補 ${list.length}件</div>
