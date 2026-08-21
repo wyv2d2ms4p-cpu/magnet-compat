@@ -267,10 +267,36 @@ const succBox = (await page.textContent('.cmp-info')).replace(/\s+/g, ' ').trim(
 check('後継品枠の中に品名と型式（取付互換アタッチメント / FR-E8AT03）が出る',
   succBox.includes('取付互換アタッチメント') && succBox.includes('FR-E8AT03'), succBox);
 
-const amberTexts = await page.$$eval('.cmp-info .amber', (els) => els.map((e) => e.textContent.trim()));
-check('置換えに必要な品名と型式が橙色（.amber）で出る',
-  amberTexts.includes('取付互換アタッチメント') && amberTexts.includes('FR-E8AT03'),
-  `.amber: ${amberTexts.join(' / ') || 'なし'}`);
+/**
+ * 品名と型式が実際に橙で描画されること。クラス名ではなく描画された色を見る。
+ *
+ * `.cmp b{color:var(--sub)}` は `.amber` より詳細度が高いので、後継品枠の中で
+ * <b class="amber"> と書くと class は付いているのに灰色で描かれる。クラスの有無だけを
+ * 見る検査だと、その書き換えを通してしまい画面だけ色が落ちる。
+ * 期待値は --amber をその場で解決して作る（色コードを検査に直書きすると、
+ * テーマの色を変えたときに二重管理になる）。
+ */
+const amberPaint = await page.evaluate((labels) => {
+  const box = document.querySelector('.cmp-info');
+  // --amber をブラウザに解決させて期待色を作る。probe は枠の中に置き、同じ継承下で測る
+  const probe = document.createElement('span');
+  probe.style.color = 'var(--amber)';
+  box.appendChild(probe);
+  const want = getComputedStyle(probe).color;
+  probe.remove();
+  // 語を包む要素が span でも b でも拾えるよう、葉の要素をテキストで引く
+  const leaves = [...box.querySelectorAll('*')].filter((e) => e.children.length === 0);
+  return {
+    want,
+    got: labels.map((text) => {
+      const el = leaves.find((e) => e.textContent.trim() === text);
+      return { text, tag: el?.tagName.toLowerCase() ?? null, color: el ? getComputedStyle(el).color : null };
+    }),
+  };
+}, ['取付互換アタッチメント', 'FR-E8AT03']);
+check('置換えに必要な品名と型式が橙で描画される（--amber の実測色と一致）',
+  amberPaint.got.length === 2 && amberPaint.got.every((g) => g.color === amberPaint.want),
+  `期待 ${amberPaint.want} / 実際 ${amberPaint.got.map((g) => `${g.text}=<${g.tag}>${g.color}`).join(' , ')}`);
 
 await page.click('[data-act="step"][data-v="3"]');
 await page.waitForTimeout(200);
