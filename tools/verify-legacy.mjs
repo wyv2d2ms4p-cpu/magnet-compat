@@ -3,8 +3,14 @@
  *
  * legacy の TSV は「カタログから読み取った生の対応表」を人手で置く場所で、
  * data/*.json のようにスキーマで守られていない。どこからも読まれないまま
- * 内容が壊れていくのを防ぐため、規約だけを独立に検査する。1項目でも
- * 落ちたら非ゼロ終了。data/legacy と data/*.json は読み取りのみで変更しない。
+ * 内容が壊れていくのを防ぐため、規約だけを独立に検査する（検査1〜7）。
+ *
+ * さらに、同じ情報が TSV と data/inverter.json の旧機種30件の2箇所にある。
+ * 片方だけ更新されても画面は動いてしまうので、TSV を単一の情報源として
+ * JSON 側を機械照合する（検査8〜13）。TSV の綴りが資料どおりであることは
+ * 人が資料と見比べて担保し、そこから先の写し崩れはこの検査が止める。
+ *
+ * 1項目でも落ちたら非ゼロ終了。data/legacy と data/*.json は読み取りのみで変更しない。
  *
  *   node tools/verify-legacy.mjs
  */
@@ -89,6 +95,24 @@ for (const f of jsonFiles) {
   const records = JSON.parse(readFileSync(join(DATA, f), 'utf8'));
   for (const r of records) if (r.model) knownModels.add(r.model);
 }
+
+/**
+ * 突合相手。TSV は資料 BCN-C21002-214C p.2 の対応表を写した原文台帳で、
+ * data/inverter.json の旧機種はそこから起こした表示用データ。同じ情報が2箇所にある。
+ * TSV を単一の情報源として、JSON 側が写し崩れていないことを以下の検査8〜13で見る。
+ */
+const inverterRecords = JSON.parse(readFileSync(join(DATA, 'inverter.json'), 'utf8'));
+const inverterById = new Map(inverterRecords.map((r) => [r.id, r]));
+const legacyRecords = inverterRecords.filter((r) => r.discontinued === true);
+const legacyByModel = new Map(legacyRecords.map((r) => [r.model, r]));
+
+/** TSV の note 列から置換えに必要な型式を取り出す。data/inverter.json への分離時と同じ書式 */
+const REPLACEMENT_NOTE_RE = /^置換えに\s+(\S+)\s+が必要$/;
+
+/** 行と JSON レコードが両方そろった組だけ。片方しか無いものは検査9が報告する */
+const paired = wellFormed
+  .map((r) => ({ row: r, rec: legacyByModel.get(r.get('model')) }))
+  .filter((p) => p.rec);
 
 // ---- 1. 検査対象が存在すること -------------------------------------------
 
@@ -179,6 +203,139 @@ check(`未取得を表す埋め草（${PLACEHOLDERS.join(' / ')}）がどの列�
         fail(`${r.file}:${r.lineNo}: ${key} が "${v}"（未取得は空文字で表す規約）`);
       }
     }
+  }
+});
+
+// ---- 8. 件数 -------------------------------------------------------------
+
+/**
+ * TSV の行数と、JSON 側の旧機種（discontinued）件数が合っていること。
+ *
+ * 片方だけ追加・削除されたときに真っ先に出るのがこの検査。以降の 9〜13 は
+ * 「同じ型式どうしの中身」を見るので、件数のずれはここでしか捕まらない。
+ */
+check(`TSV の行数と data/inverter.json の旧機種件数が一致する（TSV ${wellFormed.length} 行）`, (fail) => {
+  if (wellFormed.length !== legacyRecords.length) {
+    fail(`TSV ${wellFormed.length} 行 ≠ data/inverter.json の discontinued ${legacyRecords.length} 件`);
+  }
+});
+
+// ---- 9. model の1対1 -----------------------------------------------------
+
+check('TSV の型式と JSON の旧機種が過不足なく1対1で対応する', (fail) => {
+  const tsvModels = new Set(wellFormed.map((r) => r.get('model')));
+  for (const r of wellFormed) {
+    if (!legacyByModel.has(r.get('model'))) {
+      fail(`${r.file}:${r.lineNo}: "${r.get('model')}" が data/inverter.json に無い`
+        + '（または discontinued が付いていない）');
+    }
+  }
+  for (const rec of legacyRecords) {
+    if (!tsvModels.has(rec.model)) {
+      fail(`data/inverter.json ${rec.id} "${rec.model}" が data/legacy の TSV に無い`);
+    }
+  }
+});
+
+// ---- 10. 適用モータ容量 --------------------------------------------------
+
+check('motorKW と specs.ratedPowerKW が一致する', (fail) => {
+  for (const { row, rec } of paired) {
+    const tsv = row.get('motorKW');
+    const json = rec.specs?.ratedPowerKW;
+    if (tsv === '') { fail(`${row.file}:${row.lineNo}: ${rec.model}: motorKW が空`); continue; }
+    if (Number(tsv) !== json) {
+      fail(`${rec.model}: motorKW=${tsv} ≠ specs.ratedPowerKW=${JSON.stringify(json)}`);
+    }
+  }
+});
+
+// ---- 11. 電源相数・電圧 --------------------------------------------------
+
+/**
+ * TSV は相数と電圧を数値2列で持ち、JSON は表示用の文字列（"3相200V"）と
+ * 判定用の数値（voltClass）に分けて持つ。綴り方が違うだけで出所は同じ列なので、
+ * TSV 側から JSON の表記を組み立てて突き合わせる。
+ */
+check('phaseIn / voltageIn と specs.voltage / specs.voltClass が一致する', (fail) => {
+  const PHASE = { '1': '単相', '3': '3相' };
+  for (const { row, rec } of paired) {
+    const phaseIn = row.get('phaseIn');
+    const voltageIn = row.get('voltageIn');
+    const phase = PHASE[phaseIn];
+    if (!phase) {
+      fail(`${row.file}:${row.lineNo}: ${rec.model}: phaseIn="${phaseIn}" は 1 か 3 のいずれかであること`);
+      continue;
+    }
+    const want = `${phase}${voltageIn}V`;
+    if (rec.specs?.voltage !== want) {
+      fail(`${rec.model}: phaseIn=${phaseIn} voltageIn=${voltageIn} → "${want}"`
+        + ` ≠ specs.voltage=${JSON.stringify(rec.specs?.voltage)}`);
+    }
+    if (rec.specs?.voltClass !== Number(voltageIn)) {
+      fail(`${rec.model}: voltageIn=${voltageIn} ≠ specs.voltClass=${JSON.stringify(rec.specs?.voltClass)}`);
+    }
+  }
+});
+
+// ---- 12. 後継型式 --------------------------------------------------------
+
+/**
+ * TSV は後継を型式名で、JSON は successorId（レコードID）で持つ。
+ * ID を解決して型式名に戻し、資料の対応表と同じ相手を指していることを見る。
+ * 型式名が同じでも別レコードを指していれば、画面には違う機種が出る。
+ */
+check('successors と successorId が指すレコードの model が一致する', (fail) => {
+  for (const { row, rec } of paired) {
+    const tsv = row.get('successors');
+    const succ = rec.successorId ? inverterById.get(rec.successorId) : null;
+    if (tsv === '') {
+      if (rec.successorId) fail(`${rec.model}: TSV の successors が空なのに successorId=${rec.successorId} がある`);
+      continue;
+    }
+    if (!rec.successorId) { fail(`${rec.model}: TSV は successors="${tsv}" だが successorId が無い`); continue; }
+    if (!succ) { fail(`${rec.model}: successorId=${rec.successorId} が data/inverter.json に無い`); continue; }
+    if (succ.model !== tsv) {
+      fail(`${rec.model}: successors="${tsv}" ≠ successorId=${rec.successorId} の model="${succ.model}"`);
+    }
+  }
+});
+
+// ---- 13. 置換えの条件 ----------------------------------------------------
+
+/**
+ * TSV は「置換えに FR-E8AT03 が必要」という1文、JSON は { partType, partModel } の構造。
+ * 形式が違うので TSV 側を解析して型式を取り出し、partModel と突き合わせる。
+ *
+ * partType（"取付互換アタッチメント"）は TSV に無い値で、同資料 p.26「４．オプション」の
+ * 名称欄から起こしたもの。TSV を情報源にできないため、ここでは突合しない
+ * （partType の規約は tools/verify-data.mjs の replacementNote 検査が見る）。
+ */
+check('TSV の note 列と replacementNote が一致する', (fail) => {
+  let tsvNotes = 0;
+  for (const { row, rec } of paired) {
+    const note = row.get('note');
+    const rn = rec.replacementNote;
+    if (note === '') {
+      if (rn) fail(`${rec.model}: TSV の note が空なのに replacementNote=${JSON.stringify(rn)} がある`);
+      continue;
+    }
+    tsvNotes++;
+    const m = REPLACEMENT_NOTE_RE.exec(note);
+    if (!m) {
+      // 読み飛ばすと「解析できないから一致とみなす」になる。書式違いはここで落とす
+      fail(`${row.file}:${row.lineNo}: ${rec.model}: note="${note}" が「置換えに ○○ が必要」の書式でない`);
+      continue;
+    }
+    if (!rn) { fail(`${rec.model}: TSV は note="${note}" だが replacementNote が無い`); continue; }
+    if (rn.partModel !== m[1]) {
+      fail(`${rec.model}: note の型式 "${m[1]}" ≠ replacementNote.partModel="${rn.partModel}"`);
+    }
+  }
+  // 片方だけ増減する事故は、対応する行が無いと上のループでは見えない
+  const jsonNotes = legacyRecords.filter((r) => r.replacementNote).length;
+  if (tsvNotes !== jsonNotes) {
+    fail(`note 列が非空の TSV 行 ${tsvNotes} 件 ≠ replacementNote を持つレコード ${jsonNotes} 件`);
   }
 });
 
