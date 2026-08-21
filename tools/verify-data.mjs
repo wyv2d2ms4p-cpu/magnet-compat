@@ -18,6 +18,7 @@ import {
   EVIDENCE_SOURCE_KEYS, DROPPED, EVIDENCE_STATES, EVIDENCE_ASPECTS,
   MODEL_STATUS, EXPECTED_COUNTS, generatedId, ADDED_SPEC_KEYS,
   DISCONTINUED_SERIES, discontinuedSeriesIds, RECORD_KEYS, ADDED_RECORD_RULES,
+  REPLACEMENT_NOTE_KEYS,
 } from './schema-map.mjs';
 
 const DATA = join(REPO_ROOT, 'data');
@@ -504,6 +505,55 @@ check(`検索で同じ綴りになる型式に見分ける材料がある（衝�
  */
 const seedCollisions = collisionGroups([...publishable, ...seedInv, ...seedSv])
   .filter(([, v]) => v.some((r) => r.modelStatus !== MODEL_STATUS.CONFIRMED));
+
+// ---- 追加: replacementNote の規約 ----------------------------------------
+
+/**
+ * replacementNote（後継品への置換えに別途必要な部品）の規約。
+ *
+ * note と分けた意味は「置換えの条件だけを後継型式の隣に出せること」なので、
+ * 同じ情報が note にも残っていると片方だけ更新される。二重管理を機械的に止める。
+ */
+const withReplacement = dataRecords.filter((r) => r.replacementNote !== undefined);
+
+check(`replacementNote を持つのは生産終了品だけ（現在 ${withReplacement.length} 件）`, (fail) => {
+  for (const r of withReplacement) {
+    if (r.discontinued !== true) {
+      fail(`${r.id} (${r.model}): discontinued=${JSON.stringify(r.discontinued)}`
+        + ' … 現行品に置換えの条件は付かない');
+    }
+  }
+});
+
+check('replacementNote の partType / partModel が両方とも非空文字列', (fail) => {
+  for (const r of withReplacement) {
+    const rn = r.replacementNote;
+    if (typeof rn !== 'object' || rn === null || Array.isArray(rn)) {
+      fail(`${r.id} (${r.model}): replacementNote がオブジェクトでない`);
+      continue;
+    }
+    for (const k of REPLACEMENT_NOTE_KEYS) {
+      const v = rn[k];
+      if (typeof v !== 'string' || v.trim() === '') {
+        fail(`${r.id} (${r.model}): replacementNote.${k}=${JSON.stringify(v)} が非空文字列でない`);
+      }
+    }
+    for (const k of Object.keys(rn)) {
+      if (!REPLACEMENT_NOTE_KEYS.includes(k)) {
+        fail(`${r.id} (${r.model}): replacementNote.${k} は宣言に無いキー`);
+      }
+    }
+  }
+});
+
+check('replacementNote を持つレコードは note を持たない（二重管理の禁止）', (fail) => {
+  for (const r of withReplacement) {
+    if ('note' in r) {
+      fail(`${r.id} (${r.model}): note=${JSON.stringify(r.note)} が残っている`
+        + ' … 置換えの条件は replacementNote だけに置く');
+    }
+  }
+});
 
 // ---- 追加: アプリ本体が無変更であること ----------------------------------
 

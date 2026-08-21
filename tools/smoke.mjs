@@ -256,11 +256,41 @@ check('②画面の警告に「生産終了」と後継型式が出る',
 check('②画面のどこかに置換えの条件（FR-E8AT03）が出ている',
   (await page.textContent('#app')).includes('FR-E8AT03'));
 
+/**
+ * 置換えの条件は後継品枠の中、後継型式の直下に出す。
+ *
+ * 「FR-E820-3.7K-1 に置換えられる」と「そのために FR-E8AT03 が要る」はひとつづきの
+ * 手順なので、別枠に離すと後継型式だけを読んで発注される。品名（取付互換
+ * アタッチメント）まで出すのは、型式だけでは何を買えばよいのか電話で伝えられないため。
+ */
+const succBox = (await page.textContent('.cmp-info')).replace(/\s+/g, ' ').trim();
+check('後継品枠の中に品名と型式（取付互換アタッチメント / FR-E8AT03）が出る',
+  succBox.includes('取付互換アタッチメント') && succBox.includes('FR-E8AT03'), succBox);
+
+const amberTexts = await page.$$eval('.cmp-info .amber', (els) => els.map((e) => e.textContent.trim()));
+check('置換えに必要な品名と型式が橙色（.amber）で出る',
+  amberTexts.includes('取付互換アタッチメント') && amberTexts.includes('FR-E8AT03'),
+  `.amber: ${amberTexts.join(' / ') || 'なし'}`);
+
 await page.click('[data-act="step"][data-v="3"]');
 await page.waitForTimeout(200);
 const resultHeadBadges = await page.$$eval('.result-head .badge', (els) => els.map((e) => e.textContent.trim()));
 check('③画面の結果ヘッダに「生産終了」バッジが出る',
   resultHeadBadges.some((t) => t.includes('生産終了')), `バッジ: ${resultHeadBadges.join(' / ') || 'なし'}`);
+
+/**
+ * replacementNote を持たない生産終了品では、この行を出さない。
+ *
+ * S-N18（生産終了・後継 S-T20）は置換えに別部品が要らないので、後継品枠は
+ * 後継型式だけになる。出しっぱなしにすると「何か買い足すのだろう」と読まれる。
+ */
+await gotoCategory('contactor');
+await search('S-N18');
+await page.waitForSelector('.model.big');
+const plainSuccBox = (await page.textContent('.cmp-info')).replace(/\s+/g, ' ').trim();
+check('置換えの条件を持たない生産終了品の後継品枠には、その行が出ない',
+  plainSuccBox.includes('S-T20') && !plainSuccBox.includes('別途必要')
+  && (await page.$$('.cmp-info .amber')).length === 0, plainSuccBox);
 
 /* ---- 容量の取り違え防止（normLoose で同じ綴りになる型式） ---- */
 
