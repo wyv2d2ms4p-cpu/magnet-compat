@@ -96,6 +96,23 @@ export function discontinuedNote(d, byId) {
     新規発注はできません。${succLine}</div></div>`;
 }
 
+/**
+ * 後継品への置換えに別途必要な部品の1行。後継品枠の中に置く。
+ *
+ * 「FR-E820-3.7K-1 に置換えられる」と「そのために FR-E8AT03 が要る」は
+ * ひとつづきの手順なので、後継型式と物理的に離さない。別枠の警告にすると、
+ * 後継型式だけを読んで発注され、アタッチメントが無くて取り付けられない。
+ *
+ * 品名も型式も replacementNote から解決する（表示側には直書きしない）。
+ * `.cmp b` が色を上書きするため、橙にする語は b ではなく span で出す。
+ */
+export function replacementLine(d) {
+  const r = d.replacementNote;
+  if (!r) return '';
+  return `<span>置換えには <span class="amber">${esc(r.partType)}</span>
+    <span class="amber mono">${esc(r.partModel)}</span> が別途必要です。</span>`;
+}
+
 /** デバイスの note。移行元では一度も描画されていなかった。 */
 export function noteBox(d) {
   if (!d.note) return '';

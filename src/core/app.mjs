@@ -3,7 +3,7 @@ import { esc, normLoose, normExact, num, mountingOptions, successorChain } from 
 import { store, devicesOf, makersOf } from './store.mjs';
 import { allCategories, getCategory, primarySpec, distinguishingSpec, formatSpec, formatSpecValue } from './registry.mjs';
 import { computeCompatibles } from './compat.mjs';
-import { candidateCard, specGrid, dimDiagram, statusBadges, noteBox, warningBox, scopeNote, discontinuedNote } from './ui.mjs';
+import { candidateCard, specGrid, dimDiagram, statusBadges, noteBox, warningBox, scopeNote, discontinuedNote, replacementLine } from './ui.mjs';
 import { evidenceRow } from './evidence.mjs';
 
 const S = {
@@ -265,7 +265,7 @@ function viewConfirm() {
       ${disc}
       ${noteBox(m)}
       ${warningBox(m)}
-      ${chain.length ? `<div class="cmp cmp-info"><b>後継品</b><span>${[m, ...chain].map((d) => esc(d.model)).join(' → ')}</span></div>` : ''}
+      ${chain.length ? `<div class="cmp cmp-info"><b>後継品</b><span>${[m, ...chain].map((d) => esc(d.model)).join(' → ')}</span>${replacementLine(m)}</div>` : ''}
       ${specGrid(cat, m)}
       <div class="evidence">${evidenceRow(m)}</div>
       ${m.evidence?.dims?.state === 'verified' && m.dims ? dimDiagram(m.dims, m.holes) : '<div class="dim-none">外形寸法は未確認のため図を表示しません。</div>'}

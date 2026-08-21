@@ -219,8 +219,17 @@ export function discontinuedSeriesIds(rows) {
 export const RECORD_KEYS = [
   'id', 'category', 'maker', 'model', 'series', 'modelStatus', 'modelScope',
   'compatKey', 'dims', 'holes', 'mounting', 'discontinued', 'makerExited',
-  'successorId', 'note', 'specs', 'evidence',
+  'successorId', 'note', 'replacementNote', 'specs', 'evidence',
 ];
+
+/**
+ * replacementNote（後継品への置換えに別途必要な部品）のキー。
+ *
+ * note とは別枠にする。note には仕様説明・来歴・データ品質の注記が入っており、
+ * 「置換えに FR-E8AT03 が必要」という発注に必須の条件が同じ枠に埋もれる。
+ * 分けておけば、表示側は条件だけを後継型式の隣に出せる。
+ */
+export const REPLACEMENT_NOTE_KEYS = ['partType', 'partModel'];
 
 /**
  * 追加レコード（移行元に対応が無いレコード）の受け入れ条件。

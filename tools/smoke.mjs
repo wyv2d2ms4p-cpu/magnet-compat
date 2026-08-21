@@ -256,11 +256,67 @@ check('②画面の警告に「生産終了」と後継型式が出る',
 check('②画面のどこかに置換えの条件（FR-E8AT03）が出ている',
   (await page.textContent('#app')).includes('FR-E8AT03'));
 
+/**
+ * 置換えの条件は後継品枠の中、後継型式の直下に出す。
+ *
+ * 「FR-E820-3.7K-1 に置換えられる」と「そのために FR-E8AT03 が要る」はひとつづきの
+ * 手順なので、別枠に離すと後継型式だけを読んで発注される。品名（取付互換
+ * アタッチメント）まで出すのは、型式だけでは何を買えばよいのか電話で伝えられないため。
+ */
+const succBox = (await page.textContent('.cmp-info')).replace(/\s+/g, ' ').trim();
+check('後継品枠の中に品名と型式（取付互換アタッチメント / FR-E8AT03）が出る',
+  succBox.includes('取付互換アタッチメント') && succBox.includes('FR-E8AT03'), succBox);
+
+/**
+ * 品名と型式が実際に橙で描画されること。クラス名ではなく描画された色を見る。
+ *
+ * `.cmp b{color:var(--sub)}` は `.amber` より詳細度が高いので、後継品枠の中で
+ * <b class="amber"> と書くと class は付いているのに灰色で描かれる。クラスの有無だけを
+ * 見る検査だと、その書き換えを通してしまい画面だけ色が落ちる。
+ * 期待値は --amber をその場で解決して作る（色コードを検査に直書きすると、
+ * テーマの色を変えたときに二重管理になる）。
+ */
+const amberPaint = await page.evaluate((labels) => {
+  const box = document.querySelector('.cmp-info');
+  // --amber をブラウザに解決させて期待色を作る。probe は枠の中に置き、同じ継承下で測る
+  const probe = document.createElement('span');
+  probe.style.color = 'var(--amber)';
+  box.appendChild(probe);
+  const want = getComputedStyle(probe).color;
+  probe.remove();
+  // 語を包む要素が span でも b でも拾えるよう、葉の要素をテキストで引く
+  const leaves = [...box.querySelectorAll('*')].filter((e) => e.children.length === 0);
+  return {
+    want,
+    got: labels.map((text) => {
+      const el = leaves.find((e) => e.textContent.trim() === text);
+      return { text, tag: el?.tagName.toLowerCase() ?? null, color: el ? getComputedStyle(el).color : null };
+    }),
+  };
+}, ['取付互換アタッチメント', 'FR-E8AT03']);
+check('置換えに必要な品名と型式が橙で描画される（--amber の実測色と一致）',
+  amberPaint.got.length === 2 && amberPaint.got.every((g) => g.color === amberPaint.want),
+  `期待 ${amberPaint.want} / 実際 ${amberPaint.got.map((g) => `${g.text}=<${g.tag}>${g.color}`).join(' , ')}`);
+
 await page.click('[data-act="step"][data-v="3"]');
 await page.waitForTimeout(200);
 const resultHeadBadges = await page.$$eval('.result-head .badge', (els) => els.map((e) => e.textContent.trim()));
 check('③画面の結果ヘッダに「生産終了」バッジが出る',
   resultHeadBadges.some((t) => t.includes('生産終了')), `バッジ: ${resultHeadBadges.join(' / ') || 'なし'}`);
+
+/**
+ * replacementNote を持たない生産終了品では、この行を出さない。
+ *
+ * S-N18（生産終了・後継 S-T20）は置換えに別部品が要らないので、後継品枠は
+ * 後継型式だけになる。出しっぱなしにすると「何か買い足すのだろう」と読まれる。
+ */
+await gotoCategory('contactor');
+await search('S-N18');
+await page.waitForSelector('.model.big');
+const plainSuccBox = (await page.textContent('.cmp-info')).replace(/\s+/g, ' ').trim();
+check('置換えの条件を持たない生産終了品の後継品枠には、その行が出ない',
+  plainSuccBox.includes('S-T20') && !plainSuccBox.includes('別途必要')
+  && (await page.$$('.cmp-info .amber')).length === 0, plainSuccBox);
 
 /* ---- 容量の取り違え防止（normLoose で同じ綴りになる型式） ---- */
 
