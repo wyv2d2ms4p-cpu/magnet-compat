@@ -226,6 +226,42 @@ check('単相入力機の候補に3相入力の FR-E820 が混ざらない（電
 check('単相入力機の候補は単相入力機だけ',
   singleCards.every((t) => /FR-E820S-/.test(t)), singleCards.join(' | '));
 
+/* ---- 生産終了品の表示（発注してはいけない型式を目立たせる） ---- */
+
+/**
+ * FR-E720-3.7K は生産終了品で、置換えには FR-E8AT03（取付互換アタッチメント）が要る。
+ *
+ * ②では後継型式が警告に出ること、③では型式が最大文字で出る結果ヘッダに
+ * 「生産終了」バッジが付くこと。③のバッジが無いと、画面で一番目立つのが
+ * 「発注してはいけない型式」になる。
+ */
+await gotoCategory('inverter');
+await search('FR-E720-3.7K');
+await page.waitForSelector('.model.big');
+check('FR-E720-3.7K で確認画面に進む', (await page.textContent('.model.big')) === 'FR-E720-3.7K');
+const discWarns = await page.$$eval('.warn', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
+check('②画面の警告に「生産終了」と後継型式が出る',
+  discWarns.some((t) => t.includes('生産終了') && t.includes('FR-E820-3.7K-1')),
+  discWarns.join(' | '));
+
+/**
+ * 置換えの条件（FR-E8AT03 が要ること）が現場に届いていること。
+ *
+ * これは警告枠に限定せず②画面全体で見る。生産終了品の note 25件のうち置換えの条件は
+ * 5件だけで、残る20件は仕様説明や来歴なので、note をまとめて ⚠ にはできない。
+ * どの枠で出すかは今後も変わりうるが、枠が変わっても情報そのものが画面から
+ * 消えてはいけない。守りたいのは見た目ではなく、後継の型式だけを見て発注すると
+ * アタッチメントが無く取り付けられない、という事実が読めることのほう。
+ */
+check('②画面のどこかに置換えの条件（FR-E8AT03）が出ている',
+  (await page.textContent('#app')).includes('FR-E8AT03'));
+
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForTimeout(200);
+const resultHeadBadges = await page.$$eval('.result-head .badge', (els) => els.map((e) => e.textContent.trim()));
+check('③画面の結果ヘッダに「生産終了」バッジが出る',
+  resultHeadBadges.some((t) => t.includes('生産終了')), `バッジ: ${resultHeadBadges.join(' / ') || 'なし'}`);
+
 /* ---- 容量の取り違え防止（normLoose で同じ綴りになる型式） ---- */
 
 /**

@@ -3,7 +3,7 @@ import { esc, normLoose, normExact, num, mountingOptions, successorChain } from 
 import { store, devicesOf, makersOf } from './store.mjs';
 import { allCategories, getCategory, primarySpec, distinguishingSpec, formatSpec, formatSpecValue } from './registry.mjs';
 import { computeCompatibles } from './compat.mjs';
-import { candidateCard, specGrid, dimDiagram, statusBadges, noteBox, warningBox, scopeNote } from './ui.mjs';
+import { candidateCard, specGrid, dimDiagram, statusBadges, noteBox, warningBox, scopeNote, discontinuedNote } from './ui.mjs';
 import { evidenceRow } from './evidence.mjs';
 
 const S = {
@@ -252,6 +252,7 @@ function viewConfirm() {
 
   const options = mountingOptions(devicesOf(S.cat));
   const chain = successorChain(m, store.byId);
+  const disc = discontinuedNote(m, store.byId);
 
   return `<div class="panel">
       <div class="card-head">
@@ -261,6 +262,7 @@ function viewConfirm() {
         </div>
       </div>
       ${scopeNote(m)}
+      ${disc}
       ${noteBox(m)}
       ${warningBox(m)}
       ${chain.length ? `<div class="cmp cmp-info"><b>後継品</b><span>${[m, ...chain].map((d) => esc(d.model)).join(' → ')}</span></div>` : ''}
@@ -284,9 +286,11 @@ function viewResult() {
   const ps = primarySpec(cat);
   const list = computeCompatibles(m, cat, { mounting: S.mounting });
 
+  // 型式を画面で最大に見せる場所なので、生産終了バッジは他の呼び出し箇所と同様にここでも出す。
+  // バッジが無いと「発注してはいけない型式」が一番目立つ見た目になる。
   const head = `<div class="panel">
     <div class="result-head">
-      <span class="mono big">${esc(m.model)}</span>
+      <span class="mono big">${esc(m.model)}</span>${statusBadges(m)}
       <span class="sub">${esc(m.maker)} ・ ${esc(formatSpec(ps, m))}</span>
     </div>
     <div class="sub">互換品候補 ${list.length}件</div>

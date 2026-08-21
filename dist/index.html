@@ -604,6 +604,27 @@ function scopeNote(d) {
     個別の発注可能型式ではないので、実機の銘板で型式を確認してください。</div></div>`;
 }
 
+/**
+ * 生産終了品であることの注意書き。
+ *
+ * ②の確認画面は型式を最大文字で見せる画面なので、ここに「新規発注できない」と
+ * 書かれていなければ、その型式がそのまま発注番号として読まれる。
+ * 後継は successorId から byId で解決する（型式名を文面に直書きしない。
+ * データ側の後継指定が変われば表示もそのまま追随する）。
+ *
+ * ここが出すのは「生産終了・新規発注できない・後継は○○」だけで、note は取り込まない。
+ * 生産終了品25件のうち note が置換えの条件なのは5件（「置換えに FR-E8AT03 が必要」など）で、
+ * 残り20件は仕様説明・来歴・データ品質の注記。全部を ⚠ にすると本当に警告すべき5件と
+ * 同じ重みになり、警告そのものが読み流される。note は noteBox が中立の枠で出す。
+ */
+function discontinuedNote(d, byId) {
+  if (!d.discontinued) return '';
+  const succ = d.successorId ? byId?.get(d.successorId) : null;
+  const succLine = succ ? `後継は <b class="amber mono">${esc(succ.model)}</b> です。` : '';
+  return `<div class="warn"><div>⚠ この型式は<b class="amber">生産終了</b>です。
+    新規発注はできません。${succLine}</div></div>`;
+}
+
 /** デバイスの note。移行元では一度も描画されていなかった。 */
 function noteBox(d) {
   if (!d.note) return '';
@@ -932,6 +953,7 @@ function viewConfirm() {
 
   const options = mountingOptions(devicesOf(S.cat));
   const chain = successorChain(m, store.byId);
+  const disc = discontinuedNote(m, store.byId);
 
   return `<div class="panel">
       <div class="card-head">
@@ -941,6 +963,7 @@ function viewConfirm() {
         </div>
       </div>
       ${scopeNote(m)}
+      ${disc}
       ${noteBox(m)}
       ${warningBox(m)}
       ${chain.length ? `<div class="cmp cmp-info"><b>後継品</b><span>${[m, ...chain].map((d) => esc(d.model)).join(' → ')}</span></div>` : ''}
@@ -964,9 +987,11 @@ function viewResult() {
   const ps = primarySpec(cat);
   const list = computeCompatibles(m, cat, { mounting: S.mounting });
 
+  // 型式を画面で最大に見せる場所なので、生産終了バッジは他の呼び出し箇所と同様にここでも出す。
+  // バッジが無いと「発注してはいけない型式」が一番目立つ見た目になる。
   const head = `<div class="panel">
     <div class="result-head">
-      <span class="mono big">${esc(m.model)}</span>
+      <span class="mono big">${esc(m.model)}</span>${statusBadges(m)}
       <span class="sub">${esc(m.maker)} ・ ${esc(formatSpec(ps, m))}</span>
     </div>
     <div class="sub">互換品候補 ${list.length}件</div>
