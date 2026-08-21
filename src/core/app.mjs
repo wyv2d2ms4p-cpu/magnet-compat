@@ -253,9 +253,6 @@ function viewConfirm() {
   const options = mountingOptions(devicesOf(S.cat));
   const chain = successorChain(m, store.byId);
   const disc = discontinuedNote(m, store.byId);
-  // 生産終了の警告が note（置換えの条件）を取り込んでいるときは、
-  // 直下の noteBox と同じ文が2枠続くので出さない
-  const note = disc && m.note ? '' : noteBox(m);
 
   return `<div class="panel">
       <div class="card-head">
@@ -266,7 +263,7 @@ function viewConfirm() {
       </div>
       ${scopeNote(m)}
       ${disc}
-      ${note}
+      ${noteBox(m)}
       ${warningBox(m)}
       ${chain.length ? `<div class="cmp cmp-info"><b>後継品</b><span>${[m, ...chain].map((d) => esc(d.model)).join(' → ')}</span></div>` : ''}
       ${specGrid(cat, m)}
