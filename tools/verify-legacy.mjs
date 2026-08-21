@@ -102,7 +102,6 @@ for (const f of jsonFiles) {
  * TSV を単一の情報源として、JSON 側が写し崩れていないことを以下の検査8〜13で見る。
  */
 const inverterRecords = JSON.parse(readFileSync(join(DATA, 'inverter.json'), 'utf8'));
-const inverterByModel = new Map(inverterRecords.map((r) => [r.model, r]));
 const inverterById = new Map(inverterRecords.map((r) => [r.id, r]));
 const legacyRecords = inverterRecords.filter((r) => r.discontinued === true);
 const legacyByModel = new Map(legacyRecords.map((r) => [r.model, r]));
