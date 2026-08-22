@@ -17,12 +17,15 @@ npm run check      # データ検証 → legacy検証 → ビルド → 回帰 �
 | コマンド | 内容 |
 |---|---|
 | `npm run build` | `src/**` と `data/**` を単一HTMLへインライン展開 |
-| `npm run verify` | 移行元HTMLとのデータ突合＋追加レコードの規約検査（14項目） |
-| `npm run verify:legacy` | `data/legacy/*.tsv` の列構成・型式重複・後継型式の実在検査（7項目） |
+| `npm run verify` | 移行元HTMLとのデータ突合＋追加レコードの規約検査 |
+| `npm run verify:legacy` | `data/legacy/*.tsv` の列構成・型式重複・後継型式の実在検査 |
 | `npm run regress` | 全431型式の候補リストを移行元の判定と突合 |
 | `npm run test:compat` | インバータの互換判定（電圧クラス・電源相数・容量帯の窓）を直接検証 |
-| `npm run smoke` | `file://` で実際に開いて動作確認（63項目） |
+| `npm run smoke` | `file://` で実際に開いて動作確認 |
 | `npm run test:ext` | カテゴリ追加が2ファイルで完結することの確認 |
+
+各検査の項目数と内訳は `npm run check` の出力に出る。
+検査は増えていくので、ここには件数を書かない（書くと実態からずれる）。
 
 ## カテゴリを追加する
 
