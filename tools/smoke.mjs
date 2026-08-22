@@ -532,6 +532,127 @@ check('サーマルリレーの生産終了品では、大小の表示が1件も
 check('大小の表示が無い画面には、実負荷の注意書きも出さない',
   (await page.$$('.load-note')).length === 0);
 
+/* ---- 大小の判定を宣言した残りのカテゴリでも 'below' の経路を通す ---- */
+
+/**
+ * `primaryStanding` を宣言しているのは6カテゴリだが、上の S-N35 が通しているのは
+ * 電磁接触器の1カテゴリだけだった。残りも「基準より小さい候補が実際に並ぶ型式」を
+ * data から選んで1件ずつ通す。型式は候補を実測して選んである（後述の基準値の
+ * 突き合わせが、データが変わったときにこの前提ごと落とす）。
+ */
+
+/**
+ * 主スペックの表示値を数値に戻す。`26A` は 26、`500mm` は 500、`1.3m` は 1300。
+ *
+ * 書式はカテゴリの specDef の `format` が決めるので、ここで解くのは実際に出る
+ * 3書式だけ。**解けない書式は NaN にして、呼び出し側が必ず落とす。**
+ * 「解析できないから一致とみなす」経路を作ると、書式が変わった瞬間に
+ * 全候補が「基準以上」に倒れて、この検査が黙って空振りする。
+ */
+function specNumber(text) {
+  const m = /^([\d.]+)(mm|m|A)$/.exec(text);
+  if (!m) return NaN;
+  return m[2] === 'm' ? Number(m[1]) * 1000 : Number(m[1]);
+}
+
+/** 基準の主スペック（結果ヘッダの「メーカー ・ 値」の値側） */
+async function baseSpec() {
+  return page.$eval('.result-head .sub', (e) => e.textContent.trim().split('・').pop().trim());
+}
+
+/** カテゴリを開いて型式を検索し、③まで進んで候補カードを拾う */
+async function standingCards(catId, model) {
+  await gotoCategory(catId);
+  await search(model);
+  await page.waitForSelector('.model.big');
+  await page.click('[data-act="step"][data-v="3"]');
+  await page.waitForTimeout(200);
+  return resultCards();
+}
+
+/**
+ * 候補を基準との大小で3つに分ける。
+ * `unparsable` が1件でもあれば、大小の集合そのものが信用できない。
+ */
+function byStanding(cards, base) {
+  return {
+    unparsable: cards.filter((c) => Number.isNaN(specNumber(c.spec))),
+    smaller: cards.filter((c) => specNumber(c.spec) < base),
+    notSmaller: cards.filter((c) => specNumber(c.spec) >= base),
+  };
+}
+
+/**
+ * インバータ（定格出力電流）。
+ *
+ * FR-E820-5.5K-1（24A）の候補は ±30%窓の両側に1件ずつで、
+ * 3.7K-1（17.5A）が基準より小さく、7.5K-1（33A）が基準より大きい。
+ * 旧機種と違って現行品どうしなので、値が揃っていて 'unknown' にならない。
+ */
+const invStanding = await standingCards('inverter', 'FR-E820-5.5K-1');
+const invBase = await baseSpec();
+const inv = byStanding(invStanding, 24);
+check('FR-E820-5.5K-1（24A）の③で、17.5A の候補に「基準より小さい」が出る',
+  invBase === '24A' && inv.unparsable.length === 0
+  && inv.smaller.length > 0 && inv.smaller.every((c) => c.standing.includes('基準 24A より小さい')),
+  `基準 ${invBase} / 小さい候補 ${inv.smaller.map((c) => `${c.model}(${c.spec})`).join(' ') || 'なし'}`);
+check('FR-E820-5.5K-1 の③で、33A の候補には「基準より小さい」が出ない',
+  inv.notSmaller.length > 0 && inv.notSmaller.every((c) => c.standing === ''),
+  inv.notSmaller.map((c) => `${c.model}(${c.spec}) 表示「${c.standing}」`).join(' / ') || '基準以上の候補が無い');
+
+/**
+ * フォトスイッチ（検出距離）。
+ *
+ * E3Z-D61（100mm）を選んだのは、候補に **100mm ちょうど**の HP7-D11 が居るため。
+ * 大小を `<` ではなく `<=` で書いた実装だと、同値のこの1件に表示が出て落ちる。
+ * 候補は 50mm〜1.5m と mm / m 両方の書式にまたがるので、単位の読み替えも通る。
+ */
+const photoStanding = await standingCards('photo', 'E3Z-D61');
+const photoBase = await baseSpec();
+const photo = byStanding(photoStanding, 100);
+check('E3Z-D61（100mm）の③で、検出距離が基準より短い候補に「基準より小さい」が出る',
+  photoBase === '100mm' && photo.unparsable.length === 0
+  && photo.smaller.length > 0 && photo.smaller.every((c) => c.standing.includes('基準 100mm より小さい')),
+  `基準 ${photoBase} / 短い候補 ${photo.smaller.map((c) => `${c.model}(${c.spec})`).join(' ') || 'なし'}`
+  + ` / 読めない書式 ${photo.unparsable.map((c) => c.spec).join(' ')}`);
+const equalCard = photoStanding.find((c) => c.model === 'HP7-D11');
+check('E3Z-D61 の③で、基準と同値（100mm）の HP7-D11 には表示が出ない',
+  !!equalCard && equalCard.spec === '100mm' && equalCard.standing === ''
+  && photo.notSmaller.every((c) => c.standing === ''),
+  `HP7-D11 ${equalCard?.spec} 表示「${equalCard?.standing}」`);
+
+/**
+ * 電磁開閉器（定格使用電流）。
+ *
+ * MSO-N20（18A・生産終了）の候補は 13A が2件、18A が3件、22A が1件。
+ * 同値（18A）の3件に出ないことも、この1画面で一緒に見る。
+ */
+const msoStanding = await standingCards('starter', 'MSO-N20');
+const msoBase = await baseSpec();
+const mso = byStanding(msoStanding, 18);
+check('MSO-N20（18A）の③で、13A の候補に「基準より小さい」が出る',
+  msoBase === '18A' && mso.unparsable.length === 0
+  && mso.smaller.length > 0 && mso.smaller.every((c) => c.standing.includes('基準 18A より小さい')),
+  `基準 ${msoBase} / 小さい候補 ${mso.smaller.map((c) => `${c.model}(${c.spec})`).join(' ') || 'なし'}`);
+check('MSO-N20 の③で、18A・22A の候補には「基準より小さい」が出ない',
+  mso.notSmaller.length > 0 && mso.notSmaller.every((c) => c.standing === ''),
+  mso.notSmaller.map((c) => `${c.model}(${c.spec}) 表示「${c.standing}」`).join(' / ') || '基準以上の候補が無い');
+
+/**
+ * 超音波センサ（検出距離）。
+ *
+ * 「基準より小さい候補が並ぶ画面」は US-T50 / US-T50PN の2型式だけで、どちらも
+ * 候補は US-T04AN（400mm）の1件。この画面には基準以上の候補が居ないので、
+ * ここで見るのは小さい側だけ（出ない側は上の3カテゴリが見ている）。
+ */
+const usStanding = await standingCards('ultrasonic', 'US-T50');
+const usBase = await baseSpec();
+const us = byStanding(usStanding, 500);
+check('US-T50（500mm）の③で、400mm の候補に「基準より小さい」が出る',
+  usBase === '500mm' && us.unparsable.length === 0
+  && us.smaller.length > 0 && us.smaller.every((c) => c.standing.includes('基準 500mm より小さい')),
+  `基準 ${usBase} / 候補 ${usStanding.map((c) => `${c.model}(${c.spec}) 表示「${c.standing}」`).join(' ')}`);
+
 /* ---- 容量の取り違え防止（normLoose で同じ綴りになる型式） ---- */
 
 /**
