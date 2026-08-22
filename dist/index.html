@@ -96,6 +96,12 @@ header .sub{color:var(--sub);font-size:12px;}
 .card-right{text-align:right;flex-shrink:0;}
 .primary-spec{font-size:15px;color:var(--amber);}
 .dim-verdict{font-size:11px;display:block;}
+/*
+ * 「基準より小さい」は主スペックの値の直下に置く。バッジ行に入れると
+ * 「生産終了」「要確認」と同じ橙のピルが並び、何の話か見分けがつかなくなる。
+ */
+.standing{font-size:11px;display:block;line-height:1.35;margin-top:2px;}
+.standing.below{color:var(--amber);}
 .dim-verdict.ok{color:var(--green);} .dim-verdict.warn{color:var(--amber);} .dim-verdict.dim{color:var(--dim);}
 
 .badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
@@ -132,6 +138,16 @@ header .sub{color:var(--sub);font-size:12px;}
 .dim-none{margin-top:10px;color:var(--dim);font-size:12px;text-align:center;}
 .empty-note{font-size:13px;} .empty-note div{color:var(--sub);font-size:12px;margin-top:6px;}
 .result-head{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;}
+/*
+ * 候補リストのゾーン見出し。パネルの外に置く帯なので、左の色帯で根拠の別を示す
+ * （後継品＝橙、当アプリの判定＝灰）。バッジと同じ橙のピルにすると、
+ * 見出しなのかカードの一部なのかが読めない。
+ */
+.zone-head{margin:14px 0 8px;padding:0 2px 0 10px;border-left:3px solid var(--line);}
+.zone-head.succ{border-left-color:var(--amber);}
+.zone-head .t{font-size:13px;font-weight:700;}
+.zone-head .n{color:var(--sub);font-size:11px;}
+.load-note{margin-top:8px;color:var(--sub);font-size:11px;line-height:1.5;}
 .foot{color:var(--dim);font-size:11px;text-align:center;padding:8px 4px 0;}
 
 /* iPhone 標準幅(390px)が主対象。ステップ名を消すと空箱になるので縮めて残す */
@@ -296,11 +312,18 @@ const categories = [];
  *   summary(d)           … 確認画面のスペック欄（任意）
  *   detailPanels(m, c)   … カテゴリ固有の詳細比較（任意）
  *   emptyNote(m)         … 候補0件のときの説明（任意・HTML）
+ *   primaryStanding(a, m)… 主スペックが基準より小さいか（任意）。既定は「判定しない」
  */
 function registerCategory(def) {
   if (!def.id || !def.label) throw new Error('カテゴリには id と label が必要です');
   if (categories.some((c) => c.id === def.id)) throw new Error(`カテゴリ重複: ${def.id}`);
-  categories.push({ enrich: () => ({}), summary: () => [], detailPanels: () => [], emptyNote: () => '', specDefs: [], ...def });
+  categories.push({
+    enrich: () => ({}), summary: () => [], detailPanels: () => [], emptyNote: () => '', specDefs: [],
+    // 既定は「判定しない」。大小に意味があるかはカテゴリ固有の知識なので、
+    // 宣言していないカテゴリでコアが勝手に大小を語らない（新カテゴリの既定も同じ）。
+    primaryStanding: () => null,
+    ...def,
+  });
   return def;
 }
 
@@ -340,6 +363,29 @@ function distinguishingSpec(category, devices) {
     if (seen.size > 1) return sd;
   }
   return null;
+}
+
+/**
+ * 数値スペックを基準と比べて、候補が「基準より小さい」かどうかを返す。
+ * `primaryStanding` を宣言するカテゴリのための共通部品。
+ *
+ * 返す値は4つで、**「判定できない」と「基準以上」を必ず別物として返す**。
+ *   'below'     … 基準より小さい
+ *   'atOrAbove' … 基準以上
+ *   'unknown'   … 大小に意味はあるが、この組は値が無くて比較できない
+ *   null        … そのカテゴリでは大小を判定しない（registerCategory の既定）
+ *
+ * 片方でも値が無いときに 'atOrAbove'（＝安全側に見える方）を返してはいけない。
+ * 値の不在は README の「データの約束」どおりキーの不在で表されるため、`??` で
+ * 0 を補って比較すると「0 は基準より小さくない」といった、根拠のない判定が
+ * 静かに混ざる。旧機種インバータ30件は定格出力電流をキーごと持たないので、
+ * この経路が実際に走る（`tools/test-compat.mjs` 検査2）。
+ */
+function numericStanding(a, m, key) {
+  const av = a.specs?.[key];
+  const mv = m.specs?.[key];
+  if (typeof av !== 'number' || typeof mv !== 'number') return 'unknown';
+  return av < mv ? 'below' : 'atOrAbove';
 }
 
 /** スペック値の表示。値が無ければ「―」（旧 ratedA:0 センチネルの置き換え） */
@@ -669,6 +715,71 @@ function specGrid(category, d) {
     `<div class="spec"><div class="l">${esc(r.label)}</div><div class="v">${esc(r.value)}</div></div>`).join('')}</div>`;
 }
 
+/**
+ * ③の候補リストのゾーン見出し。
+ *
+ * 「メーカーが後継として指定した1件」と「当アプリが窓や重なりで拾った候補」は
+ * 根拠の強さが違う。1つの列に並べると、公式後継が候補No.1として並ぶだけになり、
+ * 「No.1がだめならNo.2で代用」と読める。見出しで根拠を分けて、後者が
+ * メーカーの保証ではないことを列の入口で言う。
+ *
+ * `.zone-head` は `.card` の外側に置く（カード内の見出しにすると、1件目の候補に
+ * 属する説明のように読める）。
+ */
+function zoneHead(kind, title, note) {
+  return `<div class="zone-head ${esc(kind)}"><div class="t">${esc(title)}</div>${
+    note ? `<div class="n">${esc(note)}</div>` : ''}</div>`;
+}
+
+/**
+ * 主スペックが基準より小さい候補の数。
+ *
+ * `primaryStanding` は 'below' / 'atOrAbove' / 'unknown' / null を返す。
+ * ここで数えるのは 'below' だけで、'unknown'（値が無くて比較できない）を
+ * 小さい側にも大きい側にも寄せない。
+ */
+function belowCount(category, m, list) {
+  return list.filter((c) => category.primaryStanding(c, m) === 'below').length;
+}
+
+/**
+ * 「基準より小さい」候補があるときの注意書き。候補リストの前に1回だけ出す。
+ *
+ * **書けるのは大小という事実までで、適合の可否は書かない。** アプリが知っているのは
+ * 交換前の機器の定格であって、実際の負荷電流ではない。34A の機器が付いていても
+ * 実負荷が 20A なら 26A 品で足りるので、「容量不足」「使用不可」と書くと、
+ * 成立する置換えを現場が捨てることになる。
+ *
+ * 表示が無い候補について後半で断りを入れているのは、無印が「基準以上」と
+ * 「比較できる定格が登録されていない」の2つを兼ねるため。無印を黙って
+ * 「基準以上」と読ませない。
+ */
+function loadCheckNote(n) {
+  if (!n) return '';
+  return `<div class="load-note">「基準より小さい」は、交換前の機器の定格との比較です。
+    実際の負荷電流は定格とはかぎらないので、現場で確認してください。
+    表示が無い候補は、基準以上か、比較できる定格が登録されていないかのどちらかです。</div>`;
+}
+
+/**
+ * 候補の主スペックが基準より小さいことの表示。
+ *
+ * 出すのは 'below' のときだけ。'atOrAbove' に「基準以上」と出すと、それ自体が
+ * 使えるという保証に読める（実負荷を確認しないと決まらないのは大きい側も同じ）。
+ * 'unknown' と null に何も出さないのは、判定していないものを判定したように
+ * 見せないため。どちらも無印になるが、その断りは loadCheckNote が引き受ける。
+ *
+ * 置き場所は主スペックの値の直下。バッジ行に混ぜると「生産終了」「要確認」と
+ * 同じ橙のピルが並び、どれが何の話なのか見分けがつかなくなる。
+ */
+function standingMark(category, m, c) {
+  if (category.primaryStanding(c, m) !== 'below') return '';
+  const ps = primarySpec(category);
+  // 頭の △ は、カード内のバッジで「相違あり」を表しているのと同じ記号。値の直下に
+  // 置くと主スペック（同じ橙）と地続きに見えるので、行の始まりを記号で示す。
+  return `<span class="standing below">△ 基準 ${esc(formatSpec(ps, m))} より小さい</span>`;
+}
+
 /** 候補カード1件 */
 function candidateCard(category, m, c, index) {
   const ps = primarySpec(category);
@@ -704,6 +815,7 @@ function candidateCard(category, m, c, index) {
       </div>
       <div class="card-right">
         <div class="primary-spec mono">${esc(formatSpec(ps, c))}</div>
+        ${standingMark(category, m, c)}
         ${dimVerdict}
       </div>
     </div>
@@ -1004,6 +1116,22 @@ function viewResult() {
   const ps = primarySpec(cat);
   const list = computeCompatibles(m, cat, { mounting: S.mounting });
 
+  /**
+   * 候補を根拠で2分する。判定そのもの（gate / rank / 並び順）は触らず、
+   * `computeCompatibles` が返した順番のまま `isSuccessor` で振り分けるだけ。
+   * どのカテゴリの `rank` も後継品を先頭に置くので、分けても候補の前後関係は変わらない。
+   */
+  const succ = list.filter((c) => c.isSuccessor);
+  const judged = list.filter((c) => !c.isSuccessor);
+  // 見出しは両方に中身があるときだけ。片方しか無い列に見出しを付けても、
+  // 対比する相手がいないので情報が増えない（旧機種インバータ30件は必ず後継1件）。
+  const split = succ.length > 0 && judged.length > 0;
+
+  // 合算した件数は、根拠の違う候補を1つの数字にまとめてしまう。分けたときだけ内訳を出す
+  const count = split
+    ? `互換品候補 ${list.length}件（メーカー指定の後継品 ${succ.length}件 / 当アプリの判定による候補 ${judged.length}件）`
+    : `互換品候補 ${list.length}件`;
+
   // 型式を画面で最大に見せる場所なので、生産終了バッジは他の呼び出し箇所と同様にここでも出す。
   // バッジが無いと「発注してはいけない型式」が一番目立つ見た目になる。
   const head = `<div class="panel">
@@ -1011,16 +1139,29 @@ function viewResult() {
       <span class="mono big">${esc(m.model)}</span>${statusBadges(m)}
       <span class="sub">${esc(m.maker)} ・ ${esc(formatSpec(ps, m))}</span>
     </div>
-    <div class="sub">互換品候補 ${list.length}件</div>
+    <div class="sub">${esc(count)}</div>
+    ${loadCheckNote(belowCount(cat, m, list))}
   </div>`;
 
   // 0件の理由はカテゴリごとに違う。説明を持っているカテゴリにはそれを言わせる
   const empty = cat.emptyNote(m) ||
     `<b class="amber">互換候補が登録されていません。</b>
      <div>電気的に成立しない組み合わせ（出力極性・配線本数の相違）は候補から除外しています。</div>`;
-  const body = list.length
-    ? list.map((c, i) => candidateCard(cat, m, c, i)).join('')
-    : `<div class="panel empty-note">${empty}</div>`;
+  /**
+   * カードに渡す添字は分割前の通し番号のまま。
+   *
+   * `candidateCard` は添字0に「候補No.1」バッジを付ける。ゾーンごとに数え直すと、
+   * 公式後継の隣で判定候補の先頭が「候補No.1」を名乗ることになり、
+   * 分けた意味（根拠が違う）が見た目で消える。
+   */
+  const zone = (cs) => cs.map((c) => candidateCard(cat, m, c, list.indexOf(c))).join('');
+  const body = !list.length
+    ? `<div class="panel empty-note">${empty}</div>`
+    : split
+      ? zoneHead('succ', 'メーカー指定の後継品') + zone(succ)
+        + zoneHead('judged', '当アプリの判定による候補',
+          'メーカーが後継として指定した型式ではありません。') + zone(judged)
+      : zone(list);
 
   return `${head}${body}
     <div class="panel">
@@ -1125,6 +1266,17 @@ function baseRank(a, b) {
   );
 }
 
+/**
+ * 定格使用電流は「小さいほうが注意」と言い切れる量なので大小を判定する。
+ *
+ * 窓（±30%）は対称なので、候補には基準より小さい機種が必ず混ざる。S-N35（34A）の
+ * 候補16件は 26A が9件・32A が2件で、半数以上が基準より小さい。
+ * ただしアプリが知っているのは**交換前の機器の定格**であって実際の負荷電流ではない。
+ * 34A の機器が付いていても実負荷が 20A なら 26A 品で足りるので、
+ * ここで返すのは大小という事実だけで、適合の可否はUI側でも断定しない。
+ */
+const currentStanding = (a, m) => numericStanding(a, m, 'ratedCurrentA');
+
 function baseSummary(d) {
   return [
     { label: '定格使用電流', value: d.specs?.ratedCurrentA != null ? `${num(d.specs.ratedCurrentA)}A` : '―' },
@@ -1143,6 +1295,7 @@ registerCategory({
   enrich: baseEnrich,
   rank: baseRank,
   summary: baseSummary,
+  primaryStanding: currentStanding,
 });
 
 registerCategory({
@@ -1163,6 +1316,7 @@ registerCategory({
   enrich: baseEnrich,
   rank: baseRank,
   summary: baseSummary,
+  primaryStanding: currentStanding,
 });
 
 
@@ -1233,6 +1387,15 @@ registerCategory({
   enrich(a, m) {
     return { currentDiff: Math.abs((a.specs?.ratedCurrentA ?? 0) - (m.specs?.ratedCurrentA ?? 0)) };
   },
+  /**
+   * 定格出力電流は接触器と同じく「小さい＝要注意」の一方向なので判定する。
+   *
+   * ただし旧機種30件（FR-E700）は置換え資料にしか載っておらず定格出力電流を
+   * キーごと持たないため、旧機種を基準にした組は全件 'unknown' になる。
+   * ここで 0 を補うと「0A は基準より小さくない」と読める判定が静かに混ざるので、
+   * numericStanding が値の不在を 'unknown' として返すことに任せる。
+   */
+  primaryStanding: (a, m) => numericStanding(a, m, 'ratedCurrentA'),
   rank(a, b) {
     return (
       preferTrue(a.isSuccessor, b.isSuccessor) ||
@@ -1263,6 +1426,16 @@ registerCategory({
       distance: logRatio,
     },
   ],
+  /**
+   * 主スペックの定格出力は大小を判定しない。
+   *
+   * 登録済みの27件はすべて安川の生産中止一覧の**シリーズ単位マスク**で、
+   * `ratedPowerW` を1件も持たない（`modelScope:"series"` なのでコアが互換判定から
+   * 外し、候補は常に0件になる）。比べる値も、比べる相手も存在しない。
+   * 個別型式が登録されたときに大小を語ってよいかは、アンプ単体ではなく
+   * モータ・エンコーダ・指令I/F の組み合わせで決まるため、実例が出るまで倒さない。
+   */
+  primaryStanding: () => null,
   gate(a, m) {
     if (a.id === m.successorId) return true;
     if (a.specs?.voltClass !== m.specs?.voltClass) return false;
@@ -1395,6 +1568,16 @@ const distanceSpec = {
   distance: logRatio,
 };
 
+/**
+ * 検出距離の大小。小さい＝ワークまで届かない、という一方向の意味を持つので判定する。
+ *
+ * 接触器の定格電流と違い、こちらは「実際にはもっと近い位置に付いている」という
+ * 逃げ道が無いわけではない（取付位置ごと詰められる場合がある）。そのため返すのは
+ * ここでも大小の事実だけで、置換の可否は断定しない。
+ * 距離キーを持たない機種（熱間金属検出など）との組は 'unknown' になる。
+ */
+const distanceStanding = (a, m) => numericStanding(a, m, 'sensingDistanceMM');
+
 /** 検出距離の近さ。片方でも値が無ければ最下位（旧 dr:99 相当）。 */
 function distanceGap(a, m) {
   const r = logRatio(a.specs?.sensingDistanceMM, m.specs?.sensingDistanceMM);
@@ -1481,9 +1664,16 @@ const common = {
   detailPanels: (m, c) => [wiringPanel(m, c)].filter(Boolean),
 };
 
-registerCategory({ ...common, id: 'proximity', label: '近接スイッチ', specDefs: [distanceSpec] });
-registerCategory({ ...common, id: 'photo', label: 'フォトスイッチ', specDefs: [distanceSpec] });
-registerCategory({ ...common, id: 'ultrasonic', label: '超音波センサ', specDefs: [distanceSpec] });
+/**
+ * 検出距離を主スペックに持つ3カテゴリは大小を判定する。
+ *
+ * 超音波センサも検出距離のキー・単位・意味（届く距離）が近接／光電と同じなので
+ * 同じ扱いにする。透過形は投光器と受光器の間隔、反射形はワークまでの距離だが、
+ * どちらも「小さい＝そこまで届かない」で向きが一致する。
+ */
+registerCategory({ ...common, id: 'proximity', label: '近接スイッチ', specDefs: [distanceSpec], primaryStanding: distanceStanding });
+registerCategory({ ...common, id: 'photo', label: 'フォトスイッチ', specDefs: [distanceSpec], primaryStanding: distanceStanding });
+registerCategory({ ...common, id: 'ultrasonic', label: '超音波センサ', specDefs: [distanceSpec], primaryStanding: distanceStanding });
 
 /**
  * 特殊（熱間金属 / 光学式 / 導光路）。
@@ -1497,6 +1687,15 @@ registerCategory({
   ...common,
   id: 'special',
   label: '特殊(熱間/光学/導光)',
+  /**
+   * 主スペックの導光路長は大小を判定しない。
+   *
+   * 検出距離と違って「短い＝届かない」と言い切れない。導光路長はアンプと検出点を
+   * 結ぶ光路の長さで、必要な長さは設置経路で決まる（長いほうが高性能ではない）。
+   * 12件のうち6件（熱間金属検出・光学式）はそもそもこのキーを持たない。
+   * 迷うものは「判定しない」に倒す。
+   */
+  primaryStanding: () => null,
   specDefs: [
     {
       key: 'lightGuideLengthMM', label: '導光路長', unit: 'mm', primary: true,
@@ -1554,6 +1753,16 @@ registerCategory({
       distance: (a, b) => 1 - rangeOverlap(a, b),
     },
   ],
+  /**
+   * 主スペックの整定電流調整範囲は大小を判定しない。
+   *
+   * `setRangeA` は `{min, max}` の区間で、区間どうしに「小さい／大きい」は無い。
+   * TH-N18（1〜18A）に対する TH-T18（0.12〜15A）は下限が下がり上限が下がる。
+   * どちらか片方の端だけを取り出して比べると、選んだ端しだいで結論が反転するので、
+   * 大小を語れるふりをしない。重なり率（`overlap`）と保護方式は今までどおり
+   * `rank` と `detailPanels` が扱う。
+   */
+  primaryStanding: () => null,
   gate(a, m) {
     if (a.id === m.successorId) return true;
     // 保護方式が違っても候補には出す（バッジで明示し、順位で落とす）

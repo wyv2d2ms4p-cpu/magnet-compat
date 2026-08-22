@@ -1,5 +1,6 @@
 /** センサー4カテゴリで共有する判定要素。 */
 import { logRatio, preferTrue, ascending } from '../core/compat.mjs';
+import { numericStanding } from '../core/registry.mjs';
 import { evidenceRank } from '../core/evidence.mjs';
 import { num } from '../core/util.mjs';
 
@@ -70,6 +71,16 @@ export const distanceSpec = {
   // 検出距離は 2mm〜100m と4桁半に広がるため、線形差ではなく対数比で見る
   distance: logRatio,
 };
+
+/**
+ * 検出距離の大小。小さい＝ワークまで届かない、という一方向の意味を持つので判定する。
+ *
+ * 接触器の定格電流と違い、こちらは「実際にはもっと近い位置に付いている」という
+ * 逃げ道が無いわけではない（取付位置ごと詰められる場合がある）。そのため返すのは
+ * ここでも大小の事実だけで、置換の可否は断定しない。
+ * 距離キーを持たない機種（熱間金属検出など）との組は 'unknown' になる。
+ */
+export const distanceStanding = (a, m) => numericStanding(a, m, 'sensingDistanceMM');
 
 /** 検出距離の近さ。片方でも値が無ければ最下位（旧 dr:99 相当）。 */
 export function distanceGap(a, m) {

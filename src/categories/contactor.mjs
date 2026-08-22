@@ -1,5 +1,5 @@
 /** 電磁接触器 / 電磁開閉器。容量帯（定格使用電流）で候補を絞る。 */
-import { registerCategory } from '../core/registry.mjs';
+import { registerCategory, numericStanding } from '../core/registry.mjs';
 import { withinWindow, preferTrue, ascending } from '../core/compat.mjs';
 import { evidenceRank } from '../core/evidence.mjs';
 import { num } from '../core/util.mjs';
@@ -43,6 +43,17 @@ function baseRank(a, b) {
   );
 }
 
+/**
+ * 定格使用電流は「小さいほうが注意」と言い切れる量なので大小を判定する。
+ *
+ * 窓（±30%）は対称なので、候補には基準より小さい機種が必ず混ざる。S-N35（34A）の
+ * 候補16件は 26A が9件・32A が2件で、半数以上が基準より小さい。
+ * ただしアプリが知っているのは**交換前の機器の定格**であって実際の負荷電流ではない。
+ * 34A の機器が付いていても実負荷が 20A なら 26A 品で足りるので、
+ * ここで返すのは大小という事実だけで、適合の可否はUI側でも断定しない。
+ */
+const currentStanding = (a, m) => numericStanding(a, m, 'ratedCurrentA');
+
 function baseSummary(d) {
   return [
     { label: '定格使用電流', value: d.specs?.ratedCurrentA != null ? `${num(d.specs.ratedCurrentA)}A` : '―' },
@@ -61,6 +72,7 @@ registerCategory({
   enrich: baseEnrich,
   rank: baseRank,
   summary: baseSummary,
+  primaryStanding: currentStanding,
 });
 
 registerCategory({
@@ -81,4 +93,5 @@ registerCategory({
   enrich: baseEnrich,
   rank: baseRank,
   summary: baseSummary,
+  primaryStanding: currentStanding,
 });

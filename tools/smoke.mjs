@@ -370,6 +370,168 @@ check('置換えの条件を持たない生産終了品の後継品枠には、�
   plainSuccBox.includes('S-T20') && !plainSuccBox.includes('別途必要')
   && (await page.$$('.cmp-info .amber')).length === 0, plainSuccBox);
 
+/* ---- ③の候補リストを根拠で2つに分ける ---- */
+
+/**
+ * ③の候補を、ゾーン見出しと DOM順の所属で拾う。
+ *
+ * 「見出しの文字列が画面のどこかにある」だけでは、見出しと候補の対応が入れ替わっても
+ * 通ってしまう。守りたいのは「メーカーが後継として指定した型式が、後継品側の見出しの
+ * 下にある」ことなので、`#app` の子要素を文書順に走査して所属を決める。
+ */
+async function resultZones() {
+  return page.evaluate(() => {
+    const zones = [];
+    for (const el of document.getElementById('app').children) {
+      if (el.classList.contains('zone-head')) {
+        zones.push({
+          title: el.querySelector('.t').textContent.trim(),
+          note: el.querySelector('.n')?.textContent.replace(/\s+/g, ' ').trim() || '',
+          models: [],
+        });
+      } else if (el.classList.contains('card')) {
+        // 見出しの無い（分割していない）画面のために、暗黙のゾーンを1つ作る
+        if (!zones.length) zones.push({ title: '', note: '', models: [] });
+        zones[zones.length - 1].models.push(el.querySelector('.model').textContent.trim());
+      }
+    }
+    return zones;
+  });
+}
+
+/** ③の候補カードを「型式・主スペック・大小表示」に落として拾う */
+async function resultCards() {
+  return page.$$eval('.card', (els) => els.map((e) => ({
+    model: e.querySelector('.model').textContent.trim(),
+    spec: e.querySelector('.primary-spec').textContent.trim(),
+    standing: e.querySelector('.standing')?.textContent.replace(/\s+/g, ' ').trim() || '',
+  })));
+}
+
+/** 結果ヘッダの件数行（`.result-head` の中の `.sub` ではなく、パネル直下の1行） */
+async function countLine() {
+  return page.$eval('.panel > .sub', (e) => e.textContent.replace(/\s+/g, ' ').trim());
+}
+
+/**
+ * S-N18 は生産終了・後継 S-T20 を持ちつつ、電流窓の近傍とも当たる接触器。
+ * メーカーが指定した1件と、アプリが窓で拾った候補が同じ列に並んでいた代表例。
+ */
+await gotoCategory('contactor');
+await search('S-N18');
+await page.waitForSelector('.model.big');
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForTimeout(200);
+const sn18Zones = await resultZones();
+check('S-N18 の③が「メーカー指定の後継品」と「当アプリの判定による候補」の2つに分かれる',
+  sn18Zones.length === 2
+  && sn18Zones[0].title === 'メーカー指定の後継品'
+  && sn18Zones[1].title === '当アプリの判定による候補',
+  sn18Zones.map((z) => `${z.title || '(見出し無し)'}:${z.models.length}件`).join(' → '));
+check('S-N18 の後継品側の見出しの下には、登録された後継 S-T20 だけが入る',
+  sn18Zones[0]?.models.join(' ') === 'S-T20', sn18Zones[0]?.models.join(' '));
+check('判定側の見出しに、メーカー指定ではない旨を添える',
+  sn18Zones[1]?.note === 'メーカーが後継として指定した型式ではありません。', sn18Zones[1]?.note);
+
+/**
+ * 件数は根拠ごとの内訳で出す。合算した「N件」だけだと、メーカーが保証した1件と
+ * アプリが拾った候補が同じ数字に溶ける。期待値は実際のゾーンの件数から組み立てる
+ * （画面の数字を検査に直書きすると、データが増えたときに二重管理になる）。
+ */
+const sn18Counts = sn18Zones.map((z) => z.models.length);
+check('件数表示が根拠ごとの内訳になる',
+  (await countLine()) === `互換品候補 ${sn18Counts[0] + sn18Counts[1]}件`
+    + `（メーカー指定の後継品 ${sn18Counts[0]}件 / 当アプリの判定による候補 ${sn18Counts[1]}件）`,
+  await countLine());
+
+/**
+ * 片方しか無いときは見出しを出さない。
+ *
+ * 旧機種インバータ30件は候補が後継品ちょうど1件（`test-compat` 検査14）なので、
+ * 判定側は必ず空になる。中身の無い見出しと対で並べても対比する相手がいないため、
+ * ③の見た目は従来のまま（見出し無しで候補が並ぶ）であることを固定する。
+ */
+await gotoCategory('inverter');
+await search('FR-E720-3.7K');
+await page.waitForSelector('.model.big');
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForTimeout(200);
+const invZones = await resultZones();
+check('FR-E720-3.7K の③には見出しが出ない（候補が後継品1件だけで、分ける相手がいない）',
+  (await page.$$('.zone-head')).length === 0
+  && invZones.length === 1 && invZones[0].title === ''
+  && invZones[0].models.join(' ') === 'FR-E820-3.7K-1',
+  invZones.map((z) => `${z.title || '(見出し無し)'}:${z.models.join(',')}`).join(' → '));
+check('分けていない画面の件数表示は従来どおり内訳を付けない',
+  (await countLine()) === '互換品候補 1件', await countLine());
+
+/* ---- 主スペックが基準より小さい候補を明示する ---- */
+
+/**
+ * S-N35（34A）は、基準より小さい候補が最も多く混ざる組。
+ *
+ * 候補16件のうち 26A が9件・32A が2件で、後継の S-T35 は 35A。
+ * 「26A に表示が出る」だけだと 34A 以上にも出る実装で通ってしまうので、
+ * 34A 未満と 34A 以上の全件を突き合わせて、境界の両側を1回で見る。
+ */
+await gotoCategory('contactor');
+await search('S-N35');
+await page.waitForSelector('.model.big');
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForTimeout(200);
+const sn35Cards = await resultCards();
+const sn35Small = sn35Cards.filter((c) => c.spec === '26A');
+check('S-N35（34A）の③で、26A の候補に「基準より小さい」が出る',
+  sn35Small.length > 0 && sn35Small.every((c) => c.standing.includes('基準 34A より小さい')),
+  `26A の候補 ${sn35Small.length}件 / 表示あり ${sn35Small.filter((c) => c.standing).length}件`);
+
+const st35Card = sn35Cards.find((c) => c.model === 'S-T35');
+check('S-N35 の③で、S-T35（35A ＝ 基準34A以上）には「基準より小さい」が出ない',
+  !!st35Card && st35Card.spec === '35A' && st35Card.standing === '',
+  `${st35Card?.spec} / 表示「${st35Card?.standing}」`);
+
+const boundary = sn35Cards.filter((c) =>
+  (Number(c.spec.replace('A', '')) < 34) !== c.standing.includes('より小さい'));
+check('S-N35 の③で、34A 未満の候補にだけ表示が付く（境界の両側を全件で見る）',
+  sn35Cards.length > 0 && boundary.length === 0,
+  boundary.map((c) => `${c.model} ${c.spec} 表示「${c.standing}」`).join(' / '));
+
+/**
+ * 適合の可否は断定しない。
+ *
+ * アプリが知っているのは交換前の機器の**定格**であって、実際の負荷電流ではない。
+ * 34A の機器が付いていても実負荷が 20A なら 26A 品で足りるので、「容量不足」と
+ * 書くと成立する置換えを現場が捨てる。書いてよいのは大小の事実と、実負荷を
+ * 確認する必要があるという注意まで。
+ */
+const sn35Text = (await page.textContent('#app')).replace(/\s+/g, ' ');
+check('③に「容量不足」「使用不可」など適合の可否を断定する文言を出さない',
+  !/容量不足|容量が足りな|使用不可/.test(sn35Text),
+  (sn35Text.match(/容量不足|容量が足りな|使用不可/) || [])[0]);
+check('「基準より小さい」を出す画面には、実負荷を現場で確認する注意を添える',
+  sn35Text.includes('実際の負荷電流は定格とはかぎらない'),
+  (await page.$$('.load-note')).length ? '注意はあるが文面が違う' : '注意が無い');
+
+/**
+ * 大小に意味の無いカテゴリでは何も出さない。
+ *
+ * サーマルリレーの主スペック `setRangeA` は `{min, max}` の区間で、区間どうしに
+ * 大小は無い（TH-N18 の 1〜18A に対し TH-T18 は 0.12〜15A で、下限は下がり上限も下がる）。
+ * 判定できないものを黙って「基準以上」に倒さず、表示そのものを出さない。
+ */
+await gotoCategory('thermal');
+await search('TH-N18');
+await page.waitForSelector('.model.big');
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForTimeout(200);
+const thCards = await resultCards();
+check('サーマルリレーの生産終了品では、大小の表示が1件も出ない（整定範囲は区間で比較できない）',
+  thCards.length > 0 && thCards.every((c) => c.standing === '')
+  && (await page.$$('.standing')).length === 0,
+  `候補 ${thCards.length}件中 ${thCards.filter((c) => c.standing).length}件に表示`);
+check('大小の表示が無い画面には、実負荷の注意書きも出さない',
+  (await page.$$('.load-note')).length === 0);
+
 /* ---- 容量の取り違え防止（normLoose で同じ綴りになる型式） ---- */
 
 /**

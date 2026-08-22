@@ -26,7 +26,7 @@
  * `modelScope:"series"` が付いており、コアが互換判定から除外する。
  * 「その型式がいつ生産中止になり、いつまで修理できるか」を引くための行。
  */
-import { registerCategory } from '../core/registry.mjs';
+import { registerCategory, numericStanding } from '../core/registry.mjs';
 import { withinWindow, preferTrue, ascending, logRatio } from '../core/compat.mjs';
 import { evidenceRank } from '../core/evidence.mjs';
 import { num, esc } from '../core/util.mjs';
@@ -68,6 +68,15 @@ registerCategory({
   enrich(a, m) {
     return { currentDiff: Math.abs((a.specs?.ratedCurrentA ?? 0) - (m.specs?.ratedCurrentA ?? 0)) };
   },
+  /**
+   * 定格出力電流は接触器と同じく「小さい＝要注意」の一方向なので判定する。
+   *
+   * ただし旧機種30件（FR-E700）は置換え資料にしか載っておらず定格出力電流を
+   * キーごと持たないため、旧機種を基準にした組は全件 'unknown' になる。
+   * ここで 0 を補うと「0A は基準より小さくない」と読める判定が静かに混ざるので、
+   * numericStanding が値の不在を 'unknown' として返すことに任せる。
+   */
+  primaryStanding: (a, m) => numericStanding(a, m, 'ratedCurrentA'),
   rank(a, b) {
     return (
       preferTrue(a.isSuccessor, b.isSuccessor) ||
@@ -98,6 +107,16 @@ registerCategory({
       distance: logRatio,
     },
   ],
+  /**
+   * 主スペックの定格出力は大小を判定しない。
+   *
+   * 登録済みの27件はすべて安川の生産中止一覧の**シリーズ単位マスク**で、
+   * `ratedPowerW` を1件も持たない（`modelScope:"series"` なのでコアが互換判定から
+   * 外し、候補は常に0件になる）。比べる値も、比べる相手も存在しない。
+   * 個別型式が登録されたときに大小を語ってよいかは、アンプ単体ではなく
+   * モータ・エンコーダ・指令I/F の組み合わせで決まるため、実例が出るまで倒さない。
+   */
+  primaryStanding: () => null,
   gate(a, m) {
     if (a.id === m.successorId) return true;
     if (a.specs?.voltClass !== m.specs?.voltClass) return false;
