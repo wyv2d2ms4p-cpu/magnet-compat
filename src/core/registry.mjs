@@ -18,6 +18,7 @@ const categories = [];
  *   detailPanels(m, c)   … カテゴリ固有の詳細比較（任意）
  *   emptyNote(m)         … 候補0件のときの説明（任意・HTML）
  *   primaryStanding(a, m)… 主スペックが基準より小さいか（任意）。既定は「判定しない」
+ *   standingNote         … 大小の表示に添える1文（任意）。既定は量に依らない中立文
  */
 export function registerCategory(def) {
   if (!def.id || !def.label) throw new Error('カテゴリには id と label が必要です');
@@ -27,6 +28,11 @@ export function registerCategory(def) {
     // 既定は「判定しない」。大小に意味があるかはカテゴリ固有の知識なので、
     // 宣言していないカテゴリでコアが勝手に大小を語らない（新カテゴリの既定も同じ）。
     primaryStanding: () => null,
+    // 大小が何の話なのかもカテゴリ固有の知識。既定は空にしておき、
+    // 用意し忘れたカテゴリには loadCheckNote が量に依らない中立文を当てる。
+    // ここに電流の文を既定として置くと、宣言を忘れた瞬間に検出距離の画面へ
+    // 「実際の負荷電流は…」が出る（実際に起きた）。
+    standingNote: '',
     ...def,
   });
   return def;

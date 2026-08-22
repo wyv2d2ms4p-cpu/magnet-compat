@@ -313,6 +313,7 @@ const categories = [];
  *   detailPanels(m, c)   … カテゴリ固有の詳細比較（任意）
  *   emptyNote(m)         … 候補0件のときの説明（任意・HTML）
  *   primaryStanding(a, m)… 主スペックが基準より小さいか（任意）。既定は「判定しない」
+ *   standingNote         … 大小の表示に添える1文（任意）。既定は量に依らない中立文
  */
 function registerCategory(def) {
   if (!def.id || !def.label) throw new Error('カテゴリには id と label が必要です');
@@ -322,6 +323,11 @@ function registerCategory(def) {
     // 既定は「判定しない」。大小に意味があるかはカテゴリ固有の知識なので、
     // 宣言していないカテゴリでコアが勝手に大小を語らない（新カテゴリの既定も同じ）。
     primaryStanding: () => null,
+    // 大小が何の話なのかもカテゴリ固有の知識。既定は空にしておき、
+    // 用意し忘れたカテゴリには loadCheckNote が量に依らない中立文を当てる。
+    // ここに電流の文を既定として置くと、宣言を忘れた瞬間に検出距離の画面へ
+    // 「実際の負荷電流は…」が出る（実際に起きた）。
+    standingNote: '',
     ...def,
   });
   return def;
@@ -743,22 +749,36 @@ function belowCount(category, m, list) {
 }
 
 /**
+ * カテゴリが `standingNote` を用意していないときに当てる中立文。
+ *
+ * どの物理量にも掛かる書き方にしてある。ここに電流の文を置くと、宣言を忘れた
+ * カテゴリの画面へ「実際の負荷電流は…」が出る。実際、検出距離を主スペックに持つ
+ * センサ3カテゴリで一度これが起きた（文面がコアに直書きされていたため）。
+ * 中立文はぼやけるが、掛からない量の話をするよりはよい。
+ */
+const NEUTRAL_STANDING_NOTE = '実際に必要な値は現場の条件で決まるので、現場で確認してください。';
+
+/**
  * 「基準より小さい」候補があるときの注意書き。候補リストの前に1回だけ出す。
  *
  * **書けるのは大小という事実までで、適合の可否は書かない。** アプリが知っているのは
- * 交換前の機器の定格であって、実際の負荷電流ではない。34A の機器が付いていても
- * 実負荷が 20A なら 26A 品で足りるので、「容量不足」「使用不可」と書くと、
- * 成立する置換えを現場が捨てることになる。
+ * 交換前の機器について登録されている値であって、現場で実際に必要な値ではない。
+ * 34A の機器が付いていても実負荷が 20A なら 26A 品で足りるので、「容量不足」
+ * 「使用不可」と書くと、成立する置換えを現場が捨てることになる。
  *
- * 表示が無い候補について後半で断りを入れているのは、無印が「基準以上」と
- * 「比較できる定格が登録されていない」の2つを兼ねるため。無印を黙って
+ * 前後の2文（何と比べたのか／表示が無い候補は何なのか）は**このアプリの挙動の説明**
+ * なのでコアが持つ。真ん中の1文だけが物理量ごとに変わるので、カテゴリから受け取る。
+ * 全文をカテゴリに持たせると、挙動を変えたときに全カテゴリの文面を直して回ることになる。
+ *
+ * 表示が無い候補について断りを入れているのは、無印が「基準以上」と
+ * 「比較できる値が登録されていない」の2つを兼ねるため。無印を黙って
  * 「基準以上」と読ませない。
  */
-function loadCheckNote(n) {
+function loadCheckNote(category, n) {
   if (!n) return '';
-  return `<div class="load-note">「基準より小さい」は、交換前の機器の定格との比較です。
-    実際の負荷電流は定格とはかぎらないので、現場で確認してください。
-    表示が無い候補は、基準以上か、比較できる定格が登録されていないかのどちらかです。</div>`;
+  return `<div class="load-note">「基準より小さい」は、交換前の機器の登録値との比較です。
+    ${esc(category.standingNote || NEUTRAL_STANDING_NOTE)}
+    表示が無い候補は、基準以上か、比較できる値が登録されていないかのどちらかです。</div>`;
 }
 
 /**
@@ -1140,7 +1160,7 @@ function viewResult() {
       <span class="sub">${esc(m.maker)} ・ ${esc(formatSpec(ps, m))}</span>
     </div>
     <div class="sub">${esc(count)}</div>
-    ${loadCheckNote(belowCount(cat, m, list))}
+    ${loadCheckNote(cat, belowCount(cat, m, list))}
   </div>`;
 
   // 0件の理由はカテゴリごとに違う。説明を持っているカテゴリにはそれを言わせる
@@ -1277,6 +1297,14 @@ function baseRank(a, b) {
  */
 const currentStanding = (a, m) => numericStanding(a, m, 'ratedCurrentA');
 
+/**
+ * 大小の表示に添える1文。判定と同じ場所に置く。
+ *
+ * 定格使用電流の話なので「実負荷は定格とはかぎらない」が要点になる。
+ * 電磁開閉器も同じ量で判定しているので同じ文を使う。
+ */
+const CURRENT_STANDING_NOTE = '実際の負荷電流は定格とはかぎらないので、現場で確認してください。';
+
 function baseSummary(d) {
   return [
     { label: '定格使用電流', value: d.specs?.ratedCurrentA != null ? `${num(d.specs.ratedCurrentA)}A` : '―' },
@@ -1296,6 +1324,7 @@ registerCategory({
   rank: baseRank,
   summary: baseSummary,
   primaryStanding: currentStanding,
+  standingNote: CURRENT_STANDING_NOTE,
 });
 
 registerCategory({
@@ -1317,6 +1346,7 @@ registerCategory({
   rank: baseRank,
   summary: baseSummary,
   primaryStanding: currentStanding,
+  standingNote: CURRENT_STANDING_NOTE,
 });
 
 
@@ -1396,6 +1426,12 @@ registerCategory({
    * numericStanding が値の不在を 'unknown' として返すことに任せる。
    */
   primaryStanding: (a, m) => numericStanding(a, m, 'ratedCurrentA'),
+  /**
+   * 添える1文。接触器と同じ量・同じ要点なので文面も同じだが、カテゴリどうしは
+   * 互いに import しないので、文はここに持つ（インバータが接触器の文言に
+   * 追随する関係ではない。多重定格の話を足すなら、直すのはこの1行）。
+   */
+  standingNote: '実際の負荷電流は定格とはかぎらないので、現場で確認してください。',
   rank(a, b) {
     return (
       preferTrue(a.isSuccessor, b.isSuccessor) ||
@@ -1578,6 +1614,14 @@ const distanceSpec = {
  */
 const distanceStanding = (a, m) => numericStanding(a, m, 'sensingDistanceMM');
 
+/**
+ * 大小の表示に添える1文。判定と同じ場所に置く。
+ *
+ * 検出距離には「定格に対する実負荷」にあたるものが無い。決めるのは設置条件
+ * （ワークまでの距離・取付位置・反射面）なので、そちらを見に行かせる。
+ */
+const DISTANCE_STANDING_NOTE = '実際に必要な検出距離は設置条件で決まるので、現場で確認してください。';
+
 /** 検出距離の近さ。片方でも値が無ければ最下位（旧 dr:99 相当）。 */
 function distanceGap(a, m) {
   const r = logRatio(a.specs?.sensingDistanceMM, m.specs?.sensingDistanceMM);
@@ -1671,9 +1715,12 @@ const common = {
  * 同じ扱いにする。透過形は投光器と受光器の間隔、反射形はワークまでの距離だが、
  * どちらも「小さい＝そこまで届かない」で向きが一致する。
  */
-registerCategory({ ...common, id: 'proximity', label: '近接スイッチ', specDefs: [distanceSpec], primaryStanding: distanceStanding });
-registerCategory({ ...common, id: 'photo', label: 'フォトスイッチ', specDefs: [distanceSpec], primaryStanding: distanceStanding });
-registerCategory({ ...common, id: 'ultrasonic', label: '超音波センサ', specDefs: [distanceSpec], primaryStanding: distanceStanding });
+registerCategory({ ...common, id: 'proximity', label: '近接スイッチ', specDefs: [distanceSpec],
+  primaryStanding: distanceStanding, standingNote: DISTANCE_STANDING_NOTE });
+registerCategory({ ...common, id: 'photo', label: 'フォトスイッチ', specDefs: [distanceSpec],
+  primaryStanding: distanceStanding, standingNote: DISTANCE_STANDING_NOTE });
+registerCategory({ ...common, id: 'ultrasonic', label: '超音波センサ', specDefs: [distanceSpec],
+  primaryStanding: distanceStanding, standingNote: DISTANCE_STANDING_NOTE });
 
 /**
  * 特殊（熱間金属 / 光学式 / 導光路）。

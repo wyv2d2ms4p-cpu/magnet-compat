@@ -54,6 +54,14 @@ function baseRank(a, b) {
  */
 const currentStanding = (a, m) => numericStanding(a, m, 'ratedCurrentA');
 
+/**
+ * 大小の表示に添える1文。判定と同じ場所に置く。
+ *
+ * 定格使用電流の話なので「実負荷は定格とはかぎらない」が要点になる。
+ * 電磁開閉器も同じ量で判定しているので同じ文を使う。
+ */
+const CURRENT_STANDING_NOTE = '実際の負荷電流は定格とはかぎらないので、現場で確認してください。';
+
 function baseSummary(d) {
   return [
     { label: '定格使用電流', value: d.specs?.ratedCurrentA != null ? `${num(d.specs.ratedCurrentA)}A` : '―' },
@@ -73,6 +81,7 @@ registerCategory({
   rank: baseRank,
   summary: baseSummary,
   primaryStanding: currentStanding,
+  standingNote: CURRENT_STANDING_NOTE,
 });
 
 registerCategory({
@@ -94,4 +103,5 @@ registerCategory({
   rank: baseRank,
   summary: baseSummary,
   primaryStanding: currentStanding,
+  standingNote: CURRENT_STANDING_NOTE,
 });

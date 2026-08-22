@@ -310,7 +310,7 @@ function viewResult() {
       <span class="sub">${esc(m.maker)} ・ ${esc(formatSpec(ps, m))}</span>
     </div>
     <div class="sub">${esc(count)}</div>
-    ${loadCheckNote(belowCount(cat, m, list))}
+    ${loadCheckNote(cat, belowCount(cat, m, list))}
   </div>`;
 
   // 0件の理由はカテゴリごとに違う。説明を持っているカテゴリにはそれを言わせる

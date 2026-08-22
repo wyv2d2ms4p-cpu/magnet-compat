@@ -653,6 +653,77 @@ check('US-T50（500mm）の③で、400mm の候補に「基準より小さい�
   && us.smaller.length > 0 && us.smaller.every((c) => c.standing.includes('基準 500mm より小さい')),
   `基準 ${usBase} / 候補 ${usStanding.map((c) => `${c.model}(${c.spec}) 表示「${c.standing}」`).join(' ')}`);
 
+/* ---- 注意書きの文面を主スペックに合わせる ---- */
+
+/** ③の注意書き（`.load-note`）の全文。出ていなければ空文字 */
+async function loadNote() {
+  const el = await page.$('.load-note');
+  return el ? (await el.textContent()).replace(/\s+/g, ' ').trim() : '';
+}
+
+/**
+ * 注意書きを出す6カテゴリを、1画面ずつ実際に開いて文面を拾う。
+ *
+ * 文面はコアが持つ枠と、カテゴリが持つ真ん中の1文でできている。枠だけを見ると
+ * 「文面がある」ことしか分からないので、カテゴリ側の1文が主スペックの量に
+ * 合っているかまで見る。検出距離の画面に「実際の負荷電流は…」が出ていたのは、
+ * 文面がまるごとコアに直書きされていたため。
+ *
+ * 表はここに置くしかない（配布物は1つのIIFEに畳まれていて、ブラウザ側から
+ * レジストリを読めない）。カテゴリを足したときにこの表へ足し忘れても、
+ * 既定の文面は量に依らない中立文なので、掛からない量の話が出ることはない。
+ */
+const NOTE_SCREENS = [
+  { cat: 'contactor', model: 'S-N35', family: '電流系' },
+  { cat: 'starter', model: 'MSO-N20', family: '電流系' },
+  { cat: 'inverter', model: 'FR-E820-5.5K-1', family: '電流系' },
+  { cat: 'proximity', model: 'E2E-X12C318', family: '距離系' },
+  { cat: 'photo', model: 'E3Z-D61', family: '距離系' },
+  { cat: 'ultrasonic', model: 'US-T50', family: '距離系' },
+];
+const CURRENT_PHRASE = '実際の負荷電流は定格とはかぎらない';
+const DISTANCE_PHRASE = '実際に必要な検出距離は設置条件で決まる';
+
+const notes = [];
+for (const s of NOTE_SCREENS) {
+  await standingCards(s.cat, s.model);
+  notes.push({ ...s, text: await loadNote() });
+}
+const noteOf = (model) => notes.find((x) => x.model === model)?.text ?? '';
+const distanceNotes = notes.filter((x) => x.family === '距離系');
+const currentNotes = notes.filter((x) => x.family === '電流系');
+
+check('注意書きを出す6カテゴリすべてで、文面が空でない',
+  notes.length === 6 && notes.every((x) => x.text.length > 0),
+  notes.filter((x) => !x.text).map((x) => `${x.cat}/${x.model}`).join(' ') || `${notes.length}カテゴリ`);
+
+check('E3Z-D61（フォトスイッチ）の注意書きに「負荷電流」が出ない',
+  !!noteOf('E3Z-D61') && !noteOf('E3Z-D61').includes('負荷電流')
+  && noteOf('E3Z-D61').includes(DISTANCE_PHRASE),
+  noteOf('E3Z-D61'));
+
+check('S-N35（電磁接触器）の注意書きには従来どおり負荷電流の記述がある',
+  noteOf('S-N35').includes(CURRENT_PHRASE), noteOf('S-N35'));
+
+check('距離系3カテゴリの注意書きが、検出距離の話になっている（電流の話が混ざらない）',
+  distanceNotes.length === 3
+  && distanceNotes.every((x) => x.text.includes(DISTANCE_PHRASE) && !x.text.includes('負荷電流')),
+  distanceNotes.map((x) => `${x.cat}: ${x.text}`).join(' | '));
+
+check('電流系3カテゴリの注意書きが、定格と実負荷の話になっている',
+  currentNotes.length === 3 && currentNotes.every((x) => x.text.includes(CURRENT_PHRASE)),
+  currentNotes.map((x) => `${x.cat}: ${x.text}`).join(' | '));
+
+/**
+ * 量に依らない2文（何と比べたのか／表示が無い候補は何なのか）は、どのカテゴリでも出る。
+ * カテゴリ側の1文だけを差し替える設計なので、枠が欠けたらここで落ちる。
+ */
+check('どのカテゴリの注意書きにも、比較の対象と「表示が無い候補」の意味を書く',
+  notes.every((x) => x.text.includes('交換前の機器の登録値との比較')
+    && x.text.includes('基準以上か、比較できる値が登録されていない')),
+  notes.filter((x) => !x.text.includes('交換前の機器の登録値との比較')
+    || !x.text.includes('基準以上か、比較できる値が登録されていない')).map((x) => `${x.cat}: ${x.text}`).join(' | '));
+
 /* ---- 容量の取り違え防止（normLoose で同じ綴りになる型式） ---- */
 
 /**

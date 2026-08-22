@@ -2,7 +2,8 @@
 import { registerCategory } from '../core/registry.mjs';
 import { num } from '../core/util.mjs';
 import {
-  distanceSpec, distanceStanding, sensorGate, sensorEnrich, sensorRank, sensorSummary, wiringPanel,
+  distanceSpec, distanceStanding, DISTANCE_STANDING_NOTE,
+  sensorGate, sensorEnrich, sensorRank, sensorSummary, wiringPanel,
 } from './sensor-common.mjs';
 
 const common = {
@@ -21,9 +22,12 @@ const common = {
  * 同じ扱いにする。透過形は投光器と受光器の間隔、反射形はワークまでの距離だが、
  * どちらも「小さい＝そこまで届かない」で向きが一致する。
  */
-registerCategory({ ...common, id: 'proximity', label: '近接スイッチ', specDefs: [distanceSpec], primaryStanding: distanceStanding });
-registerCategory({ ...common, id: 'photo', label: 'フォトスイッチ', specDefs: [distanceSpec], primaryStanding: distanceStanding });
-registerCategory({ ...common, id: 'ultrasonic', label: '超音波センサ', specDefs: [distanceSpec], primaryStanding: distanceStanding });
+registerCategory({ ...common, id: 'proximity', label: '近接スイッチ', specDefs: [distanceSpec],
+  primaryStanding: distanceStanding, standingNote: DISTANCE_STANDING_NOTE });
+registerCategory({ ...common, id: 'photo', label: 'フォトスイッチ', specDefs: [distanceSpec],
+  primaryStanding: distanceStanding, standingNote: DISTANCE_STANDING_NOTE });
+registerCategory({ ...common, id: 'ultrasonic', label: '超音波センサ', specDefs: [distanceSpec],
+  primaryStanding: distanceStanding, standingNote: DISTANCE_STANDING_NOTE });
 
 /**
  * 特殊（熱間金属 / 光学式 / 導光路）。

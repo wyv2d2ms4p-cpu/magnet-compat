@@ -77,6 +77,12 @@ registerCategory({
    * numericStanding が値の不在を 'unknown' として返すことに任せる。
    */
   primaryStanding: (a, m) => numericStanding(a, m, 'ratedCurrentA'),
+  /**
+   * 添える1文。接触器と同じ量・同じ要点なので文面も同じだが、カテゴリどうしは
+   * 互いに import しないので、文はここに持つ（インバータが接触器の文言に
+   * 追随する関係ではない。多重定格の話を足すなら、直すのはこの1行）。
+   */
+  standingNote: '実際の負荷電流は定格とはかぎらないので、現場で確認してください。',
   rank(a, b) {
     return (
       preferTrue(a.isSuccessor, b.isSuccessor) ||

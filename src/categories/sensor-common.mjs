@@ -82,6 +82,14 @@ export const distanceSpec = {
  */
 export const distanceStanding = (a, m) => numericStanding(a, m, 'sensingDistanceMM');
 
+/**
+ * 大小の表示に添える1文。判定と同じ場所に置く。
+ *
+ * 検出距離には「定格に対する実負荷」にあたるものが無い。決めるのは設置条件
+ * （ワークまでの距離・取付位置・反射面）なので、そちらを見に行かせる。
+ */
+export const DISTANCE_STANDING_NOTE = '実際に必要な検出距離は設置条件で決まるので、現場で確認してください。';
+
 /** 検出距離の近さ。片方でも値が無ければ最下位（旧 dr:99 相当）。 */
 export function distanceGap(a, m) {
   const r = logRatio(a.specs?.sensingDistanceMM, m.specs?.sensingDistanceMM);
