@@ -50,6 +50,27 @@ async function search(model) {
   await page.click('[data-act="search"]');
 }
 
+/**
+ * ②確認画面の枠を DOM の出現順のまま拾う。
+ *
+ * 並び順は app.mjs の記述順にしか存在せず、入れ替えても「文言が画面のどこかにある」
+ * 検査は全部通ってしまう。ここで見るのは文字列の有無ではなく枠どうしの前後関係なので、
+ * `querySelectorAll`（＝文書順）で並びを取り、その添字を比較する。
+ *
+ * scopeNote / discontinuedNote / warningBox はどれも同じ `.warn` で描かれるため、
+ * 枠の種別は中の文言で見分ける（警告の本文そのものではなく、どの枠かを言い当てるための
+ * 目印として使う。`.warn` に種別クラスを足す実装になっても、この見分けは変わらない）。
+ */
+async function confirmBoxOrder() {
+  return page.$$eval('.warn, .cmp-info', (els) => els.map((e) => {
+    const t = e.textContent.replace(/\s+/g, ' ').trim();
+    if (e.classList.contains('cmp-info')) return '後継品枠';
+    if (t.includes('シリーズ単位の記載')) return 'scopeNote';
+    if (t.includes('生産終了')) return 'discontinuedNote';
+    return 'その他の警告';
+  }));
+}
+
 console.log(`file:// で起動: ${url}\n`);
 await page.goto(url);
 await page.waitForSelector('#app .chiprow');
@@ -132,6 +153,23 @@ const servoText = await page.textContent('#app');
 check('SGDM から生産中止シリーズに到達できる', (await page.textContent('.model.big')).includes('SGDM'));
 check('シリーズ単位であることを明示する', servoText.includes('シリーズ単位'));
 check('生産中止日と修理対応期限が出る', servoText.includes('2015.3.20') && servoText.includes('2025.3.20'), servoText.includes('2025.3.20') ? '' : '修理期限が無い');
+
+/**
+ * ②の枠の並び順（scopeNote が discontinuedNote より先）を DOM順で固定する。
+ *
+ * SGDM は `modelScope:"series"` と `discontinued` の両方が立つレコードで、
+ * 2つの全幅警告が同じ画面に並ぶ数少ない例。順序が入れ替わると、読み手は先に
+ * 「この型式は生産終了です。新規発注はできません」を読む。しかしこの行はそもそも
+ * 個別の発注可能型式ではない（`SGDM / SGDH / SGDP …` というシリーズ単位のマスク）ので、
+ * 発注番号として実在する型式が終息した、と読み替えられてしまう。
+ * 「これは型式ではない」を先に言い切る scopeNote が先。
+ */
+const servoBoxes = await confirmBoxOrder();
+const scopeAt = servoBoxes.indexOf('scopeNote');
+const servoDiscAt = servoBoxes.indexOf('discontinuedNote');
+check('②でシリーズ単位の注意が生産終了の警告より先に出る（DOM順）',
+  scopeAt >= 0 && servoDiscAt >= 0 && scopeAt < servoDiscAt,
+  `枠の並び: ${servoBoxes.join(' → ')}`);
 
 await page.click('[data-act="step"][data-v="3"]');
 await page.waitForTimeout(150);
@@ -243,6 +281,20 @@ const discWarns = await page.$$eval('.warn', (els) => els.map((e) => e.textConte
 check('②画面の警告に「生産終了」と後継型式が出る',
   discWarns.some((t) => t.includes('生産終了') && t.includes('FR-E820-3.7K-1')),
   discWarns.join(' | '));
+
+/**
+ * ②の枠の並び順（discontinuedNote が後継品枠より先）を DOM順で固定する。
+ *
+ * 後継品枠（`.cmp-info`）は「FR-E720-3.7K → FR-E820-3.7K-1」と置換え先を示す枠で、
+ * 生産終了の警告より先に出ると、既設品がまだ発注できるうえでの参考情報として読める。
+ * 「新規発注はできない」が先にあって初めて、後継品枠が代替の提示になる。
+ */
+const invBoxes = await confirmBoxOrder();
+const invDiscAt = invBoxes.indexOf('discontinuedNote');
+const succAt = invBoxes.indexOf('後継品枠');
+check('②で生産終了の警告が後継品枠より先に出る（DOM順）',
+  invDiscAt >= 0 && succAt >= 0 && invDiscAt < succAt,
+  `枠の並び: ${invBoxes.join(' → ')}`);
 
 /**
  * 置換えの条件（FR-E8AT03 が要ること）が現場に届いていること。
