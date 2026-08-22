@@ -41,6 +41,16 @@ registerCategory({
       distance: (a, b) => 1 - rangeOverlap(a, b),
     },
   ],
+  /**
+   * 主スペックの整定電流調整範囲は大小を判定しない。
+   *
+   * `setRangeA` は `{min, max}` の区間で、区間どうしに「小さい／大きい」は無い。
+   * TH-N18（1〜18A）に対する TH-T18（0.12〜15A）は下限が下がり上限が下がる。
+   * どちらか片方の端だけを取り出して比べると、選んだ端しだいで結論が反転するので、
+   * 大小を語れるふりをしない。重なり率（`overlap`）と保護方式は今までどおり
+   * `rank` と `detailPanels` が扱う。
+   */
+  primaryStanding: () => null,
   gate(a, m) {
     if (a.id === m.successorId) return true;
     // 保護方式が違っても候補には出す（バッジで明示し、順位で落とす）

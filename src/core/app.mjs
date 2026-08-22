@@ -3,7 +3,7 @@ import { esc, normLoose, normExact, num, mountingOptions, successorChain } from 
 import { store, devicesOf, makersOf } from './store.mjs';
 import { allCategories, getCategory, primarySpec, distinguishingSpec, formatSpec, formatSpecValue } from './registry.mjs';
 import { computeCompatibles } from './compat.mjs';
-import { candidateCard, specGrid, dimDiagram, statusBadges, noteBox, warningBox, scopeNote, discontinuedNote, replacementLine } from './ui.mjs';
+import { candidateCard, specGrid, dimDiagram, statusBadges, noteBox, warningBox, scopeNote, discontinuedNote, replacementLine, zoneHead, belowCount, loadCheckNote } from './ui.mjs';
 import { evidenceRow } from './evidence.mjs';
 
 const S = {
@@ -286,6 +286,22 @@ function viewResult() {
   const ps = primarySpec(cat);
   const list = computeCompatibles(m, cat, { mounting: S.mounting });
 
+  /**
+   * 候補を根拠で2分する。判定そのもの（gate / rank / 並び順）は触らず、
+   * `computeCompatibles` が返した順番のまま `isSuccessor` で振り分けるだけ。
+   * どのカテゴリの `rank` も後継品を先頭に置くので、分けても候補の前後関係は変わらない。
+   */
+  const succ = list.filter((c) => c.isSuccessor);
+  const judged = list.filter((c) => !c.isSuccessor);
+  // 見出しは両方に中身があるときだけ。片方しか無い列に見出しを付けても、
+  // 対比する相手がいないので情報が増えない（旧機種インバータ30件は必ず後継1件）。
+  const split = succ.length > 0 && judged.length > 0;
+
+  // 合算した件数は、根拠の違う候補を1つの数字にまとめてしまう。分けたときだけ内訳を出す
+  const count = split
+    ? `互換品候補 ${list.length}件（メーカー指定の後継品 ${succ.length}件 / 当アプリの判定による候補 ${judged.length}件）`
+    : `互換品候補 ${list.length}件`;
+
   // 型式を画面で最大に見せる場所なので、生産終了バッジは他の呼び出し箇所と同様にここでも出す。
   // バッジが無いと「発注してはいけない型式」が一番目立つ見た目になる。
   const head = `<div class="panel">
@@ -293,16 +309,29 @@ function viewResult() {
       <span class="mono big">${esc(m.model)}</span>${statusBadges(m)}
       <span class="sub">${esc(m.maker)} ・ ${esc(formatSpec(ps, m))}</span>
     </div>
-    <div class="sub">互換品候補 ${list.length}件</div>
+    <div class="sub">${esc(count)}</div>
+    ${loadCheckNote(cat, belowCount(cat, m, list))}
   </div>`;
 
   // 0件の理由はカテゴリごとに違う。説明を持っているカテゴリにはそれを言わせる
   const empty = cat.emptyNote(m) ||
     `<b class="amber">互換候補が登録されていません。</b>
      <div>電気的に成立しない組み合わせ（出力極性・配線本数の相違）は候補から除外しています。</div>`;
-  const body = list.length
-    ? list.map((c, i) => candidateCard(cat, m, c, i)).join('')
-    : `<div class="panel empty-note">${empty}</div>`;
+  /**
+   * カードに渡す添字は分割前の通し番号のまま。
+   *
+   * `candidateCard` は添字0に「候補No.1」バッジを付ける。ゾーンごとに数え直すと、
+   * 公式後継の隣で判定候補の先頭が「候補No.1」を名乗ることになり、
+   * 分けた意味（根拠が違う）が見た目で消える。
+   */
+  const zone = (cs) => cs.map((c) => candidateCard(cat, m, c, list.indexOf(c))).join('');
+  const body = !list.length
+    ? `<div class="panel empty-note">${empty}</div>`
+    : split
+      ? zoneHead('succ', 'メーカー指定の後継品') + zone(succ)
+        + zoneHead('judged', '当アプリの判定による候補',
+          'メーカーが後継として指定した型式ではありません。') + zone(judged)
+      : zone(list);
 
   return `${head}${body}
     <div class="panel">

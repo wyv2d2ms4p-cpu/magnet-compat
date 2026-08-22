@@ -140,6 +140,85 @@ export function specGrid(category, d) {
     `<div class="spec"><div class="l">${esc(r.label)}</div><div class="v">${esc(r.value)}</div></div>`).join('')}</div>`;
 }
 
+/**
+ * ③の候補リストのゾーン見出し。
+ *
+ * 「メーカーが後継として指定した1件」と「当アプリが窓や重なりで拾った候補」は
+ * 根拠の強さが違う。1つの列に並べると、公式後継が候補No.1として並ぶだけになり、
+ * 「No.1がだめならNo.2で代用」と読める。見出しで根拠を分けて、後者が
+ * メーカーの保証ではないことを列の入口で言う。
+ *
+ * `.zone-head` は `.card` の外側に置く（カード内の見出しにすると、1件目の候補に
+ * 属する説明のように読める）。
+ */
+export function zoneHead(kind, title, note) {
+  return `<div class="zone-head ${esc(kind)}"><div class="t">${esc(title)}</div>${
+    note ? `<div class="n">${esc(note)}</div>` : ''}</div>`;
+}
+
+/**
+ * 主スペックが基準より小さい候補の数。
+ *
+ * `primaryStanding` は 'below' / 'atOrAbove' / 'unknown' / null を返す。
+ * ここで数えるのは 'below' だけで、'unknown'（値が無くて比較できない）を
+ * 小さい側にも大きい側にも寄せない。
+ */
+export function belowCount(category, m, list) {
+  return list.filter((c) => category.primaryStanding(c, m) === 'below').length;
+}
+
+/**
+ * カテゴリが `standingNote` を用意していないときに当てる中立文。
+ *
+ * どの物理量にも掛かる書き方にしてある。ここに電流の文を置くと、宣言を忘れた
+ * カテゴリの画面へ「実際の負荷電流は…」が出る。実際、検出距離を主スペックに持つ
+ * センサ3カテゴリで一度これが起きた（文面がコアに直書きされていたため）。
+ * 中立文はぼやけるが、掛からない量の話をするよりはよい。
+ */
+const NEUTRAL_STANDING_NOTE = '実際に必要な値は現場の条件で決まるので、現場で確認してください。';
+
+/**
+ * 「基準より小さい」候補があるときの注意書き。候補リストの前に1回だけ出す。
+ *
+ * **書けるのは大小という事実までで、適合の可否は書かない。** アプリが知っているのは
+ * 交換前の機器について登録されている値であって、現場で実際に必要な値ではない。
+ * 34A の機器が付いていても実負荷が 20A なら 26A 品で足りるので、「容量不足」
+ * 「使用不可」と書くと、成立する置換えを現場が捨てることになる。
+ *
+ * 前後の2文（何と比べたのか／表示が無い候補は何なのか）は**このアプリの挙動の説明**
+ * なのでコアが持つ。真ん中の1文だけが物理量ごとに変わるので、カテゴリから受け取る。
+ * 全文をカテゴリに持たせると、挙動を変えたときに全カテゴリの文面を直して回ることになる。
+ *
+ * 表示が無い候補について断りを入れているのは、無印が「基準以上」と
+ * 「比較できる値が登録されていない」の2つを兼ねるため。無印を黙って
+ * 「基準以上」と読ませない。
+ */
+export function loadCheckNote(category, n) {
+  if (!n) return '';
+  return `<div class="load-note">「基準より小さい」は、交換前の機器の登録値との比較です。
+    ${esc(category.standingNote || NEUTRAL_STANDING_NOTE)}
+    表示が無い候補は、基準以上か、比較できる値が登録されていないかのどちらかです。</div>`;
+}
+
+/**
+ * 候補の主スペックが基準より小さいことの表示。
+ *
+ * 出すのは 'below' のときだけ。'atOrAbove' に「基準以上」と出すと、それ自体が
+ * 使えるという保証に読める（実負荷を確認しないと決まらないのは大きい側も同じ）。
+ * 'unknown' と null に何も出さないのは、判定していないものを判定したように
+ * 見せないため。どちらも無印になるが、その断りは loadCheckNote が引き受ける。
+ *
+ * 置き場所は主スペックの値の直下。バッジ行に混ぜると「生産終了」「要確認」と
+ * 同じ橙のピルが並び、どれが何の話なのか見分けがつかなくなる。
+ */
+function standingMark(category, m, c) {
+  if (category.primaryStanding(c, m) !== 'below') return '';
+  const ps = primarySpec(category);
+  // 頭の △ は、カード内のバッジで「相違あり」を表しているのと同じ記号。値の直下に
+  // 置くと主スペック（同じ橙）と地続きに見えるので、行の始まりを記号で示す。
+  return `<span class="standing below">△ 基準 ${esc(formatSpec(ps, m))} より小さい</span>`;
+}
+
 /** 候補カード1件 */
 export function candidateCard(category, m, c, index) {
   const ps = primarySpec(category);
@@ -175,6 +254,7 @@ export function candidateCard(category, m, c, index) {
       </div>
       <div class="card-right">
         <div class="primary-spec mono">${esc(formatSpec(ps, c))}</div>
+        ${standingMark(category, m, c)}
         ${dimVerdict}
       </div>
     </div>
