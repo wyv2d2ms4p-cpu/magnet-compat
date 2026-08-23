@@ -465,6 +465,62 @@ check('FR-E720-3.7K の③には見出しが出ない（候補が後継品1件�
 check('分けていない画面の件数表示は従来どおり内訳を付けない',
   (await countLine()) === '互換品候補 1件', await countLine());
 
+/* ---- 候補カードの添字は分割前の通し番号のまま ---- */
+
+/** ③の候補カードを、そのカードに付いているバッジの文言つきで文書順に拾う */
+async function cardBadges() {
+  return page.$$eval('.card', (els) => els.map((e) => ({
+    model: e.querySelector('.model').textContent.trim(),
+    badges: [...e.querySelectorAll('.badge')].map((b) => b.textContent.trim()),
+  })));
+}
+
+/**
+ * 分けた③に「候補No.1」バッジを出さない。
+ *
+ * `candidateCard` はこのバッジを添字0にだけ付ける。`viewResult` がゾーンごとに
+ * 添字を数え直すと、公式後継の隣で判定側の先頭が「候補No.1」を名乗り、
+ * 「No.1がだめならNo.2で代用」という読みが戻る。根拠で分けた意味が見た目で消える。
+ *
+ * 2ゾーンに分かれていること自体も同じ検査で見る。分割が壊れて1列に戻ると先頭は
+ * 後継品（＝「メーカー後継品」バッジ）になるので「候補No.1」はやはり出ず、
+ * 出ないことだけを見る検査はその状態でも黙って通ってしまう。
+ */
+await gotoCategory('contactor');
+await search('S-N18');
+await page.waitForSelector('.model.big');
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForTimeout(200);
+const sn18Split = await resultZones();
+const sn18Numbered = (await cardBadges()).filter((c) => c.badges.includes('候補No.1'));
+check('2ゾーンに分けた③には「候補No.1」バッジが1つも出ない（添字をゾーンごとに数え直さない）',
+  sn18Split.length === 2 && sn18Split.every((z) => z.models.length > 0)
+  && sn18Numbered.length === 0,
+  sn18Numbered.length
+    ? `バッジの付いた候補: ${sn18Numbered.map((c) => c.model).join(' ')}`
+    : `ゾーン: ${sn18Split.map((z) => `${z.title || '(見出し無し)'}:${z.models.length}件`).join(' → ')}`);
+
+/**
+ * 反対側。後継品を持たない型式は分割しないので、先頭が「候補No.1」を名乗る。
+ *
+ * 上の検査は「出ない」ことしか見ていないため、バッジを描く実装ごと消しても通る。
+ * 今もバッジが出る画面を1つ押さえて、上の検査が空振りしていないことを示す。
+ * S-T10 は `successorId` を持たない現行品なので、③は見出し無しの1列になる。
+ */
+await gotoCategory('contactor');
+await search('S-T10');
+await page.waitForSelector('.model.big');
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForTimeout(200);
+const st10Cards = await cardBadges();
+const st10Numbered = st10Cards.filter((c) => c.badges.includes('候補No.1'));
+check('後継品を持たない型式の③では、先頭の候補に「候補No.1」バッジが出る',
+  (await page.$$('.zone-head')).length === 0
+  && st10Cards.length > 0 && st10Numbered.length === 1
+  && st10Numbered[0].model === st10Cards[0].model,
+  `候補 ${st10Cards.length}件 / 先頭 ${st10Cards[0]?.model}`
+  + ` / バッジの付いた候補 ${st10Numbered.map((c) => c.model).join(' ') || 'なし'}`);
+
 /* ---- 主スペックが基準より小さい候補を明示する ---- */
 
 /**
@@ -723,6 +779,29 @@ check('どのカテゴリの注意書きにも、比較の対象と「表示が�
     && x.text.includes('基準以上か、比較できる値が登録されていない')),
   notes.filter((x) => !x.text.includes('交換前の機器の登録値との比較')
     || !x.text.includes('基準以上か、比較できる値が登録されていない')).map((x) => `${x.cat}: ${x.text}`).join(' | '));
+
+/* ---- 比較できる値が無い組（'unknown'）では、大小の表示も注意書きも出さない ---- */
+
+/**
+ * 旧機種インバータ30件は定格出力電流をキーごと持たないので、これを基準にした組は
+ * 全件 `primaryStanding` が 'unknown' になる（`numericStanding` は値の不在を
+ * 'atOrAbove' に倒さない）。'unknown' は「基準以上」ではないので大小の表示は出さず、
+ * 'below' が0件なので注意書きも出ない。
+ *
+ * 基準の主スペックが「―」（＝キーごと持たない）であることを先に確かめてから見る。
+ * 候補が0件になったり、旧機種に定格が登録されたりして 'unknown' の経路を通らなく
+ * なったとき、「表示が無い」ことだけを見る検査は黙って通ってしまう。
+ * サーマルリレーの検査（判定しないカテゴリ＝null）とは別の経路で、こちらは
+ * 判定を宣言したカテゴリの中で値が無い組が通る。
+ */
+const legacyCards = await standingCards('inverter', 'FR-E720-3.7K');
+const legacyBase = await baseSpec();
+check('FR-E720-3.7K（定格出力電流を持たない）の③では、大小の表示が1件も出ない',
+  legacyBase === '―' && legacyCards.length > 0
+  && legacyCards.every((c) => c.standing === '') && (await page.$$('.standing')).length === 0,
+  `基準 ${legacyBase} / 候補 ${legacyCards.map((c) => `${c.model}(${c.spec}) 表示「${c.standing}」`).join(' ') || 'なし'}`);
+check('FR-E720-3.7K の③には実負荷の注意書きも出さない（比較できない組を「基準より小さい」に数えない）',
+  (await page.$$('.load-note')).length === 0, await loadNote());
 
 /* ---- 容量の取り違え防止（normLoose で同じ綴りになる型式） ---- */
 
