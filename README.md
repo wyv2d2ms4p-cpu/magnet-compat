@@ -11,7 +11,7 @@
 ```bash
 npm install        # playwright のみ（テスト用）
 npm run build      # dist/index.html を生成
-npm run check      # データ検証 → legacy検証 → ビルド → 回帰 → 互換判定 → スモーク → 拡張性
+npm run check      # データ検証 → legacy検証 → ビルド → 回帰 → 互換判定 → 0件パネル → スモーク → 拡張性
 ```
 
 | コマンド | 内容 |
@@ -21,6 +21,7 @@ npm run check      # データ検証 → legacy検証 → ビルド → 回帰 �
 | `npm run verify:legacy` | `data/legacy/*.tsv` の列構成・型式重複・後継型式の実在検査 |
 | `npm run regress` | 全431型式の候補リストを移行元の判定と突合 |
 | `npm run test:compat` | インバータの互換判定（電圧クラス・電源相数・容量帯の窓）を直接検証 |
+| `npm run test:sensor` | センサー系の0件パネルが名乗る条件が `sensorGate` の必要条件であることの検算 |
 | `npm run smoke` | `file://` で実際に開いて動作確認 |
 | `npm run test:ext` | カテゴリ追加が2ファイルで完結することの確認 |
 

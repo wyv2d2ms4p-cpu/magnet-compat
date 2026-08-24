@@ -13,7 +13,8 @@
     "regress": "node tools/regress.mjs",
     "smoke": "node tools/smoke.mjs",
     "test:compat": "node tools/test-compat.mjs",
-    "check": "node tools/verify-data.mjs && node tools/verify-legacy.mjs && node build.mjs && node tools/regress.mjs && node tools/test-compat.mjs && node tools/smoke.mjs && node tools/test-extensibility.mjs",
+    "test:sensor": "node tools/test-sensor-empty.mjs",
+    "check": "node tools/verify-data.mjs && node tools/verify-legacy.mjs && node build.mjs && node tools/regress.mjs && node tools/test-compat.mjs && node tools/test-sensor-empty.mjs && node tools/smoke.mjs && node tools/test-extensibility.mjs",
     "test:ext": "node tools/test-extensibility.mjs"
   },
   "devDependencies": {
