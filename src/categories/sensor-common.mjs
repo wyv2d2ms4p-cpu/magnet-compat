@@ -110,6 +110,24 @@ export function sensorGate(a, m) {
   return false;
 }
 
+/**
+ * 候補0件のときの説明。センサー4カテゴリで共有する。
+ *
+ * この文面は元コアの既定文（`src/core/app.mjs`）だった。しかし後段の2条件
+ * ——出力極性（`polarityOK`）と配線本数（`wireCount`）——は `sensorGate` にしか無く、
+ * インバータ・接触器・電磁開閉器・サーマルの gate は参照していない。
+ * コアに置いたままだと、それらのカテゴリの0件画面が「実際には使っていない除外理由」を
+ * 名乗ることになる（インバータの0件20件で実際にそうなっていた）。
+ * **除外理由を語れるのは、その条件を持っている側だけ**なので、判定と同じ場所に置く。
+ *
+ * gate を変えたらこの文面も追随させること。名指ししている2条件はすぐ上の
+ * `sensorGate` にある。
+ */
+export function sensorEmptyNote() {
+  return `<b class="amber">互換候補が登録されていません。</b>
+     <div>電気的に成立しない組み合わせ（出力極性・配線本数の相違）は候補から除外しています。</div>`;
+}
+
 export function sensorEnrich(a, m) {
   return {
     methodMatch: methodOK(a.specs?.detectMethod, m.specs?.detectMethod),

@@ -814,6 +814,111 @@ check('FR-E720-3.7K（定格出力電流を持たない）の③では、大小�
 check('FR-E720-3.7K の③には実負荷の注意書きも出さない（比較できない組を「基準より小さい」に数えない）',
   (await page.$$('.load-note')).length === 0, await loadNote());
 
+/* ---- ③の0件パネルは、そのカテゴリの gate が実際に使っている理由だけを言う ---- */
+
+/**
+ * ③の0件パネル（`.empty-note`）の全文。パネルが無ければ空文字。
+ *
+ * 以下の検査はどれも「この語が出ない」を含むので、**パネルが出ていること自体を
+ * 毎回いっしょに要求する**。0件の画面に到達できなくなったとき（候補が付いた・
+ * 型式が消えた・検索が曖昧一致に落ちた）、出ないことだけを見る検査は
+ * 対象0件のまま黙って全部PASSになる。
+ */
+async function emptyNoteText() {
+  const el = await page.$('.empty-note');
+  return el ? (await el.textContent()).replace(/\s+/g, ' ').trim() : '';
+}
+
+/**
+ * インバータの0件画面（FR-E820-0.1K-1 ＝ 3相200V・0.8A）。
+ *
+ * この画面が0件なのは、登録が無いからでも電気的に成立しないからでもない。
+ * 同じ電圧クラス・同じ電源相数の型式は12件登録済みで、定格出力電流が gate の窓に
+ * 入らないだけ（隣の FR-E820-0.2K-1 は 1.5A）。コアの既定文は `sensorGate` にしか
+ * 無い2条件（出力極性・配線本数）を9カテゴリ共通で名乗っていたため、
+ * インバータの0件20件はここで「実際には使っていない除外理由」を読まされていた。
+ */
+const invZeroCards = await standingCards('inverter', 'FR-E820-0.1K-1');
+const invZeroNote = await emptyNoteText();
+const invZeroScreen = (await page.textContent('#app')).replace(/\s+/g, ' ');
+check('FR-E820-0.1K-1 の③が候補0件で、0件パネルが出る（以下4件の足場）',
+  invZeroCards.length === 0 && invZeroNote.length > 0,
+  `候補 ${invZeroCards.length}件 / パネル「${invZeroNote || 'なし'}」`);
+
+check('インバータの0件パネルに、gate が見ていない除外理由（出力極性・配線本数）を書かない',
+  invZeroNote.length > 0 && !invZeroNote.includes('出力極性') && !invZeroNote.includes('配線本数'),
+  invZeroNote);
+
+// 0件は登録の有無とは限らない。同クラス・同相の型式が登録済みで窓を外れているだけの
+// ことがあるので、③の画面のどこにもこの断定を出さない（見出しに限らず画面全体で見る）
+check('インバータの0件画面に「登録されていません」と断定しない',
+  invZeroNote.length > 0 && !invZeroScreen.includes('登録されていません'),
+  invZeroScreen.slice(0, 200));
+
+/**
+ * インバータ向けの文面が出ていること。何を見るかは要素で決める。
+ *
+ * 見るのは「gate が実際に使っている3条件の名前」と「範囲外は使えないことを意味しない」
+ * の両方。前者だけ（たとえば「電源相数」の1語）を見る検査にすると、後半を落としても
+ * 通ってしまう。後半はこの段の目的そのもの——アプリが知っているのは登録された定格だけで
+ * 現場の実負荷は知らない、という段4と同じ原則——なので、条件の名前と同じ強さで固定する。
+ * ±30% の窓幅は文面に出していないので、ここでも数値は見ない
+ * （`withinWindow` は大きい方を基準に取るため、基準値から見た幅は上下で非対称になる）。
+ */
+const INV_EMPTY_PARTS = ['電圧クラス', '電源相数', '定格出力電流',
+  '使えないことを意味しません', '現場の負荷', 'メーカーの選定資料'];
+const invMissing = INV_EMPTY_PARTS.filter((p) => !invZeroNote.includes(p));
+check('インバータの0件パネルが、判定に使う3条件と「範囲外＝使えないではない」を書く',
+  invZeroNote.length > 0 && invMissing.length === 0,
+  `欠けている要素: ${invMissing.join(' / ') || 'なし'} / パネル「${invZeroNote}」`);
+
+// 0件パネルにも③の他の文言と同じ制約が掛かる（`smoke` の S-N35 の検査と同じ原則）。
+// 「該当なし」を「使えない」と書き換えた瞬間に、成立する置換えを現場が捨てる
+check('インバータの0件パネルで適合の可否を断定しない（「使用不可」「代替なし」など）',
+  invZeroNote.length > 0 && !/使用不可|代替なし|容量不足|容量が足りな/.test(invZeroNote),
+  (invZeroNote.match(/使用不可|代替なし|容量不足|容量が足りな/) || [])[0]);
+
+/**
+ * センサー側は従来どおり。移設した文面がセンサーの0件画面に出続けること。
+ *
+ * 対象に IM5132（ifm・□40角・PNP NO 3線式）を選んだのは、名指ししている条件が
+ * 実際に効いている画面だから。同じ `compatGroup`「PX角型」・同じ `threadSize`「角型」を
+ * 持つ GX-F8B / GX-F12B が `data/proximity.json` に居るが、どちらも NPN なので
+ * `polarityOK` が落とし、候補が0件になる。gate を通り抜けたうえで極性だけで
+ * 落ちている組なので、「出力極性の相違で除外している」がそのまま真になる。
+ */
+const proxZeroCards = await standingCards('proximity', 'IM5132');
+const proxZeroNote = await emptyNoteText();
+check('近接スイッチの0件型式（IM5132）の③に、従来どおり出力極性・配線本数の説明が出る',
+  proxZeroCards.length === 0
+  && proxZeroNote.includes('出力極性') && proxZeroNote.includes('配線本数')
+  && proxZeroNote.includes('候補から除外しています'),
+  `候補 ${proxZeroCards.length}件 / パネル「${proxZeroNote || 'なし'}」`);
+
+/**
+ * サーボの0件画面は今回の対象外。文面が変わっていないことを見る。
+ *
+ * 全文一致にしないのは、代替シリーズ名が `data/servo.json` 由来（`Σ-Xシリーズ`）で、
+ * データが増えたときに文面の検査がデータの検査に化けるため。代わりに、サーボ固有の
+ * 3要素が残っていることと、**他カテゴリの文面が混ざっていないこと**を見る。
+ * コアの既定文やセンサーの文面に差し替わる壊れ方は、この後半で落ちる。
+ */
+await gotoCategory('servo');
+await search('SGDM');
+await page.waitForSelector('.model.big');
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForTimeout(200);
+const servoZeroNote = await emptyNoteText();
+const servoLeak = ['出力極性', '配線本数', '電源相数', '判定条件を満たす型式']
+  .filter((p) => servoZeroNote.includes(p));
+check('サーボの0件パネルが従来どおり（シリーズ単位の説明のままで、他カテゴリの文面が混ざらない）',
+  (await page.$$('.card')).length === 0
+  && servoZeroNote.includes('シリーズ単位のため、型式ごとの互換判定は行いません')
+  && servoZeroNote.includes('メーカーが案内する代替は')
+  && servoZeroNote.includes('個別型式を確定させたうえでメーカー選定資料で確認してください')
+  && servoLeak.length === 0,
+  servoLeak.length ? `他カテゴリの語が混ざった: ${servoLeak.join(' / ')}` : servoZeroNote);
+
 /* ---- 容量の取り違え防止（normLoose で同じ綴りになる型式） ---- */
 
 /**
