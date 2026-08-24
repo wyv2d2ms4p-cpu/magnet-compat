@@ -109,7 +109,7 @@ BCN-C21002-214C ただ1つで、これは定格表ではなく置換え対応表
 | `test-compat` 1 | 現行品40件すべてが定格出力電流と定格容量を持つ |
 | `test-compat` 14 | 旧機種30件の候補は登録した後継品ちょうど1件 |
 | `test-compat` 16 | 現行品を基準にしたとき候補に旧機種が1件も混ざらない |
-| `verify-data` 13 | 検索で同じ綴りになる型式に見分ける材料がある（衝突 8 組） |
+| `verify-data` 13 | 検索で同じ綴りになる型式に見分ける材料がある |
 | `verify-legacy` 7 | 未取得を表す埋め草（0 / - / -- / 不明 / N/A / なし）がどの列にも入っていない |
 | `verify-legacy` 10 | motorKW と specs.ratedPowerKW が一致する |
 
@@ -159,7 +159,7 @@ BCN-C21002-214C ただ1つで、これは定格表ではなく置換え対応表
 
 | 検査 | 名前 |
 |---|---|
-| `verify-data` 14 | replacementNote を持つのは生産終了品だけ（現在 5 件） |
+| `verify-data` 14 | replacementNote を持つのは生産終了品だけ |
 | `verify-data` 15 | replacementNote の partType / partModel が両方とも非空文字列 |
 | `verify-data` 16 | replacementNote を持つレコードは note を持たない（二重管理の禁止） |
 | `verify-legacy` 13 | TSV の note 列と replacementNote が一致する |
@@ -219,7 +219,7 @@ TSV 自体の規約（検査1〜7）と、TSV ⇔ JSON の照合（検査8〜13�
 
 | 検査 | 名前 |
 |---|---|
-| `verify-legacy` 8 | TSV の行数と data/inverter.json の旧機種件数が一致する（TSV 30 行） |
+| `verify-legacy` 8 | TSV の行数と data/inverter.json の旧機種件数が一致する |
 | `verify-legacy` 9 | TSV の型式と JSON の旧機種が過不足なく1対1で対応する |
 | `verify-legacy` 10 | motorKW と specs.ratedPowerKW が一致する |
 | `verify-legacy` 11 | phaseIn / voltageIn と specs.voltage / specs.voltClass が一致する |
@@ -861,7 +861,7 @@ CSS を変えなかったことは PR #16 直前のコミット 6c81c12 で明�
 
 | 検査 | 名前 |
 |---|---|
-| `verify-data` 14 | replacementNote を持つのは生産終了品だけ（現在 5 件） |
+| `verify-data` 14 | replacementNote を持つのは生産終了品だけ |
 | `smoke` 52 | 置換えの条件を持たない生産終了品の後継品枠には、その行が出ない |
 
 検査14 の名前には件数（5件）が入るので、他カテゴリへ足せば検査名の数字が変わります。
@@ -1063,12 +1063,17 @@ CSS を変えなかったことは PR #16 直前のコミット 6c81c12 で明�
 | 5 | model / series / srcModel が空でない |
 | 6 | successors が data/ 直下の JSON に実在する型式である |
 | 7 | 未取得を表す埋め草（0 / - / -- / 不明 / N/A / なし）がどの列にも入っていない |
-| 8 | TSV の行数と data/inverter.json の旧機種件数が一致する（TSV 30 行） |
+| 8 | TSV の行数と data/inverter.json の旧機種件数が一致する |
 | 9 | TSV の型式と JSON の旧機種が過不足なく1対1で対応する |
 | 10 | motorKW と specs.ratedPowerKW が一致する |
 | 11 | phaseIn / voltageIn と specs.voltage / specs.voltClass が一致する |
 | 12 | successors と successorId が指すレコードの model が一致する |
 | 13 | TSV の note 列と replacementNote が一致する |
+
+検査8 の検査名は「（TSV N 行）」を省いて書いています。この N は
+`tools/verify-legacy.mjs:217` が実行時に `data/legacy/*.tsv` の行数を数えて作る値
+だからです。検査2・3 の「13列」を省いていないのは、これが `HEADER` という固定の
+定数配列の長さで、変わるときは仕様変更であり、そのとき文書を直すのが正しいためです。
 
 実行結果の末尾には対象も出ます——
 「4 ファイル / 30 行 … fr-e710w-1ph100.tsv, fr-e720-3ph200.tsv,
