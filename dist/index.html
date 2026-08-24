@@ -311,7 +311,7 @@ const categories = [];
  *   enrich(a, m)         … バッジ用の派生値（任意）
  *   summary(d)           … 確認画面のスペック欄（任意）
  *   detailPanels(m, c)   … カテゴリ固有の詳細比較（任意）
- *   emptyNote(m)         … 候補0件のときの説明（任意・HTML）
+ *   emptyNote(m)         … 候補0件のときの説明（任意・HTML）。既定はカテゴリに依らない中立文
  *   primaryStanding(a, m)… 主スペックが基準より小さいか（任意）。既定は「判定しない」
  *   standingNote         … 大小の表示に添える1文（任意）。既定は量に依らない中立文
  */
@@ -319,7 +319,11 @@ function registerCategory(def) {
   if (!def.id || !def.label) throw new Error('カテゴリには id と label が必要です');
   if (categories.some((c) => c.id === def.id)) throw new Error(`カテゴリ重複: ${def.id}`);
   categories.push({
-    enrich: () => ({}), summary: () => [], detailPanels: () => [], emptyNote: () => '', specDefs: [],
+    enrich: () => ({}), summary: () => [], detailPanels: () => [], specDefs: [],
+    // 空にしておき、宣言の無いカテゴリにはコアが**量にも判定条件にも依らない**既定文を当てる。
+    // ここに特定カテゴリの除外理由（出力極性・配線本数など）を既定として置くと、
+    // その条件を gate に持たないカテゴリの0件画面が、存在しない理由を名乗る（実際に起きた）。
+    emptyNote: () => '',
     // 既定は「判定しない」。大小に意味があるかはカテゴリ固有の知識なので、
     // 宣言していないカテゴリでコアが勝手に大小を語らない（新カテゴリの既定も同じ）。
     primaryStanding: () => null,
@@ -1163,10 +1167,25 @@ function viewResult() {
     ${loadCheckNote(cat, belowCount(cat, m, list))}
   </div>`;
 
-  // 0件の理由はカテゴリごとに違う。説明を持っているカテゴリにはそれを言わせる
+  /**
+   * 0件の理由はカテゴリごとに違う。説明を持っているカテゴリにはそれを言わせる。
+   *
+   * 既定文に書けるのは**どのカテゴリでも真であること**だけ。ここには以前
+   * 「互換候補が登録されていません。電気的に成立しない組み合わせ（出力極性・配線本数の
+   * 相違）は候補から除外しています」が置かれていたが、この2条件は `sensorGate` にしか
+   * 無く、インバータ・接触器・電磁開閉器・サーマルの gate は参照していない。
+   * 存在しない除外理由を9カテゴリ共通の既定文として名乗っていたことになる
+   * （文面はセンサー4カテゴリの `emptyNote` へ移した）。
+   *
+   * 同じ理由で「登録されていません」とも断定しない。0件は登録の有無とは限らず、
+   * 同クラス・同相の型式が登録済みで判定の窓を外れているだけのこともある
+   * （インバータの0件20件がこれ）。書けるのは「このアプリは候補を出せなかった」まで。
+   */
   const empty = cat.emptyNote(m) ||
-    `<b class="amber">互換候補が登録されていません。</b>
-     <div>電気的に成立しない組み合わせ（出力極性・配線本数の相違）は候補から除外しています。</div>`;
+    `<b class="amber">互換品候補は見つかりませんでした。</b>
+     <div>このカテゴリの判定条件を満たす型式が、登録データの中にありませんでした。
+     判定に使えるのは登録された値だけなので、置換えできる型式が無いことを意味するものでは
+     ありません。メーカーの選定資料で確認してください。</div>`;
   /**
    * カードに渡す添字は分割前の通し番号のまま。
    *
@@ -1441,6 +1460,31 @@ registerCategory({
       ascending(a.diff, b.diff)
     );
   },
+  /**
+   * 候補0件のときの説明。
+   *
+   * インバータの0件20件（FR-E800 の最小容量帯）は、同じ電圧クラス・同じ電源相数の
+   * 型式が**登録済み**で、定格出力電流が窓に入らないだけ。コアの既定文が言っていた
+   * 「互換候補が登録されていません」も「出力極性・配線本数の相違で除外」も、
+   * ここでは事実と違う（後者はそもそも `sensorGate` にしかない条件）。
+   *
+   * 書くのは gate が実際に見ている3つ（電圧クラス・電源相数・定格出力電流）まで。
+   * **窓幅（±ratio）は画面に出さない。** `withinWindow` は大きい方を基準に取るので
+   * （`src/core/compat.mjs:13-16`）、基準値から見た許容幅は下側 -30%・上側 +42.9% と
+   * 非対称になる。「±30%」と書くと、実装がしていない判定を画面が説明することになる。
+   * 数値を出すなら窓幅を drive.mjs から受け渡す必要もあり、二重管理の入口にもなる。
+   *
+   * 可否は断定しない。アプリが知っているのは登録された定格だけで、現場の実負荷は
+   * 知らない（段4で「容量不足」と書かないと決めたのと同じ原則。
+   * `docs/design-c-legacy-inverters.md` 6-10 節・`src/core/ui.mjs` の
+   * `loadCheckNote` の JSDoc）。範囲外であることは使えないことを意味しない、と明示する。
+   */
+  emptyNote() {
+    return `<b class="amber">電圧クラス・電源相数・定格出力電流の3条件を満たす型式が、登録データの中に見つかりませんでした。</b>
+      <div>インバータの候補は、電圧クラスと電源相数が一致し、定格出力電流が基準に近い型式に絞っています。
+      定格出力電流がこの範囲に入らないことは、その機種が使えないことを意味しません。
+      実際に必要な容量は現場の負荷で決まるので、容量が近い機種についてはメーカーの選定資料で確認してください。</div>`;
+  },
   summary(d) {
     return [
       { label: '定格出力電流', value: d.specs?.ratedCurrentA != null ? `${num(d.specs.ratedCurrentA)}A` : '―' },
@@ -1642,6 +1686,24 @@ function sensorGate(a, m) {
   return false;
 }
 
+/**
+ * 候補0件のときの説明。センサー4カテゴリで共有する。
+ *
+ * この文面は元コアの既定文（`src/core/app.mjs`）だった。しかし後段の2条件
+ * ——出力極性（`polarityOK`）と配線本数（`wireCount`）——は `sensorGate` にしか無く、
+ * インバータ・接触器・電磁開閉器・サーマルの gate は参照していない。
+ * コアに置いたままだと、それらのカテゴリの0件画面が「実際には使っていない除外理由」を
+ * 名乗ることになる（インバータの0件20件で実際にそうなっていた）。
+ * **除外理由を語れるのは、その条件を持っている側だけ**なので、判定と同じ場所に置く。
+ *
+ * gate を変えたらこの文面も追随させること。名指ししている2条件はすぐ上の
+ * `sensorGate` にある。
+ */
+function sensorEmptyNote() {
+  return `<b class="amber">互換候補が登録されていません。</b>
+     <div>電気的に成立しない組み合わせ（出力極性・配線本数の相違）は候補から除外しています。</div>`;
+}
+
 function sensorEnrich(a, m) {
   return {
     methodMatch: methodOK(a.specs?.detectMethod, m.specs?.detectMethod),
@@ -1699,12 +1761,17 @@ function wiringPanel(m, c) {
 /* ===== categories/sensors.mjs ===== */
 /** 近接 / 光電 / 超音波 / 特殊。判定の実体は sensor-common.mjs にある。 */
 
+/**
+ * 4カテゴリで同じ判定要素を使う。`emptyNote` もここに入れる——0件の理由は
+ * `sensorGate` が何で落としたかの話なので、gate を共有するカテゴリは説明も共有する。
+ */
 const common = {
   group: 'sensor',
   gate: sensorGate,
   enrich: sensorEnrich,
   rank: sensorRank,
   summary: sensorSummary,
+  emptyNote: sensorEmptyNote,
   detailPanels: (m, c) => [wiringPanel(m, c)].filter(Boolean),
 };
 

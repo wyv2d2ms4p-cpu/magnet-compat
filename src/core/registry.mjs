@@ -16,7 +16,7 @@ const categories = [];
  *   enrich(a, m)         … バッジ用の派生値（任意）
  *   summary(d)           … 確認画面のスペック欄（任意）
  *   detailPanels(m, c)   … カテゴリ固有の詳細比較（任意）
- *   emptyNote(m)         … 候補0件のときの説明（任意・HTML）
+ *   emptyNote(m)         … 候補0件のときの説明（任意・HTML）。既定はカテゴリに依らない中立文
  *   primaryStanding(a, m)… 主スペックが基準より小さいか（任意）。既定は「判定しない」
  *   standingNote         … 大小の表示に添える1文（任意）。既定は量に依らない中立文
  */
@@ -24,7 +24,11 @@ export function registerCategory(def) {
   if (!def.id || !def.label) throw new Error('カテゴリには id と label が必要です');
   if (categories.some((c) => c.id === def.id)) throw new Error(`カテゴリ重複: ${def.id}`);
   categories.push({
-    enrich: () => ({}), summary: () => [], detailPanels: () => [], emptyNote: () => '', specDefs: [],
+    enrich: () => ({}), summary: () => [], detailPanels: () => [], specDefs: [],
+    // 空にしておき、宣言の無いカテゴリにはコアが**量にも判定条件にも依らない**既定文を当てる。
+    // ここに特定カテゴリの除外理由（出力極性・配線本数など）を既定として置くと、
+    // その条件を gate に持たないカテゴリの0件画面が、存在しない理由を名乗る（実際に起きた）。
+    emptyNote: () => '',
     // 既定は「判定しない」。大小に意味があるかはカテゴリ固有の知識なので、
     // 宣言していないカテゴリでコアが勝手に大小を語らない（新カテゴリの既定も同じ）。
     primaryStanding: () => null,

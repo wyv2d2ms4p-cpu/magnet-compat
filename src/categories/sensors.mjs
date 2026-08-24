@@ -3,15 +3,20 @@ import { registerCategory } from '../core/registry.mjs';
 import { num } from '../core/util.mjs';
 import {
   distanceSpec, distanceStanding, DISTANCE_STANDING_NOTE,
-  sensorGate, sensorEnrich, sensorRank, sensorSummary, wiringPanel,
+  sensorGate, sensorEnrich, sensorRank, sensorSummary, sensorEmptyNote, wiringPanel,
 } from './sensor-common.mjs';
 
+/**
+ * 4カテゴリで同じ判定要素を使う。`emptyNote` もここに入れる——0件の理由は
+ * `sensorGate` が何で落としたかの話なので、gate を共有するカテゴリは説明も共有する。
+ */
 const common = {
   group: 'sensor',
   gate: sensorGate,
   enrich: sensorEnrich,
   rank: sensorRank,
   summary: sensorSummary,
+  emptyNote: sensorEmptyNote,
   detailPanels: (m, c) => [wiringPanel(m, c)].filter(Boolean),
 };
 
