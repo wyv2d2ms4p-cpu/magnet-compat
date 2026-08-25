@@ -15,6 +15,14 @@
  * 「電流コード ＝ ND定格出力電流 × 10」で全電圧クラス一貫していることを使う。
  * LD定格を誤って入れると、この検算が合わなくなる。
  *
+ * 窓（`withinWindow`）の**ペアの対称**（A→B が候補なら B→A も候補）は、
+ * インバータだけでなく同じ関数を使う電磁接触器・電磁開閉器でも成り立つ性質なので、
+ * 3カテゴリまとめてここで固定する。窓を `Math.max` から基準値（`b`）基準へ
+ * 戻すと、基準が小さいほうの向きだけが落ちて非対称になり、この検査が落ちる。
+ * サーボユニットも同じ窓を使うが、登録27件すべてが `modelScope:"series"` で
+ * 判定対象が0件のため検査は作らない（対象0件のまま PASS する検査になるため。
+ * `docs/design-c-legacy-inverters.md` 6-18 節）。
+ *
  * 生産終了の旧機種（FR-E700）は、置換え資料 BCN-C21002-214C にしか載っておらず
  * 定格出力電流・定格容量を持たない。件数と定格の検査は現行品（FR-E800）と分けて
  * 数えるが、**現行品に対する要求は緩めない**。旧機種が gate を通れるのは
@@ -31,6 +39,7 @@ import { loadDevices, devicesOf } from '../src/core/store.mjs';
 import { getCategory, primarySpec, distinguishingSpec } from '../src/core/registry.mjs';
 import { computeCompatibles, withinWindow } from '../src/core/compat.mjs';
 import '../src/categories/drive.mjs';
+import '../src/categories/contactor.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -43,7 +52,13 @@ function check(name, cond, detail) {
 }
 
 const inverters = JSON.parse(readFileSync(join(ROOT, 'data', 'inverter.json'), 'utf8'));
-loadDevices(inverters);
+// 対称性の検査（7章）で接触器・電磁開閉器も基準にするため一緒に読む。
+// `loadDevices` は保管庫を丸ごと置き換えるので、分けて呼ぶと後の呼び出しが前を消す。
+// カテゴリの候補算出は `devicesOf(m.category)` に閉じているため、
+// 同居させてもインバータの判定結果は変わらない。
+const magnets = ['contactor', 'starter']
+  .flatMap((c) => JSON.parse(readFileSync(join(ROOT, 'data', `${c}.json`), 'utf8')));
+loadDevices([...inverters, ...magnets]);
 
 const cat = getCategory('inverter');
 const all = devicesOf('inverter');
@@ -56,7 +71,8 @@ const get = (model) => {
 /** m の候補の形名一覧 */
 const candidates = (model) => computeCompatibles(get(model), cat).map((c) => c.model);
 
-console.log(`インバータ ${all.length} 件で互換判定を実行\n`);
+console.log(`インバータ ${all.length} 件で互換判定を実行`);
+console.log(`窓の対称性は電磁接触器 ${devicesOf('contactor').length} 件・電磁開閉器 ${devicesOf('starter').length} 件でも検査する\n`);
 
 /* ---- 1. ND定格が全件そろっている ---- */
 
@@ -264,6 +280,42 @@ check('識別材料は 1.5kW と 15kW で 10倍差になる',
 
 check('寸法未確認なので寸法差は算出せず null のまま',
   computeCompatibles(get('FR-E820-3.7K-1'), cat).every((c) => c.dimsTrustworthy === false && c.diff === null));
+
+/* ---- 7. 窓のペアの対称は、同じ関数を使う電磁接触器・電磁開閉器でも成り立つ ---- */
+
+/**
+ * `withinWindow` が大きいほうを基準に取るのは「A→B が候補なら B→A も候補」に
+ * するためで（`src/core/compat.mjs` の JSDoc）、この性質は窓を使う全カテゴリの
+ * ものである。インバータだけを見ていると、接触器側で窓が基準値基準に戻されても
+ * 気づけない。移行元 `index.html:328` が実際に基準値基準で、A→B が候補でも
+ * B→A が候補にならない状態だった。
+ *
+ * 後継品リンク（`a.id === m.successorId`）は旧機種→後継の一方向の辺なので、
+ * インバータ側の同名の検査と同じく対象から外す。
+ * 電磁開閉器の欠相保護（`-KP`）条件は両側に同じく掛かるので、対称性を壊さない。
+ */
+const magnetSymmetry = [];
+let magnetEdges = 0;
+for (const id of ['contactor', 'starter']) {
+  const category = getCategory(id);
+  const list = devicesOf(id);
+  const candidateIds = new Map(list.map((m) => [m.id, new Set(computeCompatibles(m, category).map((c) => c.id))]));
+  for (const m of list) {
+    for (const cid of candidateIds.get(m.id)) {
+      if (cid === m.successorId) continue;
+      magnetEdges++;
+      if (!candidateIds.get(cid)?.has(m.id)) magnetSymmetry.push(`${id}: ${m.id} → ${cid}`);
+    }
+  }
+}
+
+// 対象0件のまま PASS する検査にしないため、見た辺の数そのものを先に固定する。
+// 窓が全滅してもこの検査が落ちるので、下の対称性検査が空振りしていないと言える。
+check('接触器・電磁開閉器の対称性検査が実際に候補の辺を見ている（辺が1本以上ある）',
+  magnetEdges > 0, `見た辺 ${magnetEdges} 本`);
+
+check('接触器・電磁開閉器でも候補の関係が対称（A→B なら B→A。後継品リンクを除く）',
+  magnetSymmetry.length === 0, magnetSymmetry.slice(0, 3).join(' / '));
 
 console.log('');
 if (failures.length) {
