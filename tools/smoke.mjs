@@ -879,21 +879,66 @@ check('インバータの0件パネルで適合の可否を断定しない（「
   (invZeroNote.match(/使用不可|代替なし|容量不足|容量が足りな/) || [])[0]);
 
 /**
- * センサー側は従来どおり。移設した文面がセンサーの0件画面に出続けること。
+ * センサー側の0件パネル。文面は同じでも、0件になった理由は画面ごとに違う。
  *
- * 対象に IM5132（ifm・□40角・PNP NO 3線式）を選んだのは、名指ししている条件が
- * 実際に効いている画面だから。同じ `compatGroup`「PX角型」・同じ `threadSize`「角型」を
- * 持つ GX-F8B / GX-F12B が `data/proximity.json` に居るが、どちらも NPN なので
- * `polarityOK` が落とし、候補が0件になる。gate を通り抜けたうえで極性だけで
- * 落ちている組なので、「出力極性の相違で除外している」がそのまま真になる。
+ * 移設直後の文面は「（出力極性・配線本数の相違）は候補から除外しています」と、
+ * その画面で起きたことを語る形だった。`emptyNote(m)` は基準機しか受け取らないので
+ * アプリはそれを知らず、実測（`docs/sensor-empty-note-audit.md`）では候補0件16件のうち
+ * 1件で偽・5件で何も説明しない文になっていた。文面を必要条件の言い方に変えたので、
+ * **理由の違う3画面で同じ文面が出ること**を検査でも固定する。3件は実測の分類から取った。
+ *
+ *   IM5132（A・極性が実効）… 同じ `compatGroup`「PX角型」・同じ `threadSize`「角型」の
+ *     GX-F8B / GX-F12B が居るが、どちらも NPN なので `polarityOK` が落とす。
+ *     この画面だけを見て検査を書くと、移設直後の文面でも通ってしまう。
+ *   9800-0159（B・系列が単独）… `compatKey`「PX-SEJリング」を持つのは自身だけで、
+ *     `compatGroup` も持たない。極性・配線で落ちた候補は0件なので、
+ *     移設直後の文面はこの画面で何も説明していなかった。
+ *   GX-4M（C・ねじ径で落ちた）… `compatGroup`「PX円柱」を共有する19件は全部ねじ径違い。
+ *     極性・配線を外しても1件も候補にならないので、移設直後の文面はここで偽だった。
+ *
+ * 見るのは3画面で同じ文面が出ることと、その文面が必要条件の言い方になっていること。
+ * 「どの条件で外れたか」を画面ごとに言い分ける実装に戻したら、ここで落ちる。
  */
-const proxZeroCards = await standingCards('proximity', 'IM5132');
-const proxZeroNote = await emptyNoteText();
-check('近接スイッチの0件型式（IM5132）の③に、従来どおり出力極性・配線本数の説明が出る',
-  proxZeroCards.length === 0
-  && proxZeroNote.includes('出力極性') && proxZeroNote.includes('配線本数')
-  && proxZeroNote.includes('候補から除外しています'),
-  `候補 ${proxZeroCards.length}件 / パネル「${proxZeroNote || 'なし'}」`);
+const SENSOR_EMPTY_PARTS = ['メーカー指定の後継品', '互換系列', '出力極性', '配線本数',
+  'ものだけです', 'どの条件で外れたかはこの画面では判別できません'];
+const sensorZeroScreens = [];
+for (const [model, why] of [['IM5132', 'A:極性が実効'], ['9800-0159', 'B:系列が単独'], ['GX-4M', 'C:ねじ径で落ちた']]) {
+  const cards = await standingCards('proximity', model);
+  sensorZeroScreens.push({
+    model, why, cards: cards.length, note: await emptyNoteText(),
+    screen: (await page.textContent('#app')).replace(/\s+/g, ' '),
+  });
+}
+for (const s of sensorZeroScreens) {
+  const missing = SENSOR_EMPTY_PARTS.filter((p) => !s.note.includes(p));
+  check(`近接スイッチの0件型式 ${s.model}（${s.why}）の③に、候補の必要条件を語る文面が出る`,
+    s.cards === 0 && s.note.length > 0 && missing.length === 0,
+    `候補 ${s.cards}件 / 欠けている要素: ${missing.join(' / ') || 'なし'} / パネル「${s.note || 'なし'}」`);
+}
+
+// 理由の違う3画面で文面が割れていないこと。1件ずつ見る検査では、
+// 画面ごとに理由を言い分ける実装（アプリが知らないことを語る形）に戻っても気づけない
+const noteSet = new Set(sensorZeroScreens.map((s) => s.note));
+check('理由の違う3画面（A/B/C）で0件パネルの文面が同一（画面ごとに理由を言い分けない）',
+  noteSet.size === 1 && sensorZeroScreens.every((s) => s.note.length > 0),
+  [...noteSet].map((t) => `「${t}」`).join(' ≠ '));
+
+/**
+ * 「登録されていません」は0件画面のどこにも出さない。
+ *
+ * 実測では候補0件16件のうち11件で、互換系列を共有する型式が登録済みだった。
+ * 判定で外れただけなのに「登録されていません」と書くと、データの欠落と読める。
+ * この語は検索画面が「実在確認済みのデータが未登録です」の意味で使っている
+ * （`src/core/app.mjs`）ので、意味が衝突する。
+ *
+ * 見出しだけでなく③の画面全体で見る。インバータの0件画面には同じ制約の検査が
+ * すぐ上にあるので、ここではセンサー側の3画面を見る（同じ defect で2件落とさない）。
+ */
+const declaresUnregistered = sensorZeroScreens.filter((s) => s.screen.includes('登録されていません'));
+check('センサーの0件画面（A/B/C の3件）のどこにも「登録されていません」と断定しない',
+  sensorZeroScreens.length === 3 && sensorZeroScreens.every((s) => s.screen.length > 0)
+  && declaresUnregistered.length === 0,
+  declaresUnregistered.map((s) => s.model).join(' / '));
 
 /**
  * サーボの0件画面は今回の対象外。文面が変わっていないことを見る。
