@@ -132,6 +132,23 @@ export const EVIDENCE_ASPECTS = ['model', 'dims', 'specs'];
 export const MODEL_STATUS = { CONFIRMED: 'catalog-confirmed', PROVISIONAL: 'provisional' };
 
 /**
+ * modelScope の許可値。
+ *
+ * `modelScope` はコア側で `=== 'series'` の文字列一致でしか見られておらず
+ * （`src/core/compat.mjs` の `isSeriesScope`、`src/core/ui.mjs` のバッジと注意書き、
+ * `src/categories/drive.mjs` のサーボの summary と emptyNote）、値を宣言と突き合わせる
+ * 経路がどこにも無かった。綴り違いや別の語を入れると、互換判定からの除外・
+ * 「シリーズ単位」バッジ・「個別の発注可能型式ではない」警告・0件画面の説明が
+ * **同時に、エラーを出さずに**無効化される。`SGDM / SGDH / SGDP` のような
+ * ワイルドカード付きマスクが個別型式として候補に並ぶことになるため、
+ * `modelStatus` と同じく宣言と照合する。
+ *
+ * **キーを持たないレコードは対象外**。個別の発注可能型式には付けない。
+ */
+export const MODEL_SCOPE = { SERIES: 'series' };
+export const MODEL_SCOPES = Object.values(MODEL_SCOPE);
+
+/**
  * 移行時点の件数（移行元を node:vm で評価して確定させた実測値）。
  *
  * これは**移行の非破壊性を測る基準線**であって、上限ではない。フェーズ2以降に
@@ -164,7 +181,7 @@ export const EXPECTED_COUNTS = {
 export const DISCONTINUED_SERIES = {
   category: 'servo',
   maker: '安川電機',
-  modelScope: 'series',
+  modelScope: MODEL_SCOPE.SERIES,
 
   /** 移行元キー → 移行先トップレベルキー（値は無変換） */
   TOP_LEVEL: { models: 'model', name: 'series' },

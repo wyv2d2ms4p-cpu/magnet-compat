@@ -12,11 +12,12 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { REPO_ROOT, readMagnet, readSensor, readFa } from './read-sources.mjs';
 import { normLoose } from '../src/core/util.mjs';
-import { getCategory, distinguishingSpec } from '../src/core/registry.mjs';
+import { getCategory, allCategories, distinguishingSpec } from '../src/core/registry.mjs';
+import { isSeriesScope } from '../src/core/compat.mjs';
 import {
   TOP_LEVEL, SPEC_MAP, THERMAL_RANGE, SPECIAL_LLK_METHOD, SPECIAL_DISTANCE_KEY,
   EVIDENCE_SOURCE_KEYS, DROPPED, EVIDENCE_STATES, EVIDENCE_ASPECTS,
-  MODEL_STATUS, EXPECTED_COUNTS, generatedId, ADDED_SPEC_KEYS,
+  MODEL_STATUS, MODEL_SCOPES, EXPECTED_COUNTS, generatedId, ADDED_SPEC_KEYS,
   DISCONTINUED_SERIES, discontinuedSeriesIds, RECORD_KEYS, ADDED_RECORD_RULES,
   REPLACEMENT_NOTE_KEYS,
 } from './schema-map.mjs';
@@ -71,8 +72,35 @@ const magnet = readMagnet();
 const sensor = readSensor();
 const fa = readFa();
 
+/**
+ * 移行元HTMLの device 配列と1対1で突合できるカテゴリ。
+ *
+ * `index.html`（磁気開閉器系3種）と `index_3.html`（センサー4種）の実データがこれ。
+ * `fa-compat.html` 由来の inverter / servo をここに含めないのは、生成物1440件が
+ * `_seed/` へ凍結されていて `data/` 側に対応が無く（`EXPECTED_COUNTS.inverter` は 0）、
+ * servo の実データは `YASKAWA_DISC` 27行として検査11が別枠で突合しているため。
+ *
+ * **検査対象そのものではない。** 移行元突合（検査1〜5・9・11）が見る範囲を表すだけで、
+ * どのカテゴリを検査するかは下の走査が決める。
+ */
 const REAL_CATEGORIES = ['contactor', 'starter', 'thermal', 'proximity', 'photo', 'ultrasonic', 'special'];
-const DATA_CATEGORIES = [...REAL_CATEGORIES, 'inverter', 'servo'];
+
+/**
+ * 検査対象カテゴリは `data/` 直下の走査で決める（`build.mjs:42-44` と同じ考え方）。
+ *
+ * 以前はここが `[...REAL_CATEGORIES, 'inverter', 'servo']` のハードコードだった。
+ * `build.mjs` は `readdirSync` で拾うため、新しいカテゴリを足すと**配布物には入るのに
+ * 検証は素通りする**。このリポジトリの一番の約束（出典が確認できない型式は候補に
+ * 出さない＝検査12）が、新カテゴリにだけ効かない状態になっていた。
+ * 一覧を手で保守しないことで、足し忘れという失敗の形そのものを無くす。
+ *
+ * `_seed/` `reference/` `legacy/` はディレクトリなので `.json` で終わらず落ちる。
+ */
+function listDataCategories() {
+  return readdirSync(DATA).filter((f) => f.endsWith('.json')).sort().map((f) => f.replace(/\.json$/, ''));
+}
+
+const DATA_CATEGORIES = listDataCategories();
 const migrated = {};
 for (const c of DATA_CATEGORIES) migrated[c] = load(`${c}.json`);
 const seedInv = load('_seed/inverter-generated.json');
@@ -555,6 +583,81 @@ check('replacementNote を持つレコードは note を持たない（二重管
   }
 });
 
+// ---- 追加: カテゴリの対応 ------------------------------------------------
+
+/**
+ * `data/*.json` と登録済みカテゴリが1対1で対応することの検査。
+ *
+ * カテゴリ追加は `data/<id>.json` と `src/categories/<id>.mjs` の2ファイルで、
+ * どちらも人手で置く。片方だけ入った状態は静かに壊れる——データだけならチップに
+ * 出ないまま `store` に載り、モジュールだけなら件数0のチップが並ぶ。どちらも
+ * ビルドは通るので、マージされるまで気づけない。
+ *
+ * 突合は**ファイル名ではなく登録された id** で行う。`sensors.mjs` が4カテゴリ、
+ * `contactor.mjs` と `drive.mjs` が2カテゴリずつ登録するので、
+ * `src/categories/` のファイル名とカテゴリidは一致しない。
+ * 登録は冒頭（`CATEGORY_DIR` のループ）で済んでいる。
+ *
+ * 走査が0件のときに NG にするのは、対象0件のまま「全項目PASS」と出る検査を作らない
+ * ため（`verify-legacy` 検査1 と同じ穴）。
+ */
+check(`data/*.json と登録カテゴリが1対1で対応する（データ ${DATA_CATEGORIES.length} / 登録 ${allCategories().length}）`, (fail) => {
+  if (!DATA_CATEGORIES.length) {
+    fail('data/ 直下に *.json が1つも無い … 検査対象が空のまま PASS しないよう落とす');
+    return;
+  }
+  const registered = new Set(allCategories().map((c) => c.id));
+  for (const id of DATA_CATEGORIES) {
+    if (!registered.has(id)) {
+      fail(`data/${id}.json があるのにカテゴリ ${id} が登録されていない`
+        + ` … src/categories/ のどれかで registerCategory({ id: '${id}', ... }) が要る`);
+    }
+  }
+  for (const id of registered) {
+    if (!DATA_CATEGORIES.includes(id)) {
+      fail(`カテゴリ ${id} が登録されているのに data/${id}.json が無い`);
+    }
+  }
+  // 移行元を持つカテゴリのファイルが消えていないこと（消えると移行元突合が黙って空振りする）
+  for (const id of REAL_CATEGORIES) {
+    if (!DATA_CATEGORIES.includes(id)) fail(`移行元を持つ data/${id}.json が走査で見つからない`);
+  }
+});
+
+// ---- 追加: modelScope の値 -----------------------------------------------
+
+/**
+ * `modelScope` が宣言された値だけであることの検査。
+ *
+ * この値はコア側の4箇所が `=== 'series'` / `!== 'series'` の文字列一致で見ている。
+ * 綴り違いや別の語を入れると、互換判定からの除外・「シリーズ単位」バッジ・
+ * 「個別の発注可能型式ではない」警告・0件画面の説明が**同時に、エラーを出さずに**
+ * 無効化される。`modelStatus` にはビルド時の検出（`build.mjs`）があるが、
+ * `modelScope` には対応する検査が無かった。
+ *
+ * 宣言（`schema-map.mjs` の `MODEL_SCOPES`）とコア側の綴りが二重管理にならないよう、
+ * **宣言した値をコアの `isSeriesScope` が実際に認識すること**も同じ検査で確かめる。
+ * コア側だけを直したらここが落ちる（`tools/smoke.mjs` が色をテーマから読むのと同じ考え方）。
+ * この一致検査は対象が常に1件以上あるので、`modelScope` を持つレコードが
+ * 0件になっても空振りしない。
+ */
+const withScope = allRecords.filter((r) => 'modelScope' in r);
+
+check(`modelScope は宣言された値だけ（宣言 ${MODEL_SCOPES.length} 値 / 保有 ${withScope.length} 件）`, (fail) => {
+  for (const v of MODEL_SCOPES) {
+    if (!isSeriesScope({ modelScope: v })) {
+      fail(`宣言 "${v}" をコアの isSeriesScope が認識しない … src/core/compat.mjs と宣言がずれている`);
+    }
+  }
+  for (const r of withScope) {
+    if (!MODEL_SCOPES.includes(r.modelScope)) {
+      fail(`${r.id} (${r.model}): modelScope=${JSON.stringify(r.modelScope)} は宣言に無い`
+        + ` … 許可値は ${MODEL_SCOPES.map((v) => `"${v}"`).join(' / ')}。`
+        + '綴りが違うとシリーズ単位の除外・バッジ・警告・0件説明が黙って効かなくなる');
+    }
+  }
+});
+
 // ---- 追加: アプリ本体が無変更であること ----------------------------------
 
 check('移行元HTMLが3つとも存在し読み取れる（1a では変更しない）', (fail) => {
@@ -571,6 +674,8 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`検証成功: ${checkNo} / ${checkNo} 項目すべて PASS`);
+// 対象を走査で決めているので、何を検査したのかを出力に残す（一覧は手で保守しない）
+console.log(`  検査対象 ${DATA_CATEGORIES.length} カテゴリ（data/*.json の走査）… ${DATA_CATEGORIES.join(', ')}`);
 console.log(`  実データ ${dataRecords.length} 件 (catalog-confirmed) … 移行由来 ${dataRecords.length - added.length} 件 + 追加 ${added.length} 件`);
 console.log(`  凍結データ ${seedInv.length + seedSv.length} 件 (provisional・既定非表示)`);
 if (seedCollisions.length) {
