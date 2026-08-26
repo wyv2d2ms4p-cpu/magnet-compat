@@ -1,9 +1,24 @@
 /**
- * 「カテゴリ追加が2ファイルで完結する」ことを自動で確かめる。
+ * カテゴリを1つ足したときに、ビルドからUIの互換判定までが動くことを自動で確かめる。
  *
- * 統合の目的そのものなので、口頭の約束ではなくテストとして固定する。
- * ダミーカテゴリを追加してビルドし、コアにも build.mjs にも手を入れずに
+ * 拡張しやすさは統合の目的そのものなので、口頭の約束ではなくテストとして固定する。
+ * ダミーカテゴリ（`data/dummy.json` と `src/categories/dummy.mjs`）を置いてビルドし、
  * UIへ出て互換判定まで動くことを確認したうえで、必ず後始末する。
+ *
+ * **検査1が保証していないこと。**
+ * 検査1「ビルドがコアと build.mjs を書き換えない」は、
+ * *開発者がコアを編集していないこと* を見ていない。比較の before はこのテストが
+ * 起動した時点のファイル内容で、比較相手は build.mjs を1回走らせた後の内容なので、
+ * コアが編集された状態で起動すればその編集は before 側に入り、一致してしまう。
+ * 確かめているのは「ビルドがコアを書き換えないこと」だけ。
+ * （開発者の編集を見るなら比較の相手は origin であって before ではない。
+ *   検査の向きが変わるので、ここでは名前を実態に合わせるにとどめる。）
+ *
+ * **このテストが通っても、カテゴリ追加に要るファイルが2つとは限らない。**
+ * ここは verify-data を走らせないため、追加レコードの規約（検査12）を通っていない。
+ * 新カテゴリの `specs` のキーは `tools/schema-map.mjs` の `ADDED_SPEC_KEYS` にも
+ * 宣言が要る（未宣言だと検査12で落ちる。PR #27 の破壊テストで確認済み）。
+ * 何が要るかは README「カテゴリを追加する」を唯一の記述とする。
  *
  *   node tools/test-extensibility.mjs
  */
@@ -58,7 +73,7 @@ try {
   writeFileSync(MOD_FILE, DUMMY_MODULE);
 
   execFileSync('node', [join(ROOT, 'build.mjs')], { cwd: ROOT, stdio: 'pipe' });
-  check('コアと build.mjs を変更せずにビルドが通る',
+  check('ビルドがコアと build.mjs を書き換えない',
     CORE_FILES.every((f) => readFileSync(join(ROOT, f), 'utf8') === before.get(f)));
 
   browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
@@ -95,4 +110,5 @@ if (failures.length) {
   console.error(`拡張性テスト失敗: ${failures.length} / ${n} 項目が NG`);
   process.exit(1);
 }
-console.log(`拡張性テスト成功: ${n} / ${n} 項目すべて PASS（カテゴリ追加は2ファイルで完結）`);
+console.log(`拡張性テスト成功: ${n} / ${n} 項目すべて PASS`
+  + '（ビルドはコアを書き換えない。カテゴリ追加に要るものは README「カテゴリを追加する」）');

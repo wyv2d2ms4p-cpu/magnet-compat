@@ -23,19 +23,28 @@ npm run check      # データ検証 → legacy検証 → ビルド → 回帰 �
 | `npm run test:compat` | インバータの互換判定（電圧クラス・電源相数・容量帯の窓）を直接検証。窓のペアの対称は接触器・電磁開閉器でも検査する |
 | `npm run test:sensor` | センサー系の0件パネルが名乗る条件が `sensorGate` の必要条件であることの検算 |
 | `npm run smoke` | `file://` で実際に開いて動作確認 |
-| `npm run test:ext` | カテゴリ追加が2ファイルで完結することの確認 |
+| `npm run test:ext` | ダミーカテゴリを足して、ビルド→UI→互換判定まで動くことの確認 |
 
 各検査の項目数と内訳は `npm run check` の出力に出る。
 検査は増えていくので、ここには件数を書かない（書くと実態からずれる）。
 
 ## カテゴリを追加する
 
-1. `data/<id>.json` にレコードを置く
-2. `src/categories/<id>.mjs` で `registerCategory({...})` する
-3. `npm run build`
+新カテゴリに要るものは次のとおり。件数ではなく、この一覧が実態。
+
+- **`data/<id>.json`** — レコードを置く
+- **`src/categories/<id>.mjs`** — `registerCategory({...})` でカテゴリを登録する
+  （ファイル名とカテゴリidは一致しなくてよい。`sensors.mjs` は4カテゴリを登録する）
+- **`tools/schema-map.mjs` の `ADDED_SPEC_KEYS`** — そのカテゴリの `specs` のキーを宣言する。
+  宣言が無いと `specs` のキー名の綴り間違いを検出できないため
+  （未宣言のキーは `npm run verify` の「追加レコードの規約」で落ちる）
+
+そのうえで `npm run build` → `npm run check`。
 
 `build.mjs` はモジュールとデータを自動で拾い、`import` 関係から連結順を決めるため、
 **コアにも `build.mjs` にも手を入れる必要がない**。
+`npm run test:ext` が確かめているのはここまでで、
+`ADDED_SPEC_KEYS` の宣言漏れは `npm run verify` 側で落ちる。
 
 ```js
 import { registerCategory } from '../core/registry.mjs';
