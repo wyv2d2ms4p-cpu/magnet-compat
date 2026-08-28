@@ -56,6 +56,28 @@ export const ADDED_SPEC_KEYS = {
    * ND基準であることに合わせてある。LD定格は登録しない（README「データの約束」）。
    */
   inverter: ['ratedCapacityKVA'],
+
+  /**
+   * 絶縁変換器（MTT MS3749 系）。移行元の3アプリには存在しないカテゴリなので、
+   * 6キーすべてがここの宣言になる。
+   *
+   * 出力を `output1Signal` / `output2Signal` と**別キー**にしてあるのは、
+   * 集合（配列）で持つと第1出力・第2出力の**位置情報が失われる**ため。
+   * 現場は端子番号で配線し、仕様書 p.2 の端子配置図でも第1出力は端子④⑤、
+   * 第2出力は⑥⑦⑧と物理的に分かれている。どちらの出力かは判定にも直結する
+   * （`src/categories/insulation.mjs` の gate）。
+   *
+   * 第2出力を持たない1出力型は `output2Signal` を**キーごと不在**にする
+   * （型式コードの第2出力に「未記入：なし」がある）。空文字や "なし" で
+   * 埋めないこと。周波数も同様に `output2MaxFreqHz` ごと落とす。
+   *
+   * 周波数を Hz の整数で持つのは、キー名だけで物理量と単位が決まるようにする
+   * ため（README「データの約束」）。表示の kHz 換算はカテゴリ側の format が行う。
+   */
+  insulation: [
+    'inputSignal', 'output1Signal', 'output2Signal',
+    'output1MaxFreqHz', 'output2MaxFreqHz', 'powerSupply',
+  ],
 };
 
 /**
