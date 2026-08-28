@@ -78,10 +78,10 @@ await page.waitForSelector('#app .chiprow');
 check('JSエラーなしで起動する', consoleErrors.length === 0, consoleErrors[0]);
 check('外部ネットワークアクセスが発生しない', external.length === 0, external[0]);
 
-// カテゴリチップが9つ出る
+// カテゴリチップが10個出る
 const chips = await page.$$eval('.chiprow [data-act="cat"]', (els) => els.map((e) => e.textContent.trim()));
-check('カテゴリチップが9つ並ぶ', chips.length === 9, `実際: ${chips.length} / ${chips.join(',')}`);
-check('カテゴリチップに件数バッジが付く', (await page.$$('.chiprow.cats .cnt')).length === 9);
+check('カテゴリチップが10個並ぶ', chips.length === 10, `実際: ${chips.length} / ${chips.join(',')}`);
+check('カテゴリチップに件数バッジが付く', (await page.$$('.chiprow.cats .cnt')).length === 10);
 
 // 折り返して全件が見えること（横スクロールだと画面外のカテゴリに気づけない）
 const chipRow = await page.$eval('.chiprow.cats', (e) => ({
@@ -98,7 +98,7 @@ const hidden = await page.$$eval('.chiprow.cats .chip', (els) => {
     return r.right > row.right + 1 || r.left < row.left - 1;
   }).length;
 });
-check('9カテゴリすべてが行内に収まる（画面外に隠れない）', hidden === 0, `はみ出し ${hidden}件`);
+check('10カテゴリすべてが行内に収まる（画面外に隠れない）', hidden === 0, `はみ出し ${hidden}件`);
 
 // ステータスバーとの重なり対策（black-translucent + viewport-fit=cover）
 const safeTop = await page.evaluate(() => {
@@ -140,6 +140,66 @@ const llk = specialRows.find((t) => t.includes('PR-LLK 2m'));
 const osa = specialRows.find((t) => t.includes('OSA 674'));
 check('導光路品は長さが出る (PR-LLK 2m → 2m)', !!llk && llk.includes('2m'), llk);
 check('熱間金属検出は「―」になる (0mm と表示しない)', !!osa && osa.includes('―') && !osa.includes('0mm'), osa);
+
+/* ---- 絶縁変換器: 信号種別で判定する（第2出力が違えば候補にしない） ---- */
+
+/**
+ * MS3749-A-O22 と MS3749-A-O25 は、入力信号・第1出力・外形寸法・電源が同一で、
+ * 違うのは第2出力（オープンコレクタ / ラインドライバ・パルス）だけ。
+ * `insulation` の gate が第2出力を見ていなければ、この2件は必ず互いの
+ * 候補No.1になる。**両方向を見る**のは、片方向だけの検査では gate が
+ * 非対称に壊れたときに素通りするため（`test-compat` の対称性検査と同じ考え方）。
+ *
+ * 現場写真の盤には両方が実在し、OUT2 を使っているかどうかは現場でしか
+ * 分からない。だからアプリは「そのまま挿せる」候補だけを出す。
+ */
+check('絶縁変換器のカテゴリチップが出る',
+  (await page.$('[data-act="cat"][data-v="insulation"]')) !== null, chips.join(','));
+
+const isoCount = await page.$eval('[data-act="cat"][data-v="insulation"] .cnt', (e) => Number(e.textContent));
+check('絶縁変換器が2件で表示される', isoCount === 2, `実際 ${isoCount}件`);
+
+async function insulationResult(model) {
+  await gotoCategory('insulation');
+  await search(model);
+  await page.waitForSelector('.model.big');
+  const reached = (await page.textContent('.model.big')).includes(model);
+  const spec = (await page.textContent('#app')).replace(/\s+/g, ' ');
+  await page.click('[data-act="step"][data-v="3"]');
+  await page.waitForTimeout(200);
+  const cards = await page.$$eval('.card .model', (els) => els.map((e) => e.textContent.trim()));
+  const emptyEl = await page.$('.empty-note');
+  const note = emptyEl ? (await emptyEl.textContent()).replace(/\s+/g, ' ').trim() : '';
+  return { reached, spec, cards, note };
+}
+
+const isoO25 = await insulationResult('MS3749-A-O25');
+check('MS3749-A-O25 を検索して②確認画面に到達する', isoO25.reached);
+check('MS3749-A-O25 の②に第2出力（ラインドライバ・パルス）が出る',
+  isoO25.spec.includes('ラインドライバ・パルス') && isoO25.spec.includes('無電圧接点・オープンコレクタ'),
+  isoO25.spec.slice(0, 200));
+check('MS3749-A-O25 の③に MS3749-A-O22 が候補として出ない（第2出力の種別が違う）',
+  !isoO25.cards.includes('MS3749-A-O22'), isoO25.cards.join(' | ') || '候補0件');
+
+const isoO22 = await insulationResult('MS3749-A-O22');
+check('MS3749-A-O22 を検索して②確認画面に到達する', isoO22.reached);
+check('MS3749-A-O22 の③に MS3749-A-O25 が候補として出ない（逆向きでも同じ）',
+  !isoO22.cards.includes('MS3749-A-O25'), isoO22.cards.join(' | ') || '候補0件');
+
+/**
+ * 「候補に出ない」は、カテゴリごと壊れて0件でも真になってしまう。
+ * 0件パネルが insulation 自身の文面（必要条件を名乗る形）であることを併せて見て、
+ * 判定まで到達したうえでの0件だと言えるようにする。
+ * コアの既定文やセンサーの文面に差し替わる壊れ方は、ここで落ちる。
+ */
+const isoLeak = ['出力極性', '配線本数', '電源相数', '判定条件を満たす型式']
+  .filter((p) => isoO22.note.includes(p));
+check('絶縁変換器の0件パネルが必要条件（入力信号・第1出力・第2出力）を名乗る',
+  isoO22.note.includes('入力信号と第1出力の種別が一致し')
+  && isoO22.note.includes('第2出力を一方だけが持つ組は候補にしません')
+  && isoO22.note.includes('どの条件で外れたかはこの画面では判別できません')
+  && isoLeak.length === 0,
+  isoLeak.length ? `他カテゴリの語が混ざった: ${isoLeak.join(' / ')}` : isoO22.note);
 
 /* ---- サーボ: 安川の生産中止シリーズ27件 ---- */
 await gotoCategory('servo');
