@@ -201,6 +201,98 @@ check('絶縁変換器の0件パネルが必要条件（入力信号・第1出�
   && isoLeak.length === 0,
   isoLeak.length ? `他カテゴリの語が混ざった: ${isoLeak.join(' / ')}` : isoO22.note);
 
+/* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
+
+/**
+ * 出典（`srcNote`）を出す evidence バッジは、長いものが1つで 3273px になる。
+ * `.badge` の `white-space:nowrap` のままだと②のページ全体が横スクロールになり、
+ * 390px 幅の実測で 530件中72件（srcNote を持つ追加レコード全件）がそうなっていた。
+ * `src/index.html` の `.evidence .badge{white-space:normal}` がこれを折り返す。
+ *
+ * **測るのは 390px 幅**（iPhone 標準幅。このアプリの主対象）。既定の 1280px でも
+ * 最大級の2件は超えるが、はみ出しは画面が狭いほど効くので、狭い側で固定する。
+ * 対象の2件は実測ではみ出しが最大だったレコード
+ * （絶縁 MS3749-A-O25 3298px / インバータ FR-E720-3.7K 2241px）。
+ * ③も見るのは、候補カードが1件ごとに evidence 行を持つため。
+ */
+const baseViewport = page.viewportSize();
+await page.setViewportSize({ width: 390, height: 844 });
+
+async function pageWidth(cat, model, step3) {
+  await gotoCategory(cat);
+  await search(model);
+  await page.waitForSelector('.model.big');
+  if (step3) {
+    await page.click('[data-act="step"][data-v="3"]');
+    await page.waitForTimeout(200);
+  }
+  return page.evaluate(() => ({
+    scrollW: document.documentElement.scrollWidth,
+    clientW: document.documentElement.clientWidth,
+    widest: (() => {
+      const cw = document.documentElement.clientWidth;
+      let w = null;
+      for (const e of document.querySelectorAll('#app *')) {
+        const r = e.getBoundingClientRect();
+        if (r.right > cw + 1 && (!w || r.right > w.right)) {
+          w = { right: Math.round(r.right), cls: e.className, text: (e.textContent || '').replace(/\s+/g, ' ').slice(0, 40) };
+        }
+      }
+      return w;
+    })(),
+  }));
+}
+
+for (const [cat, model] of [['insulation', 'MS3749-A-O25'], ['inverter', 'FR-E720-3.7K']]) {
+  const p2 = await pageWidth(cat, model, false);
+  check(`${model} の②が横にはみ出さない（画面幅 390px）`,
+    p2.scrollW <= p2.clientW + 1,
+    `scrollWidth ${p2.scrollW} / clientWidth ${p2.clientW}${p2.widest ? ` ← ${p2.widest.cls} "${p2.widest.text}"` : ''}`);
+}
+
+const p3 = await pageWidth('inverter', 'FR-E720-3.7K', true);
+check('FR-E720-3.7K の③（候補カードの出典行）も横にはみ出さない',
+  p3.scrollW <= p3.clientW + 1,
+  `scrollWidth ${p3.scrollW} / clientWidth ${p3.clientW}${p3.widest ? ` ← ${p3.widest.cls} "${p3.widest.text}"` : ''}`);
+
+/**
+ * 一覧の行内バッジは1行のまま。
+ *
+ * 折り返しを `.badge` 全体へ広げると、一覧の行（`.row-main`）はフレックスではなく
+ * インラインの文字列なので、バッジが行末にかかると**枠線ごと2行に割れる**。
+ * 390px 幅の実測で、サーボの一覧27行のうち11行がそうなった。
+ * この検査が無いと、その変更を入れても全検査が通ってしまう。
+ *
+ * 名指しの `SGDM / SGDH / SGDP / SGDJ / SGDD`（`data/servo.json` の SVD_SGDM_2015）は、
+ * その11行のうちの1つ——「シリーズ単位」バッジが 321x34px の2行に割れた行——を
+ * 実測から選んだもの。行が消えたら検査は落ちる（対象0件で PASS しないため）。
+ */
+await gotoCategory('servo');
+await page.click('[data-act="browse"]');
+await page.waitForSelector('.rows [data-act="pick"]');
+const servoRows = await page.$$eval('.rows [data-act="pick"]', (els) => els.map((e) => ({
+  model: e.querySelector('.mono').textContent.trim(),
+  badges: [...e.querySelectorAll('.badge')].map((b) => {
+    const cs = getComputedStyle(b);
+    const lh = parseFloat(cs.lineHeight) || 12;
+    const r = b.getBoundingClientRect();
+    const inner = r.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom)
+      - parseFloat(cs.borderTopWidth) - parseFloat(cs.borderBottomWidth);
+    return { text: b.textContent.trim(), w: Math.round(r.width), lines: Math.max(1, Math.round(inner / lh)) };
+  }),
+})));
+const ANCHOR = 'SGDM / SGDH / SGDP / SGDJ / SGDD';
+const anchorRow = servoRows.find((r) => r.model === ANCHOR);
+check(`一覧の行内バッジが1行のまま（案Aで割れた ${ANCHOR} を含む）`,
+  !!anchorRow && anchorRow.badges.length > 0
+  && servoRows.every((r) => r.badges.every((b) => b.lines === 1)),
+  !anchorRow
+    ? `基準にした行 "${ANCHOR}" が一覧に無い（data/servo.json を確認）`
+    : servoRows.flatMap((r) => r.badges.filter((b) => b.lines > 1)
+        .map((b) => `${r.model}: [${b.text}] ${b.w}px ${b.lines}行`)).join(' / '));
+
+await page.setViewportSize(baseViewport);
+
 /* ---- サーボ: 安川の生産中止シリーズ27件 ---- */
 await gotoCategory('servo');
 const servoCount = await page.$eval('[data-act="cat"][data-v="servo"] .cnt', (e) => Number(e.textContent));
