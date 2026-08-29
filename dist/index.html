@@ -1118,6 +1118,19 @@ function viewSearch() {
   return body;
 }
 
+/**
+ * ②確認画面。
+ *
+ * **出典行（`.evidence`）は操作ボタンより後ろに置く。** 出典は「表示された仕様を
+ * 疑ったときに読むもの」で、交換作業中の動線には要らない。仕様欄と外形図の間に
+ * 置いていたときは、`srcNote` を持つレコードでこの1行が画面1枚分を占めていた
+ * （MS3749-A-O25 で813字。うち現場が見る状態表示は「型式 確認済 / 寸法 確認済 /
+ * 仕様 確認済」の18字だけで、残り795字は出典の本文）。ボタンの手前にあると、
+ * 「この仕様で互換品を表示」へ到達するまでにその本文をスクロールで越えることになる。
+ *
+ * 位置を変えただけで、出典の内容も文言も削っていない（出典は削らない約束）。
+ * 行そのものは DOM に残るので、`.evidence .badge` の折り返しは今までどおり効く。
+ */
 function viewConfirm() {
   const m = matched();
   const cat = category();
@@ -1140,7 +1153,6 @@ function viewConfirm() {
       ${warningBox(m)}
       ${chain.length ? `<div class="cmp cmp-info"><b>後継品</b><span>${[m, ...chain].map((d) => esc(d.model)).join(' → ')}</span>${replacementLine(m)}</div>` : ''}
       ${specGrid(cat, m)}
-      <div class="evidence">${evidenceRow(m)}</div>
       ${m.evidence?.dims?.state === 'verified' && m.dims ? dimDiagram(m.dims, m.holes) : '<div class="dim-none">外形寸法は未確認のため図を表示しません。</div>'}
     </div>
     <div class="panel">
@@ -1149,6 +1161,7 @@ function viewConfirm() {
         `<button class="chip sm${(S.mounting || m.mounting) === o ? ' on' : ''}" data-act="mount" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>` : ''}
       <button class="btn primary wide" data-act="step" data-v="3">この仕様で互換品を表示</button>
       <button class="btn ghost wide" data-act="step" data-v="1">型式を選び直す</button>
+      <div class="evidence">${evidenceRow(m)}</div>
     </div>`;
 }
 
