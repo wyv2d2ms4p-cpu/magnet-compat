@@ -71,6 +71,41 @@ async function confirmBoxOrder() {
   }));
 }
 
+/**
+ * ②確認画面の中身を、`.panel` をまたいで DOM の出現順のまま拾う。
+ *
+ * `confirmBoxOrder` が警告枠どうしの前後関係を見るのに対し、こちらは仕様欄・外形図・
+ * 取付方式チップ・操作ボタン・出典行という、画面を上から下へ読むときの並びそのものを見る。
+ * 「出典が画面にある」だけを見る検査だと、出典行をどこへ動かしても通ってしまうため、
+ * `querySelectorAll`（＝文書順）で並びを取り、その添字を比較する。
+ *
+ * 種別は要素そのもの（クラス・`data-act`・タグ）で見分ける。文言で見分けると、
+ * 出典の本文を持たないレコード（状態表示だけの18字）と持つレコード（813字）で
+ * 拾い方が変わってしまう。ここで見たいのは本文の有無に依らない位置関係のほう。
+ */
+async function confirmFlow() {
+  return page.$$eval('#app > .panel > *', (els) => els.map((e) => {
+    if (e.classList.contains('evidence')) return '出典行';
+    if (e.dataset?.act === 'step' && e.dataset.v === '3') return '互換品を表示ボタン';
+    if (e.dataset?.act === 'step' && e.dataset.v === '1') return '型式を選び直すボタン';
+    if (e.tagName.toLowerCase() === 'svg') return '外形図';
+    if (e.classList.contains('dim-none')) return '外形図なしの断り';
+    if (e.classList.contains('chiprow')) return '取付方式チップ';
+    if (e.classList.contains('grid')) return '仕様欄';
+    if (e.classList.contains('card-head')) return '型式ヘッダ';
+    return `その他(${e.classList[0] || e.tagName.toLowerCase()})`;
+  }));
+}
+
+/** ②の出典行が実際に出典の本文（srcNote / checkedAt / srcUrl）を持っているか */
+async function confirmEvidenceBody() {
+  return page.$eval('#app .evidence', (e) => ({
+    notes: e.querySelectorAll('.ev-note').length,
+    links: e.querySelectorAll('a').length,
+    len: e.textContent.replace(/\s+/g, ' ').trim().length,
+  }));
+}
+
 console.log(`file:// で起動: ${url}\n`);
 await page.goto(url);
 await page.waitForSelector('#app .chiprow');
@@ -292,6 +327,55 @@ check(`一覧の行内バッジが1行のまま（案Aで割れた ${ANCHOR} を
         .map((b) => `${r.model}: [${b.text}] ${b.w}px ${b.lines}行`)).join(' / '));
 
 await page.setViewportSize(baseViewport);
+
+/* ---- ②の出典行は操作ボタンより後ろに置く ---- */
+
+/**
+ * 出典行（`.evidence`）が「この仕様で互換品を表示」「型式を選び直す」の両方より
+ * 後ろにあることを DOM 出現順で固定する。
+ *
+ * 出典は表示された仕様を疑ったときに読むもので、交換作業中の動線には要らない。
+ * 仕様欄と外形図の間にあったときは、`srcNote` を持つレコードでこの1行が画面1枚分を
+ * 占め、操作ボタンへ到達するまでにその本文をスクロールで越える必要があった。
+ *
+ * 対象は2件で、本文の有無で位置が変わらないことを見る。
+ *   MS3749-A-O25（絶縁変換器）… `evidence` の3側面すべてに `srcNote` と `checkedAt` が
+ *     あり、出典行は813字。うち状態表示は18字。この画面が今回の動機そのもの。
+ *   S-T10（電磁接触器）… `data/contactor.json` の MIT-ST10 は `evidence` が
+ *     3側面とも `state` だけで、`srcNote` も `srcUrl` も `checkedAt` も持たない。
+ *     出典行は状態表示の18字だけになる。
+ *
+ * 本文の有無そのものも下で検査する。データが変わって両方とも本文ありに（あるいは
+ * 両方とも本文なしに）なると、この2件は「本文の有無に依らない」ことを示さなくなるが、
+ * 位置だけを見る検査はその状態でも黙って通ってしまうため。落ちたときは条件を緩めず、
+ * `data/**` を読んで該当する側のレコードを選び直す。
+ */
+const CONFIRM_FLOW_TARGETS = [
+  ['insulation', 'MS3749-A-O25', '出典の本文あり'],
+  ['contactor', 'S-T10', '出典の本文なし'],
+];
+const confirmFlows = [];
+for (const [cat, model, why] of CONFIRM_FLOW_TARGETS) {
+  await gotoCategory(cat);
+  await search(model);
+  await page.waitForSelector('.model.big');
+  const flow = await confirmFlow();
+  confirmFlows.push({ model, why, flow, body: await confirmEvidenceBody() });
+  const evAt = flow.indexOf('出典行');
+  const goAt = flow.indexOf('互換品を表示ボタン');
+  const backAt = flow.indexOf('型式を選び直すボタン');
+  check(`②で出典行が操作ボタンより後ろに出る（DOM順・${model}／${why}）`,
+    evAt >= 0 && goAt >= 0 && backAt >= 0 && evAt > goAt && evAt > backAt,
+    `並び: ${flow.join(' → ')}`);
+}
+
+const withBody = confirmFlows.find((x) => x.model === 'MS3749-A-O25');
+const withoutBody = confirmFlows.find((x) => x.model === 'S-T10');
+check('②の出典行の検査が、本文を持つレコードと持たないレコードの両方を通っている',
+  withBody?.body.notes > 0 && withBody?.body.links > 0 && withBody?.body.len > 100
+  && withoutBody?.body.notes === 0 && withoutBody?.body.links === 0,
+  `${withBody?.model}: 本文${withBody?.body.notes}件・リンク${withBody?.body.links}件・${withBody?.body.len}字`
+  + ` / ${withoutBody?.model}: 本文${withoutBody?.body.notes}件・リンク${withoutBody?.body.links}件・${withoutBody?.body.len}字`);
 
 /* ---- サーボ: 安川の生産中止シリーズ27件 ---- */
 await gotoCategory('servo');
