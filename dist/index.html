@@ -117,6 +117,25 @@ header .sub{color:var(--sub);font-size:12px;}
 .b-exact{color:var(--green);border-color:#2E5C45;background:rgba(76,175,125,.10);}
 .ev-note{margin-left:5px;opacity:.75;}
 .evidence{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);}
+/*
+ * 出典を持つバッジだけは折り返す。
+ *
+ * evidence のバッジは中に srcNote を丸ごと出すため、長いものは1つで 3273px になる
+ * （MTT 標準仕様書の注記）。`.badge` の nowrap のままだと②の確認画面が横に伸び、
+ * 530件中72件でページ全体が横スクロールになっていた（インバータ70件・絶縁変換器2件＝
+ * srcNote を持つ追加レコード全件。390px幅での実測、最大 3298px）。
+ * 出典は削らない約束なので、直すのは折り返しの側。
+ *
+ * **`.badge` 全体を折り返しにしてはいけない。** 一覧の行（`.row-main`）はフレックスでは
+ * なくインラインの文字列で、しかも長い型式のために `overflow-wrap:anywhere` が効いている。
+ * バッジが行末にかかると**枠線ごと2行に割れる**（「シリーズ」／「単位」が別の行に出る）。
+ * サーボの一覧27行のうち11行で実際に起きた。`.badge` の nowrap はこれを防いでいる。
+ *
+ * したがって折り返してよいのは、長い本文を持つ evidence のバッジだけ。
+ * 一覧・②のヘッダ・③のカードのバッジが1行のままであることは tools/smoke.mjs が検査する
+ * （この規則を消すと横はみ出しの検査が、nowrap を normal に広げると一覧の検査が落ちる）。
+ */
+.evidence .badge{white-space:normal;}
 
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;}
 .spec{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 9px;min-width:0;}
