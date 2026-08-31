@@ -29,15 +29,15 @@
       },
       "dims": {
         "state": "verified",
-        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev200_J.pdf",
-        "srcNote": "MTT 標準仕様書 MS3749（文書番号 MQDDK-110729-33 Rev.2.00）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）。取付方法「壁取付、DINレール取付 共用」も同ページ。取付穴ピッチ（holes）はキーごと不在にしてある。同仕様書に記載が無く、寸法の出典である外形図PDF（別ファイル）も未取得のため。",
-        "checkedAt": "2026-08-26"
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（文書番号 MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）。取付方法「壁取付、DINレール取付 共用」も同ページ。取付穴ピッチ（holes）はキーごと不在にしてある。同仕様書に記載が無く、寸法の出典である外形図PDF（別ファイル）も未取得のため。",
+        "checkedAt": "2026-08-30"
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev200_J.pdf",
-        "srcNote": "MTT 標準仕様書 MS3749（文書番号 MQDDK-110729-33 Rev.2.00）。入力信号・第1出力・第2出力・電源は p.1 の型式コード表（A＝AC100〜240V、O＝無電圧接点/オープンコレクタ、2＝オープンコレクタ）。最大出力周波数は p.2「最大出力負荷」「最大出力周波数」のオープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。入力抵抗は登録していない。同仕様書の「入力抵抗」欄は電圧入力型・ラインドライバ型・電流入力型のみの記載で、型式コード欄と p.3 接続図にある 3.3kΩ がこの「入力抵抗」と同じ意味かを断定できないため。",
-        "checkedAt": "2026-08-26"
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（文書番号 MQDDK-110729-33 Rev.2.10）。入力信号・第1出力・第2出力・電源は p.1 の型式コード表（A＝AC100〜240V、O＝無電圧接点/オープンコレクタ、2＝オープンコレクタ）。最大出力周波数は p.2「最大出力負荷」「最大出力周波数」のオープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。入力抵抗は登録していない。同仕様書の「入力抵抗」欄は電圧入力型・ラインドライバ型・電流入力型のみの記載で、型式コード欄と p.3 接続図にある 3.3kΩ がこの「入力抵抗」と同じ意味かを断定できないため。",
+        "checkedAt": "2026-08-30"
       }
     }
   },
@@ -71,15 +71,565 @@
       },
       "dims": {
         "state": "verified",
-        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev200_J.pdf",
-        "srcNote": "MTT 標準仕様書 MS3749（文書番号 MQDDK-110729-33 Rev.2.00）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）。取付方法「壁取付、DINレール取付 共用」も同ページ。取付穴ピッチ（holes）はキーごと不在にしてある。同仕様書に記載が無く、寸法の出典である外形図PDF（別ファイル）も未取得のため。",
-        "checkedAt": "2026-08-26"
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（文書番号 MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）。取付方法「壁取付、DINレール取付 共用」も同ページ。取付穴ピッチ（holes）はキーごと不在にしてある。同仕様書に記載が無く、寸法の出典である外形図PDF（別ファイル）も未取得のため。",
+        "checkedAt": "2026-08-30"
       },
       "specs": {
         "state": "verified",
-        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev200_J.pdf",
-        "srcNote": "MTT 標準仕様書 MS3749（文書番号 MQDDK-110729-33 Rev.2.00）。入力信号・第1出力・第2出力・電源は p.1 の型式コード表（A＝AC100〜240V、O＝無電圧接点/オープンコレクタ、2＝オープンコレクタ、5＝ラインドライバ・パルス）。最大出力周波数は p.2「最大出力負荷」「最大出力周波数」の値で、オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）／ラインドライバ・パルス 200kHz。第2出力のラインドライバ・パルスは TIA/EIA-422-B 準拠。入力抵抗は登録していない。同仕様書の「入力抵抗」欄は電圧入力型・ラインドライバ型・電流入力型のみの記載で、型式コード欄と p.3 接続図にある 3.3kΩ がこの「入力抵抗」と同じ意味かを断定できないため。",
-        "checkedAt": "2026-08-26"
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（文書番号 MQDDK-110729-33 Rev.2.10）。入力信号・第1出力・第2出力・電源は p.1 の型式コード表（A＝AC100〜240V、O＝無電圧接点/オープンコレクタ、2＝オープンコレクタ、5＝ラインドライバ・パルス）。最大出力周波数は p.2「最大出力負荷」「最大出力周波数」の値で、オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）／ラインドライバ・パルス 200kHz。第2出力のラインドライバ・パルスは TIA/EIA-422-B 準拠。入力抵抗は登録していない。同仕様書の「入力抵抗」欄は電圧入力型・ラインドライバ型・電流入力型のみの記載で、型式コード欄と p.3 接続図にある 3.3kΩ がこの「入力抵抗」と同じ意味かを断定できないため。",
+        "checkedAt": "2026-08-30"
+      }
+    }
+  },
+  {
+    "id": "ISO_MS3749_A_D4_H",
+    "category": "insulation",
+    "maker": "エムティティ",
+    "model": "MS3749-A-D4/H",
+    "series": "MS3749",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 29,
+      "h": 86,
+      "d": 125
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
+    "specs": {
+      "inputSignal": "DC電圧パルス",
+      "output1Signal": "電圧パルス12V",
+      "output1MaxFreqHz": 200000,
+      "powerSupply": "AC100〜240V",
+      "option": [
+        {
+          "code": "H",
+          "text": "ポリウレタン系コーティング"
+        }
+      ]
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-08）に機材コードと対で登録されている型式。仕様書には型式コードの組み合わせとしてしか現れないため、実在の根拠はこのリスト。",
+        "checkedAt": "2026-08-30"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）、取付方法「壁取付、DINレール取付 共用」。",
+        "checkedAt": "2026-08-30"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／4＝電圧パルス12V／第2出力 未記入＝なし／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 電圧パルス 200kHz。",
+        "checkedAt": "2026-08-30"
+      }
+    }
+  },
+  {
+    "id": "ISO_MS3749_A_D44_H",
+    "category": "insulation",
+    "maker": "エムティティ",
+    "model": "MS3749-A-D44/H",
+    "series": "MS3749",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 29,
+      "h": 86,
+      "d": 125
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
+    "specs": {
+      "inputSignal": "DC電圧パルス",
+      "output1Signal": "電圧パルス12V",
+      "output1MaxFreqHz": 200000,
+      "output2Signal": "電圧パルス12V",
+      "output2MaxFreqHz": 200000,
+      "powerSupply": "AC100〜240V",
+      "option": [
+        {
+          "code": "H",
+          "text": "ポリウレタン系コーティング"
+        }
+      ]
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-08）に機材コードと対で登録されている型式。仕様書には型式コードの組み合わせとしてしか現れないため、実在の根拠はこのリスト。",
+        "checkedAt": "2026-08-30"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）、取付方法「壁取付、DINレール取付 共用」。",
+        "checkedAt": "2026-08-30"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／4＝電圧パルス12V／第2出力 4＝電圧パルス12V／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 電圧パルス 200kHz。",
+        "checkedAt": "2026-08-30"
+      }
+    }
+  },
+  {
+    "id": "ISO_MS3749_A_L22",
+    "category": "insulation",
+    "maker": "エムティティ",
+    "model": "MS3749-A-L22",
+    "series": "MS3749",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 29,
+      "h": 86,
+      "d": 125
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
+    "specs": {
+      "inputSignal": "ラインドライバ・パルス",
+      "output1Signal": "オープンコレクタ",
+      "output1MaxFreqHz": 100000,
+      "output2Signal": "オープンコレクタ",
+      "output2MaxFreqHz": 100000,
+      "powerSupply": "AC100〜240V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-08）に機材コードと対で登録されている型式。仕様書には型式コードの組み合わせとしてしか現れないため、実在の根拠はこのリスト。",
+        "checkedAt": "2026-08-30"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）、取付方法「壁取付、DINレール取付 共用」。",
+        "checkedAt": "2026-08-30"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／L＝ラインドライバ・パルス／2＝オープンコレクタ／第2出力 2＝オープンコレクタ／オプション 未記入＝なし）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。",
+        "checkedAt": "2026-08-30"
+      }
+    }
+  },
+  {
+    "id": "ISO_MS3749_A_D33_D",
+    "category": "insulation",
+    "maker": "エムティティ",
+    "model": "MS3749-A-D33/D",
+    "series": "MS3749",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 29,
+      "h": 86,
+      "d": 125
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
+    "specs": {
+      "inputSignal": "DC電圧パルス",
+      "output1Signal": "電圧パルス10V",
+      "output1MaxFreqHz": 200000,
+      "output2Signal": "電圧パルス10V",
+      "output2MaxFreqHz": 200000,
+      "powerSupply": "AC100〜240V",
+      "option": [
+        {
+          "code": "D",
+          "text": "センサ供給電源 12V DC（±10%）3線式"
+        }
+      ]
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-08）に機材コードと対で登録されている型式。仕様書には型式コードの組み合わせとしてしか現れないため、実在の根拠はこのリスト。",
+        "checkedAt": "2026-08-30"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）、取付方法「壁取付、DINレール取付 共用」。",
+        "checkedAt": "2026-08-30"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／3＝電圧パルス10V／第2出力 3＝電圧パルス10V／D＝センサ供給電源 12V DC（±10%）3線式）、p.2「最大出力周波数」 電圧パルス 200kHz。",
+        "checkedAt": "2026-08-30"
+      }
+    }
+  },
+  {
+    "id": "ISO_MS3749_A_D45",
+    "category": "insulation",
+    "maker": "エムティティ",
+    "model": "MS3749-A-D45",
+    "series": "MS3749",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 29,
+      "h": 86,
+      "d": 125
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。第2出力がラインドライバ・パルスのため、端子⑥⑦⑧の割付は Y / Z / COM（仕様書 p.2 端子配置）。",
+    "specs": {
+      "inputSignal": "DC電圧パルス",
+      "output1Signal": "電圧パルス12V",
+      "output1MaxFreqHz": 200000,
+      "output2Signal": "ラインドライバ・パルス",
+      "output2MaxFreqHz": 200000,
+      "powerSupply": "AC100〜240V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-08）に機材コードと対で登録されている型式。仕様書には型式コードの組み合わせとしてしか現れないため、実在の根拠はこのリスト。",
+        "checkedAt": "2026-08-30"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）、取付方法「壁取付、DINレール取付 共用」。",
+        "checkedAt": "2026-08-30"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／4＝電圧パルス12V／第2出力 5＝ラインドライバ・パルス／オプション 未記入＝なし）、p.2「最大出力周波数」 電圧パルス 200kHz・ラインドライバ・パルス 200kHz。",
+        "checkedAt": "2026-08-30"
+      }
+    }
+  },
+  {
+    "id": "ISO_MS3749_A_O25_H",
+    "category": "insulation",
+    "maker": "エムティティ",
+    "model": "MS3749-A-O25/H",
+    "series": "MS3749",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 29,
+      "h": 86,
+      "d": 125
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。第2出力がラインドライバ・パルスのため、端子⑥⑦⑧の割付は Y / Z / COM（仕様書 p.2 端子配置）。",
+    "specs": {
+      "inputSignal": "無電圧接点・オープンコレクタ",
+      "output1Signal": "オープンコレクタ",
+      "output1MaxFreqHz": 100000,
+      "output2Signal": "ラインドライバ・パルス",
+      "output2MaxFreqHz": 200000,
+      "powerSupply": "AC100〜240V",
+      "option": [
+        {
+          "code": "H",
+          "text": "ポリウレタン系コーティング"
+        }
+      ]
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-08）に機材コードと対で登録されている型式。仕様書には型式コードの組み合わせとしてしか現れないため、実在の根拠はこのリスト。",
+        "checkedAt": "2026-08-30"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）、取付方法「壁取付、DINレール取付 共用」。",
+        "checkedAt": "2026-08-30"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／O＝無電圧接点・オープンコレクタ／2＝オープンコレクタ／第2出力 5＝ラインドライバ・パルス／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）・ラインドライバ・パルス 200kHz。",
+        "checkedAt": "2026-08-30"
+      }
+    }
+  },
+  {
+    "id": "ISO_MS3749_A_O22_H",
+    "category": "insulation",
+    "maker": "エムティティ",
+    "model": "MS3749-A-O22/H",
+    "series": "MS3749",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 29,
+      "h": 86,
+      "d": 125
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
+    "specs": {
+      "inputSignal": "無電圧接点・オープンコレクタ",
+      "output1Signal": "オープンコレクタ",
+      "output1MaxFreqHz": 100000,
+      "output2Signal": "オープンコレクタ",
+      "output2MaxFreqHz": 100000,
+      "powerSupply": "AC100〜240V",
+      "option": [
+        {
+          "code": "H",
+          "text": "ポリウレタン系コーティング"
+        }
+      ]
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-08）に機材コードと対で登録されている型式。仕様書には型式コードの組み合わせとしてしか現れないため、実在の根拠はこのリスト。",
+        "checkedAt": "2026-08-30"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）、取付方法「壁取付、DINレール取付 共用」。",
+        "checkedAt": "2026-08-30"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／O＝無電圧接点・オープンコレクタ／2＝オープンコレクタ／第2出力 2＝オープンコレクタ／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。",
+        "checkedAt": "2026-08-30"
+      }
+    }
+  },
+  {
+    "id": "ISO_MS3749_D_L45_H",
+    "category": "insulation",
+    "maker": "エムティティ",
+    "model": "MS3749-D-L45/H",
+    "series": "MS3749",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 29,
+      "h": 86,
+      "d": 125
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。第2出力がラインドライバ・パルスのため、端子⑥⑦⑧の割付は Y / Z / COM（仕様書 p.2 端子配置）。",
+    "specs": {
+      "inputSignal": "ラインドライバ・パルス",
+      "output1Signal": "電圧パルス12V",
+      "output1MaxFreqHz": 200000,
+      "output2Signal": "ラインドライバ・パルス",
+      "output2MaxFreqHz": 200000,
+      "powerSupply": "DC24V",
+      "option": [
+        {
+          "code": "H",
+          "text": "ポリウレタン系コーティング"
+        }
+      ]
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-08）に機材コードと対で登録されている型式。仕様書には型式コードの組み合わせとしてしか現れないため、実在の根拠はこのリスト。",
+        "checkedAt": "2026-08-30"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）、取付方法「壁取付、DINレール取付 共用」。",
+        "checkedAt": "2026-08-30"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（D＝DC24V／L＝ラインドライバ・パルス／4＝電圧パルス12V／第2出力 5＝ラインドライバ・パルス／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 電圧パルス 200kHz・ラインドライバ・パルス 200kHz。",
+        "checkedAt": "2026-08-30"
+      }
+    }
+  },
+  {
+    "id": "ISO_MS3749_A_D3_H",
+    "category": "insulation",
+    "maker": "エムティティ",
+    "model": "MS3749-A-D3/H",
+    "series": "MS3749",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 29,
+      "h": 86,
+      "d": 125
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
+    "specs": {
+      "inputSignal": "DC電圧パルス",
+      "output1Signal": "電圧パルス10V",
+      "output1MaxFreqHz": 200000,
+      "powerSupply": "AC100〜240V",
+      "option": [
+        {
+          "code": "H",
+          "text": "ポリウレタン系コーティング"
+        }
+      ]
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-08）に機材コードと対で登録されている型式。仕様書には型式コードの組み合わせとしてしか現れないため、実在の根拠はこのリスト。",
+        "checkedAt": "2026-08-30"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）、取付方法「壁取付、DINレール取付 共用」。",
+        "checkedAt": "2026-08-30"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／3＝電圧パルス10V／第2出力 未記入＝なし／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 電圧パルス 200kHz。",
+        "checkedAt": "2026-08-30"
+      }
+    }
+  },
+  {
+    "id": "ISO_MS3749_A_L2_H",
+    "category": "insulation",
+    "maker": "エムティティ",
+    "model": "MS3749-A-L2/H",
+    "series": "MS3749",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 29,
+      "h": 86,
+      "d": 125
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
+    "specs": {
+      "inputSignal": "ラインドライバ・パルス",
+      "output1Signal": "オープンコレクタ",
+      "output1MaxFreqHz": 100000,
+      "powerSupply": "AC100〜240V",
+      "option": [
+        {
+          "code": "H",
+          "text": "ポリウレタン系コーティング"
+        }
+      ]
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-08）に機材コードと対で登録されている型式。仕様書には型式コードの組み合わせとしてしか現れないため、実在の根拠はこのリスト。",
+        "checkedAt": "2026-08-30"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）、取付方法「壁取付、DINレール取付 共用」。",
+        "checkedAt": "2026-08-30"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／L＝ラインドライバ・パルス／2＝オープンコレクタ／第2出力 未記入＝なし／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。",
+        "checkedAt": "2026-08-30"
+      }
+    }
+  },
+  {
+    "id": "ISO_MS3749_A_O2_H",
+    "category": "insulation",
+    "maker": "エムティティ",
+    "model": "MS3749-A-O2/H",
+    "series": "MS3749",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 29,
+      "h": 86,
+      "d": 125
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
+    "specs": {
+      "inputSignal": "無電圧接点・オープンコレクタ",
+      "output1Signal": "オープンコレクタ",
+      "output1MaxFreqHz": 100000,
+      "powerSupply": "AC100〜240V",
+      "option": [
+        {
+          "code": "H",
+          "text": "ポリウレタン系コーティング"
+        }
+      ]
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-08）に機材コードと対で登録されている型式。仕様書には型式コードの組み合わせとしてしか現れないため、実在の根拠はこのリスト。",
+        "checkedAt": "2026-08-30"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）、取付方法「壁取付、DINレール取付 共用」。",
+        "checkedAt": "2026-08-30"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／O＝無電圧接点・オープンコレクタ／2＝オープンコレクタ／第2出力 未記入＝なし／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。",
+        "checkedAt": "2026-08-30"
+      }
+    }
+  },
+  {
+    "id": "ISO_MS3749_D_D45",
+    "category": "insulation",
+    "maker": "エムティティ",
+    "model": "MS3749-D-D45",
+    "series": "MS3749",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 29,
+      "h": 86,
+      "d": 125
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。第2出力がラインドライバ・パルスのため、端子⑥⑦⑧の割付は Y / Z / COM（仕様書 p.2 端子配置）。",
+    "specs": {
+      "inputSignal": "DC電圧パルス",
+      "output1Signal": "電圧パルス12V",
+      "output1MaxFreqHz": 200000,
+      "output2Signal": "ラインドライバ・パルス",
+      "output2MaxFreqHz": 200000,
+      "powerSupply": "DC24V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-08）に機材コードと対で登録されている型式。仕様書には型式コードの組み合わせとしてしか現れないため、実在の根拠はこのリスト。",
+        "checkedAt": "2026-08-30"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MTT 標準仕様書 MS3749（MQDDK-110729-33 Rev.2.10）p.2「外形寸法」W29×H86×D125mm（取付ネジ、ソケット端子台を含む）、取付方法「壁取付、DINレール取付 共用」。",
+        "checkedAt": "2026-08-30"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（D＝DC24V／D＝DC電圧パルス／4＝電圧パルス12V／第2出力 5＝ラインドライバ・パルス／オプション 未記入＝なし）、p.2「最大出力周波数」 電圧パルス 200kHz・ラインドライバ・パルス 200kHz。",
+        "checkedAt": "2026-08-30"
       }
     }
   }

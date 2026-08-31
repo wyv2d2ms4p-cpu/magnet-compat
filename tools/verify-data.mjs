@@ -583,6 +583,73 @@ check('replacementNote を持つレコードは note を持たない（二重管
   }
 });
 
+// ---- 追加: option の規約 -------------------------------------------------
+
+/**
+ * `specs.option`（型式コード末尾の `／□`）の規約。
+ *
+ * このキーは判定（gate）に使わず表示だけに出るので、壊れていてもビルドも判定も
+ * 通ってしまう。`code` しか無い要素が混ざれば②③に「H」とだけ出て現場に伝わらず、
+ * 空配列で持たせれば「オプションなし」と「オプションを持たない」が画面で
+ * 見分けられなくなる（`formatSpecValue` の `v == null` に掛からないため
+ * 「―」にならず、`summary` 側も `length` で判断している）。どちらも人の目でしか
+ * 気づけない壊れ方なので、ここで機械的に落とす。
+ *
+ * 対象0件のまま「PASS」と出さないよう、保有0件は検査失敗にする
+ * （`verify-legacy` 検査1 が塞いだ穴と同じ形）。
+ *
+ * `code` の許可値はここに書かない。仕様書のオプション表は9種あるが、
+ * 登録があるのは `H` と `D` の2種だけで、残り7種を宣言に書くと
+ * データに無いものの文言をここで二重管理することになる（`tools/smoke.mjs` が
+ * 色をテーマから読むのと同じ考え方）。必要になった時点で足す。
+ */
+const withOption = dataRecords.filter((r) => 'option' in (r.specs ?? {}));
+
+check(`option は配列で、各要素が code と text を持つ（保有 ${withOption.length} 件）`, (fail) => {
+  if (!withOption.length) {
+    fail('specs.option を持つレコードが1件も無い … 対象0件のまま PASS しないよう落とす');
+    return;
+  }
+  for (const r of withOption) {
+    const opt = r.specs.option;
+    if (!Array.isArray(opt)) {
+      fail(`${r.id} (${r.model}): specs.option が配列でない（${JSON.stringify(opt)}）`
+        + ' … オプションは複数指定できるので配列で持つ');
+      continue;
+    }
+    for (const [i, o] of opt.entries()) {
+      if (typeof o !== 'object' || o === null || Array.isArray(o)) {
+        fail(`${r.id} (${r.model}): specs.option[${i}]=${JSON.stringify(o)} がオブジェクトでない`);
+        continue;
+      }
+      for (const k of ['code', 'text']) {
+        if (typeof o[k] !== 'string' || o[k].trim() === '') {
+          fail(`${r.id} (${r.model}): specs.option[${i}].${k}=${JSON.stringify(o[k])} が非空文字列でない`
+            + (k === 'text' ? ' … code だけでは画面に「H」とだけ出て現場に伝わらない' : ''));
+        }
+      }
+      for (const k of Object.keys(o)) {
+        if (!['code', 'text'].includes(k)) {
+          fail(`${r.id} (${r.model}): specs.option[${i}].${k} は宣言に無いキー`);
+        }
+      }
+    }
+  }
+});
+
+check(`option を空配列で持たない（キーごと不在か、1件以上・保有 ${withOption.length} 件）`, (fail) => {
+  if (!withOption.length) {
+    fail('specs.option を持つレコードが1件も無い … 対象0件のまま PASS しないよう落とす');
+    return;
+  }
+  for (const r of withOption) {
+    if (Array.isArray(r.specs.option) && r.specs.option.length === 0) {
+      fail(`${r.id} (${r.model}): specs.option が空配列`
+        + ' … オプションを持たない型式はキーごと不在にする（「該当なし」はキーの不在で表す）');
+    }
+  }
+});
+
 // ---- 追加: カテゴリの対応 ------------------------------------------------
 
 /**
