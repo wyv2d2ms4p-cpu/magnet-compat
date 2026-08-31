@@ -195,14 +195,19 @@ const isoCount = await page.$eval('[data-act="cat"][data-v="insulation"] .cnt', 
 check('絶縁変換器が14件で表示される', isoCount === 14, `実際 ${isoCount}件`);
 
 /**
- * ②の仕様欄のラベルを DOM 順のまま拾う。
+ * ②の仕様欄を「ラベル → 値」の組で DOM 順のまま拾う。
  *
- * 「オプションの欄が出ない」「第2出力の欄が出ない」を、本文の文字列検索ではなく
- * **欄そのものの有無**で見るために使う。文字列検索だと、同じ語が note や出典行に
- * 出ているだけで通ってしまう。
+ * 欄の有無も値も、`#app` 全体の文字列検索では見ない。**同じ語が note や出典行に
+ * 出ているだけで通ってしまう**ため。実際、オプションの `text` を落として `code`
+ * だけにする壊し方をしたとき、`textContent('#app')` を見る書き方だと
+ * 「センサ供給電源 12V DC（±10%）3線式」が `evidence.specs.srcNote`
+ * （型式コードの読み下し）に出ているせいで検査が通ってしまった。
+ * 見たいのは仕様欄がその値を出しているかなので、欄そのものから読む。
  */
-async function confirmSpecLabels() {
-  return page.$$eval('#app .grid .spec .l', (els) => els.map((e) => e.textContent.trim()));
+async function confirmSpecRows() {
+  return page.$$eval('#app .grid .spec', (els) => els.map((e) => [
+    e.querySelector('.l').textContent.trim(), e.querySelector('.v').textContent.trim(),
+  ]));
 }
 
 async function insulationResult(model) {
@@ -211,7 +216,9 @@ async function insulationResult(model) {
   await page.waitForSelector('.model.big');
   const reached = (await page.textContent('.model.big')).includes(model);
   const spec = (await page.textContent('#app')).replace(/\s+/g, ' ');
-  const labels = await confirmSpecLabels();
+  const rows = await confirmSpecRows();
+  const labels = rows.map(([l]) => l);
+  const specOf = (label) => rows.find(([l]) => l === label)?.[1] ?? null;
   await page.click('[data-act="step"][data-v="3"]');
   await page.waitForTimeout(200);
   const cards = await page.$$eval('.card .model', (els) => els.map((e) => e.textContent.trim()));
@@ -219,7 +226,7 @@ async function insulationResult(model) {
   const panels = await page.$$eval('.card .cmp', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
   const emptyEl = await page.$('.empty-note');
   const note = emptyEl ? (await emptyEl.textContent()).replace(/\s+/g, ' ').trim() : '';
-  return { reached, spec, labels, cards, panels, note };
+  return { reached, spec, labels, specOf, cards, panels, note };
 }
 
 const isoO25 = await insulationResult('MS3749-A-O25');
@@ -296,9 +303,9 @@ check('MS3749-A-O25（option なし）の②にオプションの欄が出ない
   isoO25.labels.join(' / '));
 
 const isoD33 = await insulationResult('MS3749-A-D33/D');
-check('MS3749-A-D33/D の②に「センサ供給電源 12V DC（±10%）3線式」が出る',
-  isoD33.labels.includes('オプション') && isoD33.spec.includes('センサ供給電源 12V DC（±10%）3線式'),
-  isoD33.labels.join(' / '));
+check('MS3749-A-D33/D の②のオプション欄に「センサ供給電源 12V DC（±10%）3線式」が出る',
+  isoD33.specOf('オプション')?.includes('センサ供給電源 12V DC（±10%）3線式') === true,
+  `オプション欄: ${isoD33.specOf('オプション') ?? '欄が無い'}`);
 
 /**
  * 1出力型（型式コードの第2出力が未記入）では、②に第2出力の欄を出さない。
