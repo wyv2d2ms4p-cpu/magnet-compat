@@ -61,6 +61,81 @@ function formatFreq(v) {
 }
 
 /**
+ * 信号名を銘板の印字へ置き換える表。**表示だけを変える。データは変えない。**
+ *
+ * 左辺は `data/insulation.json` に入っている値＝仕様書 p.1 の型式コード表の表記、
+ * 右辺は現物の銘板の印字。データ側を銘板の綴りに書き換えないのは、`specs` の出典が
+ * 仕様書（MQDDK-110729-33 Rev.2.10）だから。写真でしか確認していない綴りで
+ * 仕様書由来の値を上書きすると、出典と値が食い違ったまま残る。
+ * `output1MaxFreqHz` が 100000 を持ったまま `formatFreq` で 100kHz と出すのと同じ形。
+ *
+ * **載せるのは、銘板の写真で実際に読めた3つの綴りだけ。**
+ * 出典は依頼者撮影の現場写真（制御盤内銘板、2026-08）で、MS3749-A-O25 と
+ * MS3749-A-O22 の銘板に IN OPN.C. / OUT1 OPN.C. / OUT2 Line Driver Pulse と
+ * 印字されていた。DC電圧パルス・電圧パルス10V・電圧パルス12V は銘板を確認して
+ * いないので入れない。「OPN.C. があるなら電圧パルスも略記だろう」と埋めた瞬間、
+ * 画面に出るのは現物のどこにも無い綴りになり、照合の役に立たないどころか
+ * 銘板と突き合わせた人を迷わせる。銘板の写真が増えたらここに足す。
+ */
+const NAMEPLATE = {
+  '無電圧接点・オープンコレクタ': 'OPN.C.',
+  'オープンコレクタ': 'OPN.C.',
+  'ラインドライバ・パルス': 'Line Driver Pulse',
+};
+
+/**
+ * 信号名の表示。
+ *
+ * **表に無い値はそのまま返す。** 未知の値を空文字や「―」に倒すと、登録されている
+ * 値が画面から消える（銘板を確認していない3つの信号種別が、そのまま消える）。
+ * 変換できないことは、変換しないことで表す。
+ */
+function formatSignal(v) {
+  return NAMEPLATE[v] ?? v;
+}
+
+/** 入力・第1出力・第2出力。銘板の印字（IN / OUT1 / OUT2）と同じ並び。 */
+const SIGNAL_FIELDS = [
+  ['入力信号', 'inputSignal'],
+  ['第1出力', 'output1Signal'],
+  ['第2出力', 'output2Signal'],
+];
+
+/**
+ * ②の仕様欄に添える、銘板の印字と仕様書の表記の対応。
+ *
+ * 銘板に合わせて短くすると、**仕様書だけを持っている人が照合できなくなる**。
+ * 「OPN.C.」は仕様書のどのページにも出てこない綴りなので、型式コード表の
+ * 「無電圧接点・オープンコレクタ」と結び付ける手がかりが画面に無い。
+ * かといって欄の値を「OPN.C.（無電圧接点・オープンコレクタ）」と併記にすると、
+ * 同じ `format` が③の候補カード右上にも掛かり、今回短くした意味が消える
+ * （カード右上が 212.5px になって型式名が2行に折り返していたのが動機）。
+ * そこで、**値は銘板の印字のままにして、対応表を②にだけ1行足す**。
+ *
+ * 欄ごとに書くのは、OPN.C. が仕様書の2つの表記（入力側「無電圧接点・オープン
+ * コレクタ」／出力側「オープンコレクタ」）に対応するため。まとめて書くと
+ * どちらの欄がどちらなのかを言えない。
+ *
+ * **変換が1つも起きていない型式では行ごと返さない。** MS3749-A-D4/H のように
+ * 銘板を確認していない値しか持たない型式にこの行を出すと、仕様書の表記のまま
+ * 出している値まで「銘板の印字」と名乗ることになる。持たないものは行ごと
+ * 返さないという、第2出力・オプションと同じ扱い。
+ */
+function nameplateNote(d) {
+  const pairs = SIGNAL_FIELDS
+    .map(([label, key]) => [label, d.specs?.[key]])
+    .filter(([, v]) => typeof v === 'string' && NAMEPLATE[v])
+    .map(([label, v]) => `${label} ${NAMEPLATE[v]}＝${v}`);
+  if (!pairs.length) return null;
+  return {
+    label: '信号名の表記',
+    value: `信号名は銘板の印字で表示しています（③の候補カードも同じ表記）。`
+      + `仕様書 p.1 の型式コード表の表記との対応は ${pairs.join(' ／ ')}。`
+      + `銘板を確認していない信号名は、仕様書の表記のまま表示します。`,
+  };
+}
+
+/**
  * オプションの表示文字列。
  *
  * **`code` だけでは現場に伝わらない。** 画面に「H」とだけ出ても、それが
@@ -107,10 +182,17 @@ registerCategory({
    *
    * 主スペック（`primary`）は暫定で入力信号。カード右上とヘッダに出るのは
    * この値で、置換えの可否をいちばん左右するのが「その信号を受けられるか」だから。
+   *
+   * 信号名は `formatSignal` で銘板の印字に置き換えて出す（`format` は表示だけに
+   * 掛かり、`gate` が見る `d.specs` の値は仕様書の表記のまま）。カード右上の
+   * 主スペックが「無電圧接点・オープンコレクタ」の全角14字＝212.5px になり、
+   * `.card-right` が `flex-shrink:0` で縮まないぶん左列だけが削られて、
+   * 390px 幅で型式名 MS3749-A-O25/H が2行に折り返していた。
+   * 現場が実際に見るのは銘板なので、表記を合わせるほうが照合もしやすい。
    */
   specDefs: [
-    { key: 'inputSignal', label: '入力信号', primary: true },
-    { key: 'output1Signal', label: '第1出力' },
+    { key: 'inputSignal', label: '入力信号', primary: true, format: formatSignal },
+    { key: 'output1Signal', label: '第1出力', format: formatSignal },
     { key: 'output1MaxFreqHz', label: '第1出力 最大周波数', unit: 'Hz', format: formatFreq },
   ],
   /**
@@ -214,13 +296,19 @@ registerCategory({
     const rows = [];
     const out2 = d.specs?.output2Signal;
     if (out2) {
-      rows.push({ label: '第2出力', value: out2 });
+      // 第2出力にも specDefs の入力信号・第1出力と同じ `formatSignal` を掛ける。
+      // ここだけ仕様書の表記のままにすると、同じ仕様欄の中で表記が割れる
+      // （MS3749-A-O25 で「入力 OPN.C. / 第1出力 OPN.C. / 第2出力 ラインドライバ・パルス」）
+      rows.push({ label: '第2出力', value: formatSignal(out2) });
       const f = d.specs?.output2MaxFreqHz;
       if (f != null) rows.push({ label: '第2出力 最大周波数', value: formatFreq(f) });
     }
     if (d.specs?.powerSupply) rows.push({ label: '電源電圧', value: d.specs.powerSupply });
     const opt = d.specs?.option;
     if (opt?.length) rows.push({ label: 'オプション', value: optionText(opt) });
+    // 対応表は仕様欄の最後。個々の値を読んだあとに「どの表記で出しているのか」を置く
+    const np = nameplateNote(d);
+    if (np) rows.push(np);
     return rows;
   },
   /**
