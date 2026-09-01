@@ -73,10 +73,18 @@ export const ADDED_SPEC_KEYS = {
    *
    * 周波数を Hz の整数で持つのは、キー名だけで物理量と単位が決まるようにする
    * ため（README「データの約束」）。表示の kHz 換算はカテゴリ側の format が行う。
+   *
+   * `option` は型式コード末尾の `／□`（`/AT` のように複数指定できる）なので
+   * **配列**で持つ。要素は `{ code, text }` の2つ組で、`code` だけでは現場に
+   * 伝わらない（画面に「H」とだけ出ても意味が読めない）ため `text` を必ず添える。
+   * オプションを持たない型式は**キーごと不在**にする。空配列にすると、
+   * `formatSpecValue` の `v == null` に掛からず「―」にならないため、
+   * 「持たない」と「持つが空」が画面で見分けられなくなる。
+   * この2つは `tools/verify-data.mjs` の option の検査が機械的に見る。
    */
   insulation: [
     'inputSignal', 'output1Signal', 'output2Signal',
-    'output1MaxFreqHz', 'output2MaxFreqHz', 'powerSupply',
+    'output1MaxFreqHz', 'output2MaxFreqHz', 'powerSupply', 'option',
   ],
 };
 

@@ -192,7 +192,23 @@ check('絶縁変換器のカテゴリチップが出る',
   (await page.$('[data-act="cat"][data-v="insulation"]')) !== null, chips.join(','));
 
 const isoCount = await page.$eval('[data-act="cat"][data-v="insulation"] .cnt', (e) => Number(e.textContent));
-check('絶縁変換器が2件で表示される', isoCount === 2, `実際 ${isoCount}件`);
+check('絶縁変換器が14件で表示される', isoCount === 14, `実際 ${isoCount}件`);
+
+/**
+ * ②の仕様欄を「ラベル → 値」の組で DOM 順のまま拾う。
+ *
+ * 欄の有無も値も、`#app` 全体の文字列検索では見ない。**同じ語が note や出典行に
+ * 出ているだけで通ってしまう**ため。実際、オプションの `text` を落として `code`
+ * だけにする壊し方をしたとき、`textContent('#app')` を見る書き方だと
+ * 「センサ供給電源 12V DC（±10%）3線式」が `evidence.specs.srcNote`
+ * （型式コードの読み下し）に出ているせいで検査が通ってしまった。
+ * 見たいのは仕様欄がその値を出しているかなので、欄そのものから読む。
+ */
+async function confirmSpecRows() {
+  return page.$$eval('#app .grid .spec', (els) => els.map((e) => [
+    e.querySelector('.l').textContent.trim(), e.querySelector('.v').textContent.trim(),
+  ]));
+}
 
 async function insulationResult(model) {
   await gotoCategory('insulation');
@@ -200,12 +216,17 @@ async function insulationResult(model) {
   await page.waitForSelector('.model.big');
   const reached = (await page.textContent('.model.big')).includes(model);
   const spec = (await page.textContent('#app')).replace(/\s+/g, ' ');
+  const rows = await confirmSpecRows();
+  const labels = rows.map(([l]) => l);
+  const specOf = (label) => rows.find(([l]) => l === label)?.[1] ?? null;
   await page.click('[data-act="step"][data-v="3"]');
   await page.waitForTimeout(200);
   const cards = await page.$$eval('.card .model', (els) => els.map((e) => e.textContent.trim()));
+  // 候補カードのカテゴリ固有パネル（detailPanels）。③でオプションが読めるかを見る
+  const panels = await page.$$eval('.card .cmp', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
   const emptyEl = await page.$('.empty-note');
   const note = emptyEl ? (await emptyEl.textContent()).replace(/\s+/g, ' ').trim() : '';
-  return { reached, spec, cards, note };
+  return { reached, spec, labels, specOf, cards, panels, note };
 }
 
 const isoO25 = await insulationResult('MS3749-A-O25');
@@ -222,19 +243,83 @@ check('MS3749-A-O22 の③に MS3749-A-O25 が候補として出ない（逆向�
   !isoO22.cards.includes('MS3749-A-O25'), isoO22.cards.join(' | ') || '候補0件');
 
 /**
+ * 0件パネルの検査は MS3749-A-D44/H で見る。
+ *
+ * もとは MS3749-A-O22 で見ていたが、MS3749-A-O22/H を登録したことで
+ * この型式は候補1件になり、0件パネルそのものが出なくなった（検査の前提が消えた）。
+ * 落ちた検査を消さずに、**0件になる型式へ付け替える**。
+ *
+ * MS3749-A-D44/H を選んだのは、`MS3749-A-D4/H` と入力信号・第1出力が同一で
+ * 違うのは第2出力の有無だけ——文面が名乗る「第2出力を一方だけが持つ組は
+ * 候補にしません」がまさに効いて0件になる型式だから。
+ * 候補が1件でも出れば0件パネルは出ないので、この検査は空振りしない。
+ */
+const isoD44 = await insulationResult('MS3749-A-D44/H');
+check('MS3749-A-D44/H の③が0件になる（第2出力を一方だけが持つ組を候補にしない）',
+  isoD44.cards.length === 0 && isoD44.note !== '', isoD44.cards.join(' | '));
+
+/**
  * 「候補に出ない」は、カテゴリごと壊れて0件でも真になってしまう。
  * 0件パネルが insulation 自身の文面（必要条件を名乗る形）であることを併せて見て、
  * 判定まで到達したうえでの0件だと言えるようにする。
  * コアの既定文やセンサーの文面に差し替わる壊れ方は、ここで落ちる。
  */
 const isoLeak = ['出力極性', '配線本数', '電源相数', '判定条件を満たす型式']
-  .filter((p) => isoO22.note.includes(p));
+  .filter((p) => isoD44.note.includes(p));
 check('絶縁変換器の0件パネルが必要条件（入力信号・第1出力・第2出力）を名乗る',
-  isoO22.note.includes('入力信号と第1出力の種別が一致し')
-  && isoO22.note.includes('第2出力を一方だけが持つ組は候補にしません')
-  && isoO22.note.includes('どの条件で外れたかはこの画面では判別できません')
+  isoD44.note.includes('入力信号と第1出力の種別が一致し')
+  && isoD44.note.includes('第2出力を一方だけが持つ組は候補にしません')
+  && isoD44.note.includes('どの条件で外れたかはこの画面では判別できません')
   && isoLeak.length === 0,
-  isoLeak.length ? `他カテゴリの語が混ざった: ${isoLeak.join(' / ')}` : isoO22.note);
+  isoLeak.length ? `他カテゴリの語が混ざった: ${isoLeak.join(' / ')}` : isoD44.note);
+
+/* ---- 絶縁変換器: オプション（specs.option）の表示 ---- */
+
+/**
+ * `option` は `gate` に入れていないので、**判定では一切見えない**。
+ * MS3749-A-O25 と MS3749-A-O25/H は仕様値が1つも違わず、差はオプションだけなので、
+ * 画面に出していなければ③は同じ内容のカードが並ぶだけになる。
+ * 「候補に出る」と「その差が読める」を別々に見る。
+ *
+ * カードの本文は `code` だけでなく `text`（仕様書 p.1 のオプション表の文言）まで
+ * 見る。「H」とだけ出ても現場には伝わらないため、これは表示の要件そのもの。
+ */
+check('MS3749-A-O25 の③に MS3749-A-O25/H が候補として出る（差はオプションだけ）',
+  isoO25.cards.includes('MS3749-A-O25/H'), isoO25.cards.join(' | ') || '候補0件');
+check('MS3749-A-O25/H の候補カードに「ポリウレタン系コーティング」が出る（code だけでは伝わらない）',
+  isoO25.panels.some((t) => t.includes('ポリウレタン系コーティング') && t.includes('/H')),
+  isoO25.panels.join(' | ') || 'カテゴリ固有パネルが無い');
+
+/**
+ * オプションを持たない型式では、②に**オプションの欄そのものを出さない**。
+ *
+ * 「―」の欄を残すと、1出力型の「該当なし」とデータ未登録が同じ見た目になる
+ * （`specs.option` を空配列で持たせないのと同じ理由）。
+ * 欄が消えたのではなく出さないことを言えるように、**同じ画面が仕様欄を
+ * 描いていること**（第1出力の欄がある）も併せて見る。
+ */
+check('MS3749-A-O25（option なし）の②にオプションの欄が出ない',
+  !isoO25.labels.includes('オプション') && isoO25.labels.includes('第1出力'),
+  isoO25.labels.join(' / '));
+
+const isoD33 = await insulationResult('MS3749-A-D33/D');
+check('MS3749-A-D33/D の②のオプション欄に「センサ供給電源 12V DC（±10%）3線式」が出る',
+  isoD33.specOf('オプション')?.includes('センサ供給電源 12V DC（±10%）3線式') === true,
+  `オプション欄: ${isoD33.specOf('オプション') ?? '欄が無い'}`);
+
+/**
+ * 1出力型（型式コードの第2出力が未記入）では、②に第2出力の欄を出さない。
+ *
+ * 前方一致で見るのは、「第2出力」と「第2出力 最大周波数」の2欄をまとめて
+ * 落とすため。ここでも空振り防止に、第2出力を持つ MS3749-A-O25 では
+ * 同じ欄が出ていることを併せて見る（欄の描画ごと壊れたら両方が落ちる）。
+ */
+const isoD4 = await insulationResult('MS3749-A-D4/H');
+check('MS3749-A-D4/H の②に第2出力の欄が出ない（1出力型・MS3749-A-O25 では出る）',
+  !isoD4.labels.some((l) => l.startsWith('第2出力'))
+  && isoD4.labels.includes('第1出力')
+  && isoO25.labels.includes('第2出力'),
+  `A-D4/H: ${isoD4.labels.join(' / ')} ／ A-O25: ${isoO25.labels.join(' / ')}`);
 
 /* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
 
