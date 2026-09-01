@@ -17,6 +17,7 @@
 | なぜこのアプリを作っているか、何を絶対にしてはいけないか | この文書 §1・§2 |
 | 設計案Cで何をどう決めたか、なぜそうしたか | `docs/design-c-legacy-inverters.md` |
 | 過去に下した判断の理由、過去の失敗 | 同上 6章 |
+| 絶縁変換器（insulation）カテゴリで何をどう決めたか、なぜそうしたか | `docs/design-insulation-converter.md` |
 | 作業のときに守る規約 | `CLAUDE.md` |
 | データの約束、リポジトリ構成、検査の走らせ方 | `README.md` |
 | 旧機種30件の出典と資料の中身 | `docs/fr-e700-to-e800-replacement.md` |
