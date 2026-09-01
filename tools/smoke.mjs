@@ -231,9 +231,27 @@ async function insulationResult(model) {
 
 const isoO25 = await insulationResult('MS3749-A-O25');
 check('MS3749-A-O25 を検索して②確認画面に到達する', isoO25.reached);
-check('MS3749-A-O25 の②に第2出力（ラインドライバ・パルス）が出る',
-  isoO25.spec.includes('ラインドライバ・パルス') && isoO25.spec.includes('無電圧接点・オープンコレクタ'),
-  isoO25.spec.slice(0, 200));
+
+/**
+ * ②の信号名は銘板の印字で出す（`insulation.mjs` の `formatSignal`）。
+ *
+ * もとは「②に第2出力（ラインドライバ・パルス）が出る」を `#app` 全体の文字列で
+ * 見ていた。その書き方は表示を銘板表記に変えても落ちない——`note`（「第2出力が
+ * ラインドライバ・パルスのため…」）と `evidence.specs.srcNote`（型式コードの
+ * 読み下し）に同じ語があるので、仕様欄が何を出していようと通ってしまう。
+ * オプションの `text` で同じ穴を踏んでいるので、ここも欄そのものから読む。
+ *
+ * 入力信号・第1出力も併せて見るのは、3つのうち1つだけ略記にすると
+ * 同じ画面で表記が割れるため（`formatSignal` を specDefs と `summary` の
+ * 両方に掛けているのはこのため。片方を外すとこの検査が落ちる）。
+ */
+check('MS3749-A-O25 の②で第2出力が Line Driver Pulse になる（銘板の印字）',
+  isoO25.specOf('第2出力') === 'Line Driver Pulse',
+  `第2出力欄: ${isoO25.specOf('第2出力') ?? '欄が無い'}`);
+check('MS3749-A-O25 の②で入力信号・第1出力が OPN.C. になる（同じ画面で表記が割れない）',
+  isoO25.specOf('入力信号') === 'OPN.C.' && isoO25.specOf('第1出力') === 'OPN.C.',
+  `入力信号: ${isoO25.specOf('入力信号') ?? '欄が無い'}`
+  + ` / 第1出力: ${isoO25.specOf('第1出力') ?? '欄が無い'}`);
 check('MS3749-A-O25 の③に MS3749-A-O22 が候補として出ない（第2出力の種別が違う）',
   !isoO25.cards.includes('MS3749-A-O22'), isoO25.cards.join(' | ') || '候補0件');
 
@@ -321,6 +339,40 @@ check('MS3749-A-D4/H の②に第2出力の欄が出ない（1出力型・MS3749
   && isoO25.labels.includes('第2出力'),
   `A-D4/H: ${isoD4.labels.join(' / ')} ／ A-O25: ${isoO25.labels.join(' / ')}`);
 
+/**
+ * 銘板表記の変換表に無い値は、仕様書の表記のまま出す。
+ *
+ * 銘板の写真で読めたのは OPN.C. と Line Driver Pulse の2つだけで、
+ * DC電圧パルス・電圧パルス10V・電圧パルス12V は未確認。**未知の値を握りつぶさない**
+ * ことをここで固定する。`formatSignal` が表に無い値を空文字や「―」に倒す実装に
+ * なると、登録済みの値が画面から消えるが、O25 側の検査だけでは落ちない。
+ */
+check('MS3749-A-D4/H の②で第1出力が「電圧パルス12V」のまま（変換表に無い値はそのまま出す）',
+  isoD4.specOf('第1出力') === '電圧パルス12V' && isoD4.specOf('入力信号') === 'DC電圧パルス',
+  `入力信号: ${isoD4.specOf('入力信号') ?? '欄が無い'}`
+  + ` / 第1出力: ${isoD4.specOf('第1出力') ?? '欄が無い'}`);
+
+/**
+ * 略記であることを②で名乗る（`nameplateNote`）。
+ *
+ * 「OPN.C.」は仕様書のどこにも出てこない綴りなので、仕様書だけを持っている人は
+ * これだけでは照合できない。②に対応表を1行出して結び付ける。値そのものを
+ * 併記にしない理由は `insulation.mjs` の `nameplateNote` に書いた
+ * （同じ `format` が③のカード右上にも掛かり、短くした意味が消えるため）。
+ *
+ * 変換が1つも起きていない型式（MS3749-A-D4/H）に**この行が出ないこと**も併せて見る。
+ * 出てしまうと、仕様書の表記のまま出している値まで「銘板の印字」と名乗る。
+ * 両側を見るので、行を常時出す実装でも常時出さない実装でも落ちる。
+ */
+const npRow = isoO25.specOf('信号名の表記');
+check('②が銘板表記であることを名乗る（MS3749-A-O25 に対応表・MS3749-A-D4/H には出ない）',
+  npRow?.includes('銘板') === true
+  && npRow.includes('OPN.C.＝無電圧接点・オープンコレクタ')
+  && npRow.includes('OPN.C.＝オープンコレクタ')
+  && npRow.includes('Line Driver Pulse＝ラインドライバ・パルス')
+  && !isoD4.labels.includes('信号名の表記'),
+  `A-O25: ${npRow ?? '欄が無い'} ／ A-D4/H のラベル: ${isoD4.labels.join(' / ')}`);
+
 /* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
 
 /**
@@ -374,6 +426,58 @@ const p3 = await pageWidth('inverter', 'FR-E720-3.7K', true);
 check('FR-E720-3.7K の③（候補カードの出典行）も横にはみ出さない',
   p3.scrollW <= p3.clientW + 1,
   `scrollWidth ${p3.scrollW} / clientWidth ${p3.clientW}${p3.widest ? ` ← ${p3.widest.cls} "${p3.widest.text}"` : ''}`);
+
+/* ---- ③の候補カード: 銘板表記にすると型式名が折り返さない ---- */
+
+/**
+ * カード右上（`.card-right`）は主スペックの幅で決まり、`flex-shrink:0` なので縮まない。
+ * 左列（型式名）だけが削られるため、**右上が長いほど型式名が折り返す**。
+ *
+ * 390px 幅の実測で、主スペックが「無電圧接点・オープンコレクタ」（全角14字）の
+ * ときは `.card-right` が 212.5px、`.model` が 117.5×51.2px（行高 25.6px）で
+ * 2行に割れていた。銘板の印字「OPN.C.」にすると 54px / 137.7×25.6px の1行になる。
+ * 折り返しの境目は全角13字と14字のあいだにあり、差は約2文字分しかない。
+ * この検査が無いと、変換表から O25 の値を外しても全検査が通ってしまう。
+ *
+ * 行数は「一覧の行内バッジが1行のまま」と同じく、実高さ ÷ 行高で数える。
+ * 行高が数値で取れないときは `lines` を null にして**落とす**。
+ * 割り算できないことを「1行だった」に倒さない。
+ *
+ * 対象は MS3749-A-O25 の③に出る候補カード全件。名指しの MS3749-A-O25/H は
+ * その中で型式名が最も長い（`/H` 付き）行で、実測で2行に割れていた当人。
+ * 候補が0件になったら（判定が壊れたら）落ちるように、件数と名指しの1件も見る。
+ */
+await gotoCategory('insulation');
+await search('MS3749-A-O25');
+await page.waitForSelector('.model.big');
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForSelector('.card .model');
+const isoCards = await page.$$eval('.card', (els) => els.map((e) => {
+  const m = e.querySelector('.model');
+  const lh = parseFloat(getComputedStyle(m).lineHeight);
+  const r = m.getBoundingClientRect();
+  return {
+    model: m.textContent.trim(),
+    primary: e.querySelector('.card-right .primary-spec').textContent.trim(),
+    rightW: Math.round(e.querySelector('.card-right').getBoundingClientRect().width * 10) / 10,
+    modelW: Math.round(r.width * 10) / 10,
+    modelH: Math.round(r.height * 10) / 10,
+    lh: lh > 0 ? lh : null,
+    lines: lh > 0 ? Math.max(1, Math.round(r.height / lh)) : null,
+  };
+}));
+const ISO_ANCHOR = 'MS3749-A-O25/H';
+const isoAnchor = isoCards.find((c) => c.model === ISO_ANCHOR);
+const isoCardDetail = isoCards
+  .map((c) => `${c.model}: 右上 "${c.primary}" ${c.rightW}px / .model ${c.modelW}×${c.modelH}px 行高${c.lh ?? '不明'} ${c.lines ?? '?'}行`)
+  .join(' ／ ') || '候補0件';
+
+check(`MS3749-A-O25 の③のカード右上が OPN.C. になる（${ISO_ANCHOR} を含む）`,
+  isoCards.length > 0 && !!isoAnchor && isoCards.every((c) => c.primary === 'OPN.C.'),
+  isoCardDetail);
+check(`MS3749-A-O25 の③で型式名が1行に収まる（画面幅 390px・${ISO_ANCHOR} を含む）`,
+  isoCards.length > 0 && !!isoAnchor && isoCards.every((c) => c.lines === 1),
+  isoCardDetail);
 
 /**
  * 一覧の行内バッジは1行のまま。
