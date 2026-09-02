@@ -1524,6 +1524,43 @@ check('メーカー絞り込み中でもサジェストがカテゴリ全体を�
   sugModels.some((t) => t.includes('S-N10')) && sugModels.some((t) => t.includes('SN10')),
   sugModels.join(' | '));
 
+/* ---- 銘板の読み取り（英字 O / 数字 0）---- */
+
+/**
+ * 絶縁変換器 MS3749-A-O25 の3セグメント目の1桁目は英字 O。銘板ではゼロと区別が
+ * つかないので、現場は MS3749-A-025 と打つ。normLoose で同一視していなければ
+ * 完全一致も部分一致も0件になり、サジェストまで消えて型式にたどり着けない。
+ *
+ * 見るのは「候補リストに並ぶ」ではなく「②へ直行する」こと。同一視しても1件に
+ * 絞れることが要点で、曖昧一致リストに落ちるなら現場の手数は減っていない。
+ * 打ち方の違いで結果が変わらないことを見るため、英字で打った側も同じ検査にかける。
+ */
+for (const [cat, q, want] of [
+  ['insulation', 'MS3749-A-025', 'MS3749-A-O25'],
+  ['insulation', 'MS3749-A-O25', 'MS3749-A-O25'],
+  // カテゴリ固有の細工ではないことの確認。photo の O6H200 も先頭が英字 O
+  ['photo', '06H200', 'O6H200'],
+  ['photo', 'O6H200', 'O6H200'],
+]) {
+  await gotoCategory(cat);
+  await search(q);
+  await page.waitForSelector('.model.big');
+  const picked = await page.textContent('.model.big');
+  // ②に居ること（.model.big は確認画面にしか無い）と、曖昧一致に落ちていないこと
+  check(`${cat} で「${q}」と打つと ${want} の②へ直行する`,
+    picked.trim() === want && (await page.$$('.rows [data-act="pick"]')).length === 0, picked);
+}
+
+// 入力途中のサジェストが消えないこと。0件だと打ち切る前に諦めることになる
+await gotoCategory('insulation');
+await page.fill('#q', 'MS3749-A-0');
+await page.dispatchEvent('#q', 'input');
+await page.waitForTimeout(60);
+const oZeroSug = await page.$$eval('#sug [data-act="pick"]', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
+check('入力途中の「MS3749-A-0」でサジェストが0件にならない',
+  oZeroSug.length > 0 && oZeroSug.some((t) => t.includes('MS3749-A-O25')),
+  `${oZeroSug.length}件: ${oZeroSug.join(' | ')}`);
+
 /* ---- 既知の不具合5件の修正確認 ---- */
 
 // (a) 接触器直付 — サーマルの取付方式が選択肢に出る
