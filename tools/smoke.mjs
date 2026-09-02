@@ -1524,9 +1524,12 @@ check('ドットを省いた入力で I-210.31 に到達できる（曖昧一致
  * 同一視で新しい衝突が生まれている（その場合 verify-data の検査13 も落ちる）。
  */
 async function jumpsToConfirm() {
-  await page.waitForSelector('.model.big');
+  // 引けなくなる壊れ方（0件で①に留まる）は待っても②が来ないので、待ち切りを
+  // 短くして NG として報告する。既定の30秒待ちに任せると例外で落ち、
+  // どの検査が何を見て落ちたのかが出力に残らない
+  const reached = await page.waitForSelector('.model.big', { timeout: 3000 }).then(() => true, () => false);
   return {
-    model: (await page.textContent('.model.big')).replace(/\s+/g, ' ').trim(),
+    model: reached ? (await page.textContent('.model.big')).replace(/\s+/g, ' ').trim() : '（②へ進んでいない）',
     ambiguous: (await page.$$('.rows [data-act="pick"]')).length,
   };
 }
