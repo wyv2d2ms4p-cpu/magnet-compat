@@ -1512,6 +1512,55 @@ await page.waitForSelector('.model.big');
 check('ドットを省いた入力で I-210.31 に到達できる（曖昧一致の維持）',
   (await page.textContent('.model.big')).includes('I-210.31'));
 
+/* ---- O（英字）と 0（数字）の読み違い（normLoose だけで同一視する） ---- */
+
+/**
+ * 銘板の O をゼロで打っても引けること。
+ *
+ * MS3749-A-O25 は3セグメント目の1桁目が英字 O で、現場がゼロで打つと以前は
+ * 完全一致・部分一致とも0件（＝「見つかりませんでした」）になっていた。
+ * 同一視は候補を「集める」normLoose にだけ入れてあるので、期待するのは
+ * 曖昧一致リストではなく②への直行。曖昧一致リストに落ちるようなら、
+ * 同一視で新しい衝突が生まれている（その場合 verify-data の検査13 も落ちる）。
+ */
+async function jumpsToConfirm() {
+  // 引けなくなる壊れ方（0件で①に留まる）は待っても②が来ないので、待ち切りを
+  // 短くして NG として報告する。既定の30秒待ちに任せると例外で落ち、
+  // どの検査が何を見て落ちたのかが出力に残らない
+  const reached = await page.waitForSelector('.model.big', { timeout: 3000 }).then(() => true, () => false);
+  return {
+    model: reached ? (await page.textContent('.model.big')).replace(/\s+/g, ' ').trim() : '（②へ進んでいない）',
+    ambiguous: (await page.$$('.rows [data-act="pick"]')).length,
+  };
+}
+
+for (const q of ['MS3749-A-025', 'MS3749-A-O25']) {
+  await gotoCategory('insulation');
+  await search(q);
+  const r = await jumpsToConfirm();
+  check(`絶縁変換器で「${q}」が MS3749-A-O25 の②に直行する`,
+    r.model.includes('MS3749-A-O25') && r.ambiguous === 0,
+    `型式=${r.model} / 曖昧一致 ${r.ambiguous}件`);
+}
+
+// 特定カテゴリの細工ではなく正規化そのものの変更であること（他カテゴリでも効く）
+await gotoCategory('photo');
+await search('06H200');
+const ifm = await jumpsToConfirm();
+check('フォトスイッチで「06H200」が O6H200 の②に直行する（他カテゴリでも効く）',
+  ifm.model.includes('O6H200') && ifm.ambiguous === 0,
+  `型式=${ifm.model} / 曖昧一致 ${ifm.ambiguous}件`);
+
+// 打ち切りの途中でサジェストが消えないこと（0件だと候補ごと見えなくなる）
+await gotoCategory('insulation');
+await page.fill('#q', 'MS3749-A-0');
+await page.dispatchEvent('#q', 'input');
+await page.waitForTimeout(60);
+const zeroSug = await page.$$eval('#sug [data-act="pick"]', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
+check('入力途中の「MS3749-A-0」でサジェストが0件にならない',
+  zeroSug.length > 0 && zeroSug.some((t) => t.includes('MS3749-A-O25')),
+  `サジェスト ${zeroSug.length}件: ${zeroSug.join(' | ')}`);
+
 // サジェストと Enter の母集団が一致していること（メーカー絞り込みに引きずられない）
 await gotoCategory('contactor');
 await page.click('[data-act="browse"]');
