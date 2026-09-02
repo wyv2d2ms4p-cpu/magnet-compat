@@ -224,9 +224,33 @@ async function insulationResult(model) {
   const cards = await page.$$eval('.card .model', (els) => els.map((e) => e.textContent.trim()));
   // 候補カードのカテゴリ固有パネル（detailPanels）。③でオプションが読めるかを見る
   const panels = await page.$$eval('.card .cmp', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
+  /*
+   * パネルを**カードごとに**、見出し（`.cmp b`）と本文（`.cmp span`）に分けて拾う。
+   *
+   * `panels` のように全カード分を1本の配列にすると、「どのカードに出たか」を
+   * 言えない。オプションのパネルは③の別のカードにも出るので、
+   * 「MS3749-A-O25/H のカードに電源電圧のパネルが出ない」を平坦な配列で書くと、
+   * 別のカードのパネルを拾って通ったり落ちたりする。
+   * 枠の色（tone）はクラス名（`cmp-warn`）で読む。色コードそのものは
+   * テーマ側にあり、検査に書くと二重管理になる（CLAUDE.md）。
+   */
+  const cardPanels = await page.$$eval('.card', (els) => els.map((card) => ({
+    model: card.querySelector('.model').textContent.trim(),
+    panels: [...card.querySelectorAll('.cmp')].map((p) => ({
+      title: p.querySelector('b').textContent.trim(),
+      body: p.querySelector('span').textContent.replace(/\s+/g, ' ').trim(),
+      tone: [...p.classList].find((k) => k.startsWith('cmp-')) ?? '',
+    })),
+  })));
+  /** 候補カード1枚のパネル見出しの一覧。そのカードが無ければ null（欄の不在と区別する） */
+  const panelTitlesOf = (model) =>
+    cardPanels.find((x) => x.model === model)?.panels.map((p) => p.title) ?? null;
+  /** 候補カード1枚の、見出しで指したパネル1枚。カードごと無い場合も null */
+  const panelOf = (model, title) =>
+    cardPanels.find((x) => x.model === model)?.panels.find((p) => p.title === title) ?? null;
   const emptyEl = await page.$('.empty-note');
   const note = emptyEl ? (await emptyEl.textContent()).replace(/\s+/g, ' ').trim() : '';
-  return { reached, spec, labels, specOf, cards, panels, note };
+  return { reached, spec, labels, specOf, cards, panels, panelTitlesOf, panelOf, note };
 }
 
 const isoO25 = await insulationResult('MS3749-A-O25');
@@ -324,6 +348,60 @@ const isoD33 = await insulationResult('MS3749-A-D33/D');
 check('MS3749-A-D33/D の②のオプション欄に「センサ供給電源 12V DC（±10%）3線式」が出る',
   isoD33.specOf('オプション')?.includes('センサ供給電源 12V DC（±10%）3線式') === true,
   `オプション欄: ${isoD33.specOf('オプション') ?? '欄が無い'}`);
+
+/* ---- 絶縁変換器: 電源電圧（specs.powerSupply）の差を③に出す ---- */
+
+/**
+ * `powerSupply` も `gate` に入れていないので、**電源電圧が違っていても候補に並ぶ**。
+ * MS3749-A-D45（AC100〜240V）と MS3749-D-D45（DC24V）は入力信号・第1出力・
+ * 第2出力・外形寸法が同一で、どちらもオプションを持たない。違うのは電源電圧だけ
+ * なので、パネルが無ければ③は差の読めない2枚のカードになる。
+ *
+ * **画面全体の文字列（`textContent('#app')`）で見ない。** このカテゴリは
+ * `evidence.specs.srcNote` に型式コードの読み下しを書くので、
+ * `DC24V` も `AC100〜240V` も出典行に現れる。パネルを消しても画面全体の検索では
+ * 通ってしまう（オプションの `text`・第2出力の表記で2回踏んだ形。
+ * `docs/design-insulation-converter.md` 6章）。だから**パネルの要素から**、
+ * しかも**そのカードのパネル**から読む。
+ *
+ * 両方向を見るのは、基準機側の値だけ・候補側の値だけを出す実装でも
+ * 片方向では通ってしまうため（`gate` の対称性検査と同じ考え方）。
+ * 本文には基準機の値とこの候補の値の両方を要求する。
+ */
+const isoD45 = await insulationResult('MS3749-A-D45');
+const psD45 = isoD45.panelOf('MS3749-D-D45', '電源電圧');
+check('MS3749-A-D45 の③に電源電圧のパネルが出て、AC100〜240V と DC24V の両方が読める',
+  psD45?.body.includes('AC100〜240V') === true
+  && psD45.body.includes('DC24V')
+  && psD45.body.includes('盤に来ている電源を確認')
+  && psD45.tone === 'cmp-warn',
+  psD45 ? `${psD45.tone} / ${psD45.body}` : `パネルが無い（${isoD45.panelTitlesOf('MS3749-D-D45')?.join(' / ') ?? 'カードが無い'}）`);
+
+const isoDD45 = await insulationResult('MS3749-D-D45');
+const psDD45 = isoDD45.panelOf('MS3749-A-D45', '電源電圧');
+check('MS3749-D-D45 の③にも電源電圧のパネルが出る（逆向きでも基準機と候補の値がそろう）',
+  psDD45?.body.includes('DC24V') === true
+  && psDD45.body.includes('AC100〜240V')
+  && psDD45.tone === 'cmp-warn',
+  psDD45 ? `${psDD45.tone} / ${psDD45.body}` : `パネルが無い（${isoDD45.panelTitlesOf('MS3749-A-D45')?.join(' / ') ?? 'カードが無い'}）`);
+
+/**
+ * 電源電圧が同じ組では、パネルを出さない。
+ *
+ * MS3749-A-O25 と MS3749-A-O25/H はどちらも AC100〜240V。「電源電圧 同じ」の枠は
+ * 情報を増やさず、本当に差がある枠と同じ場所を占める（オプションの
+ * 「どちらも持たない組では出さない」と同じ扱い）。
+ *
+ * 空振り防止に、**同じカードにオプションのパネルが出ていること**を併せて見る。
+ * これが無いと、`detailPanels` がパネルを1枚も返さない壊れ方や、
+ * ③のカードごと描かれない壊れ方でも「電源電圧のパネルが無い」は真になる。
+ */
+const o25hTitles = isoO25.panelTitlesOf('MS3749-A-O25/H');
+check('MS3749-A-O25 の③に電源電圧のパネルが出ない（候補と電源が同一・オプションのパネルは出る）',
+  o25hTitles !== null
+  && !o25hTitles.includes('電源電圧')
+  && o25hTitles.includes('オプション'),
+  `MS3749-A-O25/H のパネル: ${o25hTitles?.join(' / ') ?? 'カードが無い'}`);
 
 /**
  * 1出力型（型式コードの第2出力が未記入）では、②に第2出力の欄を出さない。
