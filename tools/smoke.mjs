@@ -1544,11 +1544,14 @@ for (const [cat, q, want] of [
 ]) {
   await gotoCategory(cat);
   await search(q);
-  await page.waitForSelector('.model.big');
-  const picked = await page.textContent('.model.big');
+  // 同一視が外れると②へ進めないので、待ち切れなかったことを NG として扱う。
+  // waitForSelector をそのまま使うと既定30秒の例外で落ち、どの検査が何を見て
+  // いたのかが出力に残らない（この検査が守るのは「0件になる」退行そのもの）。
+  const reached = await page.waitForSelector('.model.big', { timeout: 3000 }).then(() => true, () => false);
+  const picked = reached ? (await page.textContent('.model.big')).trim() : '(②へ到達せず)';
   // ②に居ること（.model.big は確認画面にしか無い）と、曖昧一致に落ちていないこと
   check(`${cat} で「${q}」と打つと ${want} の②へ直行する`,
-    picked.trim() === want && (await page.$$('.rows [data-act="pick"]')).length === 0, picked);
+    picked === want && (await page.$$('.rows [data-act="pick"]')).length === 0, picked);
 }
 
 // 入力途中のサジェストが消えないこと。0件だと打ち切る前に諦めることになる
