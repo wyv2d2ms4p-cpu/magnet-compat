@@ -192,7 +192,8 @@ check('絶縁変換器のカテゴリチップが出る',
   (await page.$('[data-act="cat"][data-v="insulation"]')) !== null, chips.join(','));
 
 const isoCount = await page.$eval('[data-act="cat"][data-v="insulation"] .cnt', (e) => Number(e.textContent));
-check('絶縁変換器が14件で表示される', isoCount === 14, `実際 ${isoCount}件`);
+check('絶縁変換器が39件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP-DS 25件）',
+  isoCount === 39, `実際 ${isoCount}件`);
 
 /**
  * ②の仕様欄を「ラベル → 値」の組で DOM 順のまま拾う。
@@ -213,8 +214,22 @@ async function confirmSpecRows() {
 async function insulationResult(model) {
   await gotoCategory('insulation');
   await search(model);
-  await page.waitForSelector('.model.big');
-  const reached = (await page.textContent('.model.big')).includes(model);
+  /*
+   * 引けなくなる壊れ方（0件のまま①に留まる）は、待っても②が来ない。待ち切りを
+   * 短くして **NG として報告する**（`jumpsToConfirm` と同じ扱い）。既定の30秒待ちに
+   * 任せると例外で落ち、どの検査が何を見て落ちたのかが出力に残らない。
+   * 型式が違う画面に着いた場合も同じで、そのまま③へ進むと**別の型式の候補**を
+   * 見ることになるので、ここで打ち切って `reached` を false にする。
+   */
+  const reached = await page.waitForSelector('.model.big', { timeout: 3000 })
+    .then(async () => (await page.textContent('.model.big')).includes(model), () => false);
+  if (!reached) {
+    const absent = () => null;
+    return {
+      reached: false, spec: '', labels: [], specOf: absent,
+      cards: [], panels: [], panelTitlesOf: absent, panelOf: absent, note: '',
+    };
+  }
   const spec = (await page.textContent('#app')).replace(/\s+/g, ' ');
   const rows = await confirmSpecRows();
   const labels = rows.map(([l]) => l);
@@ -308,9 +323,11 @@ check('MS3749-A-D44/H の③が0件になる（第2出力を一方だけが持�
  */
 const isoLeak = ['出力極性', '配線本数', '電源相数', '判定条件を満たす型式']
   .filter((p) => isoD44.note.includes(p));
-check('絶縁変換器の0件パネルが必要条件（入力信号・第1出力・第2出力）を名乗る',
-  isoD44.note.includes('入力信号と第1出力の種別が一致し')
+check('絶縁変換器の0件パネルが必要条件（入力信号・出力信号・第2出力・応答時間）を名乗る',
+  isoD44.note.includes('入力信号の種別が一致し')
+  && isoD44.note.includes('出力信号（MS3749 系は第1出力）の種別も一致する')
   && isoD44.note.includes('第2出力を一方だけが持つ組は候補にしません')
+  && isoD44.note.includes('基準と同じか速いものだけを候補にします')
   && isoD44.note.includes('どの条件で外れたかはこの画面では判別できません')
   && isoLeak.length === 0,
   isoLeak.length ? `他カテゴリの語が混ざった: ${isoLeak.join(' / ')}` : isoD44.note);
@@ -450,6 +467,74 @@ check('②が銘板表記であることを名乗る（MS3749-A-O25 に対応表
   && npRow.includes('Line Driver Pulse＝ラインドライバ・パルス')
   && !isoD4.labels.includes('信号名の表記'),
   `A-O25: ${npRow ?? '欄が無い'} ／ A-D4/H のラベル: ${isoD4.labels.join(' / ')}`);
+
+/* ---- 絶縁変換器: 渡辺電機工業 WVP-DS（MS3749 と同じカテゴリに同居する） ---- */
+
+/**
+ * WVP-DS 25件は MS3749 14件と `specs` のキーが違う（出力が1系統・応答時間を持つ）。
+ * 同じカテゴリに置いたので、**混ざらないこと**と**WVP どうしは判定が働くこと**の
+ * 両方を見る。
+ *
+ * ここでも `#app` 全体の文字列では見ない。このカテゴリは
+ * `evidence.specs.srcNote` に型式コードの読み下しを書くので、「約25ms」も
+ * 「AC110V」も出典行に現れる（同じ罠を2回踏んだ記録が
+ * `docs/design-insulation-converter.md` 6章にある）。欄とパネルの要素から読む。
+ */
+const wvpR1 = await insulationResult('WVP-DS-25R-1');
+check('WVP-DS-25R-1 を検索して②確認画面に到達する', wvpR1.reached);
+
+/**
+ * 応答時間はデータでは μs の数値（25000）で、資料の表記は「約25ms」。
+ * **「約」を落とさない**のが要件そのもの（資料は3機種とも「約」付きで書いている）。
+ * 25000 を 25ms ちょうどと読ませないため、`formatResponse` が付けている。
+ */
+check('WVP-DS-25R-1 の②で応答時間が「約25ms」と表示される',
+  wvpR1.specOf('応答時間') === '約25ms', `応答時間欄: ${wvpR1.specOf('応答時間') ?? '欄が無い'}`);
+
+/**
+ * 応答時間が同値なら候補になる。
+ *
+ * WVP-DS-25R-1 / -4 / -5 は入力信号・出力信号・応答時間が同一で、違うのは電源だけ
+ * （AC100V / AC110V / AC220V）。電源電圧は `gate` に入れていないので候補に並ぶ。
+ *
+ * **「遅いものを候補にしない」ことを見る検査は作らない。** WVP-DS 25件は
+ * 全件が 25000μs なので、応答時間で落ちる組が0件になる。対象0件のまま PASS する
+ * 検査になるため（CLAUDE.md）。判定が実際に働くのは DE・DZ を入れるPRで、
+ * そのときに「遅い側が候補に出ない」検査を足すこと。
+ */
+check('WVP-DS-25R-1 の③に WVP-DS-25R-4 と WVP-DS-25R-5 が出る（応答時間が同値なら候補になる）',
+  wvpR1.cards.includes('WVP-DS-25R-4') && wvpR1.cards.includes('WVP-DS-25R-5'),
+  wvpR1.cards.join(' | ') || '候補0件');
+
+/**
+ * その2件に電源電圧の橙パネルが出る。基準機の値とこの候補の値の両方を要求する
+ * （MS3749 側の同じ検査と同じ形。片側の値だけを出す実装でも落ちるように）。
+ * カードごとに読むので、「どちらかのカードに出ていれば通る」にはならない。
+ */
+const wvpPanels = ['WVP-DS-25R-4', 'WVP-DS-25R-5'].map((model) => ({
+  model, panel: wvpR1.panelOf(model, '電源電圧'), supply: model.endsWith('-4') ? 'AC110V' : 'AC220V',
+}));
+check('WVP-DS-25R-4 と WVP-DS-25R-5 の候補カードに電源電圧の橙パネルが出る',
+  wvpPanels.every((x) => x.panel?.tone === 'cmp-warn'
+    && x.panel.body.includes(x.supply)
+    && x.panel.body.includes('AC100V')
+    && x.panel.body.includes('盤に来ている電源を確認')),
+  wvpPanels.map((x) => `${x.model}: ${x.panel ? `${x.panel.tone} / ${x.panel.body}` : `パネルが無い（${wvpR1.panelTitlesOf(x.model)?.join(' / ') ?? 'カードが無い'}）`}`).join(' ／ '));
+
+/**
+ * パルス（MS3749）とアナログ（WVP）は互いの候補にならない。
+ *
+ * `gate` は出力信号のキーが違う組を候補にしない（MS3749 は `output1Signal`、
+ * WVP は `outputSignal`）。入力信号の値も一致しないので二重に落ちる。
+ * **両方向を見る**のは、片方向だけでは非対称に壊れたときに素通りするため。
+ * 候補が0件のまま真になる空振りを防ぐため、候補が1件以上あることも併せて見る。
+ */
+check('WVP-DS-25R-1 の③に MS3749 のどの型式も出ない（パルスとアナログは混ざらない）',
+  wvpR1.cards.length > 0 && !wvpR1.cards.some((m) => m.startsWith('MS3749')),
+  wvpR1.cards.join(' | ') || '候補0件');
+check('MS3749-A-O25 の③に WVP のどの型式も出ない（逆向きでも同じ）',
+  isoO25.cards.length > 0 && !isoO25.cards.some((m) => m.startsWith('WVP')),
+  isoO25.cards.join(' | ') || '候補0件');
 
 /* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
 

@@ -58,8 +58,17 @@ export const ADDED_SPEC_KEYS = {
   inverter: ['ratedCapacityKVA'],
 
   /**
-   * 絶縁変換器（MTT MS3749 系）。移行元の3アプリには存在しないカテゴリなので、
-   * 6キーすべてがここの宣言になる。
+   * 絶縁変換器（MTT MS3749 系・渡辺電機工業 WVP 系）。移行元の3アプリには存在しない
+   * カテゴリなので、全キーがここの宣言になる。
+   *
+   * **1つのカテゴリに2系統が同居していて、持つキーが違う。**
+   * MS3749（パルスアイソレータ）は出力を2系統持ち、応答の速さを
+   * 「最大出力周波数」で語る。WVP（アナログのアイソレータ）は出力が1系統で、
+   * 応答の速さを「応答時間」で語る。同じ物理量ではないので同じキーに寄せない
+   * （`output1Signal` と `outputSignal`、`output1MaxFreqHz` と `responseUs` は
+   * それぞれ別のキー）。持たない側はキーごと不在にする。
+   * どちらの系統かは `specs` のキーで決まり、`src/categories/insulation.mjs` の
+   * gate は「出力信号のキーが違う組は候補にしない」でこの2系統を分けている。
    *
    * 出力を `output1Signal` / `output2Signal` と**別キー**にしてあるのは、
    * 集合（配列）で持つと第1出力・第2出力の**位置情報が失われる**ため。
@@ -81,10 +90,25 @@ export const ADDED_SPEC_KEYS = {
    * `formatSpecValue` の `v == null` に掛からず「―」にならないため、
    * 「持たない」と「持つが空」が画面で見分けられなくなる。
    * この2つは `tools/verify-data.mjs` の option の検査が機械的に見る。
+   *
+   * WVP 側の4キー（`inputResistance` / `outputSignal` / `outputLoad` /
+   * `responseUs`）について。
+   *
+   * - `responseUs` だけを **μs の数値**にしてあるのは、判定に使う唯一の量だから。
+   *   資料の表記は機種ごとに「約500μs」「約25ms」「約200ms」と単位が割れていて、
+   *   文字列のままでは DE と DS の大小を比較できない。μs にそろえて持ち、
+   *   表示の「約〜ms」への変換はカテゴリ側の format が行う（周波数を Hz の整数で
+   *   持って kHz で出すのと同じ形）。キー名に単位を入れるのは README「データの約束」。
+   * - `inputResistance` / `outputLoad` / `powerSupply` を**文字列**にしてあるのは、
+   *   値そのものが単位と向きを含むから（`1MΩ` / `750Ω以下` / `2.5kΩ以上`）。
+   *   許容負荷抵抗は出力コードによって「以下」と「以上」が入れ替わる（電流出力は
+   *   上限、電圧出力は下限）ので、数値だけにすると意味が反転したまま残る。
+   *   判定にも使わないため、資料の表記をそのまま持つ。
    */
   insulation: [
     'inputSignal', 'output1Signal', 'output2Signal',
     'output1MaxFreqHz', 'output2MaxFreqHz', 'powerSupply', 'option',
+    'inputResistance', 'outputSignal', 'outputLoad', 'responseUs',
   ],
 };
 
