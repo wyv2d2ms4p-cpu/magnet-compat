@@ -650,6 +650,78 @@ check(`option を空配列で持たない（キーごと不在か、1件以上�
   }
 });
 
+// ---- 追加: 応答時間の規約 ------------------------------------------------
+
+/**
+ * `specs.responseUs`（応答時間・μs）の規約。
+ *
+ * このキーは**判定（gate）が大小で見る唯一の量**で、絶縁変換器の gate は
+ * 「候補の応答時間が基準以下」を必要条件にしている（`src/categories/insulation.mjs`
+ * の `responseWithin`）。文字列・0・負値が混ざると、比較が静かに別の意味になる
+ * （`'25000' <= 500` は文字列比較で true になり、遅い機器が候補に並ぶ）。
+ * 表示のほうは `formatResponse` が μs / ms を切り替えるので、単位の取り違えは
+ * 画面にも出ない。人の目で気づける壊れ方ではないので、ここで機械的に落とす。
+ *
+ * 対象0件のまま「PASS」と出さないよう、保有0件は検査失敗にする
+ * （`verify-legacy` 検査1 が塞いだ穴と同じ形）。
+ */
+const withResponse = dataRecords.filter((r) => 'responseUs' in (r.specs ?? {}));
+
+check(`responseUs は正の数（保有 ${withResponse.length} 件）`, (fail) => {
+  if (!withResponse.length) {
+    fail('specs.responseUs を持つレコードが1件も無い … 対象0件のまま PASS しないよう落とす');
+    return;
+  }
+  for (const r of withResponse) {
+    const v = r.specs.responseUs;
+    if (typeof v !== 'number' || !Number.isFinite(v) || v <= 0) {
+      fail(`${r.id} (${r.model}): specs.responseUs=${JSON.stringify(v)} が正の数でない`
+        + ' … gate が「基準以下」で比較するので、数でない値・0・負値は候補の可否を静かに変える');
+    }
+  }
+});
+
+// ---- 追加: 特注コードを値として持たない ----------------------------------
+
+/**
+ * 入力信号・出力信号に「上記以外」（＝お問い合わせください）の特注コードが
+ * 値として入っていないことの検査。
+ *
+ * 渡辺電機工業 WVP の型式コードには入力 `99`「上記以外（電流入力 ±20mA
+ * スパン10μA～40mA／電圧入力 ±300V スパン10mV～600V）」と出力 `S`「上記以外」があり、
+ * **実際のレンジが型式から決まらない**（同じ `WVP-DZ-99A-3` で社内リストの記載が
+ * 0～40mV と 0～250V の2通りあった）。この値をそのまま登録すると `signalMatch` が
+ * `99` どうしをすべて「一致」と判定し、0～40mV の機器と 0～250V の機器が
+ * 互換だと画面に出る。依頼者の判断で該当8件は登録していない。
+ *
+ * 検査にするのは、**将来リストから機械的に流し込んだときに気づけるようにする**ため。
+ * 人が1件ずつ見て弾く約束は、件数が増えれば必ず漏れる。
+ *
+ * 対象0件のまま「PASS」と出さないよう、キーごとに保有0件を失敗にする。
+ */
+const CUSTOM_SIGNAL_MARK = '上記以外';
+const CUSTOM_CHECKED_KEYS = ['inputSignal', 'outputSignal'];
+const holdersOf = (key) => dataRecords.filter((r) => key in (r.specs ?? {}));
+
+check(`入力信号・出力信号に「${CUSTOM_SIGNAL_MARK}」の特注コードが無い`
+  + `（保有 ${CUSTOM_CHECKED_KEYS.map((k) => `${k} ${holdersOf(k).length}`).join(' / ')} 件）`, (fail) => {
+  for (const key of CUSTOM_CHECKED_KEYS) {
+    const holders = holdersOf(key);
+    if (!holders.length) {
+      fail(`specs.${key} を持つレコードが1件も無い … 対象0件のまま PASS しないよう落とす`);
+      continue;
+    }
+    for (const r of holders) {
+      const v = r.specs[key];
+      if (typeof v === 'string' && v.includes(CUSTOM_SIGNAL_MARK)) {
+        fail(`${r.id} (${r.model}): specs.${key}="${v}"`
+          + ' … 実際のレンジが型式から決まらない特注コードは登録しない。'
+          + '値として持つと特注どうしがすべて一致し、レンジの違う機器が互換だと表示される');
+      }
+    }
+  }
+});
+
 // ---- 追加: カテゴリの対応 ------------------------------------------------
 
 /**
