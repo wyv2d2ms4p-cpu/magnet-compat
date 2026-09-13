@@ -1532,5 +1532,509 @@
         "srcNote": "渡辺電機工業 仕様書 WVP-DS / DZ（資料番号 2206A-06） 型式コード表（DS＝約25ms／36＝DC4～20mA(50Ω)／P＝DC0～10V(5kΩ以上)／5＝AC220V）。"
       }
     }
+  },
+  {
+    "id": "ISO_WVP_DE_13A_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DE-13A-1",
+    "series": "WVP-DE",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC0～5V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC4～20mA",
+      "outputLoad": "750Ω以下",
+      "responseUs": 500,
+      "powerSupply": "AC100V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 型式コード表（DE＝約500μs／13＝DC0～5V(1MΩ)／A＝DC4～20mA(750Ω以下)／1＝AC100V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DE_15P_4",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DE-15P-4",
+    "series": "WVP-DE",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC0～10V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 500,
+      "powerSupply": "AC110V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 型式コード表（DE＝約500μs／15＝DC0～10V(1MΩ)／P＝DC0～10V(5kΩ以上)／4＝AC110V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DE_22R_5",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DE-22R-5",
+    "series": "WVP-DE",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC±100mV",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC±10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 500,
+      "powerSupply": "AC220V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 型式コード表（DE＝約500μs／22＝DC±100mV(1MΩ)／R＝DC±10V(5kΩ以上)／5＝AC220V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DE_23R_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DE-23R-1",
+    "series": "WVP-DE",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC±1V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC±10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 500,
+      "powerSupply": "AC100V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 型式コード表（DE＝約500μs／23＝DC±1V(1MΩ)／R＝DC±10V(5kΩ以上)／1＝AC100V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DE_24R_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DE-24R-1",
+    "series": "WVP-DE",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC±5V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC±10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 500,
+      "powerSupply": "AC100V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 型式コード表（DE＝約500μs／24＝DC±5V(1MΩ)／R＝DC±10V(5kΩ以上)／1＝AC100V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DE_24R_3",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DE-24R-3",
+    "series": "WVP-DE",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC±5V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC±10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 500,
+      "powerSupply": "DC24V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 型式コード表（DE＝約500μs／24＝DC±5V(1MΩ)／R＝DC±10V(5kΩ以上)／3＝DC24V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DE_25R_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DE-25R-1",
+    "series": "WVP-DE",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC±10V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC±10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 500,
+      "powerSupply": "AC100V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 型式コード表（DE＝約500μs／25＝DC±10V(1MΩ)／R＝DC±10V(5kΩ以上)／1＝AC100V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DE_36N_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DE-36N-1",
+    "series": "WVP-DE",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC4～20mA",
+      "inputResistance": "50Ω",
+      "outputSignal": "DC0～5V",
+      "outputLoad": "2.5kΩ以上",
+      "responseUs": 500,
+      "powerSupply": "AC100V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 型式コード表（DE＝約500μs／36＝DC4～20mA(50Ω)／N＝DC0～5V(2.5kΩ以上)／1＝AC100V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DE_36P_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DE-36P-1",
+    "series": "WVP-DE",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC4～20mA",
+      "inputResistance": "50Ω",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 500,
+      "powerSupply": "AC100V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 型式コード表（DE＝約500μs／36＝DC4～20mA(50Ω)／P＝DC0～10V(5kΩ以上)／1＝AC100V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DE_36R_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DE-36R-1",
+    "series": "WVP-DE",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC4～20mA",
+      "inputResistance": "50Ω",
+      "outputSignal": "DC±10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 500,
+      "powerSupply": "AC100V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DE（資料番号 2206A-06） 型式コード表（DE＝約500μs／36＝DC4～20mA(50Ω)／R＝DC±10V(5kΩ以上)／1＝AC100V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DZ_14P_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DZ-14P-1",
+    "series": "WVP-DZ",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC1～5V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 200000,
+      "powerSupply": "AC100V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DS / DZ（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DS / DZ（資料番号 2206A-06） 型式コード表（DZ＝約200ms／14＝DC1～5V(1MΩ)／P＝DC0～10V(5kΩ以上)／1＝AC100V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DZ_15P_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DZ-15P-1",
+    "series": "WVP-DZ",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC0～10V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 200000,
+      "powerSupply": "AC100V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DS / DZ（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DS / DZ（資料番号 2206A-06） 型式コード表（DZ＝約200ms／15＝DC0～10V(1MΩ)／P＝DC0～10V(5kΩ以上)／1＝AC100V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DZ_17P_2",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DZ-17P-2",
+    "series": "WVP-DZ",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC0～60mV",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 200000,
+      "powerSupply": "AC200V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DS / DZ（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DS / DZ（資料番号 2206A-06） 型式コード表（DZ＝約200ms／17＝DC0～60mV(1MΩ)／P＝DC0～10V(5kΩ以上)／2＝AC200V）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WVP_DZ_32P_2",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WVP-DZ-32P-2",
+    "series": "WVP-DZ",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 51,
+      "h": 97,
+      "d": 126
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC0～1mA",
+      "inputResistance": "100Ω",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 200000,
+      "powerSupply": "AC200V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DS / DZ（資料番号 2206A-06） 外形寸法 97(H)×51(W)×126(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WVP-DS / DZ（資料番号 2206A-06） 型式コード表（DZ＝約200ms／32＝DC0～1mA(100Ω)／P＝DC0～10V(5kΩ以上)／2＝AC200V）。"
+      }
+    }
   }
 ]
