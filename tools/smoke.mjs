@@ -192,8 +192,8 @@ check('絶縁変換器のカテゴリチップが出る',
   (await page.$('[data-act="cat"][data-v="insulation"]')) !== null, chips.join(','));
 
 const isoCount = await page.$eval('[data-act="cat"][data-v="insulation"] .cnt', (e) => Number(e.textContent));
-check('絶縁変換器が39件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP-DS 25件）',
-  isoCount === 39, `実際 ${isoCount}件`);
+check('絶縁変換器が53件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP-DS 25件・DE 10件・DZ 4件）',
+  isoCount === 53, `実際 ${isoCount}件`);
 
 /**
  * ②の仕様欄を「ラベル → 値」の組で DOM 順のまま拾う。
@@ -497,10 +497,9 @@ check('WVP-DS-25R-1 の②で応答時間が「約25ms」と表示される',
  * WVP-DS-25R-1 / -4 / -5 は入力信号・出力信号・応答時間が同一で、違うのは電源だけ
  * （AC100V / AC110V / AC220V）。電源電圧は `gate` に入れていないので候補に並ぶ。
  *
- * **「遅いものを候補にしない」ことを見る検査は作らない。** WVP-DS 25件は
- * 全件が 25000μs なので、応答時間で落ちる組が0件になる。対象0件のまま PASS する
- * 検査になるため（CLAUDE.md）。判定が実際に働くのは DE・DZ を入れるPRで、
- * そのときに「遅い側が候補に出ない」検査を足すこと。
+ * 「遅いものを候補にしない」ことを見る検査は、下の DE・DZ の節にある。
+ * WVP-DS 25件だけを登録していた時点では全件が 25000μs で、応答時間で落ちる組が
+ * 0件だったため作れなかった（対象0件のまま PASS する検査になる。CLAUDE.md）。
  */
 check('WVP-DS-25R-1 の③に WVP-DS-25R-4 と WVP-DS-25R-5 が出る（応答時間が同値なら候補になる）',
   wvpR1.cards.includes('WVP-DS-25R-4') && wvpR1.cards.includes('WVP-DS-25R-5'),
@@ -535,6 +534,79 @@ check('WVP-DS-25R-1 の③に MS3749 のどの型式も出ない（パルスと�
 check('MS3749-A-O25 の③に WVP のどの型式も出ない（逆向きでも同じ）',
   isoO25.cards.length > 0 && !isoO25.cards.some((m) => m.startsWith('WVP')),
   isoO25.cards.join(' | ') || '候補0件');
+
+/* ---- 絶縁変換器: 応答時間の判定が画面で働く（WVP-DE 500μs / DZ 200ms） ---- */
+
+/**
+ * 入力 DC0～10V ／ 出力 DC0～10V の4件は、**応答時間だけが違う**（添付 §8-1 [1]）。
+ *
+ *   WVP-DE-15P-4  約500μs
+ *   WVP-DS-15P-1  約25ms   WVP-DS-15P-4  約25ms
+ *   WVP-DZ-15P-1  約200ms
+ *
+ * 電源電圧は `gate` に入れていないので、判定に残るのは応答時間だけ。
+ * つまりこの4件は、**非対称な条件が画面でどう出るかをそのまま示す組**になる。
+ * 判定そのもの（53件を通した辺の向き）は `tools/test-insulation-response.mjs` が
+ * 全件走査で見るので、ここで見るのは画面に出るか出ないかに絞る。
+ *
+ * ③のカード一覧（`.card .model`）から読む。`#app` 全体の文字列では見ない——
+ * このカテゴリは `evidence.specs.srcNote` に型式コードの読み下しを書くので、
+ * 「WVP-DZ」も「約200ms」も出典行に現れる（同じ罠を2回踏んだ記録が
+ * `docs/design-insulation-converter.md` 6章にある）。
+ *
+ * **どの検査にも「候補が1件以上ある」を併せて見る**（0件のまま真になる空振り防止）。
+ * 「出ない」側の検査は、カテゴリごと壊れて③が空になっても真になるため。
+ */
+const wvpDs15 = await insulationResult('WVP-DS-15P-1');
+check('WVP-DS-15P-1 を検索して②確認画面に到達する', wvpDs15.reached);
+check('WVP-DS-15P-1（25ms）の③に WVP-DE-15P-4（500μs）が出る（速い側は候補になる）',
+  wvpDs15.cards.includes('WVP-DE-15P-4'), wvpDs15.cards.join(' | ') || '候補0件');
+check('WVP-DS-15P-1（25ms）の③に WVP-DZ-15P-1（200ms）が出ない（遅いため）',
+  wvpDs15.cards.length > 0 && !wvpDs15.cards.includes('WVP-DZ-15P-1'),
+  wvpDs15.cards.join(' | ') || '候補0件');
+
+/**
+ * 逆向き。WVP-DE-15P-4（最速）を基準にすると、同じ入力・出力の DS・DZ は
+ * すべて遅いので候補が0件になる。**0件パネルが出ていることも併せて見る**——
+ * ③が描かれない壊れ方でも「DS が出ない」は真になるため。
+ * 0件パネルの文面そのものは MS3749-A-D44/H 側の検査が見ている。
+ */
+const wvpDe15 = await insulationResult('WVP-DE-15P-4');
+check('WVP-DE-15P-4 を検索して②確認画面に到達する', wvpDe15.reached);
+check('WVP-DE-15P-4（500μs）の③に WVP-DS-15P-1（25ms）が出ない（遅いため・③は0件）',
+  !wvpDe15.cards.includes('WVP-DS-15P-1') && wvpDe15.cards.length === 0 && wvpDe15.note !== '',
+  wvpDe15.cards.join(' | ') || `候補0件（0件パネル: ${wvpDe15.note ? 'あり' : '無い'}）`);
+
+/**
+ * 最も遅い DZ を基準にすると、同じ入力・出力のものは全部が同じか速いので全件が並ぶ。
+ * **DS と DE の両方**を要求するのは、`responseWithin` が `<` （同値を落とす）や
+ * 等号のみに壊れたときに片方だけでは素通りするため。
+ */
+const wvpDz15 = await insulationResult('WVP-DZ-15P-1');
+check('WVP-DZ-15P-1 を検索して②確認画面に到達する', wvpDz15.reached);
+check('WVP-DZ-15P-1（200ms）の③に WVP-DS-15P-1 と WVP-DE-15P-4 の両方が出る',
+  wvpDz15.cards.includes('WVP-DS-15P-1') && wvpDz15.cards.includes('WVP-DE-15P-4'),
+  wvpDz15.cards.join(' | ') || '候補0件');
+
+/**
+ * ②の応答時間の表示が、μs と ms を**資料の表記どおりに出し分ける**こと。
+ *
+ * データは3機種とも μs の数値（500 / 25000 / 200000）で、`formatResponse` が
+ * 1000μs 以上のときだけ ms へ寄せる。DE の 500μs を「約0.5ms」と出すと、
+ * 資料（2206A-06）のどこにも無い表記になって照合できない。
+ * PR #40 では DS（25ms）しか通っていなかったので、両端をここで固定する。
+ *
+ * **「約」を落とさない**のが要件そのもの（資料は3機種とも「約」付きで書いている）。
+ * 500 を 500μs ちょうどと読ませないため、`formatResponse` が付けている。
+ * 欄そのものから読むのは、「約200ms」も「約500μs」も `evidence.specs.srcNote` の
+ * 型式コードの読み下しに現れるため（`#app` 全体では空振りする）。
+ */
+check('WVP-DE-15P-4 の②で応答時間が「約500μs」と表示される（μs はそのまま・ms に寄せない）',
+  wvpDe15.specOf('応答時間') === '約500μs',
+  `応答時間欄: ${wvpDe15.specOf('応答時間') ?? '欄が無い'}`);
+check('WVP-DZ-15P-1 の②で応答時間が「約200ms」と表示される（200000μs → ms）',
+  wvpDz15.specOf('応答時間') === '約200ms',
+  `応答時間欄: ${wvpDz15.specOf('応答時間') ?? '欄が無い'}`);
 
 /* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
 
