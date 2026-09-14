@@ -2036,5 +2036,329 @@
         "srcNote": "渡辺電機工業 仕様書 WVP-DS / DZ（資料番号 2206A-06） 型式コード表（DZ＝約200ms／32＝DC0～1mA(100Ω)／P＝DC0～10V(5kΩ以上)／2＝AC200V）。"
       }
     }
+  },
+  {
+    "id": "ISO_WGP_DS_13P_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-DS-13P-1",
+    "series": "WGP-DS",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC0～5V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 25000,
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 外形寸法 105(H)×25.6(W)×136.5(D)mm。取付方法「DINレール取付または壁面取付」。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 型式コード表（DS＝約25ms／13＝DC0～5V(1MΩ)／P＝DC0～10V(5kΩ以上)／1＝AC100〜120V）。電源コードの表は WVP と違う（WGP は 1＝AC100〜120V・2＝AC200〜240V・3＝DC24V・8＝DC110V の4種で、4・5・6 は無い）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_DS_15A_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-DS-15A-1",
+    "series": "WGP-DS",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC0～10V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC4～20mA",
+      "outputLoad": "750Ω以下",
+      "responseUs": 25000,
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 外形寸法 105(H)×25.6(W)×136.5(D)mm。取付方法「DINレール取付または壁面取付」。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 型式コード表（DS＝約25ms／15＝DC0～10V(1MΩ)／A＝DC4～20mA(750Ω以下)／1＝AC100〜120V）。電源コードの表は WVP と違う（WGP は 1＝AC100〜120V・2＝AC200〜240V・3＝DC24V・8＝DC110V の4種で、4・5・6 は無い）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_DS_15P_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-DS-15P-1",
+    "series": "WGP-DS",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC0～10V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 25000,
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 外形寸法 105(H)×25.6(W)×136.5(D)mm。取付方法「DINレール取付または壁面取付」。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 型式コード表（DS＝約25ms／15＝DC0～10V(1MΩ)／P＝DC0～10V(5kΩ以上)／1＝AC100〜120V）。電源コードの表は WVP と違う（WGP は 1＝AC100〜120V・2＝AC200〜240V・3＝DC24V・8＝DC110V の4種で、4・5・6 は無い）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_DS_21R_3",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-DS-21R-3",
+    "series": "WGP-DS",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC±50mV",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC±10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 25000,
+      "powerSupply": "DC24V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 外形寸法 105(H)×25.6(W)×136.5(D)mm。取付方法「DINレール取付または壁面取付」。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 型式コード表（DS＝約25ms／21＝DC±50mV(1MΩ)／R＝DC±10V(5kΩ以上)／3＝DC24V）。電源コードの表は WVP と違う（WGP は 1＝AC100〜120V・2＝AC200〜240V・3＝DC24V・8＝DC110V の4種で、4・5・6 は無い）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_DS_25P_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-DS-25P-1",
+    "series": "WGP-DS",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC±10V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 25000,
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 外形寸法 105(H)×25.6(W)×136.5(D)mm。取付方法「DINレール取付または壁面取付」。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 型式コード表（DS＝約25ms／25＝DC±10V(1MΩ)／P＝DC0～10V(5kΩ以上)／1＝AC100〜120V）。電源コードの表は WVP と違う（WGP は 1＝AC100〜120V・2＝AC200〜240V・3＝DC24V・8＝DC110V の4種で、4・5・6 は無い）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_DS_36A_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-DS-36A-1",
+    "series": "WGP-DS",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC4～20mA",
+      "inputResistance": "50Ω",
+      "outputSignal": "DC4～20mA",
+      "outputLoad": "750Ω以下",
+      "responseUs": 25000,
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 外形寸法 105(H)×25.6(W)×136.5(D)mm。取付方法「DINレール取付または壁面取付」。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 型式コード表（DS＝約25ms／36＝DC4～20mA(50Ω)／A＝DC4～20mA(750Ω以下)／1＝AC100〜120V）。電源コードの表は WVP と違う（WGP は 1＝AC100〜120V・2＝AC200〜240V・3＝DC24V・8＝DC110V の4種で、4・5・6 は無い）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_DS_36P_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-DS-36P-1",
+    "series": "WGP-DS",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC4～20mA",
+      "inputResistance": "50Ω",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 25000,
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 外形寸法 105(H)×25.6(W)×136.5(D)mm。取付方法「DINレール取付または壁面取付」。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DS（資料番号 2107A-06） 型式コード表（DS＝約25ms／36＝DC4～20mA(50Ω)／P＝DC0～10V(5kΩ以上)／1＝AC100〜120V）。電源コードの表は WVP と違う（WGP は 1＝AC100〜120V・2＝AC200〜240V・3＝DC24V・8＝DC110V の4種で、4・5・6 は無い）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_DE_13N_3",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-DE-13N-3",
+    "series": "WGP-DE",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC0～5V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC0～5V",
+      "outputLoad": "2.5kΩ以上",
+      "responseUs": 120,
+      "powerSupply": "DC24V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DE（資料番号 2107A-06） 外形寸法 105(H)×25.6(W)×136.5(D)mm。取付方法「DINレール取付または壁面取付」。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DE（資料番号 2107A-06） 型式コード表（DE＝約120μs／13＝DC0～5V(1MΩ)／N＝DC0～5V(2.5kΩ以上)／3＝DC24V）。電源コードの表は WVP と違う（WGP は 1＝AC100〜120V・2＝AC200〜240V・3＝DC24V・8＝DC110V の4種で、4・5・6 は無い）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_DE_25R_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-DE-25R-1",
+    "series": "WGP-DE",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "DC±10V",
+      "inputResistance": "1MΩ",
+      "outputSignal": "DC±10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 120,
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DE（資料番号 2107A-06） 外形寸法 105(H)×25.6(W)×136.5(D)mm。取付方法「DINレール取付または壁面取付」。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcNote": "渡辺電機工業 仕様書 WGP-DE（資料番号 2107A-06） 型式コード表（DE＝約120μs／25＝DC±10V(1MΩ)／R＝DC±10V(5kΩ以上)／1＝AC100〜120V）。電源コードの表は WVP と違う（WGP は 1＝AC100〜120V・2＝AC200〜240V・3＝DC24V・8＝DC110V の4種で、4・5・6 は無い）。"
+      }
+    }
   }
 ]
