@@ -192,8 +192,8 @@ check('絶縁変換器のカテゴリチップが出る',
   (await page.$('[data-act="cat"][data-v="insulation"]')) !== null, chips.join(','));
 
 const isoCount = await page.$eval('[data-act="cat"][data-v="insulation"] .cnt', (e) => Number(e.textContent));
-check('絶縁変換器が53件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP-DS 25件・DE 10件・DZ 4件）',
-  isoCount === 53, `実際 ${isoCount}件`);
+check('絶縁変換器が62件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP 9件）',
+  isoCount === 62, `実際 ${isoCount}件`);
 
 /**
  * ②の仕様欄を「ラベル → 値」の組で DOM 順のまま拾う。
@@ -607,6 +607,131 @@ check('WVP-DE-15P-4 の②で応答時間が「約500μs」と表示される（
 check('WVP-DZ-15P-1 の②で応答時間が「約200ms」と表示される（200000μs → ms）',
   wvpDz15.specOf('応答時間') === '約200ms',
   `応答時間欄: ${wvpDz15.specOf('応答時間') ?? '欄が無い'}`);
+
+/* ---- 絶縁変換器: 渡辺電機工業 WGP（WVP と外形寸法が違う） ---- */
+
+/**
+ * WGP 9件は WVP 39件と入力・出力の表が同じ（資料が同じ表を載せている）ので、
+ * `gate` の条件——入力信号・出力信号・応答時間——をすべて通る。
+ * つまり**シリーズをまたいで候補が並ぶ**（実測で30本）。
+ * 違うのは外形寸法（WGP 105×25.6×136.5mm ／ WVP 97×51×126mm）と、
+ * データに持っていない端子配列。どちらも `gate` には入っていない。
+ *
+ * ここで見るのは、その差が③で読めること。
+ *
+ * **`#app` 全体の文字列では見ない。** このカテゴリは `evidence.specs.srcNote` に
+ * 型式コードの読み下しを、`evidence.dims.srcNote` に外形寸法をそのまま書くので、
+ * 「105(H)×25.6(W)×136.5(D)mm」は出典行に必ず現れる。パネルを消しても
+ * 画面全体の検索では通ってしまう（オプションの `text`・第2出力の表記で2回踏んだ形。
+ * `docs/design-insulation-converter.md` 6章）。だから**そのカードのパネル**から読む。
+ */
+const wvpDs36 = await insulationResult('WVP-DS-36P-1');
+check('WVP-DS-36P-1 を検索して②確認画面に到達する', wvpDs36.reached);
+check('WVP-DS-36P-1 の③に WGP-DS-36P-1 が出る（入力・出力・応答時間が同じでシリーズが違う）',
+  wvpDs36.cards.includes('WGP-DS-36P-1'), wvpDs36.cards.join(' | ') || '候補0件');
+
+/**
+ * 外形寸法のパネルは、基準機の寸法とこの候補の寸法の**両方**を出す
+ * （電源電圧のパネルと同じ要件。片側の値だけを出す実装では落ちる）。
+ * 資料の書き方（`105(H)×25.6(W)×136.5(D)mm`）に合わせているので、
+ * 検査もその綴りで見る——`dims` の3つの数値を別々に見ると、
+ * H と W を取り違えた実装（`97(H)` を `51(H)` と出すなど）が通ってしまう。
+ * 枠の色はクラス名（`cmp-warn`）で読む。色コードは検査に書かない（CLAUDE.md）。
+ */
+const dimPanel36 = wvpDs36.panelOf('WGP-DS-36P-1', '外形寸法');
+check('WGP-DS-36P-1 の候補カードに外形寸法の橙パネルが出て、基準と候補の寸法が両方読める',
+  dimPanel36?.tone === 'cmp-warn'
+  && dimPanel36.body.includes('105(H)×25.6(W)×136.5(D)mm')
+  && dimPanel36.body.includes('97(H)×51(W)×126(D)mm')
+  && dimPanel36.body.includes('取付スペースと、端子配列が同じかを確認'),
+  dimPanel36 ? `${dimPanel36.tone} / ${dimPanel36.body}`
+    : `パネルが無い（${wvpDs36.panelTitlesOf('WGP-DS-36P-1')?.join(' / ') ?? 'カードが無い'}）`);
+
+/**
+ * **端子配列が違うと断定しない。**
+ *
+ * WGP と WVP は現に端子配列が違うが、データに持っていないのだから画面で
+ * 断定はできない。将来、寸法が違っても端子配列が同じシリーズが入れば
+ * 断定はそのまま嘘になる（段4で「容量不足」と断定しなかったのと同じ原則。
+ * `docs/design-c-legacy-inverters.md` 6-10 節）。
+ *
+ * 断定の形を並べて**1つも現れないこと**を見る。「確認してください」の形が
+ * 出ていることは上の検査が見ているので、ここは断定が混ざらないことだけに絞る。
+ * パネルが無いと空振りするので、パネルが取れていることも併せて見る。
+ */
+const assertive = ['端子配列も異なります', '端子配列が異なります', '端子配列も違います', '端子配列が違います']
+  .filter((w) => dimPanel36?.body.includes(w));
+check('外形寸法のパネルが「端子配列も異なります」と断定しない（データに持っていない）',
+  dimPanel36 !== null && assertive.length === 0,
+  dimPanel36 ? (assertive.join(' / ') || dimPanel36.body) : 'パネルが無い');
+
+/**
+ * **パネルが2枚並ぶ組。** WGP-DS-15P-1（AC100〜120V・105×25.6×136.5mm）と
+ * WVP-DS-15P-4（AC110V・97×51×126mm）は電源電圧も外形寸法も違う。
+ * PR #36 の電源電圧のパネルを足した時点では、2枚並ぶ組がデータに1組も無く
+ * 並び順を固定できなかった（対象0件のまま PASS する検査になる。CLAUDE.md）。
+ * WGP を足したことで実在するようになったので、**並び順ごとここで固定する**。
+ *
+ * 順は 電源電圧 → 外形寸法（理由は `src/categories/insulation.mjs` の
+ * `detailPanels`）。見出しの配列をそのまま突き合わせるので、
+ * 片方が消えても順が入れ替わっても落ちる。
+ */
+const wgpDs15 = await insulationResult('WGP-DS-15P-1');
+check('WGP-DS-15P-1 を検索して②確認画面に到達する', wgpDs15.reached);
+check('WGP-DS-15P-1 の③に WVP-DS-15P-4 が出る（電源も寸法も違う組）',
+  wgpDs15.cards.includes('WVP-DS-15P-4'), wgpDs15.cards.join(' | ') || '候補0件');
+
+const twoPanels = wgpDs15.panelTitlesOf('WVP-DS-15P-4');
+const psPanel15 = wgpDs15.panelOf('WVP-DS-15P-4', '電源電圧');
+const dimPanel15 = wgpDs15.panelOf('WVP-DS-15P-4', '外形寸法');
+check('WVP-DS-15P-4 の候補カードに電源電圧と外形寸法のパネルが 電源電圧 → 外形寸法 の順で2枚出る',
+  JSON.stringify(twoPanels) === JSON.stringify(['電源電圧', '外形寸法'])
+  && psPanel15?.body.includes('AC110V') === true && psPanel15.body.includes('AC100〜120V')
+  && dimPanel15?.body.includes('97(H)×51(W)×126(D)mm') === true
+  && dimPanel15.body.includes('105(H)×25.6(W)×136.5(D)mm'),
+  `パネル: ${twoPanels?.join(' / ') ?? 'カードが無い'}`
+  + ` ／ 電源電圧: ${psPanel15?.body ?? '無い'} ／ 外形寸法: ${dimPanel15?.body ?? '無い'}`);
+
+/**
+ * **寸法が同じ組には外形寸法のパネルを出さない。**
+ *
+ * WVP どうし（WVP-DS-25R-1 ⇔ WVP-DS-25R-4）は 97×51×126mm で同一。
+ * 「外形寸法 同じ」の枠は情報を増やさず、本当に差がある枠と同じ場所を占める
+ * （オプション・電源電圧の「差が無い組では出さない」と同じ扱い）。
+ *
+ * 空振り防止に、**同じカードに電源電圧のパネルが出ていること**を併せて見る。
+ * これが無いと、`detailPanels` がパネルを1枚も返さない壊れ方や、
+ * ③のカードごと描かれない壊れ方でも「外形寸法のパネルが無い」は真になる。
+ */
+const sameDimTitles = wvpR1.panelTitlesOf('WVP-DS-25R-4');
+check('WVP-DS-25R-1 の③に外形寸法のパネルが出ない（WVP どうしは寸法が同じ・電源電圧のパネルは出る）',
+  sameDimTitles !== null
+  && !sameDimTitles.includes('外形寸法')
+  && sameDimTitles.includes('電源電圧'),
+  `WVP-DS-25R-4 のパネル: ${sameDimTitles?.join(' / ') ?? 'カードが無い'}`);
+
+/**
+ * **WGP-DE は全データで最速（120μs）なので、③が0件になる。**
+ *
+ * WGP-DE-25R-1 と同じ DC±10V → DC±10V を持つのは WVP-DS-25R-1/-4/-5（25ms）と
+ * WVP-DE-25R-1（500μs）で、いずれも遅い。0件は登録の欠落ではなく
+ * **判定が働いた結果**なので、逆向き（WVP-DS-25R-1 を基準）では
+ * WGP-DE-25R-1 が候補に出ることを併せて見る。片方向だけだと、
+ * WGP-DE-25R-1 がデータから消えても・入力信号が壊れても同じ0件になる。
+ *
+ * 0件パネルが出ていることも見る（③が描かれない壊れ方でも「0件」は真になる）。
+ * 文面そのものは MS3749-A-D44/H 側の検査が見ている。
+ */
+const wgpDe25 = await insulationResult('WGP-DE-25R-1');
+check('WGP-DE-25R-1 を検索して②確認画面に到達する', wgpDe25.reached);
+check('WGP-DE-25R-1（120μs）の②で応答時間が「約120μs」と表示される（μs のまま・ms に寄せない）',
+  wgpDe25.specOf('応答時間') === '約120μs',
+  `応答時間欄: ${wgpDe25.specOf('応答時間') ?? '欄が無い'}`);
+check('WGP-DE-25R-1 の③が0件になる（全データで最速なので、同じ入出力の遅い機器は候補にならない）',
+  wgpDe25.cards.length === 0 && wgpDe25.note !== '',
+  wgpDe25.cards.join(' | ') || `候補0件（0件パネル: ${wgpDe25.note ? 'あり' : '無い'}）`);
+check('WVP-DS-25R-1（25ms）の③には WGP-DE-25R-1 が出る（逆向きは出る＝0件は判定の結果）',
+  wvpR1.cards.includes('WGP-DE-25R-1'), wvpR1.cards.join(' | ') || '候補0件');
 
 /* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
 
