@@ -74,14 +74,20 @@ console.log('見る性質は「候補の応答時間は基準以下（同じか�
  * WVP-DS 25件だけを登録していた時点（PR #40）は全件が 25000μs で、応答時間で
  * 落ちる組が0件だった。だから「遅いものを候補にしない」検査を作らなかった
  * （対象0件のまま「全項目PASS」と出る検査を作らない。CLAUDE.md）。
- * DE（500μs）・DZ（200000μs）が入って初めて判定が働くので、
+ * WVP-DE（500μs）・WVP-DZ（200000μs）が入って初めて判定が働くので、
  * **その前提そのものを検査にする**。データが減って再び全件同値に戻ったら、
  * 下の非対称性の検査は真になってしまうが、この検査が落ちる。
+ *
+ * **値の通り数は 3 → 4 に増えた。** WGP-DE（120μs）を足したため
+ * （PR #40 時点 1通り → PR #41 で 3通り → 今回 4通り）。ここを
+ * `>= 2` のような緩い条件にせず**実数を書く**のは、検査名がそのまま
+ * 「いま何段階あるか」の記述になるようにするため。データを足して段階が増えたら
+ * この行を数え直して更新する（`npm run check` の出力に検査名として並ぶ）。
  */
 const withResponse = all.filter((d) => typeof d.specs?.responseUs === 'number');
 const distinct = [...new Set(withResponse.map((d) => d.specs.responseUs))].sort((a, b) => a - b);
-check(`応答時間を持つ型式が3通りの値を持つ（保有 ${withResponse.length} 件）`,
-  withResponse.length > 0 && distinct.length === 3,
+check(`応答時間を持つ型式が4通りの値を持つ（保有 ${withResponse.length} 件）`,
+  withResponse.length > 0 && distinct.length === 4,
   `値: ${distinct.join(' / ') || 'なし'}`);
 
 /**
