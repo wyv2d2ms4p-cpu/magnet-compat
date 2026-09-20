@@ -2360,5 +2360,119 @@
         "srcNote": "渡辺電機工業 仕様書 WGP-DE（資料番号 2107A-06） 型式コード表（DE＝約120μs／25＝DC±10V(1MΩ)／R＝DC±10V(5kΩ以上)／1＝AC100〜120V）。"
       }
     }
+  },
+  {
+    "id": "ISO_WGP_FZ_14FC_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-FZ-14FC-1",
+    "series": "WGP-FZ",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "第1出力の形態（電圧パルス／オープンコレクタ）と電圧（5V／12V）は前面のディップスイッチで決まる。型式コードには現れないので、交換時は旧品の設定を確認すること（仕様書「第1出力信号」コード F）。",
+    "specs": {
+      "inputSignal": "電圧パルス（大信号レベル）",
+      "inputResistance": "20kΩ以上",
+      "output1Signal": "電圧パルス／オープンコレクタ（ディップスイッチ選択）",
+      "output2Signal": "オープンコレクタ",
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。リストの原表記は WGP-FZ-14FC1。英数字は1文字も変えず、ハイフンだけを同じ機種の他の行（WGP-FZ-14FK-1 / WGP-FZ-14FC-3）の形に合わせた。仕様書の型式コード表にハイフン位置の記載は無いので、この綴りのハイフンはメーカー資料由来ではない。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13245&filename=WGP-FZ_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 外形寸法 105(H)×25.6(W)×136.5(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13245&filename=WGP-FZ_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／F＝電圧パルス出力とオープンコレクタ出力、および各々のワンショット出力をディップスイッチで選択／C＝オープンコレクタ／1＝AC80～132V（定格100～120V）（50/60Hz））。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_FZ_14FK_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-FZ-14FK-1",
+    "series": "WGP-FZ",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "第1出力の形態（電圧パルス／オープンコレクタ）と電圧（5V／12V）は前面のディップスイッチで決まる。型式コードには現れないので、交換時は旧品の設定を確認すること（仕様書「第1出力信号」コード F）。",
+    "specs": {
+      "inputSignal": "電圧パルス（大信号レベル）",
+      "inputResistance": "20kΩ以上",
+      "output1Signal": "電圧パルス／オープンコレクタ（ディップスイッチ選択）",
+      "output2Signal": "電圧パルス12V",
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。リストの表記 WGP-FZ-14FK-1 のまま登録した。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13245&filename=WGP-FZ_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 外形寸法 105(H)×25.6(W)×136.5(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13245&filename=WGP-FZ_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／F＝電圧パルス出力とオープンコレクタ出力、および各々のワンショット出力をディップスイッチで選択／K＝12V電圧パルス／1＝AC80～132V（定格100～120V）（50/60Hz））。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_FZ_14FC_3",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-FZ-14FC-3",
+    "series": "WGP-FZ",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "第1出力の形態（電圧パルス／オープンコレクタ）と電圧（5V／12V）は前面のディップスイッチで決まる。型式コードには現れないので、交換時は旧品の設定を確認すること（仕様書「第1出力信号」コード F）。",
+    "specs": {
+      "inputSignal": "電圧パルス（大信号レベル）",
+      "inputResistance": "20kΩ以上",
+      "output1Signal": "電圧パルス／オープンコレクタ（ディップスイッチ選択）",
+      "output2Signal": "オープンコレクタ",
+      "powerSupply": "DC24V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。リストの表記 WGP-FZ-14FC-3 のまま登録した。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13245&filename=WGP-FZ_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 外形寸法 105(H)×25.6(W)×136.5(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13245&filename=WGP-FZ_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／F＝電圧パルス出力とオープンコレクタ出力、および各々のワンショット出力をディップスイッチで選択／C＝オープンコレクタ／3＝DC24V±10%）。"
+      }
+    }
   }
 ]
