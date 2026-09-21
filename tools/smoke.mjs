@@ -192,8 +192,8 @@ check('絶縁変換器のカテゴリチップが出る',
   (await page.$('[data-act="cat"][data-v="insulation"]')) !== null, chips.join(','));
 
 const isoCount = await page.$eval('[data-act="cat"][data-v="insulation"] .cnt', (e) => Number(e.textContent));
-check('絶縁変換器が62件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP 9件）',
-  isoCount === 62, `実際 ${isoCount}件`);
+check('絶縁変換器が65件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP-DS/DE 9件・WGP-FZ 3件）',
+  isoCount === 65, `実際 ${isoCount}件`);
 
 /**
  * ②の仕様欄を「ラベル → 値」の組で DOM 順のまま拾う。
@@ -325,7 +325,7 @@ const isoLeak = ['出力極性', '配線本数', '電源相数', '判定条件�
   .filter((p) => isoD44.note.includes(p));
 check('絶縁変換器の0件パネルが必要条件（入力信号・出力信号・第2出力・応答時間）を名乗る',
   isoD44.note.includes('入力信号の種別が一致し')
-  && isoD44.note.includes('出力信号（MS3749 系は第1出力）の種別も一致する')
+  && isoD44.note.includes('出力信号（2出力型は第1出力）の種別も一致する')
   && isoD44.note.includes('第2出力を一方だけが持つ組は候補にしません')
   && isoD44.note.includes('基準と同じか速いものだけを候補にします')
   && isoD44.note.includes('どの条件で外れたかはこの画面では判別できません')
@@ -732,6 +732,48 @@ check('WGP-DE-25R-1 の③が0件になる（全データで最速なので、�
   wgpDe25.cards.join(' | ') || `候補0件（0件パネル: ${wgpDe25.note ? 'あり' : '無い'}）`);
 check('WVP-DS-25R-1（25ms）の③には WGP-DE-25R-1 が出る（逆向きは出る＝0件は判定の結果）',
   wvpR1.cards.includes('WGP-DE-25R-1'), wvpR1.cards.join(' | ') || '候補0件');
+
+/* ---- 絶縁変換器: 渡辺電機工業 WGP-FZ（同じ WGP でパルス側） ---- */
+
+/**
+ * **WGP-FZ-14FK-1 の③は0件になる。** 第2出力が `電圧パルス12V` で、
+ * 他の2件（`オープンコレクタ`）と違うため。入力信号・第1出力・電源は
+ * `WGP-FZ-14FC-1` と同一なので、**落ちているのは第2出力の条件だけ**で、
+ * `MS3749-A-O22` ⇔ `MS3749-A-O25`（第2出力だけが違うので互いの候補に出ない）と
+ * 同じ形になる。
+ *
+ * 0件パネルが出ていることも併せて見る（③のカードごと描かれない壊れ方でも
+ * 「候補0件」は真になる）。文面そのものは MS3749-A-D44/H 側の検査が見ている。
+ * その文面は「出力信号（2出力型は第1出力）」と**系列名を出さない**形にしてある。
+ * FZ も2出力型なので、系列名で書くと FZ の0件画面が他人の条件を名乗ることになる。
+ */
+const fzFK1 = await insulationResult('WGP-FZ-14FK-1');
+check('WGP-FZ-14FK-1 を検索して②確認画面に到達する', fzFK1.reached);
+check('WGP-FZ-14FK-1 の③が0件になる（第2出力の種別が違う）',
+  fzFK1.cards.length === 0 && fzFK1.note !== '',
+  fzFK1.cards.join(' | ') || `候補0件（0件パネル: ${fzFK1.note ? 'あり' : '無い'}）`);
+
+/**
+ * **WGP-FZ-14FC-1 ⇔ WGP-FZ-14FC-3 は電源だけが違う。**
+ *
+ * 入力信号・第1出力・第2出力・外形寸法が同一で、どちらもオプションを持たない。
+ * `gate` は `powerSupply` を見ないので候補に並び、差は③の電源電圧のパネルでしか
+ * 読めない（`MS3749-A-D45` ⇔ `MS3749-D-D45` と同じ形。8-1 の再現）。
+ *
+ * **そのカードのパネルから読む。** 画面全体の文字列で見ると、
+ * `evidence.specs.srcNote` の型式コードの読み下しに `DC24V` も `AC100〜120V` も
+ * 出ているので、パネルを消しても通ってしまう（`docs/design-insulation-converter.md` 6章）。
+ * 本文には基準機の値とこの候補の値の両方を、枠の色はクラス名で要求する。
+ */
+const fzFC1 = await insulationResult('WGP-FZ-14FC-1');
+check('WGP-FZ-14FC-1 を検索して②確認画面に到達する', fzFC1.reached);
+const psFC3 = fzFC1.panelOf('WGP-FZ-14FC-3', '電源電圧');
+check('WGP-FZ-14FC-1 の③に WGP-FZ-14FC-3 が出て、電源電圧のパネルに DC24V と AC100〜120V の両方が読める',
+  fzFC1.cards.includes('WGP-FZ-14FC-3')
+  && psFC3?.body.includes('DC24V') === true
+  && psFC3.body.includes('AC100〜120V')
+  && psFC3.tone === 'cmp-warn',
+  fzFC1.cards.join(' | ') || '候補0件');
 
 /* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
 
