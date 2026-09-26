@@ -15,6 +15,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードには現れず、NORMAL と REVERSE で出力波形が反転するので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
     "specs": {
       "inputSignal": "無電圧接点・オープンコレクタ",
+      "inputPhases": 1,
       "output1Signal": "オープンコレクタ",
       "output2Signal": "オープンコレクタ",
       "output1MaxFreqHz": 100000,
@@ -36,7 +37,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MTT 標準仕様書 MS3749（文書番号 MQDDK-110729-33 Rev.2.10）。入力信号・第1出力・第2出力・電源は p.1 の型式コード表（A＝AC100〜240V、O＝無電圧接点/オープンコレクタ、2＝オープンコレクタ）。最大出力周波数は p.2「最大出力負荷」「最大出力周波数」のオープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。入力抵抗は登録していない。同仕様書の「入力抵抗」欄は電圧入力型・ラインドライバ型・電流入力型のみの記載で、型式コード欄と p.3 接続図にある 3.3kΩ がこの「入力抵抗」と同じ意味かを断定できないため。",
+        "srcNote": "MTT 標準仕様書 MS3749（文書番号 MQDDK-110729-33 Rev.2.10）。入力信号・第1出力・第2出力・電源は p.1 の型式コード表（A＝AC100〜240V、O＝無電圧接点/オープンコレクタ、2＝オープンコレクタ）。最大出力周波数は p.2「最大出力負荷」「最大出力周波数」のオープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。入力抵抗は登録していない。同仕様書の「入力抵抗」欄は電圧入力型・ラインドライバ型・電流入力型のみの記載で、型式コード欄と p.3 接続図にある 3.3kΩ がこの「入力抵抗」と同じ意味かを断定できないため。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -57,6 +58,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードには現れず、NORMAL と REVERSE で出力波形が反転するので、設定は現物で確認すること（仕様書 p.2「出力論理」）。第2出力がラインドライバ・パルスのため、端子⑥⑦⑧の割付は Y / Z / COM（仕様書 p.2 端子配置）。",
     "specs": {
       "inputSignal": "無電圧接点・オープンコレクタ",
+      "inputPhases": 1,
       "output1Signal": "オープンコレクタ",
       "output2Signal": "ラインドライバ・パルス",
       "output1MaxFreqHz": 100000,
@@ -78,7 +80,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MTT 標準仕様書 MS3749（文書番号 MQDDK-110729-33 Rev.2.10）。入力信号・第1出力・第2出力・電源は p.1 の型式コード表（A＝AC100〜240V、O＝無電圧接点/オープンコレクタ、2＝オープンコレクタ、5＝ラインドライバ・パルス）。最大出力周波数は p.2「最大出力負荷」「最大出力周波数」の値で、オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）／ラインドライバ・パルス 200kHz。第2出力のラインドライバ・パルスは TIA/EIA-422-B 準拠。入力抵抗は登録していない。同仕様書の「入力抵抗」欄は電圧入力型・ラインドライバ型・電流入力型のみの記載で、型式コード欄と p.3 接続図にある 3.3kΩ がこの「入力抵抗」と同じ意味かを断定できないため。",
+        "srcNote": "MTT 標準仕様書 MS3749（文書番号 MQDDK-110729-33 Rev.2.10）。入力信号・第1出力・第2出力・電源は p.1 の型式コード表（A＝AC100〜240V、O＝無電圧接点/オープンコレクタ、2＝オープンコレクタ、5＝ラインドライバ・パルス）。最大出力周波数は p.2「最大出力負荷」「最大出力周波数」の値で、オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）／ラインドライバ・パルス 200kHz。第2出力のラインドライバ・パルスは TIA/EIA-422-B 準拠。入力抵抗は登録していない。同仕様書の「入力抵抗」欄は電圧入力型・ラインドライバ型・電流入力型のみの記載で、型式コード欄と p.3 接続図にある 3.3kΩ がこの「入力抵抗」と同じ意味かを断定できないため。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -99,6 +101,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
     "specs": {
       "inputSignal": "DC電圧パルス",
+      "inputPhases": 1,
       "output1Signal": "電圧パルス12V",
       "output1MaxFreqHz": 200000,
       "powerSupply": "AC100〜240V",
@@ -124,7 +127,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／4＝電圧パルス12V／第2出力 未記入＝なし／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 電圧パルス 200kHz。",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／4＝電圧パルス12V／第2出力 未記入＝なし／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 電圧パルス 200kHz。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -145,6 +148,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
     "specs": {
       "inputSignal": "DC電圧パルス",
+      "inputPhases": 1,
       "output1Signal": "電圧パルス12V",
       "output1MaxFreqHz": 200000,
       "output2Signal": "電圧パルス12V",
@@ -172,7 +176,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／4＝電圧パルス12V／第2出力 4＝電圧パルス12V／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 電圧パルス 200kHz。",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／4＝電圧パルス12V／第2出力 4＝電圧パルス12V／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 電圧パルス 200kHz。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -193,6 +197,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
     "specs": {
       "inputSignal": "ラインドライバ・パルス",
+      "inputPhases": 1,
       "output1Signal": "オープンコレクタ",
       "output1MaxFreqHz": 100000,
       "output2Signal": "オープンコレクタ",
@@ -214,7 +219,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／L＝ラインドライバ・パルス／2＝オープンコレクタ／第2出力 2＝オープンコレクタ／オプション 未記入＝なし）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／L＝ラインドライバ・パルス／2＝オープンコレクタ／第2出力 2＝オープンコレクタ／オプション 未記入＝なし）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -235,6 +240,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
     "specs": {
       "inputSignal": "DC電圧パルス",
+      "inputPhases": 1,
       "output1Signal": "電圧パルス10V",
       "output1MaxFreqHz": 200000,
       "output2Signal": "電圧パルス10V",
@@ -262,7 +268,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／3＝電圧パルス10V／第2出力 3＝電圧パルス10V／D＝センサ供給電源 12V DC（±10%）3線式）、p.2「最大出力周波数」 電圧パルス 200kHz。",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／3＝電圧パルス10V／第2出力 3＝電圧パルス10V／D＝センサ供給電源 12V DC（±10%）3線式）、p.2「最大出力周波数」 電圧パルス 200kHz。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -283,6 +289,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。第2出力がラインドライバ・パルスのため、端子⑥⑦⑧の割付は Y / Z / COM（仕様書 p.2 端子配置）。",
     "specs": {
       "inputSignal": "DC電圧パルス",
+      "inputPhases": 1,
       "output1Signal": "電圧パルス12V",
       "output1MaxFreqHz": 200000,
       "output2Signal": "ラインドライバ・パルス",
@@ -304,7 +311,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／4＝電圧パルス12V／第2出力 5＝ラインドライバ・パルス／オプション 未記入＝なし）、p.2「最大出力周波数」 電圧パルス 200kHz・ラインドライバ・パルス 200kHz。",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／4＝電圧パルス12V／第2出力 5＝ラインドライバ・パルス／オプション 未記入＝なし）、p.2「最大出力周波数」 電圧パルス 200kHz・ラインドライバ・パルス 200kHz。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -325,6 +332,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。第2出力がラインドライバ・パルスのため、端子⑥⑦⑧の割付は Y / Z / COM（仕様書 p.2 端子配置）。",
     "specs": {
       "inputSignal": "無電圧接点・オープンコレクタ",
+      "inputPhases": 1,
       "output1Signal": "オープンコレクタ",
       "output1MaxFreqHz": 100000,
       "output2Signal": "ラインドライバ・パルス",
@@ -352,7 +360,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／O＝無電圧接点・オープンコレクタ／2＝オープンコレクタ／第2出力 5＝ラインドライバ・パルス／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）・ラインドライバ・パルス 200kHz。",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／O＝無電圧接点・オープンコレクタ／2＝オープンコレクタ／第2出力 5＝ラインドライバ・パルス／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）・ラインドライバ・パルス 200kHz。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -373,6 +381,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
     "specs": {
       "inputSignal": "無電圧接点・オープンコレクタ",
+      "inputPhases": 1,
       "output1Signal": "オープンコレクタ",
       "output1MaxFreqHz": 100000,
       "output2Signal": "オープンコレクタ",
@@ -400,7 +409,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／O＝無電圧接点・オープンコレクタ／2＝オープンコレクタ／第2出力 2＝オープンコレクタ／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／O＝無電圧接点・オープンコレクタ／2＝オープンコレクタ／第2出力 2＝オープンコレクタ／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -421,6 +430,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。第2出力がラインドライバ・パルスのため、端子⑥⑦⑧の割付は Y / Z / COM（仕様書 p.2 端子配置）。",
     "specs": {
       "inputSignal": "ラインドライバ・パルス",
+      "inputPhases": 1,
       "output1Signal": "電圧パルス12V",
       "output1MaxFreqHz": 200000,
       "output2Signal": "ラインドライバ・パルス",
@@ -448,7 +458,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（D＝DC24V／L＝ラインドライバ・パルス／4＝電圧パルス12V／第2出力 5＝ラインドライバ・パルス／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 電圧パルス 200kHz・ラインドライバ・パルス 200kHz。",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（D＝DC24V／L＝ラインドライバ・パルス／4＝電圧パルス12V／第2出力 5＝ラインドライバ・パルス／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 電圧パルス 200kHz・ラインドライバ・パルス 200kHz。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -469,6 +479,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
     "specs": {
       "inputSignal": "DC電圧パルス",
+      "inputPhases": 1,
       "output1Signal": "電圧パルス10V",
       "output1MaxFreqHz": 200000,
       "powerSupply": "AC100〜240V",
@@ -494,7 +505,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／3＝電圧パルス10V／第2出力 未記入＝なし／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 電圧パルス 200kHz。",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／D＝DC電圧パルス／3＝電圧パルス10V／第2出力 未記入＝なし／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 電圧パルス 200kHz。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -515,6 +526,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
     "specs": {
       "inputSignal": "ラインドライバ・パルス",
+      "inputPhases": 1,
       "output1Signal": "オープンコレクタ",
       "output1MaxFreqHz": 100000,
       "powerSupply": "AC100〜240V",
@@ -540,7 +552,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／L＝ラインドライバ・パルス／2＝オープンコレクタ／第2出力 未記入＝なし／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／L＝ラインドライバ・パルス／2＝オープンコレクタ／第2出力 未記入＝なし／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -561,6 +573,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。",
     "specs": {
       "inputSignal": "無電圧接点・オープンコレクタ",
+      "inputPhases": 1,
       "output1Signal": "オープンコレクタ",
       "output1MaxFreqHz": 100000,
       "powerSupply": "AC100〜240V",
@@ -586,7 +599,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／O＝無電圧接点・オープンコレクタ／2＝オープンコレクタ／第2出力 未記入＝なし／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（A＝AC100〜240V／O＝無電圧接点・オープンコレクタ／2＝オープンコレクタ／第2出力 未記入＝なし／H＝ポリウレタン系コーティング）、p.2「最大出力周波数」 オープンコレクタ 100kHz（負荷抵抗 2kΩ 以下）。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -607,6 +620,7 @@
     "note": "極性反転スイッチ（POLARITY N / R）が前面にある。型式コードに現れないので、設定は現物で確認すること（仕様書 p.2「出力論理」）。第2出力がラインドライバ・パルスのため、端子⑥⑦⑧の割付は Y / Z / COM（仕様書 p.2 端子配置）。",
     "specs": {
       "inputSignal": "DC電圧パルス",
+      "inputPhases": 1,
       "output1Signal": "電圧パルス12V",
       "output1MaxFreqHz": 200000,
       "output2Signal": "ラインドライバ・パルス",
@@ -628,7 +642,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://mtt.co.jp/wp/wp-content/uploads/SpecSheet1_MS3749_Rev210_J.pdf",
-        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（D＝DC24V／D＝DC電圧パルス／4＝電圧パルス12V／第2出力 5＝ラインドライバ・パルス／オプション 未記入＝なし）、p.2「最大出力周波数」 電圧パルス 200kHz・ラインドライバ・パルス 200kHz。",
+        "srcNote": "MS3749 Rev.2.10 p.1 型式コード表（D＝DC24V／D＝DC電圧パルス／4＝電圧パルス12V／第2出力 5＝ラインドライバ・パルス／オプション 未記入＝なし）、p.2「最大出力周波数」 電圧パルス 200kHz・ラインドライバ・パルス 200kHz。入力の相数（1）は MTT 仕様書 MS3749 Rev.1.90（MQDDK-110729-33）p.2 端子配置から読んだ（入力に使う端子は ⑨〜⑪ の1組。docs/mtt-ms3749-input-terminals.md）。登録済みの出典 Rev.2.10 では端子の割付を未確認。",
         "checkedAt": "2026-08-30"
       }
     }
@@ -2377,6 +2391,7 @@
     "note": "第1出力の形態（電圧パルス／オープンコレクタ）と電圧（5V／12V）は前面のディップスイッチで決まる。型式コードには現れないので、交換時は旧品の設定を確認すること（仕様書「第1出力信号」コード F）。",
     "specs": {
       "inputSignal": "電圧パルス（大信号レベル）",
+      "inputPhases": 1,
       "inputResistance": "20kΩ以上",
       "output1Signal": "電圧パルス／オープンコレクタ（ディップスイッチ選択）",
       "output2Signal": "オープンコレクタ",
@@ -2395,7 +2410,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13245&filename=WGP-FZ_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
-        "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／F＝電圧パルス出力とオープンコレクタ出力、および各々のワンショット出力をディップスイッチで選択／C＝オープンコレクタ／1＝AC80～132V（定格100～120V）（50/60Hz））。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。"
+        "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／F＝電圧パルス出力とオープンコレクタ出力、および各々のワンショット出力をディップスイッチで選択／C＝オープンコレクタ／1＝AC80～132V（定格100～120V）（50/60Hz））。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。入力の相数（1）は同仕様書の端子配列（1・2 入力（+/−）の1組。docs/watanabe-wgp-fz-verified.md 2章）から読んだ。"
       }
     }
   },
@@ -2415,6 +2430,7 @@
     "note": "第1出力の形態（電圧パルス／オープンコレクタ）と電圧（5V／12V）は前面のディップスイッチで決まる。型式コードには現れないので、交換時は旧品の設定を確認すること（仕様書「第1出力信号」コード F）。",
     "specs": {
       "inputSignal": "電圧パルス（大信号レベル）",
+      "inputPhases": 1,
       "inputResistance": "20kΩ以上",
       "output1Signal": "電圧パルス／オープンコレクタ（ディップスイッチ選択）",
       "output2Signal": "電圧パルス12V",
@@ -2433,7 +2449,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13245&filename=WGP-FZ_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
-        "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／F＝電圧パルス出力とオープンコレクタ出力、および各々のワンショット出力をディップスイッチで選択／K＝12V電圧パルス／1＝AC80～132V（定格100～120V）（50/60Hz））。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。"
+        "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／F＝電圧パルス出力とオープンコレクタ出力、および各々のワンショット出力をディップスイッチで選択／K＝12V電圧パルス／1＝AC80～132V（定格100～120V）（50/60Hz））。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。入力の相数（1）は同仕様書の端子配列（1・2 入力（+/−）の1組。docs/watanabe-wgp-fz-verified.md 2章）から読んだ。"
       }
     }
   },
@@ -2453,6 +2469,7 @@
     "note": "第1出力の形態（電圧パルス／オープンコレクタ）と電圧（5V／12V）は前面のディップスイッチで決まる。型式コードには現れないので、交換時は旧品の設定を確認すること（仕様書「第1出力信号」コード F）。",
     "specs": {
       "inputSignal": "電圧パルス（大信号レベル）",
+      "inputPhases": 1,
       "inputResistance": "20kΩ以上",
       "output1Signal": "電圧パルス／オープンコレクタ（ディップスイッチ選択）",
       "output2Signal": "オープンコレクタ",
@@ -2471,7 +2488,7 @@
       "specs": {
         "state": "verified",
         "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13245&filename=WGP-FZ_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
-        "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／F＝電圧パルス出力とオープンコレクタ出力、および各々のワンショット出力をディップスイッチで選択／C＝オープンコレクタ／3＝DC24V±10%）。"
+        "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／F＝電圧パルス出力とオープンコレクタ出力、および各々のワンショット出力をディップスイッチで選択／C＝オープンコレクタ／3＝DC24V±10%）。入力の相数（1）は同仕様書の端子配列（1・2 入力（+/−）の1組。docs/watanabe-wgp-fz-verified.md 2章）から読んだ。"
       }
     }
   },
@@ -2696,6 +2713,45 @@
         "state": "verified",
         "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13237&filename=WGP-FV_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
         "srcNote": "渡辺電機工業 仕様書 WGP-FV（仕様書のページ表記 2106A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／P＝DC0～10V(5kΩ以上)／1＝AC80～132V（定格100～120V）（50/60Hz））。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WRPP_A1NNR_M2",
+    "category": "insulation",
+    "maker": "エムジー（旧エム・システム技研）",
+    "model": "WRPP-A1NNR-M2",
+    "series": "WRPP",
+    "modelStatus": "catalog-confirmed",
+    "mounting": "壁取付/DINレール 共用",
+    "note": "ロータリエンコーダの A相・B相の2相（入力2回路）を絶縁し、第1出力・第2出力の2系統に分配する（1台で入力2回路・出力4点）。出力の論理は反転（型式コード R）。接点の ON/OFF と出力の対応は、資料の図を未確認。",
+    "specs": {
+      "inputSignal": "無電圧スイッチ",
+      "inputPhases": 2,
+      "output1Signal": "12V電圧パルス",
+      "output2Signal": "12V電圧パルス",
+      "output1MaxFreqHz": 100000,
+      "output2MaxFreqHz": 100000,
+      "outputLogic": "反転",
+      "powerSupply": "AC100〜240V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "現場写真（依頼者撮影の銘板、2026-09-26。撮影日は依頼者の申告で、画像からは読めない）。銘板の MODEL WRPP-A1NNR-M2 と、同じ銘板の INPUT Dry contact / OUT 1 12V pulse / OUT 2 12V pulse / POWER 100-240V AC が、仕様書の型式コード表の読み下しと矛盾しない（docs/msystem-wrpp-verified.md 1章・2章）。この型式は公式資料には型式コードの組み合わせとしてしか存在せず、個別の型式として列挙されていないため、実在の根拠は写真であって仕様書ではない。",
+        "checkedAt": "2026-09-26"
+      },
+      "dims": {
+        "state": "unverified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/W/nswrpp.pdf",
+        "srcNote": "エムジー 仕様書 WRPP（NS-2222 Rev.6）の外形寸法図は、テキスト抽出で数値（80・50・72・107・136 など）と辺の対応が読めず、幅・高さ・奥行きを確定できない。資料で確定するまで dims はキーごと不在にする（docs/msystem-wrpp-verified.md 3章「読めなかったもの」）。",
+        "checkedAt": "2026-09-26"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/W/nswrpp.pdf",
+        "srcNote": "エムジー 仕様書 WRPP（NS-2222 Rev.6）型式コード表（A1＝無電圧スイッチ／第1出力 N＝12V 電圧パルス（最大周波数 100kHz）／第2出力 N＝同／論理 R＝反転／M2＝100～240V AC（許容範囲 85～264V AC、47～66Hz））。入力信号・出力信号は資料の表記のまま（MS3749 の綴りに寄せない）。電源電圧の登録値は既存の MS3749 と同じ表記（AC100〜240V）に揃えてある（資料の原文は上の読み下しのとおり）。入力の相数（2）は同仕様書の「ロータリエンコーダの2相パルス入力信号を絶縁して2出力に分配」と端子接続図（入力 A相・B相の2組）から読んだ。端子番号は図の罫線が読めておらず、現物のソケット表示で要確認（docs/msystem-wrpp-verified.md 3章）。",
+        "checkedAt": "2026-09-26"
       }
     }
   }

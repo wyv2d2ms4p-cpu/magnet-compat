@@ -681,6 +681,46 @@ check(`responseUs は正の数（保有 ${withResponse.length} 件）`, (fail) =
   }
 });
 
+// ---- 追加: 入力の相数の規約 ----------------------------------------------
+
+/**
+ * 絶縁変換器のパルス側（`specs.output1Signal` を持つレコード）が、全件
+ * `specs.inputPhases`（入力の相数・入力回路数）を正の整数で持つことの検査。
+ *
+ * `gate` はパルス側で相数の一致を要求し、**値が無い側を一致に倒さない**
+ * （`src/categories/insulation.mjs` の `phasesMatch`）。1件でも付け忘れると、
+ * そのレコードは候補を全部失い、誰の候補にもならない。画面には0件パネルが出るだけで、
+ * 付け忘れだとは読めない。文字列の `'1'` も `Number.isInteger` で落ちて同じことになる。
+ * 人の目で気づける壊れ方ではないので、ここで機械的に落とす。
+ *
+ * アナログ側（`outputSignal`）は相数で語らない系統で、キーを持たない
+ * （`tools/schema-map.mjs`）。**アナログ側が持っていたら**それも落とす。
+ * `gate` はアナログ側で相数を見ないので、持たせても判定に効かず、②に行が増えるだけになる。
+ *
+ * 対象0件のまま「PASS」と出さないよう、パルス側が0件なら失敗にする。
+ */
+const pulseSide = dataRecords.filter((r) => r.category === 'insulation' && typeof r.specs?.output1Signal === 'string');
+const analogWithPhases = dataRecords.filter((r) => r.category === 'insulation'
+  && typeof r.specs?.output1Signal !== 'string' && 'inputPhases' in (r.specs ?? {}));
+
+check(`絶縁変換器のパルス側（第1出力を持つ ${pulseSide.length} 件）は全件が入力の相数を正の整数で持ち、アナログ側は持たない`, (fail) => {
+  if (!pulseSide.length) {
+    fail('specs.output1Signal を持つレコードが1件も無い … 対象0件のまま PASS しないよう落とす');
+    return;
+  }
+  for (const r of pulseSide) {
+    const v = r.specs.inputPhases;
+    if (!Number.isInteger(v) || v <= 0) {
+      fail(`${r.id} (${r.model}): specs.inputPhases=${JSON.stringify(v)} が正の整数でない`
+        + ' … gate がパルス側で相数の一致を要求するので、欠けるとこの型式は候補を全部失う');
+    }
+  }
+  for (const r of analogWithPhases) {
+    fail(`${r.id} (${r.model}): アナログ側（出力信号が outputSignal）なのに specs.inputPhases を持つ`
+      + ' … gate はアナログ側で相数を見ない。持たせても判定に効かない');
+  }
+});
+
 // ---- 追加: 特注コードを値として持たない ----------------------------------
 
 /**
