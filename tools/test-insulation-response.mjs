@@ -244,6 +244,35 @@ check('非対称な辺に MS3749（応答時間を持たない系列）が1件�
   asymmetric.filter(([a, b]) => a.startsWith('MS3749') || b.startsWith('MS3749'))
     .slice(0, 3).map(([a, b]) => `${a} → ${b}`).join(' / '));
 
+/* ---- 6. 1出力型で応答時間を両方とも持たない組（WGP-FV） ---- */
+
+/**
+ * WGP-FV は応答時間を持たない（注文時の測定周波数で決まり、型式から決まらない）。
+ * 「両方とも持たないなら通す」をアナログ側にも当てると、入力・出力が同じで
+ * 測定周波数の違う FV が互いの候補に出る。依頼者の判断で候補にしない。
+ *
+ * **実データでは対象0件になるので、仮想の組で見る。** 登録している FV 2件は
+ * 出力が違い（DC4～20mA / DC0～10V）、この分岐に来る前に落ちる。実データだけで
+ * 「FV どうしが候補にならない」を書くと、分岐を消しても通る（CLAUDE.md が禁じる形）。
+ * そこで `WGP-FV-14A-1` を複製して電源だけ変えた仮想レコードを**検査の中だけで**作る
+ * （`data/` には入れない。実在の根拠が無い）。検査4が対称化した gate を組み立てる
+ * のと同じ考え方で、2つ目の検査は同じ組に同じ応答時間を与えると候補になることを
+ * 示し、1つ目が止めているのが応答時間の分岐だけだと言えるようにする。
+ */
+const fv = get('WGP-FV-14A-1');
+const fvVirtual = {
+  ...fv, id: 'VIRTUAL_WGP_FV_14A_3', model: 'WGP-FV-14A-3（仮想）',
+  specs: { ...fv.specs, powerSupply: 'DC24V' },
+};
+const mutual = (x, y) => cat.gate(x, y) && cat.gate(y, x);
+check('応答時間が型式から決まらない1出力型どうしは候補にしない（WGP-FV-14A-1 の電源だけ変えた仮想の組で確認）',
+  fv.specs.responseUs == null && typeof fv.specs.outputSignal === 'string'
+  && !cat.gate(fvVirtual, fv) && !cat.gate(fv, fvVirtual),
+  `responseUs=${fv.specs.responseUs} / 仮想→実 ${cat.gate(fvVirtual, fv)} / 実→仮想 ${cat.gate(fv, fvVirtual)}`);
+const withRes = (d) => ({ ...d, specs: { ...d.specs, responseUs: 200000 } });
+check('同じ仮想の組に同じ応答時間を与えると互いの候補になる（上の検査が止めているのは応答時間の分岐だけ）',
+  mutual(withRes(fvVirtual), withRes(fv)));
+
 console.log('');
 if (failures.length) {
   console.error(`絶縁変換器 応答時間テスト失敗: ${failures.length} / ${n} 項目が NG`);

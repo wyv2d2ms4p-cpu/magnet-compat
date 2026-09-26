@@ -2622,5 +2622,81 @@
         "srcNote": "渡辺電機工業 仕様書 WGP-MP / MS（WGP-MP（非絶縁）と WGP-MS（絶縁）の2機種で1枚。仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（MS＝ポテンショメータ変換器（絶縁）応答時間25ms／23＝定格入力 0～500Ω／P＝DC0～10V(5kΩ以上)／1＝AC80～132V（定格100～120V）（50/60Hz））。入力信号は共通仕様の「ポテンショメータ抵抗値」と定格入力のレンジを合わせた表記。応答時間は共通仕様の原文「25ms（0〜90%）」を 25000μs として登録した（画面では「約25ms」と表示される）。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。"
       }
     }
+  },
+  {
+    "id": "ISO_WGP_FV_14A_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-FV-14A-1",
+    "series": "WGP-FV",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "測定周波数（フルスケール）は注文時に指定する値で、型式コードには現れない。交換時は旧品の測定周波数を確認し、同じ値を指定して発注すること（仕様書「測定周波数」）。入力の形態（電圧パルス／ON-OFFパルス）はディップスイッチで決まるので、旧品の設定も確認すること（仕様書「入力信号」コード 14）。",
+    "specs": {
+      "inputSignal": "電圧パルス（大信号レベル）",
+      "inputResistance": "20kΩ以上",
+      "outputSignal": "DC4～20mA",
+      "outputLoad": "750Ω以下",
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。リストの表記 WGP-FV-14A-1 のまま登録した。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13237&filename=WGP-FV_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-FV（仕様書のページ表記 2106A-06。資料番号かどうかは未確認） 外形寸法 105(H)×25.6(W)×136.5(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13237&filename=WGP-FV_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-FV（仕様書のページ表記 2106A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／A＝DC4～20mA(750Ω以下)／1＝AC80～132V（定格100～120V）（50/60Hz））。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_FV_14P_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-FV-14P-1",
+    "series": "WGP-FV",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "note": "測定周波数（フルスケール）は注文時に指定する値で、型式コードには現れない。交換時は旧品の測定周波数を確認し、同じ値を指定して発注すること（仕様書「測定周波数」）。入力の形態（電圧パルス／ON-OFFパルス）はディップスイッチで決まるので、旧品の設定も確認すること（仕様書「入力信号」コード 14）。",
+    "specs": {
+      "inputSignal": "電圧パルス（大信号レベル）",
+      "inputResistance": "20kΩ以上",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。リストの表記 WGP-FV-14P-1 のまま登録した。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13237&filename=WGP-FV_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-FV（仕様書のページ表記 2106A-06。資料番号かどうかは未確認） 外形寸法 105(H)×25.6(W)×136.5(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13237&filename=WGP-FV_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-FV（仕様書のページ表記 2106A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／P＝DC0～10V(5kΩ以上)／1＝AC80～132V（定格100～120V）（50/60Hz））。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。"
+      }
+    }
   }
 ]
