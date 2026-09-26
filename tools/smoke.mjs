@@ -192,8 +192,8 @@ check('絶縁変換器のカテゴリチップが出る',
   (await page.$('[data-act="cat"][data-v="insulation"]')) !== null, chips.join(','));
 
 const isoCount = await page.$eval('[data-act="cat"][data-v="insulation"] .cnt', (e) => Number(e.textContent));
-check('絶縁変換器が69件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP-DS/DE 9件・WGP-FZ 3件・WGP-MS 4件）',
-  isoCount === 69, `実際 ${isoCount}件`);
+check('絶縁変換器が71件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP-DS/DE 9件・WGP-FZ 3件・WGP-MS 4件・WGP-FV 2件）',
+  isoCount === 71, `実際 ${isoCount}件`);
 
 /**
  * ②の仕様欄を「ラベル → 値」の組で DOM 順のまま拾う。
@@ -227,10 +227,13 @@ async function insulationResult(model) {
     const absent = () => null;
     return {
       reached: false, spec: '', labels: [], specOf: absent,
-      cards: [], panels: [], panelTitlesOf: absent, panelOf: absent, note: '',
+      cards: [], panels: [], panelTitlesOf: absent, panelOf: absent, note: '', deviceNote: '',
     };
   }
   const spec = (await page.textContent('#app')).replace(/\s+/g, ' ');
+  // ②の note（型式名の直下）。#app 全体だと srcNote の語でも通るので、欄から読む
+  const deviceNoteEl = await page.$('.note');
+  const deviceNote = deviceNoteEl ? (await deviceNoteEl.textContent()).trim() : '';
   const rows = await confirmSpecRows();
   const labels = rows.map(([l]) => l);
   const specOf = (label) => rows.find(([l]) => l === label)?.[1] ?? null;
@@ -265,7 +268,7 @@ async function insulationResult(model) {
     cardPanels.find((x) => x.model === model)?.panels.find((p) => p.title === title) ?? null;
   const emptyEl = await page.$('.empty-note');
   const note = emptyEl ? (await emptyEl.textContent()).replace(/\s+/g, ' ').trim() : '';
-  return { reached, spec, labels, specOf, cards, panels, panelTitlesOf, panelOf, note };
+  return { reached, spec, labels, specOf, cards, panels, panelTitlesOf, panelOf, note, deviceNote };
 }
 
 const isoO25 = await insulationResult('MS3749-A-O25');
@@ -328,6 +331,7 @@ check('絶縁変換器の0件パネルが必要条件（入力信号・出力信
   && isoD44.note.includes('出力信号（2出力型は第1出力）の種別も一致する')
   && isoD44.note.includes('第2出力を一方だけが持つ組は候補にしません')
   && isoD44.note.includes('基準と同じか速いものだけを候補にします')
+  && isoD44.note.includes('応答時間が型式から決まらない型式どうしは、候補にしません')
   && isoD44.note.includes('どの条件で外れたかはこの画面では判別できません')
   && isoLeak.length === 0,
   isoLeak.length ? `他カテゴリの語が混ざった: ${isoLeak.join(' / ')}` : isoD44.note);
@@ -797,6 +801,37 @@ check('WGP-MS-24P-1 と WGP-MS-23P-1 が互いの③に出ない（入力レン�
   && ms24.note !== '' && ms23.note !== '',
   `24P-1 の③: ${ms24.reached ? (ms24.cards.join(' | ') || `候補0件（0件パネル: ${ms24.note ? 'あり' : '無い'}）`) : '②に到達しない'}`
   + ` / 23P-1 の③: ${ms23.reached ? (ms23.cards.join(' | ') || `候補0件（0件パネル: ${ms23.note ? 'あり' : '無い'}）`) : '②に到達しない'}`);
+
+/* ---- 絶縁変換器: 渡辺電機工業 WGP-FV（パルス入力・直流出力。アナログ側） ---- */
+
+/**
+ * **測定周波数は型式コードに現れないので、データに持たず `note` で言う。**
+ * 同じ型式でも測定周波数が違えば互換ではないので、現場が交換時に知る必要のある
+ * 1点になる。`spec`（#app 全体）で見ると `srcNote` の語で通り得るので、
+ * ②の note の欄から読む。
+ */
+const fv14A = await insulationResult('WGP-FV-14A-1');
+check('WGP-FV-14A-1 を検索して②確認画面に到達する', fv14A.reached);
+check('WGP-FV-14A-1 の②に note（測定周波数は注文時に指定）が描かれる',
+  fv14A.deviceNote.includes('測定周波数（フルスケール）は注文時に指定する値'),
+  `取得: "${fv14A.deviceNote}"`);
+
+/**
+ * **WGP-FZ と WGP-FV は入力信号が同じ綴りで、分けているのは出力信号のキーだけ。**
+ * 仕様書が入力コード `14` を同じ文言で書いているので同じ値にした（`insulation.mjs`
+ * の「WGP-FV」3.）。FZ は `output1Signal`、FV は `outputSignal` を持つので `gate` の
+ * 条件2で落ちる。**綴りが同じであることも併せて見る**——綴りがずれると条件1で落ち、
+ * 条件2を消しても「互いに出ない」が真のまま素通りするため（WGP-MS の検査と同じ形）。
+ * なお条件2のうちキーの比較（`outputSignalKey(a) !== outKey`）だけを外しても、
+ * この検査は落ちない。基準のキーで値を比べる `signalMatch` が、相手がそのキーを
+ * 持たないことで false を返すため（キーの違いが2箇所で効いている。実測で確認）。
+ */
+const fzIn = fzFC1.specOf('入力信号');
+check('WGP-FZ-14FC-1 と WGP-FV-14A-1 が互いの③に出ない（入力信号の綴りは同じ、出力信号のキーが違う）',
+  fv14A.reached && fzFC1.reached && fzIn !== null && fzIn === fv14A.specOf('入力信号')
+  && !fzFC1.cards.includes('WGP-FV-14A-1') && !fv14A.cards.includes('WGP-FZ-14FC-1'),
+  `入力信号 FZ「${fzIn}」/ FV「${fv14A.specOf('入力信号')}」`
+  + ` / FZ の③: ${fzFC1.cards.join(' | ') || '候補0件'} / FV の③: ${fv14A.cards.join(' | ') || '候補0件'}`);
 
 /* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
 
