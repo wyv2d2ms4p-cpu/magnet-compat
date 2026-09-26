@@ -58,7 +58,7 @@ export const ADDED_SPEC_KEYS = {
   inverter: ['ratedCapacityKVA'],
 
   /**
-   * 絶縁変換器（MTT MS3749 系・渡辺電機工業 WVP 系）。移行元の3アプリには存在しない
+   * 絶縁変換器（MTT MS3749 系・渡辺電機工業 WVP / WGP 系・エムジー WRPP）。移行元の3アプリには存在しない
    * カテゴリなので、全キーがここの宣言になる。
    *
    * **1つのカテゴリに2系統が同居していて、持つキーが違う。**
@@ -104,11 +104,30 @@ export const ADDED_SPEC_KEYS = {
    *   許容負荷抵抗は出力コードによって「以下」と「以上」が入れ替わる（電流出力は
    *   上限、電圧出力は下限）ので、数値だけにすると意味が反転したまま残る。
    *   判定にも使わないため、資料の表記をそのまま持つ。
+   *
+   * パルス側の2キー（`inputPhases` / `outputLogic`）について。
+   *
+   * - `inputPhases` … 入力の相数（入力回路数）。**整数**で持つ。エムジー WRPP は
+   *   ロータリエンコーダの A相・B相を別々の回路で受ける2相入力で、MS3749・WGP-FZ は
+   *   入力1回路。信号種別の綴りだけでは「2相を受ける機器」と「1相しか受けない機器」を
+   *   区別できないので、キーを分けた。`gate` は**出力信号のキーが `output1Signal`
+   *   （パルス側）のときだけ**この値の一致を要求する（`src/categories/insulation.mjs` の
+   *   `phasesMatch`）。アナログ側（`outputSignal`）は相数で語らないので、キーごと不在にする。
+   *   名前を `input` で始めたのは `inputSignal` / `inputResistance` と同じく、型式コードの
+   *   入力欄から決まる量であることを名前で示すため。数だけで単位が無い量なので、
+   *   単位の接尾辞は付けない（README「データの約束」の単位の約束は物理量の話）。
+   *   ラインドライバ入力の INPUT A・B は差動の2本で1回路なので、相数は1
+   *   （`docs/mtt-ms3749-input-terminals.md` 2章）。
+   * - `outputLogic` … 出力の論理（`反転` など）。**表示だけに使い、判定には使わない**
+   *   （依頼者の判断）。型式コードで論理を選ぶ機種（WRPP の ④欄）だけが持つ。
+   *   MS3749 は論理を前面の極性反転スイッチで決めるので型式から決まらず、キーごと不在
+   *   （その旨は各レコードの `note` にある）。
    */
   insulation: [
     'inputSignal', 'output1Signal', 'output2Signal',
     'output1MaxFreqHz', 'output2MaxFreqHz', 'powerSupply', 'option',
     'inputResistance', 'outputSignal', 'outputLoad', 'responseUs',
+    'inputPhases', 'outputLogic',
   ],
 };
 

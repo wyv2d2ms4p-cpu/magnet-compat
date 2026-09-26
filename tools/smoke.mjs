@@ -192,8 +192,8 @@ check('絶縁変換器のカテゴリチップが出る',
   (await page.$('[data-act="cat"][data-v="insulation"]')) !== null, chips.join(','));
 
 const isoCount = await page.$eval('[data-act="cat"][data-v="insulation"] .cnt', (e) => Number(e.textContent));
-check('絶縁変換器が71件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP-DS/DE 9件・WGP-FZ 3件・WGP-MS 4件・WGP-FV 2件）',
-  isoCount === 71, `実際 ${isoCount}件`);
+check('絶縁変換器が72件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP-DS/DE 9件・WGP-FZ 3件・WGP-MS 4件・WGP-FV 2件 + エムジー WRPP 1件）',
+  isoCount === 72, `実際 ${isoCount}件`);
 
 /**
  * ②の仕様欄を「ラベル → 値」の組で DOM 順のまま拾う。
@@ -227,7 +227,7 @@ async function insulationResult(model) {
     const absent = () => null;
     return {
       reached: false, spec: '', labels: [], specOf: absent,
-      cards: [], panels: [], panelTitlesOf: absent, panelOf: absent, note: '', deviceNote: '',
+      cards: [], panels: [], panelTitlesOf: absent, panelOf: absent, note: '', deviceNote: '', flow: [],
     };
   }
   const spec = (await page.textContent('#app')).replace(/\s+/g, ' ');
@@ -237,6 +237,8 @@ async function insulationResult(model) {
   const rows = await confirmSpecRows();
   const labels = rows.map(([l]) => l);
   const specOf = (label) => rows.find(([l]) => l === label)?.[1] ?? null;
+  // ②の枠の並び（外形図が描かれたか、外形図なしの断りが出たかを要素で見る）
+  const flow = await confirmFlow();
   await page.click('[data-act="step"][data-v="3"]');
   await page.waitForTimeout(200);
   const cards = await page.$$eval('.card .model', (els) => els.map((e) => e.textContent.trim()));
@@ -268,7 +270,7 @@ async function insulationResult(model) {
     cardPanels.find((x) => x.model === model)?.panels.find((p) => p.title === title) ?? null;
   const emptyEl = await page.$('.empty-note');
   const note = emptyEl ? (await emptyEl.textContent()).replace(/\s+/g, ' ').trim() : '';
-  return { reached, spec, labels, specOf, cards, panels, panelTitlesOf, panelOf, note, deviceNote };
+  return { reached, spec, labels, specOf, cards, panels, panelTitlesOf, panelOf, note, deviceNote, flow };
 }
 
 const isoO25 = await insulationResult('MS3749-A-O25');
@@ -326,12 +328,13 @@ check('MS3749-A-D44/H の③が0件になる（第2出力を一方だけが持�
  */
 const isoLeak = ['出力極性', '配線本数', '電源相数', '判定条件を満たす型式']
   .filter((p) => isoD44.note.includes(p));
-check('絶縁変換器の0件パネルが必要条件（入力信号・出力信号・第2出力・応答時間）を名乗る',
+check('絶縁変換器の0件パネルが必要条件（入力信号・出力信号・第2出力・応答時間・入力の相数）を名乗る',
   isoD44.note.includes('入力信号の種別が一致し')
   && isoD44.note.includes('出力信号（2出力型は第1出力）の種別も一致する')
   && isoD44.note.includes('第2出力を一方だけが持つ組は候補にしません')
   && isoD44.note.includes('基準と同じか速いものだけを候補にします')
   && isoD44.note.includes('応答時間が型式から決まらない型式どうしは、候補にしません')
+  && isoD44.note.includes('入力の相数（回路数）が違う組を候補にしません')
   && isoD44.note.includes('どの条件で外れたかはこの画面では判別できません')
   && isoLeak.length === 0,
   isoLeak.length ? `他カテゴリの語が混ざった: ${isoLeak.join(' / ')}` : isoD44.note);
@@ -832,6 +835,87 @@ check('WGP-FZ-14FC-1 と WGP-FV-14A-1 が互いの③に出ない（入力信号
   && !fzFC1.cards.includes('WGP-FV-14A-1') && !fv14A.cards.includes('WGP-FZ-14FC-1'),
   `入力信号 FZ「${fzIn}」/ FV「${fv14A.specOf('入力信号')}」`
   + ` / FZ の③: ${fzFC1.cards.join(' | ') || '候補0件'} / FV の③: ${fv14A.cards.join(' | ') || '候補0件'}`);
+
+/* ---- 絶縁変換器: エムジー WRPP（2相入力。外形寸法を持たない） ---- */
+
+/**
+ * **WRPP-A1NNR-M2 は `dims` を持たない（`evidence.dims` は unverified）。**
+ * ②は外形図の代わりに「外形寸法は未確認のため図を表示しません。」を出す
+ * （`src/core/app.mjs`）。絶縁変換器でこの経路を通る登録はこの1件が初めて。
+ * 断りの文言だけでなく**外形図（svg）が描かれていないこと**も要素で見る。
+ * 文言だけを見ると、`dims` が壊れた値で入って図と断りが両方出る壊れ方を拾えない。
+ *
+ * 相数・論理は②の仕様欄から読む（`#app` 全体だと `srcNote` の語で通る）。
+ * note も欄（`.note`）から読み、2相であること・論理が反転であること・
+ * 接点の ON/OFF と出力の対応が未確認であることの3点を見る。
+ */
+const wrpp = await insulationResult('WRPP-A1NNR-M2');
+check('WRPP-A1NNR-M2 を検索して②確認画面に到達する', wrpp.reached);
+check('WRPP-A1NNR-M2 の②で外形図が描かれず、「外形寸法は未確認のため図を表示しません」が出る',
+  wrpp.flow.includes('外形図なしの断り') && !wrpp.flow.includes('外形図')
+  && wrpp.spec.includes('外形寸法は未確認のため図を表示しません'),
+  `②の並び: ${wrpp.flow.join(' → ') || '取得できない'}`);
+check('WRPP-A1NNR-M2 の②に入力の相数 2・出力の論理 反転が出る',
+  wrpp.specOf('入力の相数（回路数）') === '2' && wrpp.specOf('出力の論理') === '反転',
+  `入力の相数: ${wrpp.specOf('入力の相数（回路数）') ?? '欄が無い'} / 出力の論理: ${wrpp.specOf('出力の論理') ?? '欄が無い'}`);
+check('WRPP-A1NNR-M2 の②の note が2相・反転・論理の対応が未確認であることを言う',
+  wrpp.deviceNote.includes('A相・B相の2相')
+  && wrpp.deviceNote.includes('出力の論理は反転')
+  && wrpp.deviceNote.includes('接点の ON/OFF と出力の対応は、資料の図を未確認'),
+  `取得: "${wrpp.deviceNote}"`);
+
+/**
+ * **WRPP の③は0件になる。** 入力信号 `無電圧スイッチ` を持つのがこの1件だけで、
+ * `gate` の条件1で全件が落ちる（MS3749 の綴りに寄せていない。`insulation.mjs` の「WRPP」2.）。
+ * 0件パネルが出ていることも併せて見る（③のカードごと描かれない壊れ方でも
+ * 「候補0件」は真になる）。0件パネルの文面そのものは MS3749-A-D44/H 側の検査が見ている。
+ */
+check('WRPP-A1NNR-M2 の③が0件になり、0件パネルが出る',
+  wrpp.reached && wrpp.cards.length === 0 && wrpp.note.includes('互換品候補は見つかりませんでした'),
+  wrpp.cards.join(' | ') || `候補0件（0件パネル: ${wrpp.note ? 'あり' : '無い'}）`);
+
+/**
+ * **入力の相数が違う組は候補にしない（`insulation.mjs` の `phasesMatch`）。**
+ *
+ * 実データでは、この条件で落ちる組が無い。WRPP は入力信号で先に落ち、
+ * 他の17件は相数がすべて1。画面を歩く形で「WRPP が MS3749 の③に出ない」を見ても、
+ * 相数の条件を消したまま通ってしまう（CLAUDE.md が禁じる空振りの形）。
+ *
+ * そこで**判定そのものを仮想の組で見る**。`MS3749-A-D44/H` を複製して相数だけを2にした
+ * レコードを検査の中だけで作り（`data/` には入れない。実在の根拠が無い）、
+ * `src/categories/insulation.mjs` の `gate` に直接掛ける。`dist/index.html` はビルドで
+ * 同じソースを連結したもので、アプリは `gate` を外から呼べる形で公開していないため、
+ * ここだけは画面ではなくモジュールを読み込む（`tools/test-insulation-response.mjs` の
+ * WGP-FV の仮想の組と同じ形）。
+ *
+ * 2つ目の検査は、同じ組の相数を揃えると互いの候補になることを示す。
+ * これで1つ目が止めているのが相数の条件だけだと言える。
+ *
+ * 画面の側は、MS3749-A-D44/H の②に「入力の相数 1」が出ることを見る
+ * （相数が②で読めないと、③で外れた理由が画面に無い）。
+ */
+const { loadDevices: loadIso, devicesOf: isoDevicesOf } = await import('../src/core/store.mjs');
+const { getCategory: getIsoCategory } = await import('../src/core/registry.mjs');
+await import('../src/categories/insulation.mjs');
+const { readFileSync: readIsoData } = await import('node:fs');
+loadIso(JSON.parse(readIsoData(join(ROOT, 'data', 'insulation.json'), 'utf8')));
+const isoCat = getIsoCategory('insulation');
+const phaseBase = isoDevicesOf('insulation').find((d) => d.model === 'MS3749-A-D44/H');
+const phaseVirtual = phaseBase && {
+  ...phaseBase, id: 'VIRTUAL_MS3749_A_D44_H_2PH', model: 'MS3749-A-D44/H（仮想・2相）',
+  specs: { ...phaseBase.specs, inputPhases: 2 },
+};
+check('入力の相数が違う組は互いの候補にならない（MS3749-A-D44/H の相数だけを2にした仮想の組で確認）',
+  phaseBase?.specs.inputPhases === 1
+  && !isoCat.gate(phaseVirtual, phaseBase) && !isoCat.gate(phaseBase, phaseVirtual),
+  phaseBase ? `仮想→実 ${isoCat.gate(phaseVirtual, phaseBase)} / 実→仮想 ${isoCat.gate(phaseBase, phaseVirtual)}`
+    : 'MS3749-A-D44/H が data に無い');
+const phaseSame = phaseVirtual && { ...phaseVirtual, specs: { ...phaseVirtual.specs, inputPhases: 1 } };
+check('同じ仮想の組の相数を揃えると互いの候補になる（上の検査が止めているのは相数の条件だけ）',
+  !!phaseSame && isoCat.gate(phaseSame, phaseBase) && isoCat.gate(phaseBase, phaseSame));
+check('MS3749-A-D44/H の②に入力の相数 1 が出る',
+  isoD44.specOf('入力の相数（回路数）') === '1',
+  `入力の相数: ${isoD44.specOf('入力の相数（回路数）') ?? '欄が無い'}`);
 
 /* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
 
