@@ -192,8 +192,8 @@ check('絶縁変換器のカテゴリチップが出る',
   (await page.$('[data-act="cat"][data-v="insulation"]')) !== null, chips.join(','));
 
 const isoCount = await page.$eval('[data-act="cat"][data-v="insulation"] .cnt', (e) => Number(e.textContent));
-check('絶縁変換器が65件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP-DS/DE 9件・WGP-FZ 3件）',
-  isoCount === 65, `実際 ${isoCount}件`);
+check('絶縁変換器が69件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP-DS/DE 9件・WGP-FZ 3件・WGP-MS 4件）',
+  isoCount === 69, `実際 ${isoCount}件`);
 
 /**
  * ②の仕様欄を「ラベル → 値」の組で DOM 順のまま拾う。
@@ -546,7 +546,7 @@ check('MS3749-A-O25 の③に WVP のどの型式も出ない（逆向きでも�
  *
  * 電源電圧は `gate` に入れていないので、判定に残るのは応答時間だけ。
  * つまりこの4件は、**非対称な条件が画面でどう出るかをそのまま示す組**になる。
- * 判定そのもの（53件を通した辺の向き）は `tools/test-insulation-response.mjs` が
+ * 判定そのもの（全件を通した辺の向き）は `tools/test-insulation-response.mjs` が
  * 全件走査で見るので、ここで見るのは画面に出るか出ないかに絞る。
  *
  * ③のカード一覧（`.card .model`）から読む。`#app` 全体の文字列では見ない——
@@ -774,6 +774,29 @@ check('WGP-FZ-14FC-1 の③に WGP-FZ-14FC-3 が出て、電源電圧のパネ�
   && psFC3.body.includes('AC100〜120V')
   && psFC3.tone === 'cmp-warn',
   fzFC1.cards.join(' | ') || '候補0件');
+
+/* ---- 絶縁変換器: 渡辺電機工業 WGP-MS（ポテンショメータ入力。入力レンジで分かれる） ---- */
+
+/**
+ * **WGP-MS-24P-1（0～1kΩ）と WGP-MS-23P-1（0～500Ω）は、入力レンジだけが違う。**
+ * 出力（P＝DC0～10V）・応答時間（25ms）・電源・外形寸法が同一なので、
+ * `inputSignal` がレンジを持たず種別の語（`ポテンショメータ`）だけになると、
+ * この2件は互いの候補に出る。0～500Ω の機器と 0～1kΩ の機器が互換だと画面に出る。
+ * `DC0～5V` と `DC0～10V` がレンジごと別の値になっているのと同じ扱いを、
+ * 入力が抵抗値の機種でも保っていることをここで固定する。
+ *
+ * 両方向を見る（片方向だけだと、非対称に壊れたときに素通りする）。
+ * 0件パネルが出ていることも併せて見るのは、③のカードごと描かれない壊れ方でも
+ * 「相手が出ない」は真になるため（WGP-FZ-14FK-1 と同じ形）。
+ */
+const ms24 = await insulationResult('WGP-MS-24P-1');
+const ms23 = await insulationResult('WGP-MS-23P-1');
+check('WGP-MS-24P-1 と WGP-MS-23P-1 が互いの③に出ない（入力レンジが違う）',
+  ms24.reached && ms23.reached
+  && !ms24.cards.includes('WGP-MS-23P-1') && !ms23.cards.includes('WGP-MS-24P-1')
+  && ms24.note !== '' && ms23.note !== '',
+  `24P-1 の③: ${ms24.reached ? (ms24.cards.join(' | ') || `候補0件（0件パネル: ${ms24.note ? 'あり' : '無い'}）`) : '②に到達しない'}`
+  + ` / 23P-1 の③: ${ms23.reached ? (ms23.cards.join(' | ') || `候補0件（0件パネル: ${ms23.note ? 'あり' : '無い'}）`) : '②に到達しない'}`);
 
 /* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
 

@@ -2474,5 +2474,153 @@
         "srcNote": "渡辺電機工業 仕様書 WGP-FZ（仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（14＝電圧パルス・大信号レベル入力用(20kΩ以上)／F＝電圧パルス出力とオープンコレクタ出力、および各々のワンショット出力をディップスイッチで選択／C＝オープンコレクタ／3＝DC24V±10%）。"
       }
     }
+  },
+  {
+    "id": "ISO_WGP_MS_24P_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-MS-24P-1",
+    "series": "WGP-MS",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "ポテンショメータ 0～1kΩ",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 25000,
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13298&filename=WGP-MS_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-MP / MS（WGP-MP（非絶縁）と WGP-MS（絶縁）の2機種で1枚。仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 外形寸法 105(H)×25.6(W)×136.5(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13298&filename=WGP-MS_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-MP / MS（WGP-MP（非絶縁）と WGP-MS（絶縁）の2機種で1枚。仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（MS＝ポテンショメータ変換器（絶縁）応答時間25ms／24＝定格入力 0～1kΩ／P＝DC0～10V(5kΩ以上)／1＝AC80～132V（定格100～120V）（50/60Hz））。入力信号は共通仕様の「ポテンショメータ抵抗値」と定格入力のレンジを合わせた表記。応答時間は共通仕様の原文「25ms（0〜90%）」を 25000μs として登録した（画面では「約25ms」と表示される）。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_MS_25P_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-MS-25P-1",
+    "series": "WGP-MS",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "ポテンショメータ 0～2kΩ",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 25000,
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13298&filename=WGP-MS_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-MP / MS（WGP-MP（非絶縁）と WGP-MS（絶縁）の2機種で1枚。仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 外形寸法 105(H)×25.6(W)×136.5(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13298&filename=WGP-MS_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-MP / MS（WGP-MP（非絶縁）と WGP-MS（絶縁）の2機種で1枚。仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（MS＝ポテンショメータ変換器（絶縁）応答時間25ms／25＝定格入力 0～2kΩ／P＝DC0～10V(5kΩ以上)／1＝AC80～132V（定格100～120V）（50/60Hz））。入力信号は共通仕様の「ポテンショメータ抵抗値」と定格入力のレンジを合わせた表記。応答時間は共通仕様の原文「25ms（0〜90%）」を 25000μs として登録した（画面では「約25ms」と表示される）。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_MS_25R_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-MS-25R-1",
+    "series": "WGP-MS",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "ポテンショメータ 0～2kΩ",
+      "outputSignal": "DC±10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 25000,
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13298&filename=WGP-MS_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-MP / MS（WGP-MP（非絶縁）と WGP-MS（絶縁）の2機種で1枚。仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 外形寸法 105(H)×25.6(W)×136.5(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13298&filename=WGP-MS_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-MP / MS（WGP-MP（非絶縁）と WGP-MS（絶縁）の2機種で1枚。仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（MS＝ポテンショメータ変換器（絶縁）応答時間25ms／25＝定格入力 0～2kΩ／R＝DC±10V(5kΩ以上)／1＝AC80～132V（定格100～120V）（50/60Hz））。入力信号は共通仕様の「ポテンショメータ抵抗値」と定格入力のレンジを合わせた表記。応答時間は共通仕様の原文「25ms（0〜90%）」を 25000μs として登録した（画面では「約25ms」と表示される）。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_WGP_MS_23P_1",
+    "category": "insulation",
+    "maker": "渡辺電機工業",
+    "model": "WGP-MS-23P-1",
+    "series": "WGP-MS",
+    "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 25.6,
+      "h": 105,
+      "d": 136.5
+    },
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "ポテンショメータ 0～500Ω",
+      "outputSignal": "DC0～10V",
+      "outputLoad": "5kΩ以上",
+      "responseUs": 25000,
+      "powerSupply": "AC100〜120V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内予備品リスト（依頼者の勤務先の予備品管理システム画面、2026-09）。リストの原表記は WGP-MS-23P1。英数字は1文字も変えず、ハイフンだけを同じ機種の他の行（WGP-MS-24P-1 など）の形に合わせた。仕様書の型式コード表にハイフン位置の記載は無いので、この綴りのハイフンはメーカー資料由来ではない。"
+      },
+      "dims": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13298&filename=WGP-MS_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-MP / MS（WGP-MP（非絶縁）と WGP-MS（絶縁）の2機種で1枚。仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 外形寸法 105(H)×25.6(W)×136.5(D)mm。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.watanabe-electric.co.jp/download.php?attachment_id=13298&filename=WGP-MS_%E4%BB%95%E6%A7%98%E6%9B%B8.pdf&blog_id=1",
+        "srcNote": "渡辺電機工業 仕様書 WGP-MP / MS（WGP-MP（非絶縁）と WGP-MS（絶縁）の2機種で1枚。仕様書のページ表記 2105A-06。資料番号かどうかは未確認） 型式コード表（MS＝ポテンショメータ変換器（絶縁）応答時間25ms／23＝定格入力 0～500Ω／P＝DC0～10V(5kΩ以上)／1＝AC80～132V（定格100～120V）（50/60Hz））。入力信号は共通仕様の「ポテンショメータ抵抗値」と定格入力のレンジを合わせた表記。応答時間は共通仕様の原文「25ms（0〜90%）」を 25000μs として登録した（画面では「約25ms」と表示される）。電源電圧の登録値は、定格が同じ既存の WGP と同じ表記（AC100〜120V）に揃えてある（資料の原文は上の読み下しのとおり）。"
+      }
+    }
   }
 ]
