@@ -150,6 +150,7 @@ npm レジストリと GitHub には到達できます（`npm install` は動き
 
 場面2で候補をどう出すか（別メーカー品の出し方、段の名前、確認項目の扱い、作る順序）の大方針は
 `docs/design-insulation-converter.md` 11章に記録しました。
+カテゴリをまたぐ共通の仕組みの形と依頼者の決定（2026-09-27）は `docs/design-common-alternates.md` に記録しました。
 
 ---
 
