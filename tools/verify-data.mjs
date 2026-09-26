@@ -799,6 +799,93 @@ check(`modelScope は宣言された値だけ（宣言 ${MODEL_SCOPES.length} �
   }
 });
 
+// ---- 追加: 社内情報の混入 ------------------------------------------------
+
+/**
+ * 依頼者の勤務先の品目コード・ロット番号の書式がリポジトリの文書・データに無いことの検査。
+ *
+ * このリポジトリは公開されていて、依頼者の会社の規程は社内の品目コード・置場などの
+ * 情報を公開の場所に置くことを禁じている。絶縁変換器の実在の根拠は社内の予備品リスト
+ * なので、一次資料メモを書くたびに画面の値を書き写す機会がある。実際に
+ * `docs/watanabe-wgp-*-verified.md` に品目コードが3つ入っていた。人が見て弾く約束は
+ * 書く回数が増えれば漏れるので、書式で機械的に落とす（CLAUDE.md「社内情報」）。
+ *
+ * 書式は予備品リストの画面で見えていた形から決めた。
+ *   - 品目コード … 数字だけの8桁
+ *   - ロット番号 … 数字6桁以上の直後に英大文字（画面で見えていたのは数字9桁＋英字1字）
+ * どちらも前後に数字が続くものは別の数字の一部なので見ない（9桁の数字の下8桁を
+ * 品目コードと読まない）。品目コードは直前が英字・`-`・`.`・`/`・`_`・`=` のものも見ない。
+ * `SEJ-98090300`（近接センサの id）のような型式・id の数字部分、URL のパラメータ、
+ * 小数を拾わないため。この除外で書式どおりの品目コードが漏れる経路は、型式の一部に
+ * 見える書き方（`X-12345678`）だけで、文章中に品目コードを書く形では起きない。
+ *
+ * **全角の数字・英字は NFKC で半角に寄せてから照合する。** 日本語の文章に書き写すと
+ * 全角になることがあり、半角だけを見ると `９００…` の形で素通りする。
+ *
+ * 対象はファイルの走査で決める（一覧を手で保守すると、新しいメモが検査の外に置かれる）。
+ * `dist/` は `src/` と `data/` から作る生成物で、この検査はビルドより前に走るため見ない
+ * （ここで見ると古い配布物を検査することになる）。`tools/` はこの検査自身の見本値を
+ * 含むので見ない。
+ *
+ * 走査0件で PASS しないよう、ファイルが1つも無ければ落とす。さらに、書式の判定そのものが
+ * 空振りしていないことを、実在しない見本値（`12345678` など）を実際に判定して確かめる。
+ * 正規表現を壊すと、走査が何も拾わないまま PASS する形で静かに効かなくなるため。
+ */
+const INTERNAL_ITEM_CODE = /(?<![0-9A-Za-z._\-/=])[0-9]{8}(?![0-9])/g;
+const INTERNAL_LOT_NO = /(?<![0-9])[0-9]{6,}[A-Z]/g;
+const INTERNAL_SCAN_ROOTS = ['data', 'docs', 'src', 'README.md', 'CLAUDE.md'];
+
+function listScanFiles() {
+  const out = [];
+  for (const rel of INTERNAL_SCAN_ROOTS) {
+    const abs = join(REPO_ROOT, rel);
+    if (!existsSync(abs)) continue;
+    if (rel.includes('.')) { out.push(rel); continue; }
+    for (const f of readdirSync(abs, { recursive: true, withFileTypes: true })) {
+      if (f.isFile()) out.push(join(rel, f.parentPath.slice(abs.length), f.name));
+    }
+  }
+  return out.sort();
+}
+
+/** 1ファイル分の文字列から、品目コード・ロット番号の書式に当たる箇所を返す */
+function findInternalCodes(text) {
+  const s = text.normalize('NFKC');
+  const hits = [];
+  for (const [label, re] of [['品目コード', INTERNAL_ITEM_CODE], ['ロット番号', INTERNAL_LOT_NO]]) {
+    for (const m of s.matchAll(re)) {
+      const line = s.slice(0, m.index).split('\n').length;
+      hits.push({ label, value: m[0], line });
+    }
+  }
+  return hits;
+}
+
+const internalScanFiles = listScanFiles();
+
+check(`社内の品目コード・ロット番号の書式が data/・docs/・src/・README.md・CLAUDE.md に無い（走査 ${internalScanFiles.length} ファイル）`, (fail) => {
+  if (!internalScanFiles.length) {
+    fail('走査対象のファイルが1つも無い … 対象0件のまま PASS しないよう落とす');
+    return;
+  }
+  // 判定が空振りしていないことの確認。値は実在しない見本
+  const mustHit = ['品目 12345678 の行', '品目 １２３４５６７８ の行', 'ロット 123456789X の行'];
+  const mustNotHit = ['SEJ-98090300', 'attachment_id=13245', 'FR-E820-1.5K-1', '2105A-06', '0.12345678', '123456789'];
+  for (const s of mustHit) {
+    if (!findInternalCodes(s).length) fail(`見本 "${s}" を書式で拾えない … 判定が壊れている`);
+  }
+  for (const s of mustNotHit) {
+    const h = findInternalCodes(s);
+    if (h.length) fail(`見本 "${s}" を ${h[0].label} と誤って拾う … 型式・id・URL の数字を拾わない約束が崩れている`);
+  }
+  for (const rel of internalScanFiles) {
+    for (const h of findInternalCodes(readFileSync(join(REPO_ROOT, rel), 'utf8'))) {
+      fail(`${rel}:${h.line}: ${h.label}の書式 "${h.value}" … 社内情報は公開リポジトリに書かない。`
+        + '事実として要るなら「予備品リスト上、別の品目として管理されている」のように値を書かずに記す');
+    }
+  }
+});
+
 // ---- 追加: アプリ本体が無変更であること ----------------------------------
 
 check('移行元HTMLが3つとも存在し読み取れる（1a では変更しない）', (fail) => {
