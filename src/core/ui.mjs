@@ -2,6 +2,7 @@
 import { esc, num } from './util.mjs';
 import { primarySpec, formatSpec } from './registry.mjs';
 import { evidenceRow, warningFor, stateOf } from './evidence.mjs';
+import { CHECK_STATES } from './tiers.mjs';
 
 export function badge(ok, label, neutralLabel) {
   if (ok === null || ok === undefined) return `<span class="badge ev-dim">? ${esc(neutralLabel || label)}</span>`;
@@ -219,13 +220,68 @@ function standingMark(category, m, c) {
   return `<span class="standing below">△ 基準 ${esc(formatSpec(ps, m))} より小さい</span>`;
 }
 
-/** 候補カード1件 */
+/**
+ * 下の段（classMatch / rework）の候補か。`c.tier` は `tiersOf` が下の段にだけ付ける。
+ * 上の2段のカードは `computeCompatibles` の戻り値そのままで、`tier` を持たない。
+ */
+function isLowerTier(c) {
+  return c.tier === 'classMatch' || c.tier === 'rework';
+}
+
+/**
+ * 確認項目の表（設計 2-4）。1枚のカードに1つ。
+ *
+ * 違う・未登録・現場で確認は1行ずつ、1つも省かない（件数で打ち切ると、未登録を隠さない決定
+ * 11-2-3 の目的に反する）。「同じ」は1行にまとめるが、項目名を並べて数えられる形で残す。
+ * チェック欄は置かない（D14。保存する場所が無く、付いたチェックが「確認済み」と読まれる）。
+ */
+export function checkTable(rows) {
+  if (!rows.length) return '';
+  const st = new Map(CHECK_STATES.map((s) => [s.id, s]));
+  const mark = (id) => `<span class="ck-mark">${esc(st.get(id).mark)} ${esc(st.get(id).label)}</span>`;
+  const open = rows.filter((r) => r.state !== 'same').map((r) => `<div class="ck-row ck-${esc(r.state)}">
+      <span class="ck-l">${esc(r.label)}</span>
+      <span class="ck-v">基準 <span class="mono">${esc(r.base)}</span> / 候補 <span class="mono">${esc(r.cand)}</span></span>
+      ${mark(r.state)}${r.note ? `<span class="ck-n">${esc(r.note)}</span>` : ''}
+    </div>`).join('');
+  const same = rows.filter((r) => r.state === 'same');
+  const sameLine = same.length
+    ? `<div class="ck-row ck-same">${mark('same')}<span class="ck-l">${same.map((r) => esc(r.label)).join('・')}</span></div>`
+    : '';
+  return `<div class="checks"><b>確認項目</b>${open}${sameLine}</div>`;
+}
+
+/**
+ * 現場への問い（設計 2-5）。③の結果ヘッダの直下に1回だけ出す。
+ * 問いは基準機の性質から出るので、候補の数だけ繰り返すと同じ文が何十回も並ぶ。
+ * 答えを入力させて絞る仕組みは作らない（答えを保存する場所が無い）。
+ */
+export function fieldQuestionsPanel(questions) {
+  if (!questions.length) return '';
+  return `<div class="panel field-q"><b>交換前に現場で確かめること</b><ol>${
+    questions.map((q, i) => `<li><span class="fq-n">問い${i + 1}</span> ${esc(q)}</li>`).join('')}</ol></div>`;
+}
+
+/**
+ * 候補カード1件。
+ *
+ * 下の段のカードは同じ部品を使い、次だけを変える（設計 1-5）。
+ * - 「候補No.1」は付けない。呼び出し側が添字 -1 を渡すうえ、ここでも下の段なら付けない。
+ *   下の段の先頭が No.1 を名乗ると「一番の候補」と読まれる。
+ * - 別メーカーのバッジは「別メーカー」。「互換」を名乗らない（11-2-1 ③）。
+ *   上の段の「他社互換」は変えない（接触器・サーマルの画面が広く変わるため。D10）。
+ * - `detailPanels` の代わりに確認項目の表。両方出すと同じ差が枠と表で2回出る（設計 2-3）。
+ * - rework で2台なら型式の横に「× 2台」。`.model` の中身は登録された綴りのままにする。
+ */
 export function candidateCard(category, m, c, index) {
   const ps = primarySpec(category);
+  const lower = isLowerTier(c);
   const lead = c.isSuccessor
     ? '<span class="badge b-succ">メーカー後継品</span>'
-    : index === 0 ? '<span class="badge ev-ok">候補No.1</span>' : '';
-  const cross = c.sameMaker ? '' : '<span class="badge b-cross">他社互換</span>';
+    : index === 0 && !lower ? '<span class="badge ev-ok">候補No.1</span>' : '';
+  const cross = c.sameMaker ? ''
+    : lower ? '<span class="badge b-cross">別メーカー</span>'
+    : '<span class="badge b-cross">他社互換</span>';
 
   const dimVerdict = !c.dimsTrustworthy
     ? '<span class="dim-verdict dim">寸法未確認</span>'
@@ -244,13 +300,14 @@ export function candidateCard(category, m, c, index) {
     c.ifaceMatch !== undefined ? badge(c.ifaceMatch, '指令I/F') : '',
   ].filter(Boolean).join('');
 
-  const panels = category.detailPanels(m, c).map(panelBox).join('');
+  const panels = lower ? checkTable(c.checks) : category.detailPanels(m, c).map(panelBox).join('');
+  const qty = lower && c.qty > 1 ? ` <span class="qty">× ${num(c.qty)}台</span>` : '';
 
   return `<div class="card">
     <div class="card-head">
       <div>
         <div class="maker">${esc(c.maker)} ${lead}${cross}${statusBadges(c)}</div>
-        <div class="model mono">${esc(c.model)}</div>
+        <div class="model mono">${esc(c.model)}</div>${qty}
       </div>
       <div class="card-right">
         <div class="primary-spec mono">${esc(formatSpec(ps, c))}</div>

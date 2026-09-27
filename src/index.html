@@ -167,6 +167,21 @@ header .sub{color:var(--sub);font-size:12px;}
 .zone-head .t{font-size:13px;font-weight:700;}
 .zone-head .n{color:var(--sub);font-size:11px;}
 .load-note{margin-top:8px;color:var(--sub);font-size:11px;line-height:1.5;}
+/*
+ * 下の段（src/core/tiers.mjs）の確認項目と現場への問い。
+ * 「未登録・現物で確認」は「違う」と同じ橙（D7）。灰色は「寸法未確認」など読み流される側の色で、
+ * 未登録を隠さない決定（11-2-3）の目的が確認漏れを防ぐことだから。
+ */
+.checks{margin-top:8px;padding:8px 10px;border-radius:6px;background:var(--bg);border:1px solid var(--line);font-size:12px;}
+.checks > b{font-size:11px;color:var(--sub);font-weight:600;}
+.ck-row{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline;padding:4px 0;border-top:1px solid var(--line);}
+.ck-l{font-weight:600;} .ck-v{color:var(--sub);overflow-wrap:anywhere;} .ck-n{flex-basis:100%;color:var(--sub);font-size:11px;}
+.ck-differs .ck-mark,.ck-missing .ck-mark{color:var(--amber);}
+.ck-field .ck-mark{color:var(--blue);} .ck-same .ck-mark{color:var(--green);}
+.qty{font-size:13px;color:var(--amber);}
+.field-q b{font-size:13px;} .field-q ol{margin:6px 0 0;padding-left:0;list-style:none;font-size:12px;}
+.field-q li + li{margin-top:4px;} .fq-n{color:var(--blue);font-weight:600;margin-right:4px;}
+.tier-none{font-size:13px;color:var(--sub);}
 .foot{color:var(--dim);font-size:11px;text-align:center;padding:8px 4px 0;}
 
 /* iPhone 標準幅(390px)が主対象。ステップ名を消すと空箱になるので縮めて残す */

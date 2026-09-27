@@ -167,6 +167,21 @@ header .sub{color:var(--sub);font-size:12px;}
 .zone-head .t{font-size:13px;font-weight:700;}
 .zone-head .n{color:var(--sub);font-size:11px;}
 .load-note{margin-top:8px;color:var(--sub);font-size:11px;line-height:1.5;}
+/*
+ * 下の段（src/core/tiers.mjs）の確認項目と現場への問い。
+ * 「未登録・現物で確認」は「違う」と同じ橙（D7）。灰色は「寸法未確認」など読み流される側の色で、
+ * 未登録を隠さない決定（11-2-3）の目的が確認漏れを防ぐことだから。
+ */
+.checks{margin-top:8px;padding:8px 10px;border-radius:6px;background:var(--bg);border:1px solid var(--line);font-size:12px;}
+.checks > b{font-size:11px;color:var(--sub);font-weight:600;}
+.ck-row{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline;padding:4px 0;border-top:1px solid var(--line);}
+.ck-l{font-weight:600;} .ck-v{color:var(--sub);overflow-wrap:anywhere;} .ck-n{flex-basis:100%;color:var(--sub);font-size:11px;}
+.ck-differs .ck-mark,.ck-missing .ck-mark{color:var(--amber);}
+.ck-field .ck-mark{color:var(--blue);} .ck-same .ck-mark{color:var(--green);}
+.qty{font-size:13px;color:var(--amber);}
+.field-q b{font-size:13px;} .field-q ol{margin:6px 0 0;padding-left:0;list-style:none;font-size:12px;}
+.field-q li + li{margin-top:4px;} .fq-n{color:var(--blue);font-weight:600;margin-right:4px;}
+.tier-none{font-size:13px;color:var(--sub);}
 .foot{color:var(--dim);font-size:11px;text-align:center;padding:8px 4px 0;}
 
 /* iPhone 標準幅(390px)が主対象。ステップ名を消すと空箱になるので縮めて残す */
@@ -358,6 +373,10 @@ const categories = [];
  *   emptyNote(m)         … 候補0件のときの説明（任意・HTML）。既定はカテゴリに依らない中立文
  *   primaryStanding(a, m)… 主スペックが基準より小さいか（任意）。既定は「判定しない」
  *   standingNote         … 大小の表示に添える1文（任意）。既定は量に依らない中立文
+ *   alternates(m, ctx)   … 下の段（classMatch / rework）の候補（任意）。宣言しなければ下の段は空
+ *   checkDefs            … 下の段のカードに出す確認項目の定義（任意）
+ *   fieldQuestions(m)    … 交換前に現場で確かめる問い（任意）。基準機だけを受け取る
+ *   （この3つの形とコアが守らせることは src/core/tiers.mjs と docs/design-common-alternates.md 1・2章）
  */
 function registerCategory(def) {
   if (!def.id || !def.label) throw new Error('カテゴリには id と label が必要です');
@@ -554,6 +573,268 @@ function isSeriesScope(d) {
 /** 型式から1件引く。曖昧な場合の扱いは呼び出し側に委ねる。 */
 function findById(id) {
   return store.byId.get(id) || null;
+}
+
+
+/* ===== core/tiers.mjs ===== */
+/**
+ * 候補の段（successor / exact / classMatch / rework）と確認項目。
+ *
+ * 設計は `docs/design-common-alternates.md`（1章 段・2章 確認項目・6章 一致の結果の共通の形）。
+ *
+ * **既存の2段は振り分けるだけ。** `computeCompatibles` の戻り値の中身と順番には触らない
+ * （`docs/design-insulation-converter.md` 11-2-5）。下の2段はカテゴリが任意で宣言する
+ * `alternates(m, ctx)` から足す加算の口で、宣言しないカテゴリでは空配列になる。
+ * 宣言の無いカテゴリの画面が1つも変わらないことは `tools/test-extensibility.mjs` が
+ * 全カテゴリ・全基準機で見ている。
+ */
+
+/**
+ * 段の順番と見出し。順番がそのまま「上の段が勝つ」の優先順になる。
+ *
+ * 見出しの語は根拠で付ける（11-2-2）。カテゴリに持たせないのは、段の名前が
+ * カテゴリごとに揺れると、同じ根拠の候補が画面ごとに違う名前で並ぶため。
+ */
+const TIERS = [
+  { id: 'successor', title: 'メーカー指定の後継品' },
+  { id: 'exact', title: '判定条件がすべて一致' },
+  { id: 'classMatch', title: '分類が一致・違いあり' },
+  { id: 'rework', title: '配線変更または台数増が必要' },
+];
+
+/** 口が返してよい段。上の2段は `computeCompatibles` の振り分けで決まり、口からは足せない */
+const LOWER_TIERS = ['classMatch', 'rework'];
+
+/**
+ * 確認項目の4状態。印と文言はコアが持つ（設計 2-1）。
+ *
+ * カテゴリごとに「違う」の言い方を書かせると、断定語が1つのカテゴリから混ざる。
+ * 並び順（違う → 未登録 → 現場で確認 → 同じ）もここで決める（設計 2-4）。
+ * `missing` の色が `differs` と同じ橙なのは D7（灰色は読み流される側の色）。
+ */
+const CHECK_STATES = [
+  { id: 'differs', mark: '△', label: '違う' },
+  { id: 'missing', mark: '？', label: '未登録・現物で確認' },
+  { id: 'field', mark: '◇', label: '現場で確認' },
+  { id: 'same', mark: '✓', label: '同じ' },
+];
+
+/** 値が無いか。`??` で 0 を補わない（README「データの約束」）。'' も値ではない */
+function absent(v) {
+  return v === undefined || v === null || v === '' || (Array.isArray(v) && v.length === 0);
+}
+
+function requireNumber(v, name) {
+  if (typeof v !== 'number' || !Number.isFinite(v)) {
+    // 書式違いを unknown に倒すと「解析できないから未登録」として黙って流れる。止めて直させる
+    throw new Error(`比べ方 ${name} は数値を受け取ります: ${JSON.stringify(v)}`);
+  }
+  return v;
+}
+
+function requireRange(v, name) {
+  if (!v || typeof v !== 'object') throw new Error(`比べ方 ${name} は {min, max} を受け取ります: ${JSON.stringify(v)}`);
+  const min = requireNumber(v.min, name);
+  const max = requireNumber(v.max, name);
+  if (min > max) throw new Error(`比べ方 ${name} の区間が逆です: ${JSON.stringify(v)}`);
+  return { min, max };
+}
+
+/** 集合どうし・区間どうしの包含関係。向きは「候補 c が基準 b を」で読む */
+function containment(bInC, cInB, meet) {
+  if (bInC && cInB) return 'equal';
+  if (bInC) return 'covers';
+  if (cInB) return 'coveredBy';
+  return meet ? 'overlap' : 'disjoint';
+}
+
+/**
+ * 共通の比べ方（設計 6章）。`(基準の値, 候補の値, 項目の定義)` を受けて
+ * `{ verdict, relation }` を返す。
+ *
+ * **どの比べ方も、片方でも値が無ければ `unknown`**（`match` に倒さない）。
+ * これは確認項目（表示）のための形で、既存の `gate` には使わない。`gate` は
+ * 候補にするかの判断で、たとえば `responseWithin` はパルス側で「両方とも持たなければ通す」。
+ * 揃えると `computeCompatibles` の戻り値が変わる余地が生まれる（設計 6章）。
+ */
+const COMPARES = {
+  /** 完全一致。配列・オブジェクトは中身で比べる */
+  equal(b, c) {
+    return JSON.stringify(b) === JSON.stringify(c)
+      ? { verdict: 'match', relation: 'equal' }
+      : { verdict: 'mismatch', relation: null };
+  },
+  /** 集合（設計 3-4）。重なりが1つでもあれば match で、disjoint だけが mismatch */
+  set(b, c) {
+    const bs = new Set(Array.isArray(b) ? b : [b]);
+    const cs = new Set(Array.isArray(c) ? c : [c]);
+    const bInC = [...bs].every((v) => cs.has(v));
+    const cInB = [...cs].every((v) => bs.has(v));
+    const relation = containment(bInC, cInB, [...bs].some((v) => cs.has(v)));
+    return { verdict: relation === 'disjoint' ? 'mismatch' : 'match', relation };
+  },
+  /** 区間 {min, max}。集合と同じ関係の名前で返す */
+  range(b, c) {
+    const br = requireRange(b, 'range');
+    const cr = requireRange(c, 'range');
+    const bInC = cr.min <= br.min && br.max <= cr.max;
+    const cInB = br.min <= cr.min && cr.max <= br.max;
+    const relation = containment(bInC, cInB, Math.max(br.min, cr.min) <= Math.min(br.max, cr.max));
+    return { verdict: relation === 'disjoint' ? 'mismatch' : 'match', relation };
+  },
+  /** ±比率の窓。大きいほうを基準にするのは `withinWindow` と同じ理由（対称にする） */
+  window(b, c, def) {
+    const bv = requireNumber(b, 'window');
+    const cv = requireNumber(c, 'window');
+    const ratio = requireNumber(def.ratio, 'window の ratio');
+    if (bv === cv) return { verdict: 'match', relation: 'equal' };
+    return Math.abs(bv - cv) <= Math.max(bv, cv) * ratio
+      ? { verdict: 'match', relation: 'within' }
+      : { verdict: 'mismatch', relation: 'outside' };
+  },
+  /** 候補が基準以下（向きのある条件。応答時間など） */
+  atMost(b, c) {
+    const bv = requireNumber(b, 'atMost');
+    const cv = requireNumber(c, 'atMost');
+    if (bv === cv) return { verdict: 'match', relation: 'equal' };
+    return cv < bv ? { verdict: 'match', relation: 'within' } : { verdict: 'mismatch', relation: 'outside' };
+  },
+};
+
+/** 比べ方の入口。値の欠けはここで一度だけ見るので、個々の比べ方は欠けを気にしない */
+function compareValues(name, b, c, def = {}) {
+  const fn = COMPARES[name];
+  if (!fn) throw new Error(`比べ方 ${name} はコアにありません（${Object.keys(COMPARES).join('・')}）`);
+  if (absent(b) || absent(c)) return { verdict: 'unknown', relation: null };
+  return fn(b, c, def);
+}
+
+/**
+ * 一致の結果から状態へ（設計 6章）。
+ * unknown → 未登録／mismatch → 違う／match かつ equal → 同じ／それ以外の match → 現場で確認。
+ * `covers` や窓の内側は値が同じではないので「同じ」にしない。現場の設定や条件で決まる。
+ */
+function checkStateOf(result) {
+  if (result.verdict === 'unknown') return 'missing';
+  if (result.verdict === 'mismatch') return 'differs';
+  return result.relation === 'equal' ? 'same' : 'field';
+}
+
+/**
+ * カテゴリの `checkDefs` で1枚分の確認項目を作る。並びは状態の順（設計 2-4）。
+ * 値の表示は `format`、無い値は「―」。文面は事実と「何を確かめるか」まで。
+ */
+function checkRows(category, m, c) {
+  const defs = category.checkDefs || [];
+  const order = CHECK_STATES.map((s) => s.id);
+  const rows = defs.map((def) => {
+    if (!def.key || !def.label || typeof def.read !== 'function' || !def.compare) {
+      throw new Error(`checkDefs の項目には key・label・read・compare が要ります: ${def.key || def.label || '(名前なし)'}`);
+    }
+    const bv = def.read(m);
+    const cv = def.read(c);
+    const result = compareValues(def.compare, bv, cv, def);
+    const state = checkStateOf(result);
+    const show = (v) => (absent(v) ? '―' : def.format ? def.format(v) : Array.isArray(v) ? v.join('・') : String(v));
+    const note = state === 'differs' ? def.whenDiffers : state === 'field' ? def.whenField : state === 'missing' ? def.whenMissing : '';
+    return { key: def.key, label: def.label, state, relation: result.relation, base: show(bv), cand: show(cv), note: note || '' };
+  });
+  return rows.sort((x, y) => order.indexOf(x.state) - order.indexOf(y.state));
+}
+
+/**
+ * 口が返した1件を検める。形は `{ tier, parts: [{ id, qty }], rule }`（設計 4-1）。
+ *
+ * **口は型式の文字列を作れない**（設計 1-2 の3、引き継ぎ書 §2 ルール2）。部品は
+ * `store.byId` で解決できる id だけで、画面の型式は登録された綴りのまま。
+ * 知らないキー（`model` など）を黙って読み飛ばすと、口が綴りを作った跡が残らないので止める。
+ * 並びは同じ型式1件（qty 1 か 2）に限る。違う型式の組は当面出さない（D3）。
+ */
+function resolveAlternate(alt, m) {
+  const where = `${m.model} の alternates`;
+  if (!alt || typeof alt !== 'object') throw new Error(`${where}: 候補はオブジェクトで返してください`);
+  for (const k of Object.keys(alt)) {
+    if (!['tier', 'parts', 'rule'].includes(k)) throw new Error(`${where}: 候補に知らないキー ${k} があります`);
+  }
+  if (!LOWER_TIERS.includes(alt.tier)) throw new Error(`${where}: 段 ${alt.tier} は口から足せません（${LOWER_TIERS.join('・')} のみ）`);
+  if (alt.tier === 'rework' && !(typeof alt.rule === 'string' && alt.rule)) {
+    // 台数増・配線変更は機能についての主張なので、名前付きのルールが無いものは出さない（設計 4-3）
+    throw new Error(`${where}: rework の候補には rule（ルール名）が要ります`);
+  }
+  if (!Array.isArray(alt.parts) || alt.parts.length !== 1) {
+    throw new Error(`${where}: parts は同じ型式1件だけです（違う型式の組は当面出さない。D3）`);
+  }
+  const part = alt.parts[0];
+  for (const k of Object.keys(part)) {
+    if (!['id', 'qty'].includes(k)) throw new Error(`${where}: 部品に知らないキー ${k} があります`);
+  }
+  const d = store.byId.get(part.id);
+  if (!d) throw new Error(`${where}: 登録に無い id ${JSON.stringify(part.id)} を返しました`);
+  if (d.category !== m.category) throw new Error(`${where}: 別カテゴリの id ${part.id} を返しました`);
+  if (part.qty !== 1 && part.qty !== 2) throw new Error(`${where}: qty は 1 か 2 です（${part.id}: ${part.qty}）`);
+  return { device: d, qty: part.qty, rule: alt.rule || '' };
+}
+
+/**
+ * `computeCompatibles` の戻り値を段に振り分け、口の候補を足す。
+ *
+ * viewResult は「候補No.1」の添字に振り分け前の `list` を使うので、`list` を受け取る形にしてある。
+ * `computeTiers` はこれを `computeCompatibles` と組み合わせただけのもの。
+ */
+function tiersOf(list, m, category, ctx = {}) {
+  const tiers = {
+    successor: list.filter((c) => c.isSuccessor),
+    exact: list.filter((c) => !c.isSuccessor),
+    classMatch: [],
+    rework: [],
+  };
+  if (typeof category.alternates !== 'function' || isSeriesScope(m)) return tiers;
+
+  // 1つの型式は1つの段だけ。上の段が勝つ（設計 1-2 の1）。基準機自身も最初から埋めておく
+  const taken = new Set([m.id, ...list.map((c) => c.id)]);
+  const wanted = normalizeMounting(ctx.mounting) || m.mounting;
+  const resolved = (category.alternates(m, ctx) || []).map((alt) => ({ alt, ...resolveAlternate(alt, m) }));
+  for (const tier of LOWER_TIERS) {
+    for (const { alt, device: a, qty, rule } of resolved) {
+      if (alt.tier !== tier || taken.has(a.id) || isSeriesScope(a)) continue;
+      taken.add(a.id);
+      const trustworthy = dimsTrustworthy(a, m);
+      // 上の段のカードと同じ派生値を持たせる（取付・寸法のバッジを下の段だけ欠かさない）
+      const card = {
+        ...a,
+        isSuccessor: false,
+        sameMaker: a.maker === m.maker,
+        mountingMatch: a.mounting === wanted,
+        dimsTrustworthy: trustworthy,
+        holeMatch: holeMatch(a, m, trustworthy),
+        diff: trustworthy ? dimDiff(a.dims, m.dims) : null,
+        ...category.enrich(a, m, ctx),
+      };
+      tiers[tier].push({ ...card, tier, qty, rule, checks: checkRows(category, m, a) });
+    }
+  }
+  return tiers;
+}
+
+/**
+ * 候補を4段で返す。`{ successor, exact, classMatch, rework }`。
+ * successor・exact は `computeCompatibles` の戻り値の振り分けで、中身も順番もそのまま。
+ */
+function computeTiers(m, category, ctx = {}) {
+  return tiersOf(computeCompatibles(m, category, ctx), m, category, ctx);
+}
+
+/**
+ * 基準機についての現場への問い（設計 2-5）。基準機だけを受け取る。
+ * 文字列でないものを黙って捨てると、問いが1つ消えても気づけないので止める。
+ */
+function fieldQuestionsOf(category, m) {
+  if (typeof category.fieldQuestions !== 'function') return [];
+  const qs = category.fieldQuestions(m) || [];
+  for (const q of qs) {
+    if (typeof q !== 'string' || !q.trim()) throw new Error(`${m.model} の fieldQuestions: 問いは空でない文字列で返してください`);
+  }
+  return qs;
 }
 
 
@@ -848,13 +1129,68 @@ function standingMark(category, m, c) {
   return `<span class="standing below">△ 基準 ${esc(formatSpec(ps, m))} より小さい</span>`;
 }
 
-/** 候補カード1件 */
+/**
+ * 下の段（classMatch / rework）の候補か。`c.tier` は `tiersOf` が下の段にだけ付ける。
+ * 上の2段のカードは `computeCompatibles` の戻り値そのままで、`tier` を持たない。
+ */
+function isLowerTier(c) {
+  return c.tier === 'classMatch' || c.tier === 'rework';
+}
+
+/**
+ * 確認項目の表（設計 2-4）。1枚のカードに1つ。
+ *
+ * 違う・未登録・現場で確認は1行ずつ、1つも省かない（件数で打ち切ると、未登録を隠さない決定
+ * 11-2-3 の目的に反する）。「同じ」は1行にまとめるが、項目名を並べて数えられる形で残す。
+ * チェック欄は置かない（D14。保存する場所が無く、付いたチェックが「確認済み」と読まれる）。
+ */
+function checkTable(rows) {
+  if (!rows.length) return '';
+  const st = new Map(CHECK_STATES.map((s) => [s.id, s]));
+  const mark = (id) => `<span class="ck-mark">${esc(st.get(id).mark)} ${esc(st.get(id).label)}</span>`;
+  const open = rows.filter((r) => r.state !== 'same').map((r) => `<div class="ck-row ck-${esc(r.state)}">
+      <span class="ck-l">${esc(r.label)}</span>
+      <span class="ck-v">基準 <span class="mono">${esc(r.base)}</span> / 候補 <span class="mono">${esc(r.cand)}</span></span>
+      ${mark(r.state)}${r.note ? `<span class="ck-n">${esc(r.note)}</span>` : ''}
+    </div>`).join('');
+  const same = rows.filter((r) => r.state === 'same');
+  const sameLine = same.length
+    ? `<div class="ck-row ck-same">${mark('same')}<span class="ck-l">${same.map((r) => esc(r.label)).join('・')}</span></div>`
+    : '';
+  return `<div class="checks"><b>確認項目</b>${open}${sameLine}</div>`;
+}
+
+/**
+ * 現場への問い（設計 2-5）。③の結果ヘッダの直下に1回だけ出す。
+ * 問いは基準機の性質から出るので、候補の数だけ繰り返すと同じ文が何十回も並ぶ。
+ * 答えを入力させて絞る仕組みは作らない（答えを保存する場所が無い）。
+ */
+function fieldQuestionsPanel(questions) {
+  if (!questions.length) return '';
+  return `<div class="panel field-q"><b>交換前に現場で確かめること</b><ol>${
+    questions.map((q, i) => `<li><span class="fq-n">問い${i + 1}</span> ${esc(q)}</li>`).join('')}</ol></div>`;
+}
+
+/**
+ * 候補カード1件。
+ *
+ * 下の段のカードは同じ部品を使い、次だけを変える（設計 1-5）。
+ * - 「候補No.1」は付けない。呼び出し側が添字 -1 を渡すうえ、ここでも下の段なら付けない。
+ *   下の段の先頭が No.1 を名乗ると「一番の候補」と読まれる。
+ * - 別メーカーのバッジは「別メーカー」。「互換」を名乗らない（11-2-1 ③）。
+ *   上の段の「他社互換」は変えない（接触器・サーマルの画面が広く変わるため。D10）。
+ * - `detailPanels` の代わりに確認項目の表。両方出すと同じ差が枠と表で2回出る（設計 2-3）。
+ * - rework で2台なら型式の横に「× 2台」。`.model` の中身は登録された綴りのままにする。
+ */
 function candidateCard(category, m, c, index) {
   const ps = primarySpec(category);
+  const lower = isLowerTier(c);
   const lead = c.isSuccessor
     ? '<span class="badge b-succ">メーカー後継品</span>'
-    : index === 0 ? '<span class="badge ev-ok">候補No.1</span>' : '';
-  const cross = c.sameMaker ? '' : '<span class="badge b-cross">他社互換</span>';
+    : index === 0 && !lower ? '<span class="badge ev-ok">候補No.1</span>' : '';
+  const cross = c.sameMaker ? ''
+    : lower ? '<span class="badge b-cross">別メーカー</span>'
+    : '<span class="badge b-cross">他社互換</span>';
 
   const dimVerdict = !c.dimsTrustworthy
     ? '<span class="dim-verdict dim">寸法未確認</span>'
@@ -873,13 +1209,14 @@ function candidateCard(category, m, c, index) {
     c.ifaceMatch !== undefined ? badge(c.ifaceMatch, '指令I/F') : '',
   ].filter(Boolean).join('');
 
-  const panels = category.detailPanels(m, c).map(panelBox).join('');
+  const panels = lower ? checkTable(c.checks) : category.detailPanels(m, c).map(panelBox).join('');
+  const qty = lower && c.qty > 1 ? ` <span class="qty">× ${num(c.qty)}台</span>` : '';
 
   return `<div class="card">
     <div class="card-head">
       <div>
         <div class="maker">${esc(c.maker)} ${lead}${cross}${statusBadges(c)}</div>
-        <div class="model mono">${esc(c.model)}</div>
+        <div class="model mono">${esc(c.model)}</div>${qty}
       </div>
       <div class="card-right">
         <div class="primary-spec mono">${esc(formatSpec(ps, c))}</div>
@@ -1195,23 +1532,45 @@ function viewResult() {
   const cat = category();
   if (!m) return viewSearch();
   const ps = primarySpec(cat);
-  const list = computeCompatibles(m, cat, { mounting: S.mounting });
+  const ctx = { mounting: S.mounting };
+  const list = computeCompatibles(m, cat, ctx);
 
   /**
-   * 候補を根拠で2分する。判定そのもの（gate / rank / 並び順）は触らず、
-   * `computeCompatibles` が返した順番のまま `isSuccessor` で振り分けるだけ。
+   * 候補を根拠で段に分ける（`src/core/tiers.mjs`）。判定そのもの（gate / rank / 並び順）は触らず、
+   * `computeCompatibles` が返した順番のまま `isSuccessor` で振り分け、下の2段は口から足すだけ。
    * どのカテゴリの `rank` も後継品を先頭に置くので、分けても候補の前後関係は変わらない。
    */
-  const succ = list.filter((c) => c.isSuccessor);
-  const judged = list.filter((c) => !c.isSuccessor);
-  // 見出しは両方に中身があるときだけ。片方しか無い列に見出しを付けても、
-  // 対比する相手がいないので情報が増えない（旧機種インバータ30件は必ず後継1件）。
-  const split = succ.length > 0 && judged.length > 0;
+  const tiers = tiersOf(list, m, cat, ctx);
+  const succ = tiers.successor;
+  const judged = tiers.exact;
+  const lower = [...tiers.classMatch, ...tiers.rework];
+  const filled = TIERS.filter((t) => tiers[t.id].length > 0);
+  /**
+   * 見出しは「中身のある段が2つ以上」または「下の段に中身がある」とき、中身のある段にだけ出す。
+   * 片方しか無い列に見出しを付けても、対比する相手がいないので情報が増えない
+   * （旧機種インバータ30件は必ず後継1件）。後者を足すのは、下の段の候補が見出し無しで並ぶと
+   * 判定条件がすべて一致した候補と区別できないため（設計 1-3）。
+   * 口を宣言しないカテゴリでは下の段が空なので、「後継品と判定候補の両方」という今の規則と同じになる。
+   */
+  const split = filled.length >= 2 || lower.length > 0;
+  /**
+   * 判定側の見出しは、口を宣言したカテゴリだけ設計 1-1 の「判定条件がすべて一致」にする。
+   * 宣言していないカテゴリは今の見出しのまま（D13）。接触器・サーマルは窓や重なり率で拾うので、
+   * 「すべて一致」と名乗ると「値が一致」と読まれる（S-N35 34A の候補に 26A が並ぶ）。
+   */
+  const tiered = typeof cat.alternates === 'function';
+  const title = (id) => (id === 'exact' && !tiered ? '当アプリの判定による候補' : TIERS.find((t) => t.id === id).title);
 
-  // 合算した件数は、根拠の違う候補を1つの数字にまとめてしまう。分けたときだけ内訳を出す
-  const count = split
-    ? `互換品候補 ${list.length}件（メーカー指定の後継品 ${succ.length}件 / 当アプリの判定による候補 ${judged.length}件）`
-    : `互換品候補 ${list.length}件`;
+  /**
+   * 合算した件数は、根拠の違う候補を1つの数字にまとめてしまう。分けたときだけ内訳を出す。
+   * 段を持つカテゴリでは合計を「互換品候補」と呼ばず、段ごとの件数だけにする（D9）。
+   * 理由は同じで、下の段まで足すと、根拠の違う候補がさらに1つの数字に溶ける（設計 1-4）。
+   */
+  const count = !split
+    ? `互換品候補 ${list.length}件`
+    : tiered
+      ? filled.map((t) => `${title(t.id)} ${tiers[t.id].length}件`).join(' / ')
+      : `互換品候補 ${list.length}件（メーカー指定の後継品 ${succ.length}件 / 当アプリの判定による候補 ${judged.length}件）`;
 
   // 型式を画面で最大に見せる場所なので、生産終了バッジは他の呼び出し箇所と同様にここでも出す。
   // バッジが無いと「発注してはいけない型式」が一番目立つ見た目になる。
@@ -1221,8 +1580,8 @@ function viewResult() {
       <span class="sub">${esc(m.maker)} ・ ${esc(formatSpec(ps, m))}</span>
     </div>
     <div class="sub">${esc(count)}</div>
-    ${loadCheckNote(cat, belowCount(cat, m, list))}
-  </div>`;
+    ${loadCheckNote(cat, belowCount(cat, m, [...list, ...lower]))}
+  </div>${fieldQuestionsPanel(fieldQuestionsOf(cat, m))}`;
 
   /**
    * 0件の理由はカテゴリごとに違う。説明を持っているカテゴリにはそれを言わせる。
@@ -1248,15 +1607,30 @@ function viewResult() {
    *
    * `candidateCard` は添字0に「候補No.1」バッジを付ける。ゾーンごとに数え直すと、
    * 公式後継の隣で判定候補の先頭が「候補No.1」を名乗ることになり、
-   * 分けた意味（根拠が違う）が見た目で消える。
+   * 分けた意味（根拠が違う）が見た目で消える。下の段は `list` に無いので -1 になり、
+   * どんな場合もバッジが付かない（設計 1-5）。
    */
   const zone = (cs) => cs.map((c) => candidateCard(cat, m, c, list.indexOf(c))).join('');
-  const body = !list.length
+  const LOWER_NOTES = {
+    classMatch: '判定条件の一部で登録値が基準と違います。違いは各候補の確認項目に示します。',
+    rework: '配線の変更または台数の追加を前提にした候補です。確認項目と現場への問いを確かめてください。',
+  };
+  const lowerZone = (id) => (tiers[id].length
+    ? zoneHead(id, title(id), LOWER_NOTES[id]) + zone(tiers[id]) : '');
+  /**
+   * 判定条件がすべて一致が0件で下の段があるときは、下の段の前に1行出す（D8。依頼者の決定）。
+   * カテゴリの0件パネルは全段が0件のときだけ。見出しの「見つかりませんでした」が下の段と矛盾する。
+   */
+  const noExact = judged.length === 0 && lower.length > 0
+    ? '<div class="panel tier-none">判定条件がすべて一致する候補はありません。</div>' : '';
+  // `.zone-head` と `.card` は `#app` の直下に並べる（smoke の resultZones が直下の子で所属を決める）
+  const body = !list.length && !lower.length
     ? `<div class="panel empty-note">${empty}</div>`
     : split
-      ? zoneHead('succ', 'メーカー指定の後継品') + zone(succ)
-        + zoneHead('judged', '当アプリの判定による候補',
-          'メーカーが後継として指定した型式ではありません。') + zone(judged)
+      ? (succ.length ? zoneHead('succ', 'メーカー指定の後継品') + zone(succ) : '')
+        + (judged.length ? zoneHead('judged', title('exact'),
+          'メーカーが後継として指定した型式ではありません。') + zone(judged) : '')
+        + noExact + lowerZone('classMatch') + lowerZone('rework')
       : zone(list);
 
   return `${head}${body}
