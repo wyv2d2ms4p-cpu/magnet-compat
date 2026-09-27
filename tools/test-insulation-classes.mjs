@@ -151,6 +151,15 @@ check('第2出力が基準より狭い候補（coveredBy）は下の段に出な
 check('向きを逆にすると（第2出力が covers）下の段に出て、第2出力を元の綴りに戻した複製が基準でも出る（止めているのは第2出力の条件だけ）',
   inLower(vCand, out2Virtual) && inLower(vPlain, d44),
   `D44/H→仮想 ${inLower(vCand, out2Virtual)} / 複製→D44/H ${inLower(vPlain, d44)}`);
+/**
+ * 第2出力が「現場で確認」になるのはこの仮想の組だけ（実データに第2出力をスイッチで選ぶ登録品が無い）。
+ * やることに第2出力のスイッチの行が、第1出力の行の直後に出ることを見る（設計 2-7-4。並びは `todoOrder`）。
+ */
+const vCandTodos = vCand?.classMatch.find((c) => c.id === out2Virtual.id)?.guide.todos ?? [];
+const out2At = vCandTodos.indexOf('第2出力のディップスイッチを「12V電圧パルス」に設定する');
+check('第2出力が covers の候補では、やることに第2出力のスイッチの行が第1出力の行の直後に出る（仮想の組で確認）',
+  out2At > 0 && vCandTodos[out2At - 1] === '第1出力のディップスイッチを「12V電圧パルス」に設定する',
+  vCandTodos.join(' | ') || '下の段に無い');
 
 /* ---- 4. 確認項目の向き（3-5・12-6 の決定1） ---- */
 

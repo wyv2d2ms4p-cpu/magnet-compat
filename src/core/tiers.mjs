@@ -191,6 +191,75 @@ export function checkRows(category, m, c) {
 }
 
 /**
+ * 「やること」の並び（カテゴリの `todoOrder`）の中で、別メーカーの行を置く位置を示す印。
+ * 別メーカーの行は項目の定義ではなく組み合わせ（`sameMaker`）から出るので、項目の key と
+ * 同じ並びに置けるよう印で示す。`checkDefs` の key と重ならない綴りにしてある。
+ */
+export const MAKER_TODO = '@別メーカー';
+
+/**
+ * 別メーカーの行の文（設計 2-7-4 の2・D20）。端子番号は書かない（付け替え表は 9章の10 で未決。
+ * 端子配列をデータに持たない決定 8-6-4 のままで書ける1行だけにする）。カテゴリに持たせないのは、
+ * 条件が「別メーカー」のバッジ（D10）と同じで、どのカテゴリでも同じ文になるため。
+ */
+const MAKER_TODO_TEXT = '別メーカーのため、端子の並びを確認して配線する';
+
+/** 要約とやることに使う短い言い方（D19・依頼者の決定 2026-09-27）。宣言が無ければ見出しのまま */
+function shortOf(def) {
+  return def.short || def.label;
+}
+
+/**
+ * 下の段のカードの要約と「この候補を使うときにやること」（設計 2-7-3・2-7-4。D19・D20）。
+ *
+ * 返すのは `{ same, differs, todos, count }`。
+ * - `same` / `differs` … 要約の2行に並べる短い言い方。「違う」には状態が「違う」と「現場で確認」の
+ *   項目を入れ、並びは表と同じ状態の順（D19）。「未登録」はどちらにも入れず、やることの最後の1行に回す
+ * - `todos` … 「違う」「現場で確認」の項目ごとに1行と、別メーカーの1行を、カテゴリの `todoOrder`
+ *   （重要度の順）で並べ、未登録があれば最後に件数と項目名の1行を**必ず**足す。未登録の行を
+ *   カテゴリの並びに入れないのは、どのカテゴリでも最後に置く決定だから（D20 の3）
+ * - `count` … 詳細の見出しの件数。詳細に並ぶ項目の数で、「同じ」の項目も数える（依頼者の決定 2026-09-27。9章の12）
+ *
+ * **「違う」「現場で確認」の項目に `todo` が無い、または `todoOrder` に無ければ例外で止める。**
+ * 黙って飛ばすと、表を開かない人にはその違いが見えなくなる（未登録の行を必ず出すのと同じ理由）。
+ * 項目の `todo(row, m, c)` が返す文は動作や確認までで、可否は書かない（8-4）。
+ */
+export function cardGuide(category, m, c, rows) {
+  const order = category.todoOrder || [];
+  const defs = new Map((category.checkDefs || []).map((d) => [d.key, d]));
+  for (const key of order) {
+    if (key !== MAKER_TODO && typeof defs.get(key)?.todo !== 'function') {
+      throw new Error(`todoOrder の ${key} は、todo を持つ checkDefs の項目ではありません`);
+    }
+  }
+  if (order.filter((k) => k === MAKER_TODO).length !== 1) throw new Error('todoOrder には別メーカーの行の位置（MAKER_TODO）を1回だけ置いてください');
+
+  const open = rows.filter((r) => r.state === 'differs' || r.state === 'field');
+  const lines = new Map();
+  for (const r of open) {
+    const def = defs.get(r.key);
+    if (typeof def?.todo !== 'function' || !order.includes(r.key)) {
+      throw new Error(`${m.model} → ${c.model}: 確認項目 ${r.key} が「${r.state}」ですが、やることの文（todo）か並び（todoOrder）がありません`);
+    }
+    const text = def.todo(r, m, c);
+    if (typeof text !== 'string' || !text.trim()) throw new Error(`${m.model} → ${c.model}: 確認項目 ${r.key} の todo が空です`);
+    lines.set(r.key, text);
+  }
+  if (!c.sameMaker) lines.set(MAKER_TODO, MAKER_TODO_TEXT);
+  const todos = order.filter((k) => lines.has(k)).map((k) => lines.get(k));
+  const missing = rows.filter((r) => r.state === 'missing');
+  if (missing.length) {
+    todos.push(`登録の無い項目が ${missing.length} 件ある（${missing.map((r) => shortOf(defs.get(r.key))).join('・')}）。詳細で確認`);
+  }
+  return {
+    same: rows.filter((r) => r.state === 'same').map((r) => shortOf(defs.get(r.key))),
+    differs: open.map((r) => shortOf(defs.get(r.key))),
+    todos,
+    count: rows.length,
+  };
+}
+
+/**
  * 口が返した1件を検める。形は `{ tier, parts: [{ id, qty }], rule }`（設計 4-1）。
  *
  * **口は型式の文字列を作れない**（設計 1-2 の3、引き継ぎ書 §2 ルール2）。部品は
@@ -258,7 +327,9 @@ export function tiersOf(list, m, category, ctx = {}) {
         diff: trustworthy ? dimDiff(a.dims, m.dims) : null,
         ...category.enrich(a, m, ctx),
       };
-      tiers[tier].push({ ...card, tier, qty, rule, checks: checkRows(category, m, a) });
+      const checks = checkRows(category, m, a);
+      // 要約とやることはここで作る（描画の中で作ると、例外が画面を開くまで出ない。node の検査で全組を通す）
+      tiers[tier].push({ ...card, tier, qty, rule, checks, guide: cardGuide(category, m, card, checks) });
     }
   }
   return tiers;

@@ -268,6 +268,18 @@ async function insulationResult(model) {
             label: r.querySelector('.ck-l')?.textContent.trim() ?? '',
             text: r.textContent.replace(/\s+/g, ' ').trim(),
           })),
+          // 要約・やること・折りたたんだ詳細（設計 2-7。D18〜D21）。詳細の開閉は `open` で読む
+          gist: [...el.querySelectorAll('.gist > div')].map((e) => e.textContent.replace(/\s+/g, ' ').trim()),
+          todos: [...el.querySelectorAll('.todo li')].map((e) => e.textContent.replace(/\s+/g, ' ').trim()),
+          detail: el.querySelector('details.ck-detail')
+            ? { open: el.querySelector('details.ck-detail').open,
+              summary: el.querySelector('details.ck-detail > summary').textContent.trim(),
+              hasTable: !!el.querySelector('details.ck-detail .checks') }
+            : null,
+          // カードの中の並び（D18）。note → 要約 → やること → 詳細 の順かを見る
+          order: [...el.children].map((e) => ['note', 'gist', 'todo', 'ck-detail'].find((k) => e.classList.contains(k)))
+            .filter(Boolean),
+          body: el.textContent.replace(/\s+/g, ' ').trim(),
         });
       }
     }
@@ -466,6 +478,78 @@ check(`下の段を持つ絶縁変換器の③（${lowerScreens.length} 画面�
   lowerScreens.every((r) => r.lowerCards.length > 0 && r.lowerCards.every((c) => !c.maker.includes('候補No.1')))
   && lowerScreens.every((r) => lowerAssertive.every((w) => !r.result.includes(w))),
   lowerScreens.map((r) => lowerAssertive.filter((w) => r.result.includes(w)).join('・')).join(' / '));
+
+/* ---- 絶縁変換器: 下の段のカードの要約・やること・詳細（docs/design-common-alternates.md 2-7。D18〜D22） ---- */
+
+/**
+ * 下の段の2組（実データの全組。`tools/test-insulation-classes.mjs` が下の段 2 本を数えている）の
+ * 要約・やること・詳細を、向きごとに文字列で固定する（設計 9章の11「組み合わせごとに正しく出るか」）。
+ *
+ * - やることの並びは**間違えたときの被害が大きい順**：電源電圧 → 第1出力の方式 → H と見る電圧 →
+ *   出力間の絶縁 → 別メーカーの端子 → 外形寸法 → 登録の無い項目（依頼者の決定 2026-09-27）。並びごと比べるので、
+ *   `todoOrder` を入れ替えると落ちる
+ * - 第1出力は向きで文が変わる。MS3749 が基準なら候補 FZ のスイッチを「12V電圧パルス」に合わせる文、
+ *   FZ が基準なら候補は 12V 固定なので、基準の今の設定を確かめる文（`insulation.mjs` の `output1Todo`）
+ * - 出力間の絶縁も向きで文が変わる（同電位→絶縁はマイナス側の配線、絶縁→同電位は行き先の電位）
+ * - 外形寸法の差は「候補 − 基準」の符号で、向きを逆にすると符号が入れ替わる
+ */
+const MAKER_LINE = '別メーカーのため、端子の並びを確認して配線する';
+const MISSING_LINE = '登録の無い項目が 5 件ある（入力抵抗・第1出力 最大周波数・第2出力 最大周波数・出力の定格・オプション）。詳細で確認';
+const lowerGuides = [
+  { screen: isoD44, card: d44Fz, pair: 'MS3749-A-D44/H → WGP-FZ-14FK-1', rows: 11,
+    gist: ['同じ：入力の方式・入力の相数・第2出力の方式', '違う：電源電圧・外形寸法・入力の H と見る電圧・第1出力の方式・出力間の絶縁'],
+    todos: [
+      '盤の電源電圧を確認する（候補は AC100〜120V 専用）',
+      '第1出力のディップスイッチを「12V電圧パルス」に設定する',
+      'センサの H 電圧が候補の範囲（5V以上30V以下）に入っているかを確認する',
+      '2つの出力のマイナス側の配線を確認する（基準は2つの出力が同電位、候補は出力の間が絶縁）',
+      MAKER_LINE,
+      '取付スペースを確認する（高さ +19mm・幅 −3.4mm・奥行き +11.5mm）',
+      MISSING_LINE,
+    ] },
+  { screen: fzFK1, card: fzD44, pair: 'WGP-FZ-14FK-1 → MS3749-A-D44/H', rows: 10,
+    gist: ['同じ：入力の方式・入力の H と見る電圧・入力の相数・第2出力の方式', '違う：出力間の絶縁・電源電圧・外形寸法・第1出力の方式'],
+    todos: [
+      '盤の電源電圧を確認する（候補は AC100〜240V 専用）',
+      '基準の第1出力のディップスイッチが今どれに設定されているかを確認する（候補の第1出力は「12V電圧パルス」固定）',
+      '2つの出力の行き先の電位（マイナス側）を確認する（基準は出力の間が絶縁、候補は2つの出力が同電位）',
+      MAKER_LINE,
+      '取付スペースを確認する（高さ −19mm・幅 +3.4mm・奥行き −11.5mm）',
+      MISSING_LINE,
+    ] },
+];
+for (const { card, pair, gist, todos, rows } of lowerGuides) {
+  check(`${pair} の要約が「同じ：」「違う：」の2行で、確認項目の短い言い方を並べる（未登録は入れない）`,
+    JSON.stringify(card?.gist) === JSON.stringify(gist), card ? card.gist.join(' / ') : '下の段に無い');
+  check(`${pair} のやることが、間違えたときの被害が大きい順に ${todos.length} 行並ぶ（電源電圧 → 第1出力 → … → 登録の無い項目）`,
+    JSON.stringify(card?.todos) === JSON.stringify(todos), card ? card.todos.map((t, i) => `${i + 1}. ${t}`).join(' | ') : '下の段に無い');
+  check(`${pair} は別メーカーなので、端子の並びの行が1回だけ出る`,
+    card?.maker.includes('別メーカー') === true && card.todos.filter((t) => t === MAKER_LINE).length === 1,
+    card ? card.todos.join(' | ') : '下の段に無い');
+  // 件数は詳細の表の「未登録・現物で確認」の行の数と突き合わせる（行を消すか件数だけ変えると落ちる）
+  const missingRows = card?.checks.filter((c) => c.state === 'ck-missing').length ?? -1;
+  const missingLine = card?.todos.filter((t) => t.startsWith('登録の無い項目が')) ?? [];
+  check(`${pair} の登録の無い項目の行が最後に1行だけ出て、件数（${missingRows} 件）と項目名が詳細の表と合う`,
+    missingLine.length === 1 && card.todos[card.todos.length - 1] === MISSING_LINE && missingRows === 5,
+    card ? `${missingLine.join(' | ') || '行が無い'} / 表の未登録 ${missingRows} 行` : '下の段に無い');
+  // 見出しの件数は項目の数（「同じ」を1行にまとめた中の項目も数える。依頼者の決定 2026-09-27）。表の行の数とは違う数になる組で見る
+  const sameItems = card?.checks.filter((c) => c.state === 'ck-same').flatMap((c) => c.label.split('・')).length ?? 0;
+  const items = (card?.checks.filter((c) => c.state !== 'ck-same').length ?? 0) + sameItems;
+  check(`${pair} の確認項目の詳細は初期状態で閉じていて、見出しに項目の数（${items}件）が出る。閉じていても表の行が読める`,
+    card?.detail?.open === false && card.detail.summary === `確認項目の詳細（${items}件）` && card.detail.hasTable
+    && items === 13 && card.checks.length === rows,
+    card ? JSON.stringify(card.detail) + ` / 表の行 ${card.checks.length}` : '下の段に無い');
+  check(`${pair} のカードは note → 要約 → やること → 確認項目の詳細 の順に並ぶ`,
+    JSON.stringify(card?.order) === JSON.stringify(['note', 'gist', 'todo', 'ck-detail']), card ? card.order.join(' → ') : '下の段に無い');
+}
+/**
+ * 要約・やること・詳細に、交換できると読める語を出さない（D19・8-4）。上の検査の4語に、要約で使われうる
+ * 「互換あり」「概ね互換」を足してカードの全文で見る。
+ */
+const guideAssertive = ['交換可', '互換品です', '使用可', '使用できません', '互換あり', '概ね互換'];
+check(`下の段のカード（${lowerGuides.length} 枚）の要約・やること・詳細に断定語（${guideAssertive.join('・')}）が出ない`,
+  lowerGuides.every(({ card }) => card && guideAssertive.every((w) => !card.body.includes(w))),
+  lowerGuides.map(({ card }) => guideAssertive.filter((w) => card?.body.includes(w)).join('・')).join(' / '));
 
 /* ---- 絶縁変換器: オプション（specs.option）の表示 ---- */
 
