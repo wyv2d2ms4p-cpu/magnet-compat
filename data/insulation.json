@@ -2723,6 +2723,11 @@
     "model": "WRPP-A1NNR-M2",
     "series": "WRPP",
     "modelStatus": "catalog-confirmed",
+    "dims": {
+      "w": 72,
+      "h": 80,
+      "d": 136
+    },
     "mounting": "壁取付/DINレール 共用",
     "note": "ロータリエンコーダの A相・B相の2相（入力2回路）を絶縁し、第1出力・第2出力の2系統に分配する（1台で入力2回路・出力4点）。出力の論理は反転（型式コード R）。接点の ON/OFF と出力の対応は、資料の図を未確認。",
     "specs": {
@@ -2742,10 +2747,10 @@
         "checkedAt": "2026-09-26"
       },
       "dims": {
-        "state": "unverified",
-        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/W/nswrpp.pdf",
-        "srcNote": "エムジー 仕様書 WRPP（NS-2222 Rev.6）の外形寸法図は、テキスト抽出で数値（80・50・72・107・136 など）と辺の対応が読めず、幅・高さ・奥行きを確定できない。資料で確定するまで dims はキーごと不在にする（docs/msystem-wrpp-verified.md 3章「読めなかったもの」）。",
-        "checkedAt": "2026-09-26"
+        "state": "verified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NG/W/ngwrpp.pdf",
+        "srcNote": "外形図 NG-2222 Rev.3。図の数値の対応は同じ W・UNIT の WYPD 外形図（NG-2276 Rev.4）との比較で読み、依頼者が図を目で見て確かめた（2026-09-27）。本体の幅は 50mm、幅 72mm はソケット",
+        "checkedAt": "2026-09-27"
       },
       "specs": {
         "state": "verified",
