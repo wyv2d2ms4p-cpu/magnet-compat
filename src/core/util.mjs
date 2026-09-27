@@ -58,6 +58,19 @@ export function dimDiff(a, b) {
   return Math.abs(a.w - b.w) + Math.abs(a.h - b.h) + Math.abs(a.d - b.d);
 }
 
+/**
+ * 方向ごとの寸法の差（候補 c − 基準 b。候補のほうが大きければ ＋）。どちらか欠けていれば null。
+ *
+ * `dimDiff` の和では、どの方向がどれだけ違うかも、候補が大きいのか小さいのかも読めない（設計 1-7）。
+ * いまは下の段のやることの文（取付スペース）だけが使う。カード右上の「差 Σ…」は変えていない（D23 は別の PR）。
+ * 差が 0 の方向も省かずに出す（省くと「その方向は比べていない」と読める）。
+ */
+export function dimDeltaText(c, b) {
+  if (!c || !b) return null;
+  const one = (label, v) => `${label} ${v > 0 ? '+' : v < 0 ? '−' : '±'}${num(Math.abs(v))}mm`;
+  return [one('高さ', c.h - b.h), one('幅', c.w - b.w), one('奥行き', c.d - b.d)].join('・');
+}
+
 /** 後継品の連鎖。循環は seen で止める。 */
 export function successorChain(device, byId) {
   const chain = [];

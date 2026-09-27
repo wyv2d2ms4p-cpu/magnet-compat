@@ -178,6 +178,11 @@ header .sub{color:var(--sub);font-size:12px;}
 .ck-l{font-weight:600;} .ck-v{color:var(--sub);overflow-wrap:anywhere;} .ck-n{flex-basis:100%;color:var(--sub);font-size:11px;}
 .ck-differs .ck-mark,.ck-missing .ck-mark{color:var(--amber);}
 .ck-field .ck-mark{color:var(--blue);} .ck-same .ck-mark{color:var(--green);}
+/* 下の段のカードの要約・やること・折りたたんだ詳細（設計 2-7。D18〜D21） */
+.gist{margin-top:8px;font-size:12px;line-height:1.6;overflow-wrap:anywhere;} .gist-same{color:var(--sub);}
+.todo{margin-top:8px;font-size:13px;} .todo b{font-size:12px;}
+.todo ol{margin:4px 0 0;padding-left:1.6em;line-height:1.5;} .todo li + li{margin-top:3px;}
+.ck-detail{margin-top:8px;} .ck-detail > summary{cursor:pointer;color:var(--sub);font-size:12px;padding:4px 0;}
 .qty{font-size:13px;color:var(--amber);}
 .field-q b{font-size:13px;} .field-q ol{margin:6px 0 0;padding-left:0;list-style:none;font-size:12px;}
 .field-q li + li{margin-top:4px;} .fq-n{color:var(--blue);font-weight:600;margin-right:4px;}
@@ -259,6 +264,19 @@ function normExact(s) {
 function dimDiff(a, b) {
   if (!a || !b) return null;
   return Math.abs(a.w - b.w) + Math.abs(a.h - b.h) + Math.abs(a.d - b.d);
+}
+
+/**
+ * 方向ごとの寸法の差（候補 c − 基準 b。候補のほうが大きければ ＋）。どちらか欠けていれば null。
+ *
+ * `dimDiff` の和では、どの方向がどれだけ違うかも、候補が大きいのか小さいのかも読めない（設計 1-7）。
+ * いまは下の段のやることの文（取付スペース）だけが使う。カード右上の「差 Σ…」は変えていない（D23 は別の PR）。
+ * 差が 0 の方向も省かずに出す（省くと「その方向は比べていない」と読める）。
+ */
+function dimDeltaText(c, b) {
+  if (!c || !b) return null;
+  const one = (label, v) => `${label} ${v > 0 ? '+' : v < 0 ? '−' : '±'}${num(Math.abs(v))}mm`;
+  return [one('高さ', c.h - b.h), one('幅', c.w - b.w), one('奥行き', c.d - b.d)].join('・');
 }
 
 /** 後継品の連鎖。循環は seen で止める。 */
@@ -767,6 +785,75 @@ function checkRows(category, m, c) {
 }
 
 /**
+ * 「やること」の並び（カテゴリの `todoOrder`）の中で、別メーカーの行を置く位置を示す印。
+ * 別メーカーの行は項目の定義ではなく組み合わせ（`sameMaker`）から出るので、項目の key と
+ * 同じ並びに置けるよう印で示す。`checkDefs` の key と重ならない綴りにしてある。
+ */
+const MAKER_TODO = '@別メーカー';
+
+/**
+ * 別メーカーの行の文（設計 2-7-4 の2・D20）。端子番号は書かない（付け替え表は 9章の10 で未決。
+ * 端子配列をデータに持たない決定 8-6-4 のままで書ける1行だけにする）。カテゴリに持たせないのは、
+ * 条件が「別メーカー」のバッジ（D10）と同じで、どのカテゴリでも同じ文になるため。
+ */
+const MAKER_TODO_TEXT = '別メーカーのため、端子の並びを確認して配線する';
+
+/** 要約とやることに使う短い言い方（D19・依頼者の決定 2026-09-27）。宣言が無ければ見出しのまま */
+function shortOf(def) {
+  return def.short || def.label;
+}
+
+/**
+ * 下の段のカードの要約と「この候補を使うときにやること」（設計 2-7-3・2-7-4。D19・D20）。
+ *
+ * 返すのは `{ same, differs, todos, count }`。
+ * - `same` / `differs` … 要約の2行に並べる短い言い方。「違う」には状態が「違う」と「現場で確認」の
+ *   項目を入れ、並びは表と同じ状態の順（D19）。「未登録」はどちらにも入れず、やることの最後の1行に回す
+ * - `todos` … 「違う」「現場で確認」の項目ごとに1行と、別メーカーの1行を、カテゴリの `todoOrder`
+ *   （重要度の順）で並べ、未登録があれば最後に件数と項目名の1行を**必ず**足す。未登録の行を
+ *   カテゴリの並びに入れないのは、どのカテゴリでも最後に置く決定だから（D20 の3）
+ * - `count` … 詳細の見出しの件数。詳細に並ぶ項目の数で、「同じ」の項目も数える（依頼者の決定 2026-09-27。9章の12）
+ *
+ * **「違う」「現場で確認」の項目に `todo` が無い、または `todoOrder` に無ければ例外で止める。**
+ * 黙って飛ばすと、表を開かない人にはその違いが見えなくなる（未登録の行を必ず出すのと同じ理由）。
+ * 項目の `todo(row, m, c)` が返す文は動作や確認までで、可否は書かない（8-4）。
+ */
+function cardGuide(category, m, c, rows) {
+  const order = category.todoOrder || [];
+  const defs = new Map((category.checkDefs || []).map((d) => [d.key, d]));
+  for (const key of order) {
+    if (key !== MAKER_TODO && typeof defs.get(key)?.todo !== 'function') {
+      throw new Error(`todoOrder の ${key} は、todo を持つ checkDefs の項目ではありません`);
+    }
+  }
+  if (order.filter((k) => k === MAKER_TODO).length !== 1) throw new Error('todoOrder には別メーカーの行の位置（MAKER_TODO）を1回だけ置いてください');
+
+  const open = rows.filter((r) => r.state === 'differs' || r.state === 'field');
+  const lines = new Map();
+  for (const r of open) {
+    const def = defs.get(r.key);
+    if (typeof def?.todo !== 'function' || !order.includes(r.key)) {
+      throw new Error(`${m.model} → ${c.model}: 確認項目 ${r.key} が「${r.state}」ですが、やることの文（todo）か並び（todoOrder）がありません`);
+    }
+    const text = def.todo(r, m, c);
+    if (typeof text !== 'string' || !text.trim()) throw new Error(`${m.model} → ${c.model}: 確認項目 ${r.key} の todo が空です`);
+    lines.set(r.key, text);
+  }
+  if (!c.sameMaker) lines.set(MAKER_TODO, MAKER_TODO_TEXT);
+  const todos = order.filter((k) => lines.has(k)).map((k) => lines.get(k));
+  const missing = rows.filter((r) => r.state === 'missing');
+  if (missing.length) {
+    todos.push(`登録の無い項目が ${missing.length} 件ある（${missing.map((r) => shortOf(defs.get(r.key))).join('・')}）。詳細で確認`);
+  }
+  return {
+    same: rows.filter((r) => r.state === 'same').map((r) => shortOf(defs.get(r.key))),
+    differs: open.map((r) => shortOf(defs.get(r.key))),
+    todos,
+    count: rows.length,
+  };
+}
+
+/**
  * 口が返した1件を検める。形は `{ tier, parts: [{ id, qty }], rule }`（設計 4-1）。
  *
  * **口は型式の文字列を作れない**（設計 1-2 の3、引き継ぎ書 §2 ルール2）。部品は
@@ -834,7 +921,9 @@ function tiersOf(list, m, category, ctx = {}) {
         diff: trustworthy ? dimDiff(a.dims, m.dims) : null,
         ...category.enrich(a, m, ctx),
       };
-      tiers[tier].push({ ...card, tier, qty, rule, checks: checkRows(category, m, a) });
+      const checks = checkRows(category, m, a);
+      // 要約とやることはここで作る（描画の中で作ると、例外が画面を開くまで出ない。node の検査で全組を通す）
+      tiers[tier].push({ ...card, tier, qty, rule, checks, guide: cardGuide(category, m, card, checks) });
     }
   }
   return tiers;
@@ -1185,6 +1274,24 @@ function checkTable(rows) {
 }
 
 /**
+ * 下の段のカードの中身（設計 2-7。D18〜D21）。要約 → この候補を使うときにやること → 確認項目の詳細の順。
+ *
+ * 故障対応中に表を最後まで読む人はいない（2-7-1）ので、やることを先に並べ、表は折りたたむ。
+ * 表の中身は `checkTable` のまま変えずに `<details>` で包むだけにしてある。折りたたんでも DOM に残るので、
+ * 行を `textContent` で読む検査はそのまま読める。見出しの件数は詳細に並ぶ項目の数（`guide.count`）。
+ * 要約の空の行を消さずに「なし」と書くのは、行が無いと「同じ」「違う」のどちらかを読み落としたように見えるため。
+ */
+function lowerCardBody(c) {
+  const g = c.guide;
+  const line = (cls, head, items) => `<div class="${cls}">${esc(head)}：${items.length ? items.map(esc).join('・') : 'なし'}</div>`;
+  const todos = g.todos.length
+    ? `<div class="todo"><b>この候補を使うときにやること</b><ol>${g.todos.map((t) => `<li>${esc(t)}</li>`).join('')}</ol></div>`
+    : '';
+  return `<div class="gist">${line('gist-same', '同じ', g.same)}${line('gist-differs', '違う', g.differs)}</div>${todos}`
+    + `<details class="ck-detail"><summary>確認項目の詳細（${num(g.count)}件）</summary>${checkTable(c.checks)}</details>`;
+}
+
+/**
  * 現場への問い（設計 2-5）。③の結果ヘッダの直下に1回だけ出す。
  * 問いは基準機の性質から出るので、候補の数だけ繰り返すと同じ文が何十回も並ぶ。
  * 答えを入力させて絞る仕組みは作らない（答えを保存する場所が無い）。
@@ -1204,6 +1311,8 @@ function fieldQuestionsPanel(questions) {
  * - 別メーカーのバッジは「別メーカー」。「互換」を名乗らない（11-2-1 ③）。
  *   上の段の「他社互換」は変えない（接触器・サーマルの画面が広く変わるため。D10）。
  * - `detailPanels` の代わりに確認項目の表。両方出すと同じ差が枠と表で2回出る（設計 2-3）。
+ *   表の前に要約とやることを置き、表は折りたたむ（`lowerCardBody`。D18）。`note` は今までどおりその前
+ * - 右上の寸法の表示（`dim-verdict`）は上の段と同じ。方向ごとの差にする決定（D23）は別の PR で入れる
  * - rework で2台なら型式の横に「× 2台」。`.model` の中身は登録された綴りのままにする。
  */
 function candidateCard(category, m, c, index) {
@@ -1233,7 +1342,7 @@ function candidateCard(category, m, c, index) {
     c.ifaceMatch !== undefined ? badge(c.ifaceMatch, '指令I/F') : '',
   ].filter(Boolean).join('');
 
-  const panels = lower ? checkTable(c.checks) : category.detailPanels(m, c).map(panelBox).join('');
+  const panels = lower ? lowerCardBody(c) : category.detailPanels(m, c).map(panelBox).join('');
   const qty = lower && c.qty > 1 ? ` <span class="qty">× ${num(c.qty)}台</span>` : '';
 
   return `<div class="card">
@@ -2999,6 +3108,36 @@ function outputIsolationOf(d) {
   return OUTPUT_ISOLATION[d.series]?.(d.specs);
 }
 
+/** 分類名からディップスイッチの設定の呼び方へ（「12V電圧パルス出力」→「12V電圧パルス」）。分類名は末尾が「出力」で揃っている */
+const switchName = (cls) => cls.replace(/出力$/, '');
+
+/**
+ * 出力の方式のやること。**文が組み合わせの向きで変わる**（設計 2-7-4・9章の11）。
+ *   - `covers`（候補がスイッチで選ぶ側。MS3749 → FZ）… 候補のスイッチを基準の出力に合わせる
+ *   - `coveredBy`・`overlap`（候補の選べる出力が基準より狭い。FZ → MS3749）… 候補は変えられないので、
+ *     基準の今の設定を確かめる文にする。行を出さないと「現場で確認」の項目がやることから消え、
+ *     候補が 12V 固定であることが表を開かない人に見えなくなる（D20 の1）
+ * それ以外の関係は `classMatch` に入らない（`classesTouch`）。来たら文を作らずに止める。
+ * 第2出力が「現場で確認」になるのは、第2出力をスイッチで選ぶ候補（実データに無い。
+ * `tools/test-insulation-classes.mjs` の仮想の組）だけで、`classesTouch` が通すのは `covers` まで。
+ */
+function outputTodo(which, keyOf) {
+  return (r, m, c) => {
+    const base = classesOf(m, keyOf(m));
+    const cand = classesOf(c, keyOf(c));
+    const names = (cs) => cs.map((x) => `「${switchName(x)}」`).join('・');
+    if (r.relation === 'covers') {
+      return base.length === 1
+        ? `${which}のディップスイッチを${names(base)}に設定する`
+        : `${which}のディップスイッチを、基準で今使っている出力（${names(base)}のどれか）に設定する`;
+    }
+    if (r.relation === 'coveredBy' || r.relation === 'overlap') {
+      return `基準の${which}のディップスイッチが今どれに設定されているかを確認する（候補の${which}は${names(cand)}${cand.length === 1 ? '固定' : 'から選ぶ'}）`;
+    }
+    throw new Error(`${which}の方式のやること: 関係 ${r.relation} の文はありません（${m.model} → ${c.model}）`);
+  };
+}
+
 registerCategory({
   id: 'insulation',
   label: '絶縁変換器',
@@ -3349,48 +3488,69 @@ registerCategory({
    */
   checkDefs: [
     // 入力の行はいま全部 single なので「同じ」か「違う」にしかならない（IN-15 が selectable になるのは D1 が解けたとき）
-    { key: 'inputClass', label: '入力信号の分類', read: (d) => classesOf(d, 'inputSignal'), compare: 'set' },
+    { key: 'inputClass', label: '入力信号の分類', short: '入力の方式', read: (d) => classesOf(d, 'inputSignal'), compare: 'set' },
     { key: 'inputHighV', label: '入力の H と見る電圧', read: highVOf, compare: 'fits', format: (v) => v.text,
       whenField: 'センサの H 電圧が、候補の範囲に入っているかを確認してください。',
+      // 基準の値（MS3749 は しきい値と入力許容を分けた長い文）は詳細の表に任せ、やることには候補の範囲だけを書く
+      todo: (r) => `センサの H 電圧が候補の範囲（${r.cand}）に入っているかを確認する`,
       whenDiffers: 'H と見る電圧の範囲が重なりません。センサの H 電圧を確認してください。',
       whenMissing: 'H と見る電圧の範囲が登録されていません。仕様書・現物で確認してください。' },
     { key: 'inputResistance', label: '入力抵抗', read: (d) => d.specs?.inputResistance, compare: 'equal',
       whenDiffers: '入力抵抗が違います。送り側の機器で駆動できるかを確認してください。',
       whenMissing: '入力抵抗が登録されていません。仕様書・現物で確認してください。' },
-    { key: 'inputPhases', label: '入力の相数（回路数）', read: (d) => d.specs?.inputPhases, compare: 'equal' },
-    { key: 'output1Class', label: '第1出力（出力信号）の分類', read: (d) => classesOf(d, outputSignalKey(d)), compare: 'set',
+    { key: 'inputPhases', label: '入力の相数（回路数）', short: '入力の相数', read: (d) => d.specs?.inputPhases, compare: 'equal' },
+    { key: 'output1Class', label: '第1出力（出力信号）の分類', short: '第1出力の方式', read: (d) => classesOf(d, outputSignalKey(d)), compare: 'set',
       whenField: 'スイッチで選ぶ出力を含みます。基準で使っている出力と同じ分類に設定されているか・設定できるかを確認してください。'
-        + 'WGP-FZ の第1出力をワンショットにすると、第2出力もワンショットになります（資料の注記）。' },
-    { key: 'output2Class', label: '第2出力の分類', read: (d) => classesOf(d, 'output2Signal'), compare: 'set',
-      whenMissing: '第2出力が片方にしかありません。第2出力の配線を使っているかを確認してください。' },
+        + 'WGP-FZ の第1出力をワンショットにすると、第2出力もワンショットになります（資料の注記）。',
+      todo: outputTodo('第1出力', outputSignalKey) },
+    { key: 'output2Class', label: '第2出力の分類', short: '第2出力の方式', read: (d) => classesOf(d, 'output2Signal'), compare: 'set',
+      whenMissing: '第2出力が片方にしかありません。第2出力の配線を使っているかを確認してください。',
+      todo: outputTodo('第2出力', () => 'output2Signal') },
     { key: 'output1MaxFreqHz', label: '第1出力 最大周波数', read: (d) => d.specs?.output1MaxFreqHz, compare: 'equal', format: formatFreq,
       whenDiffers: '最大出力周波数が違います。入力パルスの周波数を確認してください。',
       whenMissing: '最大出力周波数が登録されていません（設定で変わる機種を含みます）。仕様書・現物で確認してください。' },
     { key: 'output2MaxFreqHz', label: '第2出力 最大周波数', read: (d) => d.specs?.output2MaxFreqHz, compare: 'equal', format: formatFreq,
       whenDiffers: '最大出力周波数が違います。入力パルスの周波数を確認してください。',
       whenMissing: '最大出力周波数が登録されていません（設定で変わる機種を含みます）。仕様書・現物で確認してください。' },
-    { key: 'outputRating', label: '出力の定格（H・L の電圧、許容差、内部抵抗・許容負荷、オープンコレクタの定格）',
+    { key: 'outputRating', label: '出力の定格（H・L の電圧、許容差、内部抵抗・許容負荷、オープンコレクタの定格）', short: '出力の定格',
       read: notInData, compare: 'equal',
       whenMissing: '資料ごとに書き方と値が違い、データに登録していません。受け側の条件と合わせて仕様書・現物で確認してください。' },
     // 1出力型には出さない（出力が1つなら出力間の絶縁は該当しない）。どちらかが2出力型なら出す
-    { key: 'outputIsolation', label: '第1出力と第2出力の間の絶縁', read: outputIsolationOf,
+    { key: 'outputIsolation', label: '第1出力と第2出力の間の絶縁', short: '出力間の絶縁', read: outputIsolationOf,
       applies: (m, c) => typeof m.specs?.output2Signal === 'string' || typeof c.specs?.output2Signal === 'string',
       compare: 'atMost', compareBy: (v) => v.coupled, format: (v) => v.text,
       whenDiffers: '候補は2つの出力が同電位になります（基準は絶縁）。2つの出力の行き先の電位（マイナス側）が別の機器なら、'
         + '候補では使えないおそれがあります。行き先の電位を現場で確認してください。',
       whenField: '候補は2つの出力の間が絶縁されています（基準は同電位）。現場で片方の出力のマイナス側だけを配線して'
         + '機器の中のつながりに頼っている場合は、もう片方の出力が働かないおそれがあります。マイナス側の配線を現場で確認してください。',
-      whenMissing: '出力間の絶縁の資料の値を持っていません。仕様書・現物で確認してください。' },
+      whenMissing: '出力間の絶縁の資料の値を持っていません。仕様書・現物で確認してください。',
+      // 状態が向きを表す（同電位→絶縁は現場で確認、絶縁→同電位は違う）ので、状態で文を分ける
+      todo: (r) => (r.state === 'field'
+        ? '2つの出力のマイナス側の配線を確認する（基準は2つの出力が同電位、候補は出力の間が絶縁）'
+        : '2つの出力の行き先の電位（マイナス側）を確認する（基準は出力の間が絶縁、候補は2つの出力が同電位）') },
     { key: 'powerSupply', label: '電源電圧', read: (d) => d.specs?.powerSupply, compare: 'equal',
       whenDiffers: '電源電圧が違います。盤に来ている電源を確認してください。',
+      // 候補の電源電圧は使う側で変えられないので「変更する」ではなく「確認する」（D20）
+      todo: (r) => `盤の電源電圧を確認する（候補は ${r.cand} 専用）`,
       whenMissing: '電源電圧が登録されていません。仕様書・現物で確認してください。' },
     { key: 'option', label: 'オプション', read: (d) => (d.specs?.option?.length ? optionText(d.specs.option) : undefined), compare: 'equal',
       whenDiffers: 'オプションが違います。設置環境と接続先に基準のオプションが要るかを確認してください。',
       whenMissing: 'オプションの指定が片方にありません（型式にオプション欄が無い機種を含みます）。基準のオプションが要るかを確認してください。' },
     { key: 'dims', label: '外形寸法', read: (d) => (d.dims ? formatDims(d.dims) : undefined), compare: 'equal',
       whenDiffers: '外形寸法が違います。取付スペースと、端子配列が同じかを確認してください。',
+      todo: (r, m, c) => `取付スペースを確認する（${dimDeltaText(c.dims, m.dims)}）`,
       whenMissing: '外形寸法が登録されていません。取付スペースと端子配列を現物で確認してください。' },
   ],
+  /**
+   * 下の段のカードの「この候補を使うときにやること」の並び。**間違えたときの被害が大きい順**
+   * （依頼者の決定 2026-09-27。設計 9章の13）：電源電圧（違えば機器が壊れる）→ 第1出力の方式（設定を
+   * 違えると受け側に違う信号が行く）→ 入力の H と見る電圧 → 出力間の絶縁 → 別メーカーの端子の並び → 外形寸法。
+   * 第2出力の方式は依頼者の決めた並びに無い。実データでは「現場で確認」にならない（第2出力をスイッチで選ぶ
+   * 登録品が無い）が、仮想の組では出るので、同じ種類の設定である第1出力の直後に置いた（この PR の判断。決定ではない）。
+   * 登録の無い項目の行はここに書かない（コアが常に最後に置く。D20 の3）。
+   * ここに無い項目が「違う」「現場で確認」になると、コアが例外で止める（黙ってやることから落とさない）。
+   */
+  todoOrder: ['powerSupply', 'output1Class', 'output2Class', 'inputHighV', 'outputIsolation', MAKER_TODO, 'dims'],
   /**
    * 交換前に現場で確かめること（設計 2-5 の絶縁変換器の4行）。基準機の性質だけから出す。
    * どれも型式やデータからは決まらず、現物の配線・設定を見れば分かること。

@@ -95,6 +95,7 @@ DUMMY_DATA.push(
 
 const DUMMY_MODULE = `import { registerCategory } from '../core/registry.mjs';
 import { withinWindow, preferTrue, ascending } from '../core/compat.mjs';
+import { MAKER_TODO } from '../core/tiers.mjs';
 registerCategory({
   id: 'dummy', label: 'ダミー', group: 'test',
   specDefs: [{ key: 'torqueNm', label: '定格トルク', unit: 'N·m', primary: true, format: (v) => \`\${v}N·m\` }],
@@ -104,11 +105,13 @@ registerCategory({
   alternates: (m, ctx) => DUMMY_ALT[ctx.probe || m.id] || [],
   checkDefs: [
     { key: 'supplyV', label: '電源電圧', read: (d) => d.specs?.supplyV, compare: 'equal', format: (v) => \`\${v}V\`,
-      whenDiffers: '盤に来ている電源を確認してください。' },
+      whenDiffers: '盤に来ている電源を確認してください。', todo: () => '電源を確かめる' },
     { key: 'outputs', label: '出力', read: (d) => d.specs?.outputs, compare: 'set',
-      whenField: '今使っている出力を確認してください。' },
-    { key: 'insulationKV', label: '絶縁耐圧', read: (d) => d.specs?.insulationKV, compare: 'equal' },
+      whenField: '今使っている出力を確認してください。', todo: () => '出力を確かめる' },
+    { key: 'insulationKV', label: '絶縁耐圧', short: '耐圧', read: (d) => d.specs?.insulationKV, compare: 'equal' },
   ],
+  // 別メーカーの行を項目の間に置き、宣言の順（電源 → 出力）とも状態の順（違う → 現場で確認）とも違う並びにする
+  todoOrder: ['outputs', MAKER_TODO, 'supplyV'],
   fieldQuestions: (m) => (m.id === 'DUMMY-10' ? ['第2出力の配線を使っているか'] : []),
 });
 const dummyClassMatch = (id) => ({ tier: 'classMatch', parts: [{ id, qty: 1 }] });
@@ -199,6 +202,28 @@ async function tierUnitChecks() {
   const stateCounts = T.CHECK_STATES.map((s) => rows.filter((r) => r.state === s.id).length);
   check(`確認項目の4状態がそれぞれ1行以上出る（${T.CHECK_STATES.map((s, i) => `${s.label} ${stateCounts[i]}`).join('・')}）`,
     stateCounts.every((k) => k >= 1), stateCounts.join('/'));
+
+  /**
+   * 下の段のカードの要約とやること（設計 2-7-3・2-7-4）。どちらの候補も別メーカー。
+   * DUMMY-13 は出力が現場で確認・耐圧が未登録、DUMMY-14 は電源が違う。やることはカテゴリの `todoOrder`
+   * （出力 → 別メーカー → 電源）の順で、未登録の行は件数と短い言い方で必ず最後に出る。
+   */
+  const g13 = t10.classMatch[0].guide;
+  const g14 = t10.rework[0].guide;
+  const MAKER_LINE = '別メーカーのため、端子の並びを確認して配線する';
+  check('下の段のやることはカテゴリの todoOrder の順で、別メーカーの行はその位置、未登録の行は件数と短い言い方で最後に出る',
+    JSON.stringify(g13.todos) === JSON.stringify(['出力を確かめる', MAKER_LINE, '登録の無い項目が 1 件ある（耐圧）。詳細で確認'])
+    && JSON.stringify(g14.todos) === JSON.stringify([MAKER_LINE, '電源を確かめる']),
+    `${JSON.stringify(g13.todos)} / ${JSON.stringify(g14.todos)}`);
+  check('要約の「同じ」「違う」は短い言い方で、未登録はどちらにも入らず、詳細の件数は「同じ」を含む項目の数',
+    g13.same.join('・') === '電源電圧' && g13.differs.join('・') === '出力' && g13.count === 3
+    && g14.same.join('・') === '出力・耐圧' && g14.differs.join('・') === '電源電圧' && g14.count === 3,
+    `${JSON.stringify(g13)} / ${JSON.stringify(g14)}`);
+  const noTodo = { ...dummy, checkDefs: dummy.checkDefs.map((d) => (d.key === 'supplyV' ? { ...d, todo: undefined } : d)),
+    todoOrder: ['outputs', T.MAKER_TODO] };
+  const noTodoErr = thrown(() => T.computeTiers(byId('DUMMY-10'), noTodo, {}));
+  check('「違う」の項目にやることの文が無ければ、やることから黙って落とさず例外で止まる',
+    noTodoErr.includes('supplyV') && noTodoErr.includes('todo'), noTodoErr || '例外が出ない');
 
   /** 共通の比べ方は、片方でも値が無ければ unknown（match に倒さない。設計 6章） */
   const samples = { equal: 'x', set: ['x'], range: { min: 1, max: 2 }, fits: { min: 1, max: 2 }, window: 10, atMost: 10 };

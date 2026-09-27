@@ -252,6 +252,24 @@ export function checkTable(rows) {
 }
 
 /**
+ * 下の段のカードの中身（設計 2-7。D18〜D21）。要約 → この候補を使うときにやること → 確認項目の詳細の順。
+ *
+ * 故障対応中に表を最後まで読む人はいない（2-7-1）ので、やることを先に並べ、表は折りたたむ。
+ * 表の中身は `checkTable` のまま変えずに `<details>` で包むだけにしてある。折りたたんでも DOM に残るので、
+ * 行を `textContent` で読む検査はそのまま読める。見出しの件数は詳細に並ぶ項目の数（`guide.count`）。
+ * 要約の空の行を消さずに「なし」と書くのは、行が無いと「同じ」「違う」のどちらかを読み落としたように見えるため。
+ */
+export function lowerCardBody(c) {
+  const g = c.guide;
+  const line = (cls, head, items) => `<div class="${cls}">${esc(head)}：${items.length ? items.map(esc).join('・') : 'なし'}</div>`;
+  const todos = g.todos.length
+    ? `<div class="todo"><b>この候補を使うときにやること</b><ol>${g.todos.map((t) => `<li>${esc(t)}</li>`).join('')}</ol></div>`
+    : '';
+  return `<div class="gist">${line('gist-same', '同じ', g.same)}${line('gist-differs', '違う', g.differs)}</div>${todos}`
+    + `<details class="ck-detail"><summary>確認項目の詳細（${num(g.count)}件）</summary>${checkTable(c.checks)}</details>`;
+}
+
+/**
  * 現場への問い（設計 2-5）。③の結果ヘッダの直下に1回だけ出す。
  * 問いは基準機の性質から出るので、候補の数だけ繰り返すと同じ文が何十回も並ぶ。
  * 答えを入力させて絞る仕組みは作らない（答えを保存する場所が無い）。
@@ -271,6 +289,8 @@ export function fieldQuestionsPanel(questions) {
  * - 別メーカーのバッジは「別メーカー」。「互換」を名乗らない（11-2-1 ③）。
  *   上の段の「他社互換」は変えない（接触器・サーマルの画面が広く変わるため。D10）。
  * - `detailPanels` の代わりに確認項目の表。両方出すと同じ差が枠と表で2回出る（設計 2-3）。
+ *   表の前に要約とやることを置き、表は折りたたむ（`lowerCardBody`。D18）。`note` は今までどおりその前
+ * - 右上の寸法の表示（`dim-verdict`）は上の段と同じ。方向ごとの差にする決定（D23）は別の PR で入れる
  * - rework で2台なら型式の横に「× 2台」。`.model` の中身は登録された綴りのままにする。
  */
 export function candidateCard(category, m, c, index) {
@@ -300,7 +320,7 @@ export function candidateCard(category, m, c, index) {
     c.ifaceMatch !== undefined ? badge(c.ifaceMatch, '指令I/F') : '',
   ].filter(Boolean).join('');
 
-  const panels = lower ? checkTable(c.checks) : category.detailPanels(m, c).map(panelBox).join('');
+  const panels = lower ? lowerCardBody(c) : category.detailPanels(m, c).map(panelBox).join('');
   const qty = lower && c.qty > 1 ? ` <span class="qty">× ${num(c.qty)}台</span>` : '';
 
   return `<div class="card">

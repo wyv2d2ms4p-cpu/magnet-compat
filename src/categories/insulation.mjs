@@ -347,9 +347,9 @@
 import { registerCategory } from '../core/registry.mjs';
 import { preferTrue, ascending } from '../core/compat.mjs';
 import { evidenceRank } from '../core/evidence.mjs';
-import { esc, num } from '../core/util.mjs';
+import { esc, num, dimDeltaText } from '../core/util.mjs';
 import { devicesOf } from '../core/store.mjs';
-import { compareValues } from '../core/tiers.mjs';
+import { compareValues, MAKER_TODO } from '../core/tiers.mjs';
 import { signalRowOf, SIGNAL_FIELD_OF_KEY } from './insulation-signal-classes.mjs';
 
 /**
@@ -860,6 +860,36 @@ function outputIsolationOf(d) {
   return OUTPUT_ISOLATION[d.series]?.(d.specs);
 }
 
+/** 分類名からディップスイッチの設定の呼び方へ（「12V電圧パルス出力」→「12V電圧パルス」）。分類名は末尾が「出力」で揃っている */
+const switchName = (cls) => cls.replace(/出力$/, '');
+
+/**
+ * 出力の方式のやること。**文が組み合わせの向きで変わる**（設計 2-7-4・9章の11）。
+ *   - `covers`（候補がスイッチで選ぶ側。MS3749 → FZ）… 候補のスイッチを基準の出力に合わせる
+ *   - `coveredBy`・`overlap`（候補の選べる出力が基準より狭い。FZ → MS3749）… 候補は変えられないので、
+ *     基準の今の設定を確かめる文にする。行を出さないと「現場で確認」の項目がやることから消え、
+ *     候補が 12V 固定であることが表を開かない人に見えなくなる（D20 の1）
+ * それ以外の関係は `classMatch` に入らない（`classesTouch`）。来たら文を作らずに止める。
+ * 第2出力が「現場で確認」になるのは、第2出力をスイッチで選ぶ候補（実データに無い。
+ * `tools/test-insulation-classes.mjs` の仮想の組）だけで、`classesTouch` が通すのは `covers` まで。
+ */
+function outputTodo(which, keyOf) {
+  return (r, m, c) => {
+    const base = classesOf(m, keyOf(m));
+    const cand = classesOf(c, keyOf(c));
+    const names = (cs) => cs.map((x) => `「${switchName(x)}」`).join('・');
+    if (r.relation === 'covers') {
+      return base.length === 1
+        ? `${which}のディップスイッチを${names(base)}に設定する`
+        : `${which}のディップスイッチを、基準で今使っている出力（${names(base)}のどれか）に設定する`;
+    }
+    if (r.relation === 'coveredBy' || r.relation === 'overlap') {
+      return `基準の${which}のディップスイッチが今どれに設定されているかを確認する（候補の${which}は${names(cand)}${cand.length === 1 ? '固定' : 'から選ぶ'}）`;
+    }
+    throw new Error(`${which}の方式のやること: 関係 ${r.relation} の文はありません（${m.model} → ${c.model}）`);
+  };
+}
+
 registerCategory({
   id: 'insulation',
   label: '絶縁変換器',
@@ -1210,48 +1240,69 @@ registerCategory({
    */
   checkDefs: [
     // 入力の行はいま全部 single なので「同じ」か「違う」にしかならない（IN-15 が selectable になるのは D1 が解けたとき）
-    { key: 'inputClass', label: '入力信号の分類', read: (d) => classesOf(d, 'inputSignal'), compare: 'set' },
+    { key: 'inputClass', label: '入力信号の分類', short: '入力の方式', read: (d) => classesOf(d, 'inputSignal'), compare: 'set' },
     { key: 'inputHighV', label: '入力の H と見る電圧', read: highVOf, compare: 'fits', format: (v) => v.text,
       whenField: 'センサの H 電圧が、候補の範囲に入っているかを確認してください。',
+      // 基準の値（MS3749 は しきい値と入力許容を分けた長い文）は詳細の表に任せ、やることには候補の範囲だけを書く
+      todo: (r) => `センサの H 電圧が候補の範囲（${r.cand}）に入っているかを確認する`,
       whenDiffers: 'H と見る電圧の範囲が重なりません。センサの H 電圧を確認してください。',
       whenMissing: 'H と見る電圧の範囲が登録されていません。仕様書・現物で確認してください。' },
     { key: 'inputResistance', label: '入力抵抗', read: (d) => d.specs?.inputResistance, compare: 'equal',
       whenDiffers: '入力抵抗が違います。送り側の機器で駆動できるかを確認してください。',
       whenMissing: '入力抵抗が登録されていません。仕様書・現物で確認してください。' },
-    { key: 'inputPhases', label: '入力の相数（回路数）', read: (d) => d.specs?.inputPhases, compare: 'equal' },
-    { key: 'output1Class', label: '第1出力（出力信号）の分類', read: (d) => classesOf(d, outputSignalKey(d)), compare: 'set',
+    { key: 'inputPhases', label: '入力の相数（回路数）', short: '入力の相数', read: (d) => d.specs?.inputPhases, compare: 'equal' },
+    { key: 'output1Class', label: '第1出力（出力信号）の分類', short: '第1出力の方式', read: (d) => classesOf(d, outputSignalKey(d)), compare: 'set',
       whenField: 'スイッチで選ぶ出力を含みます。基準で使っている出力と同じ分類に設定されているか・設定できるかを確認してください。'
-        + 'WGP-FZ の第1出力をワンショットにすると、第2出力もワンショットになります（資料の注記）。' },
-    { key: 'output2Class', label: '第2出力の分類', read: (d) => classesOf(d, 'output2Signal'), compare: 'set',
-      whenMissing: '第2出力が片方にしかありません。第2出力の配線を使っているかを確認してください。' },
+        + 'WGP-FZ の第1出力をワンショットにすると、第2出力もワンショットになります（資料の注記）。',
+      todo: outputTodo('第1出力', outputSignalKey) },
+    { key: 'output2Class', label: '第2出力の分類', short: '第2出力の方式', read: (d) => classesOf(d, 'output2Signal'), compare: 'set',
+      whenMissing: '第2出力が片方にしかありません。第2出力の配線を使っているかを確認してください。',
+      todo: outputTodo('第2出力', () => 'output2Signal') },
     { key: 'output1MaxFreqHz', label: '第1出力 最大周波数', read: (d) => d.specs?.output1MaxFreqHz, compare: 'equal', format: formatFreq,
       whenDiffers: '最大出力周波数が違います。入力パルスの周波数を確認してください。',
       whenMissing: '最大出力周波数が登録されていません（設定で変わる機種を含みます）。仕様書・現物で確認してください。' },
     { key: 'output2MaxFreqHz', label: '第2出力 最大周波数', read: (d) => d.specs?.output2MaxFreqHz, compare: 'equal', format: formatFreq,
       whenDiffers: '最大出力周波数が違います。入力パルスの周波数を確認してください。',
       whenMissing: '最大出力周波数が登録されていません（設定で変わる機種を含みます）。仕様書・現物で確認してください。' },
-    { key: 'outputRating', label: '出力の定格（H・L の電圧、許容差、内部抵抗・許容負荷、オープンコレクタの定格）',
+    { key: 'outputRating', label: '出力の定格（H・L の電圧、許容差、内部抵抗・許容負荷、オープンコレクタの定格）', short: '出力の定格',
       read: notInData, compare: 'equal',
       whenMissing: '資料ごとに書き方と値が違い、データに登録していません。受け側の条件と合わせて仕様書・現物で確認してください。' },
     // 1出力型には出さない（出力が1つなら出力間の絶縁は該当しない）。どちらかが2出力型なら出す
-    { key: 'outputIsolation', label: '第1出力と第2出力の間の絶縁', read: outputIsolationOf,
+    { key: 'outputIsolation', label: '第1出力と第2出力の間の絶縁', short: '出力間の絶縁', read: outputIsolationOf,
       applies: (m, c) => typeof m.specs?.output2Signal === 'string' || typeof c.specs?.output2Signal === 'string',
       compare: 'atMost', compareBy: (v) => v.coupled, format: (v) => v.text,
       whenDiffers: '候補は2つの出力が同電位になります（基準は絶縁）。2つの出力の行き先の電位（マイナス側）が別の機器なら、'
         + '候補では使えないおそれがあります。行き先の電位を現場で確認してください。',
       whenField: '候補は2つの出力の間が絶縁されています（基準は同電位）。現場で片方の出力のマイナス側だけを配線して'
         + '機器の中のつながりに頼っている場合は、もう片方の出力が働かないおそれがあります。マイナス側の配線を現場で確認してください。',
-      whenMissing: '出力間の絶縁の資料の値を持っていません。仕様書・現物で確認してください。' },
+      whenMissing: '出力間の絶縁の資料の値を持っていません。仕様書・現物で確認してください。',
+      // 状態が向きを表す（同電位→絶縁は現場で確認、絶縁→同電位は違う）ので、状態で文を分ける
+      todo: (r) => (r.state === 'field'
+        ? '2つの出力のマイナス側の配線を確認する（基準は2つの出力が同電位、候補は出力の間が絶縁）'
+        : '2つの出力の行き先の電位（マイナス側）を確認する（基準は出力の間が絶縁、候補は2つの出力が同電位）') },
     { key: 'powerSupply', label: '電源電圧', read: (d) => d.specs?.powerSupply, compare: 'equal',
       whenDiffers: '電源電圧が違います。盤に来ている電源を確認してください。',
+      // 候補の電源電圧は使う側で変えられないので「変更する」ではなく「確認する」（D20）
+      todo: (r) => `盤の電源電圧を確認する（候補は ${r.cand} 専用）`,
       whenMissing: '電源電圧が登録されていません。仕様書・現物で確認してください。' },
     { key: 'option', label: 'オプション', read: (d) => (d.specs?.option?.length ? optionText(d.specs.option) : undefined), compare: 'equal',
       whenDiffers: 'オプションが違います。設置環境と接続先に基準のオプションが要るかを確認してください。',
       whenMissing: 'オプションの指定が片方にありません（型式にオプション欄が無い機種を含みます）。基準のオプションが要るかを確認してください。' },
     { key: 'dims', label: '外形寸法', read: (d) => (d.dims ? formatDims(d.dims) : undefined), compare: 'equal',
       whenDiffers: '外形寸法が違います。取付スペースと、端子配列が同じかを確認してください。',
+      todo: (r, m, c) => `取付スペースを確認する（${dimDeltaText(c.dims, m.dims)}）`,
       whenMissing: '外形寸法が登録されていません。取付スペースと端子配列を現物で確認してください。' },
   ],
+  /**
+   * 下の段のカードの「この候補を使うときにやること」の並び。**間違えたときの被害が大きい順**
+   * （依頼者の決定 2026-09-27。設計 9章の13）：電源電圧（違えば機器が壊れる）→ 第1出力の方式（設定を
+   * 違えると受け側に違う信号が行く）→ 入力の H と見る電圧 → 出力間の絶縁 → 別メーカーの端子の並び → 外形寸法。
+   * 第2出力の方式は依頼者の決めた並びに無い。実データでは「現場で確認」にならない（第2出力をスイッチで選ぶ
+   * 登録品が無い）が、仮想の組では出るので、同じ種類の設定である第1出力の直後に置いた（この PR の判断。決定ではない）。
+   * 登録の無い項目の行はここに書かない（コアが常に最後に置く。D20 の3）。
+   * ここに無い項目が「違う」「現場で確認」になると、コアが例外で止める（黙ってやることから落とさない）。
+   */
+  todoOrder: ['powerSupply', 'output1Class', 'output2Class', 'inputHighV', 'outputIsolation', MAKER_TODO, 'dims'],
   /**
    * 交換前に現場で確かめること（設計 2-5 の絶縁変換器の4行）。基準機の性質だけから出す。
    * どれも型式やデータからは決まらず、現物の配線・設定を見れば分かること。
