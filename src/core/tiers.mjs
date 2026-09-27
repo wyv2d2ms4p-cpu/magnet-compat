@@ -116,6 +116,21 @@ export const COMPARES = {
       ? { verdict: 'match', relation: 'within' }
       : { verdict: 'mismatch', relation: 'outside' };
   },
+  /**
+   * 基準の区間が候補の区間に収まるか（向きのある包含。絶縁変換器の入力の H 電圧。12-6 の決定1）。
+   * 収まれば `fits` で「同じ」、一部だけ重なれば `overlap` で「現場で確認」、重ならなければ「違う」。
+   * `range` は候補が広い `covers` を「現場で確認」にする（スイッチで選ぶ集合と同じ扱い）。
+   * ここは基準で受けていた信号を候補も受けるかだけを問うので、候補が広い向きは確かめることが無い。
+   */
+  fits(b, c) {
+    const br = requireRange(b, 'fits');
+    const cr = requireRange(c, 'fits');
+    if (br.min === cr.min && br.max === cr.max) return { verdict: 'match', relation: 'equal' };
+    if (cr.min <= br.min && br.max <= cr.max) return { verdict: 'match', relation: 'fits' };
+    return Math.max(br.min, cr.min) <= Math.min(br.max, cr.max)
+      ? { verdict: 'match', relation: 'overlap' }
+      : { verdict: 'mismatch', relation: 'disjoint' };
+  },
   /** 候補が基準以下（向きのある条件。応答時間など） */
   atMost(b, c) {
     const bv = requireNumber(b, 'atMost');
@@ -137,19 +152,27 @@ export function compareValues(name, b, c, def = {}) {
  * 一致の結果から状態へ（設計 6章）。
  * unknown → 未登録／mismatch → 違う／match かつ equal → 同じ／それ以外の match → 現場で確認。
  * `covers` や窓の内側は値が同じではないので「同じ」にしない。現場の設定や条件で決まる。
+ * `fits`（基準の区間が候補に収まる）だけは「同じ」にする。基準で成り立っていた信号が候補でも
+ * 成り立つので現場で確かめることが無い、という依頼者の決定（12-6 の決定1）。
  */
 export function checkStateOf(result) {
   if (result.verdict === 'unknown') return 'missing';
   if (result.verdict === 'mismatch') return 'differs';
-  return result.relation === 'equal' ? 'same' : 'field';
+  return result.relation === 'equal' || result.relation === 'fits' ? 'same' : 'field';
 }
 
 /**
  * カテゴリの `checkDefs` で1枚分の確認項目を作る。並びは状態の順（設計 2-4）。
  * 値の表示は `format`、無い値は「―」。文面は事実と「何を確かめるか」まで。
+ *
+ * 任意の2つ：
+ * - `applies(m, c)` … その組に意味の無い項目を出さない（1出力型どうしの「出力間の絶縁」など）。
+ *   出さないのは「該当しない」組だけで、値が無い組は従来どおり「未登録」で出す（11-2-3）
+ * - `compareBy(v)` … 比べる量と見せる値を分ける（出典つきの文を見せ、順序だけで比べるなど）。
+ *   値が無いときは呼ばないので、欠けは従来どおり `unknown` になる
  */
 export function checkRows(category, m, c) {
-  const defs = category.checkDefs || [];
+  const defs = (category.checkDefs || []).filter((def) => typeof def.applies !== 'function' || def.applies(m, c));
   const order = CHECK_STATES.map((s) => s.id);
   const rows = defs.map((def) => {
     if (!def.key || !def.label || typeof def.read !== 'function' || !def.compare) {
@@ -157,7 +180,8 @@ export function checkRows(category, m, c) {
     }
     const bv = def.read(m);
     const cv = def.read(c);
-    const result = compareValues(def.compare, bv, cv, def);
+    const by = (v) => (typeof def.compareBy === 'function' && !absent(v) ? def.compareBy(v) : v);
+    const result = compareValues(def.compare, by(bv), by(cv), def);
     const state = checkStateOf(result);
     const show = (v) => (absent(v) ? '―' : def.format ? def.format(v) : Array.isArray(v) ? v.join('・') : String(v));
     const note = state === 'differs' ? def.whenDiffers : state === 'field' ? def.whenField : state === 'missing' ? def.whenMissing : '';

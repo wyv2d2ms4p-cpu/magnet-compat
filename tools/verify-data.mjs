@@ -14,6 +14,7 @@ import { REPO_ROOT, readMagnet, readSensor, readFa } from './read-sources.mjs';
 import { normLoose } from '../src/core/util.mjs';
 import { getCategory, allCategories, distinguishingSpec } from '../src/core/registry.mjs';
 import { isSeriesScope } from '../src/core/compat.mjs';
+import { SIGNAL_CLASS_NAMES, SIGNAL_CLASS_ROWS, SIGNAL_FIELD_OF_KEY } from '../src/categories/insulation-signal-classes.mjs';
 import {
   TOP_LEVEL, SPEC_MAP, THERMAL_RANGE, SPECIAL_LLK_METHOD, SPECIAL_DISTANCE_KEY,
   EVIDENCE_SOURCE_KEYS, DROPPED, EVIDENCE_STATES, EVIDENCE_ASPECTS,
@@ -759,6 +760,96 @@ check(`入力信号・出力信号に「${CUSTOM_SIGNAL_MARK}」の特注コー�
           + '値として持つと特注どうしがすべて一致し、レンジの違う機器が互換だと表示される');
       }
     }
+  }
+});
+
+// ---- 追加: 絶縁変換器の信号の分類表 --------------------------------------
+
+/**
+ * 分類表（`src/categories/insulation-signal-classes.mjs`）の検査。`docs/design-common-alternates.md` 3-3 の4つ。
+ *
+ * 分類表は別メーカー品を下の段に出すかを決める。表に無い綴りを黙って読み飛ばすと、その型式は
+ * 下の段から静かに消えるか、`signalRowOf` の例外で③が描けなくなる。どちらも画面を開くまで気づけないので、
+ * ビルド前に落とす。対象0件のまま PASS しないよう、どの検査も走査が0件なら失敗にする。
+ */
+const isoRecords = dataRecords.filter((r) => r.category === 'insulation');
+const isoSpellings = [];
+for (const r of isoRecords) {
+  for (const [key, field] of Object.entries(SIGNAL_FIELD_OF_KEY)) {
+    const v = r.specs?.[key];
+    if (typeof v === 'string' && !isoSpellings.some((s) => s.field === field && s.spelling === v)) isoSpellings.push({ field, spelling: v, record: r });
+  }
+}
+const rowKey = (field, spelling) => `${field}\t${spelling}`;
+
+check(`絶縁変換器の信号名 ${isoSpellings.length} 種すべてが分類表に行を持つ（表に無い綴り 0）`, (fail) => {
+  if (!isoSpellings.length) fail('絶縁変換器の信号名が1つも無い … 対象0件のまま PASS しないよう落とす');
+  const rows = new Set(SIGNAL_CLASS_ROWS.map((row) => rowKey(row.field, row.spelling)));
+  for (const s of isoSpellings) {
+    if (!rows.has(rowKey(s.field, s.spelling))) {
+      fail(`${s.record.id} (${s.record.model}): ${s.field} の綴り「${s.spelling}」が分類表に無い`
+        + ' … 分類の無い綴りを一致にも不一致にも倒さない。設計文書12章に出典つきの行を起こしてから表に足す');
+    }
+  }
+});
+
+/**
+ * 表の各行は、設計文書12章（12-4・12-5）の同じ ID の行と、綴り・分類・mode まで一致すること。
+ * 出典は設計文書の行が持つ（コードの `src` はその行を指す。3-2）。文書だけに残った行・表だけに足した行も落とす。
+ */
+const ISO_DESIGN_DOC = 'docs/design-insulation-converter.md';
+const docClassRows = new Map(readFileSync(join(REPO_ROOT, ISO_DESIGN_DOC), 'utf8').split('\n')
+  .filter((l) => /^\| (IN|OUT)-\d+ \|/.test(l))
+  .map((l) => l.split('|').slice(1, -1).map((c) => c.trim()))
+  .map(([id, spelling, classes, mode, , source]) => [id, {
+    spelling: spelling.replace(/^`|`$/g, ''), classes, mode: mode.replace(/\*/g, ''), source,
+  }]));
+
+check(`分類表の ${SIGNAL_CLASS_ROWS.length} 行すべてに出典の記載があり、設計文書の表に同じ綴りの行がある（文書の行 ${docClassRows.size}）`, (fail) => {
+  if (!SIGNAL_CLASS_ROWS.length || !docClassRows.size) fail('分類表か設計文書の表が空 … 対象0件のまま PASS しないよう落とす');
+  for (const row of SIGNAL_CLASS_ROWS) {
+    const doc = docClassRows.get(row.src);
+    if (!doc) { fail(`${row.src}「${row.spelling}」: ${ISO_DESIGN_DOC} に同じ ID の行が無い`); continue; }
+    if (!doc.source) fail(`${row.src}: 設計文書の行に出典が書かれていない`);
+    if (doc.spelling !== row.spelling) fail(`${row.src}: 綴りが違う（表「${row.spelling}」/ 文書「${doc.spelling}」）`);
+    if (doc.classes !== row.classes.join('・')) fail(`${row.src}: 分類が違う（表「${row.classes.join('・')}」/ 文書「${doc.classes}」）`);
+    if (doc.mode !== row.mode) fail(`${row.src}: mode が違う（表 ${row.mode} / 文書 ${doc.mode}）`);
+  }
+  const inTable = new Set(SIGNAL_CLASS_ROWS.map((row) => row.src));
+  for (const id of docClassRows.keys()) if (!inTable.has(id)) fail(`${id}: 設計文書にあるが分類表に無い`);
+});
+
+/**
+ * データに無い綴りの行は、型式コード表からの先回り（引き継ぎ書 §2 ルール2 と同じ構造）になるので置かない（3-3 の3）。
+ */
+check('分類表の行はすべて data の綴りに使われている（使われない行 0）', (fail) => {
+  if (!SIGNAL_CLASS_ROWS.length) fail('分類表が空 … 対象0件のまま PASS しないよう落とす');
+  const used = new Set(isoSpellings.map((s) => rowKey(s.field, s.spelling)));
+  for (const row of SIGNAL_CLASS_ROWS) {
+    if (!used.has(rowKey(row.field, row.spelling))) fail(`${row.src}「${row.spelling}」: data の ${row.field} に使われていない`);
+  }
+});
+
+/**
+ * 分類名の綴り間違いは「どれとも重ならない新しい分類」として黙って通り、候補が消えるだけになる（3-3 の4）。
+ * 一覧の名前がどの行にも使われないのも落とす。一覧が閉じていることを、使われ方からも確かめる。
+ */
+const classNameCount = SIGNAL_CLASS_NAMES.input.length + SIGNAL_CLASS_NAMES.output.length;
+check(`分類表の分類名はすべて宣言した一覧（${classNameCount} 個）にあり、一覧の名前はすべて表で使われる`, (fail) => {
+  if (!classNameCount) fail('分類名の一覧が空 … 対象0件のまま PASS しないよう落とす');
+  for (const field of ['input', 'output']) {
+    const names = SIGNAL_CLASS_NAMES[field];
+    if (new Set(names).size !== names.length) fail(`${field} の一覧に重複がある`);
+    const used = new Set();
+    for (const row of SIGNAL_CLASS_ROWS.filter((r) => r.field === field)) {
+      if (!['single', 'selectable'].includes(row.mode)) fail(`${row.src}: mode ${row.mode} は single か selectable`);
+      if (row.mode === 'single' ? row.classes.length !== 1 : row.classes.length < 2) fail(`${row.src}: mode ${row.mode} と分類の数 ${row.classes.length} が合わない`);
+      for (const c of row.classes) {
+        used.add(c);
+        if (!names.includes(c)) fail(`${row.src}: 分類名「${c}」が ${field} の一覧に無い`);
+      }
+    }
+    for (const n of names) if (!used.has(n)) fail(`${field} の一覧の「${n}」がどの行にも使われていない`);
   }
 });
 

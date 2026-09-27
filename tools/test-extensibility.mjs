@@ -159,9 +159,13 @@ async function tierUnitChecks() {
    * 口を宣言しないカテゴリは画面が変わらない（設計 8-1）。
    * 並び・中身まで見るのは、振り分けで順番が崩れると「候補No.1」の付く候補が変わるため。
    * 基準機の数を名前に入れて、対象0件で通る形にしない。
+   * 口を宣言したカテゴリ（絶縁変換器。順4）はここから外す。宣言したカテゴリの上の2段が
+   * `computeCompatibles` と同じことは `tools/test-insulation-classes.mjs` が見る。
    */
-  const real = registry.allCategories().filter((c) => c.id !== 'dummy');
-  const declared = real.filter((c) => c.alternates || c.checkDefs || c.fieldQuestions);
+  const declares = (c) => c.alternates || c.checkDefs || c.fieldQuestions;
+  const all = registry.allCategories().filter((c) => c.id !== 'dummy');
+  const real = all.filter((c) => !declares(c));
+  const declared = all.filter(declares);
   let bases = 0;
   const bad = [];
   for (const cat of real) {
@@ -177,8 +181,8 @@ async function tierUnitChecks() {
   }
   check(`口を宣言しない全${real.length}カテゴリ・全基準機（${bases}台）で、computeTiers の後継＋判定一致が`
     + ' computeCompatibles と中身も並びも同じで、下の段が空',
-  bases > 0 && declared.length === 0 && bad.length === 0,
-  declared.length ? `口を宣言したカテゴリ: ${declared.map((c) => c.id).join(' ')}` : bad.slice(0, 5).join(' '));
+  bases > 0 && bad.length === 0,
+  `${bad.slice(0, 5).join(' ')}（口を宣言して対象から外したカテゴリ: ${declared.map((c) => c.id).join(' ') || 'なし'}）`);
 
   /** 4段がそれぞれ1件以上。基準機自身・シリーズ単位・上の段の型式・重複は下の段に入らない */
   const t10 = T.computeTiers(byId('DUMMY-10'), dummy, {});
@@ -197,7 +201,7 @@ async function tierUnitChecks() {
     stateCounts.every((k) => k >= 1), stateCounts.join('/'));
 
   /** 共通の比べ方は、片方でも値が無ければ unknown（match に倒さない。設計 6章） */
-  const samples = { equal: 'x', set: ['x'], range: { min: 1, max: 2 }, window: 10, atMost: 10 };
+  const samples = { equal: 'x', set: ['x'], range: { min: 1, max: 2 }, fits: { min: 1, max: 2 }, window: 10, atMost: 10 };
   const names = Object.keys(T.COMPARES);
   // 例外も「unknown を返さなかった」に数える（欠けを書式違いとして止めるのは、未登録を隠すのと同じ結果になる）
   const verdictOf = (name, b, c) => { try { return T.compareValues(name, b, c, { ratio: 0.3 }).verdict; } catch { return 'throw'; } };

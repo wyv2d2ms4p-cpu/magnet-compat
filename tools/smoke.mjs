@@ -228,6 +228,7 @@ async function insulationResult(model) {
     return {
       reached: false, spec: '', labels: [], specOf: absent,
       cards: [], panels: [], panelTitlesOf: absent, panelOf: absent, note: '', deviceNote: '', flow: [],
+      lowerCards: [], zoneTitles: [], count: '', questions: [], noExact: false, result: '',
     };
   }
   const spec = (await page.textContent('#app')).replace(/\s+/g, ' ');
@@ -241,7 +242,42 @@ async function insulationResult(model) {
   const flow = await confirmFlow();
   await page.click('[data-act="step"][data-v="3"]');
   await page.waitForTimeout(200);
-  const cards = await page.$$eval('.card .model', (els) => els.map((e) => e.textContent.trim()));
+  /*
+   * `cards` は下の段（分類が一致・違いあり／配線変更または台数増）を除いた候補だけにする。
+   * 絶縁変換器が下の段を持ったので、`.card .model` を画面全体から拾うと、別メーカー品が
+   * 「判定条件がすべて一致」の候補として数えられる（設計 8-2）。所属は `resultZones` と同じく
+   * `#app` の直下の子を文書順に見て決め、下の段のカードは `lowerCards` に確認項目ごと拾う。
+   */
+  const zoned = await page.evaluate(() => {
+    const LOWER = ['分類が一致・違いあり', '配線変更または台数増が必要'];
+    const out = { cards: [], lowerCards: [], zoneTitles: [] };
+    let zone = '';
+    for (const el of document.getElementById('app').children) {
+      if (el.classList.contains('zone-head')) {
+        zone = el.querySelector('.t').textContent.trim();
+        out.zoneTitles.push(zone);
+      } else if (el.classList.contains('card')) {
+        const model = el.querySelector('.model').textContent.trim();
+        if (!LOWER.includes(zone)) { out.cards.push(model); continue; }
+        out.lowerCards.push({
+          zone, model,
+          maker: el.querySelector('.maker').textContent.replace(/\s+/g, ' ').trim(),
+          panels: el.querySelectorAll('.cmp').length,
+          checks: [...el.querySelectorAll('.ck-row')].map((r) => ({
+            state: [...r.classList].find((k) => k.startsWith('ck-') && k !== 'ck-row') ?? '',
+            label: r.querySelector('.ck-l')?.textContent.trim() ?? '',
+            text: r.textContent.replace(/\s+/g, ' ').trim(),
+          })),
+        });
+      }
+    }
+    return out;
+  });
+  const { cards, lowerCards, zoneTitles } = zoned;
+  const count = await countLine();
+  const questions = await page.$$eval('.field-q li', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
+  const noExact = (await page.$('.tier-none')) !== null;
+  const result = (await page.textContent('#app')).replace(/\s+/g, ' ');
   // 候補カードのカテゴリ固有パネル（detailPanels）。③でオプションが読めるかを見る
   const panels = await page.$$eval('.card .cmp', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim()));
   /*
@@ -270,7 +306,10 @@ async function insulationResult(model) {
     cardPanels.find((x) => x.model === model)?.panels.find((p) => p.title === title) ?? null;
   const emptyEl = await page.$('.empty-note');
   const note = emptyEl ? (await emptyEl.textContent()).replace(/\s+/g, ' ').trim() : '';
-  return { reached, spec, labels, specOf, cards, panels, panelTitlesOf, panelOf, note, deviceNote, flow };
+  return {
+    reached, spec, labels, specOf, cards, panels, panelTitlesOf, panelOf, note, deviceNote, flow,
+    lowerCards, zoneTitles, count, questions, noExact, result,
+  };
 }
 
 const isoO25 = await insulationResult('MS3749-A-O25');
@@ -315,29 +354,118 @@ check('MS3749-A-O22 の③に MS3749-A-O25 が候補として出ない（逆向�
  * 違うのは第2出力の有無だけ——文面が名乗る「第2出力を一方だけが持つ組は
  * 候補にしません」がまさに効いて0件になる型式だから。
  * 候補が1件でも出れば0件パネルは出ないので、この検査は空振りしない。
+ *
+ * **絶縁変換器が下の段を持ったので、見る段を「判定条件がすべて一致」に限った**（設計 8-2）。
+ * D44/H の下の段には WGP-FZ-14FK-1 が出る（下の検査）ので、全段0件ではなくなり、
+ * 0件パネルの代わりに「判定条件がすべて一致する候補はありません。」が出る（D8）。
+ * 0件パネルの文面を見る検査は、全段0件の MS3749-A-D4/H に付け替えた（下）。
  */
 const isoD44 = await insulationResult('MS3749-A-D44/H');
-check('MS3749-A-D44/H の③が0件になる（第2出力を一方だけが持つ組を候補にしない）',
-  isoD44.cards.length === 0 && isoD44.note !== '', isoD44.cards.join(' | '));
+check(`MS3749-A-D44/H の③の「判定条件がすべて一致」の段が${isoD44.cards.length}件になり、その断りが出る（第2出力を一方だけが持つ組を候補にしない）`,
+  isoD44.reached && isoD44.cards.length === 0 && isoD44.noExact && isoD44.note === '',
+  `判定条件がすべて一致: ${isoD44.cards.join(' | ') || '0件'} / 断り: ${isoD44.noExact ? 'あり' : '無い'}`
+  + ` / 0件パネル: ${isoD44.note ? 'あり' : '無い'}`);
 
 /**
  * 「候補に出ない」は、カテゴリごと壊れて0件でも真になってしまう。
  * 0件パネルが insulation 自身の文面（必要条件を名乗る形）であることを併せて見て、
  * 判定まで到達したうえでの0件だと言えるようにする。
  * コアの既定文やセンサーの文面に差し替わる壊れ方は、ここで落ちる。
+ *
+ * 0件パネルは全段が0件のときだけ出る（設計 1-3）ので、MS3749-A-D44/H から全段0件の
+ * MS3749-A-D4/H に付け替えた。D4/H は D44/H と入力信号・第1出力が同じで、第2出力を持たない
+ * 1出力型（2出力型の D44/H とは第2出力の条件で外れる）。
  */
+const isoD4Empty = await insulationResult('MS3749-A-D4/H');
 const isoLeak = ['出力極性', '配線本数', '電源相数', '判定条件を満たす型式']
-  .filter((p) => isoD44.note.includes(p));
-check('絶縁変換器の0件パネルが必要条件（入力信号・出力信号・第2出力・応答時間・入力の相数）を名乗る',
-  isoD44.note.includes('入力信号の種別が一致し')
-  && isoD44.note.includes('出力信号（2出力型は第1出力）の種別も一致する')
-  && isoD44.note.includes('第2出力を一方だけが持つ組は候補にしません')
-  && isoD44.note.includes('基準と同じか速いものだけを候補にします')
-  && isoD44.note.includes('応答時間が型式から決まらない型式どうしは、候補にしません')
-  && isoD44.note.includes('入力の相数（回路数）が違う組を候補にしません')
-  && isoD44.note.includes('どの条件で外れたかはこの画面では判別できません')
+  .filter((p) => isoD4Empty.note.includes(p));
+check('絶縁変換器の0件パネルが必要条件（入力信号・出力信号・第2出力・応答時間・入力の相数）を名乗る（全段0件の MS3749-A-D4/H で確認）',
+  isoD4Empty.cards.length === 0 && isoD4Empty.lowerCards.length === 0
+  && isoD4Empty.note.includes('入力信号の種別が一致し')
+  && isoD4Empty.note.includes('出力信号（2出力型は第1出力）の種別も一致する')
+  && isoD4Empty.note.includes('第2出力を一方だけが持つ組は候補にしません')
+  && isoD4Empty.note.includes('基準と同じか速いものだけを候補にします')
+  && isoD4Empty.note.includes('応答時間が型式から決まらない型式どうしは、候補にしません')
+  && isoD4Empty.note.includes('入力の相数（回路数）が違う組を候補にしません')
+  && isoD4Empty.note.includes('どの条件で外れたかはこの画面では判別できません')
   && isoLeak.length === 0,
-  isoLeak.length ? `他カテゴリの語が混ざった: ${isoLeak.join(' / ')}` : isoD44.note);
+  isoLeak.length ? `他カテゴリの語が混ざった: ${isoLeak.join(' / ')}` : isoD4Empty.note || '0件パネルが無い');
+
+/* ---- 絶縁変換器: 下の段「分類が一致・違いあり」（docs/design-common-alternates.md 5-1・8-1） ---- */
+
+/**
+ * D44/H の下の段に WGP-FZ-14FK-1 が「別メーカー」で出て、確認項目の「入力の H と見る電圧」が
+ * 「現場で確認」になる（12-6 の決定1。MS3749 のほうが低い電圧から H と見て高い電圧まで受けるので、
+ * FZ に替えるとセンサの H 電圧が FZ の範囲に入っているかを確かめる必要がある）。
+ * 件数は段ごとに出て、合計を「互換品候補」と呼ばない（D9）。カードの枠（detailPanels）は出ない（設計 2-3）。
+ */
+const lowerOf = (r, model) => r.lowerCards.find((c) => c.model === model) ?? null;
+const checkOf = (card, label) => card?.checks.find((c) => c.label === label) ?? null;
+const d44Fz = lowerOf(isoD44, 'WGP-FZ-14FK-1');
+const d44High = checkOf(d44Fz, '入力の H と見る電圧');
+check(`MS3749-A-D44/H の③に「分類が一致・違いあり」の段が出て、WGP-FZ-14FK-1 が「別メーカー」で出る（下の段 ${isoD44.lowerCards.length} 件）`,
+  isoD44.zoneTitles.includes('分類が一致・違いあり') && isoD44.lowerCards.length === 1
+  && d44Fz?.zone === '分類が一致・違いあり' && d44Fz.maker.includes('別メーカー') && !d44Fz.maker.includes('他社互換')
+  && d44Fz.panels === 0,
+  `見出し: ${isoD44.zoneTitles.join(' → ') || '無い'} / 下の段: ${isoD44.lowerCards.map((c) => `${c.model}[${c.maker}]`).join(' | ') || '0件'}`);
+check('MS3749-A-D44/H → WGP-FZ-14FK-1 の確認項目で「入力の H と見る電圧」が「現場で確認」、候補の範囲 5V以上30V以下が読める',
+  d44High?.state === 'ck-field' && d44High.text.includes('現場で確認') && d44High.text.includes('5V以上30V以下')
+  && d44High.text.includes('センサの H 電圧'),
+  d44High ? d44High.text : '行が無い');
+/*
+ * MS3749 の 50V は H のしきい値ではなく入力許容電圧。「約2V以上50V以下」のように H の範囲として読める形で
+ * 出さず、しきい値と許容電圧を分けて出す。版（Rev.1.90）も添える（登録済みの出典 Rev.2.10 では未確認）。
+ */
+check('同じ行の基準の値が、しきい値 約2V と入力許容 50V DC を分けて出し、資料 Rev.1.90 の値だと添える',
+  d44High?.text.includes('基準 しきい値 約2V・入力許容 50V DC まで（資料 Rev.1.90 の値）') === true
+  && !d44High.text.includes('約2V以上50V以下'),
+  d44High ? d44High.text : '行が無い');
+
+/**
+ * 第1出力と第2出力の間の絶縁は向きがある（`insulation.mjs` の `OUTPUT_ISOLATION`）。
+ * D44/H は出力が2つとも電圧パルスなので同電位（MS3749 仕様書 Rev.1.90 の注記）、FZ は各端子間相互で絶縁。
+ * 基準 D44/H → 候補 FZ は「現場で確認」（マイナス側の配線が機器の中のつながりに頼っていないか）、
+ * 逆向きは「違う」（別電位の2つの行き先を候補が同電位でつなぐおそれ）。値には出典と版が読める。
+ */
+const d44Iso = checkOf(d44Fz, '第1出力と第2出力の間の絶縁');
+check('MS3749-A-D44/H → WGP-FZ-14FK-1 の「第1出力と第2出力の間の絶縁」が「現場で確認」で、基準 同電位（Rev.1.90）・候補 絶縁が読める',
+  d44Iso?.state === 'ck-field' && d44Iso.text.includes('基準 同電位') && d44Iso.text.includes('Rev.1.90')
+  && d44Iso.text.includes('候補 絶縁') && d44Iso.text.includes('マイナス側の配線を現場で確認'),
+  d44Iso ? d44Iso.text : '行が無い');
+check(`MS3749-A-D44/H の③の件数は段ごとに出て、「互換品候補」と呼ばない（${isoD44.count || '件数行が無い'}）`,
+  isoD44.count === '分類が一致・違いあり 1件', isoD44.count);
+
+/**
+ * 逆向き（FZ が基準）では同じ行が「同じ」になる（12-6 の決定1）。FZ の資料の範囲の信号は MS3749 のしきい値で
+ * 区別できると読めるため。向きの入れ替わりを全件で見る検査は `tools/test-insulation-classes.mjs`。
+ * FZ の第1出力はスイッチで選ぶ値なので、現場への問いに「今どれに設定しているか」が出る（D4）。
+ */
+const fzFK1 = await insulationResult('WGP-FZ-14FK-1');
+const fzD44 = lowerOf(fzFK1, 'MS3749-A-D44/H');
+const fzSame = fzD44?.checks.find((c) => c.state === 'ck-same');
+check('WGP-FZ-14FK-1 の③の下の段に MS3749-A-D44/H が出て、「入力の H と見る電圧」が「同じ」の行に入る（逆向き）',
+  fzD44?.maker.includes('別メーカー') === true && checkOf(fzD44, '入力の H と見る電圧') === null
+  && fzSame?.text.includes('入力の H と見る電圧') === true,
+  fzD44 ? `同じ: ${fzSame?.text ?? '行が無い'}` : '下の段に無い');
+const fzIso = checkOf(fzD44, '第1出力と第2出力の間の絶縁');
+check('WGP-FZ-14FK-1 → MS3749-A-D44/H の「第1出力と第2出力の間の絶縁」が「違う」で、行き先の電位を現場で確認する文が出る（逆向き）',
+  fzIso?.state === 'ck-differs' && fzIso.text.includes('基準 絶縁') && fzIso.text.includes('候補 同電位')
+  && fzIso.text.includes('使えないおそれ') && fzIso.text.includes('行き先の電位を現場で確認'),
+  fzIso ? fzIso.text : '行が無い');
+check('WGP-FZ-14FK-1 の③に第1出力の設定を問う現場への問いが出る',
+  fzFK1.questions.some((q) => q.includes('第1出力のディップスイッチを今どれに設定しているか')),
+  fzFK1.questions.join(' / ') || '問いが無い');
+
+/**
+ * 下の段のカードは「候補No.1」を名乗らない（設計 1-5）。断定語も出さない（設計 8-1。
+ * ③の「容量不足」「使用不可」の検査と同じ形）。下の段を持つ2画面で見る。
+ */
+const lowerScreens = [isoD44, fzFK1];
+const lowerAssertive = ['交換可', '互換品です', '使用可', '使用できません'];
+check(`下の段を持つ絶縁変換器の③（${lowerScreens.length} 画面）で、下の段に「候補No.1」が付かず、断定語が出ない`,
+  lowerScreens.every((r) => r.lowerCards.length > 0 && r.lowerCards.every((c) => !c.maker.includes('候補No.1')))
+  && lowerScreens.every((r) => lowerAssertive.every((w) => !r.result.includes(w))),
+  lowerScreens.map((r) => lowerAssertive.filter((w) => r.result.includes(w)).join('・')).join(' / '));
 
 /* ---- 絶縁変換器: オプション（specs.option）の表示 ---- */
 
@@ -753,12 +881,16 @@ check('WVP-DS-25R-1（25ms）の③には WGP-DE-25R-1 が出る（逆向きは�
  * 「候補0件」は真になる）。文面そのものは MS3749-A-D44/H 側の検査が見ている。
  * その文面は「出力信号（2出力型は第1出力）」と**系列名を出さない**形にしてある。
  * FZ も2出力型なので、系列名で書くと FZ の0件画面が他人の条件を名乗ることになる。
+ *
+ * **見る段を「判定条件がすべて一致」に限った**（設計 8-2）。D4 で候補が基準の一部だけを含む組も
+ * 下の段に出すので、FZ-14FK-1 の下の段には MS3749-A-D44/H が出て、全段0件ではなくなった。
+ * 0件パネルの代わりに「判定条件がすべて一致する候補はありません。」が出ていることを見る
+ * （③が描かれない壊れ方でも「0件」は真になるため、という元の意図と同じ）。画面は上で読んである。
  */
-const fzFK1 = await insulationResult('WGP-FZ-14FK-1');
 check('WGP-FZ-14FK-1 を検索して②確認画面に到達する', fzFK1.reached);
-check('WGP-FZ-14FK-1 の③が0件になる（第2出力の種別が違う）',
-  fzFK1.cards.length === 0 && fzFK1.note !== '',
-  fzFK1.cards.join(' | ') || `候補0件（0件パネル: ${fzFK1.note ? 'あり' : '無い'}）`);
+check(`WGP-FZ-14FK-1 の③の「判定条件がすべて一致」の段が${fzFK1.cards.length}件になり、その断りが出る（第2出力の種別が違う。下の段 ${fzFK1.lowerCards.length} 件）`,
+  fzFK1.reached && fzFK1.cards.length === 0 && fzFK1.noExact,
+  fzFK1.cards.join(' | ') || `判定条件がすべて一致 0件（断り: ${fzFK1.noExact ? 'あり' : '無い'}）`);
 
 /**
  * **WGP-FZ-14FC-1 ⇔ WGP-FZ-14FC-3 は電源だけが違う。**
@@ -873,6 +1005,16 @@ check('WRPP-A1NNR-M2 の②の note が2相・反転・論理の対応が未確�
 check('WRPP-A1NNR-M2 の③が0件になり、0件パネルが出る',
   wrpp.reached && wrpp.cards.length === 0 && wrpp.note.includes('互換品候補は見つかりませんでした'),
   wrpp.cards.join(' | ') || `候補0件（0件パネル: ${wrpp.note ? 'あり' : '無い'}）`);
+
+/**
+ * D1（WGP-FZ の入力 14 は接点を含まない扱い）の間は、WRPP は下の段も0件（設計 5-1）。
+ * それでも2相の基準機なので、B相を使っているかの問いは出る（設計 2-5。答えで置き換えの幅が変わる。D2・D17）。
+ * 問いは候補の数に依らず基準機の性質から出るので、全段0件の画面でも出る。
+ */
+check(`WRPP-A1NNR-M2 は全段0件（下の段 ${wrpp.lowerCards.length} 件）で、現場への問いに B相の配線が出る（問い ${wrpp.questions.length} 件）`,
+  wrpp.reached && wrpp.cards.length === 0 && wrpp.lowerCards.length === 0 && wrpp.zoneTitles.length === 0
+  && wrpp.questions.some((q) => q.includes('B相の配線を使っているか')),
+  `下の段: ${wrpp.lowerCards.map((c) => c.model).join(' | ') || '0件'} / 問い: ${wrpp.questions.join(' / ') || '無い'}`);
 
 /**
  * **入力の相数が違う組は候補にしない（`insulation.mjs` の `phasesMatch`）。**
