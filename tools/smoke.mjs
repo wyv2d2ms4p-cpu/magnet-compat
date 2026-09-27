@@ -228,6 +228,7 @@ async function insulationResult(model) {
     return {
       reached: false, spec: '', labels: [], specOf: absent,
       cards: [], panels: [], panelTitlesOf: absent, panelOf: absent, note: '', deviceNote: '', flow: [],
+      dimLabels: [], dimsEvidence: null,
       lowerCards: [], zoneTitles: [], count: '', questions: [], noExact: false, result: '',
     };
   }
@@ -240,6 +241,14 @@ async function insulationResult(model) {
   const specOf = (label) => rows.find(([l]) => l === label)?.[1] ?? null;
   // ②の枠の並び（外形図が描かれたか、外形図なしの断りが出たかを要素で見る）
   const flow = await confirmFlow();
+  // ②の外形図に添えた辺ごとのラベル（`W 72mm` など）。図が無ければ空。数値だけを別々に見ると
+  // 辺の取り違え（W と H の入れ替え）が通るので、ラベルの綴りのまま拾う
+  const dimLabels = await page.$$eval('#app > .panel > svg text', (els) => els.map((e) => e.textContent.trim()));
+  // ②の出典行の寸法のバッジ。状態の語（確認済／未確認）と出典のリンク先を読む
+  const dimsEvidence = await page.$$eval('#app .evidence .badge', (els) => {
+    const b = els.find((e) => e.textContent.trim().startsWith('寸法'));
+    return b ? { text: b.textContent.replace(/\s+/g, ' ').trim(), href: b.querySelector('a')?.getAttribute('href') ?? null } : null;
+  });
   await page.click('[data-act="step"][data-v="3"]');
   await page.waitForTimeout(200);
   /*
@@ -320,7 +329,7 @@ async function insulationResult(model) {
   const note = emptyEl ? (await emptyEl.textContent()).replace(/\s+/g, ' ').trim() : '';
   return {
     reached, spec, labels, specOf, cards, panels, panelTitlesOf, panelOf, note, deviceNote, flow,
-    lowerCards, zoneTitles, count, questions, noExact, result,
+    dimLabels, dimsEvidence, lowerCards, zoneTitles, count, questions, noExact, result,
   };
 }
 
@@ -1154,25 +1163,44 @@ check('WGP-FZ-14FC-1 と WGP-FV-14A-1 が互いの③に出ない（入力信号
   `入力信号 FZ「${fzIn}」/ FV「${fv14A.specOf('入力信号')}」`
   + ` / FZ の③: ${fzFC1.cards.join(' | ') || '候補0件'} / FV の③: ${fv14A.cards.join(' | ') || '候補0件'}`);
 
-/* ---- 絶縁変換器: エムジー WRPP（2相入力。外形寸法を持たない） ---- */
+/* ---- 絶縁変換器: エムジー WRPP（2相入力） ---- */
 
 /**
- * **WRPP-A1NNR-M2 は `dims` を持たない（`evidence.dims` は unverified）。**
- * ②は外形図の代わりに「外形寸法は未確認のため図を表示しません。」を出す
- * （`src/core/app.mjs`）。絶縁変換器でこの経路を通る登録はこの1件が初めて。
- * 断りの文言だけでなく**外形図（svg）が描かれていないこと**も要素で見る。
- * 文言だけを見ると、`dims` が壊れた値で入って図と断りが両方出る壊れ方を拾えない。
+ * **WRPP-A1NNR-M2 の②に外形図が描かれる。**
  *
+ * 登録した当初（PR #52）は `dims` を持たず、②は外形図の代わりに「外形寸法は未確認のため
+ * 図を表示しません。」を出していた。外形図 NG-2222 Rev.3 で寸法が確かめられ（依頼者が図を
+ * 目で見て確認。`docs/msystem-wrpp-verified.md` 3章）、`dims` は外形の最大寸法
+ * 高さ 80・幅 72（ソケット）・奥行き 136mm、`evidence.dims` は `verified` になった。
+ *
+ * 見るのは3つ:
+ *
+ * - 外形図（svg）が描かれ、外形図なしの断りが**要素としても文言としても**出ないこと。
+ *   要素だけを見ると、断りの文言が別の枠で残る壊れ方を拾えない
+ * - 図のラベルが辺ごとに `W 72mm` / `H 80mm` / `D 136mm` であること。数値だけを見ると、
+ *   本体の幅 50mm で登録し直す・W と H を入れ替える、という壊れ方が通る
+ * - 出典行の寸法のバッジが「確認済」で、リンク先が外形図のPDF（仕様書ではない）であること。
+ *   srcUrl を仕様書のまま残す取り違えを止める
+ */
+const wrpp = await insulationResult('WRPP-A1NNR-M2');
+check('WRPP-A1NNR-M2 を検索して②確認画面に到達する', wrpp.reached);
+check('WRPP-A1NNR-M2 の②に外形図が描かれ、「外形寸法は未確認のため図を表示しません」が出ない',
+  wrpp.flow.includes('外形図') && !wrpp.flow.includes('外形図なしの断り')
+  && !wrpp.spec.includes('外形寸法は未確認のため図を表示しません'),
+  `②の並び: ${wrpp.flow.join(' → ') || '取得できない'}`);
+check('WRPP-A1NNR-M2 の②の外形図が W 72mm・H 80mm・D 136mm（外形の最大寸法。幅はソケット）',
+  ['W 72mm', 'H 80mm', 'D 136mm'].every((l) => wrpp.dimLabels.includes(l)) && wrpp.dimLabels.length === 3,
+  `図のラベル: ${wrpp.dimLabels.join(' / ') || '図が無い'}`);
+check('WRPP-A1NNR-M2 の②の出典行で寸法が「確認済」になり、出典が外形図のPDFを指す',
+  !!wrpp.dimsEvidence && wrpp.dimsEvidence.text.startsWith('寸法 確認済')
+  && wrpp.dimsEvidence.href === 'https://www.mgco.jp/mssjapanese/PDF/NG/W/ngwrpp.pdf'
+  && wrpp.dimsEvidence.text.includes('外形図 NG-2222 Rev.3'),
+  wrpp.dimsEvidence ? `${wrpp.dimsEvidence.text.slice(0, 40)}… / ${wrpp.dimsEvidence.href}` : '寸法のバッジが無い');
+/**
  * 相数・論理は②の仕様欄から読む（`#app` 全体だと `srcNote` の語で通る）。
  * note も欄（`.note`）から読み、2相であること・論理が反転であること・
  * 接点の ON/OFF と出力の対応が未確認であることの3点を見る。
  */
-const wrpp = await insulationResult('WRPP-A1NNR-M2');
-check('WRPP-A1NNR-M2 を検索して②確認画面に到達する', wrpp.reached);
-check('WRPP-A1NNR-M2 の②で外形図が描かれず、「外形寸法は未確認のため図を表示しません」が出る',
-  wrpp.flow.includes('外形図なしの断り') && !wrpp.flow.includes('外形図')
-  && wrpp.spec.includes('外形寸法は未確認のため図を表示しません'),
-  `②の並び: ${wrpp.flow.join(' → ') || '取得できない'}`);
 check('WRPP-A1NNR-M2 の②に入力の相数 2・出力の論理 反転が出る',
   wrpp.specOf('入力の相数（回路数）') === '2' && wrpp.specOf('出力の論理') === '反転',
   `入力の相数: ${wrpp.specOf('入力の相数（回路数）') ?? '欄が無い'} / 出力の論理: ${wrpp.specOf('出力の論理') ?? '欄が無い'}`);
@@ -1224,6 +1252,7 @@ check(`WRPP-A1NNR-M2 は全段0件（下の段 ${wrpp.lowerCards.length} 件）�
  */
 const { loadDevices: loadIso, devicesOf: isoDevicesOf } = await import('../src/core/store.mjs');
 const { getCategory: getIsoCategory } = await import('../src/core/registry.mjs');
+const { checkRows } = await import('../src/core/tiers.mjs');
 await import('../src/categories/insulation.mjs');
 const { readFileSync: readIsoData } = await import('node:fs');
 loadIso(JSON.parse(readIsoData(join(ROOT, 'data', 'insulation.json'), 'utf8')));
@@ -1244,6 +1273,65 @@ check('同じ仮想の組の相数を揃えると互いの候補になる（上�
 check('MS3749-A-D44/H の②に入力の相数 1 が出る',
   isoD44.specOf('入力の相数（回路数）') === '1',
   `入力の相数: ${isoD44.specOf('入力の相数（回路数）') ?? '欄が無い'}`);
+
+/**
+ * **外形寸法（`dims`）を持たない型式の経路を、仮想のレコードで固定する。**
+ *
+ * PR #52 から、`dims` を持たない絶縁変換器は WRPP-A1NNR-M2 の1件だけで、②の断りの検査が
+ * この経路の足場だった。WRPP が外形図で `dims` を持ったので、**実データでは対象が0件**になった。
+ * 実データを歩く形のまま残すと、経路を壊しても何も落ちない（CLAUDE.md が禁じる空振り）。
+ *
+ * そこで相数の検査と同じく、`MS3749-A-D44/H` を複製して `dims` だけを外し
+ * `evidence.dims` を `unverified` にしたレコードを**検査の中だけで**作り（`data/` には入れない）、
+ * カテゴリの関数に直接掛ける。見るのは `dims` の不在を「同じ」にも「違う」にも倒さないこと:
+ *
+ * 1. 候補からは外さない（外形寸法は `gate` に入れていない）。両方向で見る
+ * 2. 外形寸法のパネル（`dimsPanel`）を出さない。片側の寸法しか言えない枠になるため。両方向で見る
+ * 3. 確認項目の「外形寸法」は「未登録・現物で確認」（`missing`）で、`whenMissing` の文を出す
+ *
+ * 4つ目は反対側。同じ仮想のレコードに**実在の別の寸法**（基準と寸法が違う最初の登録品のもの）を持たせると、
+ * パネルが出て確認項目が「違う」になる。これで 2・3 を止めているのが `dims` の不在だけだと言える
+ * （パネルや確認項目そのものを消す壊れ方では 4 が落ちる）。
+ *
+ * ②で外形図の代わりに断りを出す経路（`src/core/app.mjs`）はカテゴリに依らない共通の分岐で、
+ * 末尾の「寸法未確認なら外形図を描かず理由を明示する」（接触器 S-T35）が画面で見ている。
+ */
+const noDimsBase = isoDevicesOf('insulation').find((d) => d.model === 'MS3749-A-D44/H');
+const noDimsVirtual = noDimsBase && (() => {
+  const v = {
+    ...noDimsBase, id: 'VIRTUAL_MS3749_A_D44_H_NODIMS', model: 'MS3749-A-D44/H（仮想・寸法なし）',
+    evidence: { ...noDimsBase.evidence, dims: { state: 'unverified' } },
+  };
+  delete v.dims;
+  return v;
+})();
+const dimsPanelTitles = (m, c) => isoCat.detailPanels(m, c).map((p) => p.title);
+const dimsRowOf = (m, c) => checkRows(isoCat, m, c).find((r) => r.key === 'dims') ?? null;
+check('外形寸法を持たない型式も、他の条件が同じなら互いの候補になる（仮想のレコードで確認。寸法は gate に入れていない）',
+  !!noDimsBase?.dims && !('dims' in noDimsVirtual)
+  && isoCat.gate(noDimsVirtual, noDimsBase) && isoCat.gate(noDimsBase, noDimsVirtual),
+  noDimsBase ? `仮想→実 ${isoCat.gate(noDimsVirtual, noDimsBase)} / 実→仮想 ${isoCat.gate(noDimsBase, noDimsVirtual)}`
+    : 'MS3749-A-D44/H が data に無い');
+check('片方が外形寸法を持たない組には、外形寸法のパネルを出さない（両方向）',
+  !!noDimsVirtual
+  && !dimsPanelTitles(noDimsBase, noDimsVirtual).includes('外形寸法')
+  && !dimsPanelTitles(noDimsVirtual, noDimsBase).includes('外形寸法'),
+  noDimsVirtual ? `実→仮想: ${dimsPanelTitles(noDimsBase, noDimsVirtual).join(' / ') || 'パネル無し'}`
+    + ` / 仮想→実: ${dimsPanelTitles(noDimsVirtual, noDimsBase).join(' / ') || 'パネル無し'}` : '仮想のレコードを作れない');
+const noDimsRow = noDimsVirtual && dimsRowOf(noDimsBase, noDimsVirtual);
+check('片方が外形寸法を持たない組の確認項目「外形寸法」は「未登録・現物で確認」で、現物での確認を促す',
+  noDimsRow?.state === 'missing' && noDimsRow.cand === '―'
+  && noDimsRow.note === '外形寸法が登録されていません。取付スペースと端子配列を現物で確認してください。',
+  noDimsRow ? `${noDimsRow.state} / 基準 ${noDimsRow.base} / 候補 ${noDimsRow.cand} / ${noDimsRow.note}` : '確認項目が無い');
+// 特定の型式に寄せない。その型式の寸法が直されたときに、この反対側の検査まで巻き込まないため
+const otherDimsSrc = noDimsBase && isoDevicesOf('insulation')
+  .find((d) => d.dims && !(d.dims.w === noDimsBase.dims.w && d.dims.h === noDimsBase.dims.h && d.dims.d === noDimsBase.dims.d));
+const otherDims = noDimsVirtual && otherDimsSrc && { ...noDimsVirtual, dims: { ...otherDimsSrc.dims } };
+const otherRow = otherDims && dimsRowOf(noDimsBase, otherDims);
+check('同じ仮想のレコードに別の寸法を持たせると、外形寸法のパネルが出て確認項目が「違う」になる（上の2つを止めているのは寸法の不在だけ）',
+  !!otherDims && dimsPanelTitles(noDimsBase, otherDims).includes('外形寸法') && otherRow?.state === 'differs',
+  otherDims ? `パネル: ${dimsPanelTitles(noDimsBase, otherDims).join(' / ') || '無し'} / 確認項目: ${otherRow?.state ?? '無い'}`
+    : '基準と寸法が違う登録品が無い');
 
 /* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
 
