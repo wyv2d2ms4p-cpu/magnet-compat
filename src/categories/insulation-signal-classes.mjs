@@ -72,7 +72,9 @@ export const SIGNAL_CLASS_ROWS = [
   { src: 'IN-16', field: 'input', spelling: '無電圧接点・オープンコレクタ', classes: ['接点・オープンコレクタ入力'], mode: 'single' },
   { src: 'IN-17', field: 'input', spelling: 'ラインドライバ・パルス', classes: ['ラインドライバ入力'], mode: 'single' },
   { src: 'IN-18', field: 'input', spelling: 'DC電圧パルス', classes: ['電圧パルス入力'], mode: 'single',
-    highV: { min: 2, max: 50, text: '約2V以上50V以下（資料 Rev.1.90 の値）' } },
+    // 50V は H のしきい値ではなく入力許容電圧（DC電圧入力型 50V DC max. 連続）。比べる区間の上限に使うが、
+    // 表示ではしきい値と区別する（FZ の 5V以上30V以下は資料どおりの H の範囲なので、そのまま）
+    highV: { min: 2, max: 50, text: 'しきい値 約2V・入力許容 50V DC まで（資料 Rev.1.90 の値）' } },
   { src: 'IN-19', field: 'input', spelling: '無電圧スイッチ', classes: ['接点入力（検出 5V／10mA）'], mode: 'single' },
   { src: 'OUT-01', field: 'output', spelling: 'DC0～10V', classes: ['直流電圧出力 0〜10V'], mode: 'single' },
   { src: 'OUT-02', field: 'output', spelling: 'DC0～5V', classes: ['直流電圧出力 0〜5V'], mode: 'single' },

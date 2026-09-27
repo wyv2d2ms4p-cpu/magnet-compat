@@ -412,6 +412,26 @@ check('MS3749-A-D44/H → WGP-FZ-14FK-1 の確認項目で「入力の H と見�
   d44High?.state === 'ck-field' && d44High.text.includes('現場で確認') && d44High.text.includes('5V以上30V以下')
   && d44High.text.includes('センサの H 電圧'),
   d44High ? d44High.text : '行が無い');
+/*
+ * MS3749 の 50V は H のしきい値ではなく入力許容電圧。「約2V以上50V以下」のように H の範囲として読める形で
+ * 出さず、しきい値と許容電圧を分けて出す。版（Rev.1.90）も添える（登録済みの出典 Rev.2.10 では未確認）。
+ */
+check('同じ行の基準の値が、しきい値 約2V と入力許容 50V DC を分けて出し、資料 Rev.1.90 の値だと添える',
+  d44High?.text.includes('基準 しきい値 約2V・入力許容 50V DC まで（資料 Rev.1.90 の値）') === true
+  && !d44High.text.includes('約2V以上50V以下'),
+  d44High ? d44High.text : '行が無い');
+
+/**
+ * 第1出力と第2出力の間の絶縁は向きがある（`insulation.mjs` の `OUTPUT_ISOLATION`）。
+ * D44/H は出力が2つとも電圧パルスなので同電位（MS3749 仕様書 Rev.1.90 の注記）、FZ は各端子間相互で絶縁。
+ * 基準 D44/H → 候補 FZ は「現場で確認」（マイナス側の配線が機器の中のつながりに頼っていないか）、
+ * 逆向きは「違う」（別電位の2つの行き先を候補が同電位でつなぐおそれ）。値には出典と版が読める。
+ */
+const d44Iso = checkOf(d44Fz, '第1出力と第2出力の間の絶縁');
+check('MS3749-A-D44/H → WGP-FZ-14FK-1 の「第1出力と第2出力の間の絶縁」が「現場で確認」で、基準 同電位（Rev.1.90）・候補 絶縁が読める',
+  d44Iso?.state === 'ck-field' && d44Iso.text.includes('基準 同電位') && d44Iso.text.includes('Rev.1.90')
+  && d44Iso.text.includes('候補 絶縁') && d44Iso.text.includes('マイナス側の配線を現場で確認'),
+  d44Iso ? d44Iso.text : '行が無い');
 check(`MS3749-A-D44/H の③の件数は段ごとに出て、「互換品候補」と呼ばない（${isoD44.count || '件数行が無い'}）`,
   isoD44.count === '分類が一致・違いあり 1件', isoD44.count);
 
@@ -427,6 +447,11 @@ check('WGP-FZ-14FK-1 の③の下の段に MS3749-A-D44/H が出て、「入力�
   fzD44?.maker.includes('別メーカー') === true && checkOf(fzD44, '入力の H と見る電圧') === null
   && fzSame?.text.includes('入力の H と見る電圧') === true,
   fzD44 ? `同じ: ${fzSame?.text ?? '行が無い'}` : '下の段に無い');
+const fzIso = checkOf(fzD44, '第1出力と第2出力の間の絶縁');
+check('WGP-FZ-14FK-1 → MS3749-A-D44/H の「第1出力と第2出力の間の絶縁」が「違う」で、行き先の電位を現場で確認する文が出る（逆向き）',
+  fzIso?.state === 'ck-differs' && fzIso.text.includes('基準 絶縁') && fzIso.text.includes('候補 同電位')
+  && fzIso.text.includes('使えないおそれ') && fzIso.text.includes('行き先の電位を現場で確認'),
+  fzIso ? fzIso.text : '行が無い');
 check('WGP-FZ-14FK-1 の③に第1出力の設定を問う現場への問いが出る',
   fzFK1.questions.some((q) => q.includes('第1出力のディップスイッチを今どれに設定しているか')),
   fzFK1.questions.join(' / ') || '問いが無い');

@@ -164,9 +164,15 @@ export function checkStateOf(result) {
 /**
  * カテゴリの `checkDefs` で1枚分の確認項目を作る。並びは状態の順（設計 2-4）。
  * 値の表示は `format`、無い値は「―」。文面は事実と「何を確かめるか」まで。
+ *
+ * 任意の2つ：
+ * - `applies(m, c)` … その組に意味の無い項目を出さない（1出力型どうしの「出力間の絶縁」など）。
+ *   出さないのは「該当しない」組だけで、値が無い組は従来どおり「未登録」で出す（11-2-3）
+ * - `compareBy(v)` … 比べる量と見せる値を分ける（出典つきの文を見せ、順序だけで比べるなど）。
+ *   値が無いときは呼ばないので、欠けは従来どおり `unknown` になる
  */
 export function checkRows(category, m, c) {
-  const defs = category.checkDefs || [];
+  const defs = (category.checkDefs || []).filter((def) => typeof def.applies !== 'function' || def.applies(m, c));
   const order = CHECK_STATES.map((s) => s.id);
   const rows = defs.map((def) => {
     if (!def.key || !def.label || typeof def.read !== 'function' || !def.compare) {
@@ -174,7 +180,8 @@ export function checkRows(category, m, c) {
     }
     const bv = def.read(m);
     const cv = def.read(c);
-    const result = compareValues(def.compare, bv, cv, def);
+    const by = (v) => (typeof def.compareBy === 'function' && !absent(v) ? def.compareBy(v) : v);
+    const result = compareValues(def.compare, by(bv), by(cv), def);
     const state = checkStateOf(result);
     const show = (v) => (absent(v) ? '―' : def.format ? def.format(v) : Array.isArray(v) ? v.join('・') : String(v));
     const note = state === 'differs' ? def.whenDiffers : state === 'field' ? def.whenField : state === 'missing' ? def.whenMissing : '';

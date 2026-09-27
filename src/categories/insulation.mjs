@@ -821,9 +821,44 @@ function classesTouch(a, m, outKey) {
 /**
  * 資料には値があるがデータに登録していない項目の読み出し。**必ず undefined を返す。**
  * 確認項目では「未登録・現物で確認」になる（11-2-3。片方でも値が無ければ隠さない）。
- * 12-7 の違いのうち、系列ごと・出力コードごとに値が違い、綴り1つに1つの値を持たせられないもの。
+ * 12-7 の違いのうち、出力の定格（系列ごと・出力コードごとに書き方と値が違い、綴り1つに1つの値を持たせられない）。
  */
 const notInData = () => undefined;
+
+/**
+ * MS3749 で第1出力と第2出力が同電位になる出力の綴り。型式コードの注記「第 1、第 2 出力の組み合わせで
+ * TTL レベル、電圧パルスをご指定の場合、同電位になります」（Rev.1.90。`docs/mtt-ms3749-input-terminals.md`
+ * 3章・4章）。TTL レベルの型式は登録が無いので、綴りも入れていない（登録が入ったら足す）。
+ */
+const MS3749_SAME_POTENTIAL_OUTPUTS = ['電圧パルス12V', '電圧パルス10V'];
+
+/**
+ * 第1出力と第2出力の間の絶縁（資料の値）。**データではなく資料の値として持つ**のは H と見る電圧と同じで、
+ * レコードごとに登録された値ではなく、系列と出力の組み合わせで資料から決まるため。
+ * 表示の文に出典と版を添える。MS3749 は Rev.1.90 の値で、登録済みの出典 Rev.2.10 では確かめていない。
+ *
+ * `coupled` は比べるための順序で、出力どうしのつながりの強さ（絶縁 0 ＜ 同電位 1）。
+ * 比べ方は `atMost`（候補のつながりが基準以下か）で、
+ *   - 同じ → 同じ
+ *   - 基準が絶縁・候補が同電位 → 違う（別電位の2つの行き先を、候補は同電位でつなぐ）
+ *   - 基準が同電位・候補が絶縁 → 現場で確認（候補は基準の使い方を含むが、マイナス側の配線が
+ *     機器の中のつながりに頼っていないかは現場でしか分からない。設計 2-1 の「可否が現場の状態で決まる」、
+ *     6章の「match だが equal でない → 現場で確認」）
+ * 資料の値を持たない系列は undefined（「未登録・現物で確認」）。
+ */
+const OUTPUT_ISOLATION = {
+  MS3749: (s) => (MS3749_SAME_POTENTIAL_OUTPUTS.includes(s.output1Signal) && MS3749_SAME_POTENTIAL_OUTPUTS.includes(s.output2Signal)
+    ? { coupled: 1, text: '同電位（出力が2つとも電圧パルスの組み合わせ。MS3749 仕様書 Rev.1.90 の型式コードの注記）' }
+    : { coupled: 0, text: '絶縁（MS3749 仕様書 Rev.1.90 の信号絶縁「入力－第１出力－第２出力－電源－大地各間 絶縁」）' }),
+  'WGP-FZ': () => ({ coupled: 0, text: '絶縁（WGP-FZ 仕様書〔ページ表記 2105A-06〕の絶縁抵抗・耐電圧「入力−第1出力−第2出力−電源 各端子間相互」）' }),
+  WRPP: () => ({ coupled: 0, text: '絶縁（WRPP 仕様書 NS-2222 Rev.6 のアイソレーション「第1出力と第2出力の間も絶縁」）' }),
+};
+
+/** 2出力型だけが持つ。1出力型は undefined（`applies` で行ごと出さない） */
+function outputIsolationOf(d) {
+  if (typeof d.specs?.output2Signal !== 'string') return undefined;
+  return OUTPUT_ISOLATION[d.series]?.(d.specs);
+}
 
 registerCategory({
   id: 'insulation',
@@ -1167,6 +1202,8 @@ registerCategory({
    * **入力の H と見る電圧は向きがある**（12-6 の決定1）。比べ方 `fits` は「基準の範囲が候補に収まる」
    * ときだけ「同じ」で、MS3749 が基準・WGP-FZ が候補のときは必ず「現場で確認」、逆向きは「同じ」になる。
    * `tools/test-insulation-classes.mjs` が向きの入れ替わりを固定する。
+   * **第1出力と第2出力の間の絶縁も向きがある**（`OUTPUT_ISOLATION`）。MS3749-A-D44/H（同電位）が基準で
+   * WGP-FZ-14FK-1（絶縁）が候補なら「現場で確認」、逆向きは「違う」。
    *
    * 下の段はいまパルス側だけに出る（アナログ側の同じ分類の組 25本はすべて遅い側で、D5 で出ない。12-8）。
    * パルス側の項目がアナログ側のカードで「未登録」と出る並びは、アナログ側に下の段が出たときに見直す。
@@ -1196,8 +1233,15 @@ registerCategory({
     { key: 'outputRating', label: '出力の定格（H・L の電圧、許容差、内部抵抗・許容負荷、オープンコレクタの定格）',
       read: notInData, compare: 'equal',
       whenMissing: '資料ごとに書き方と値が違い、データに登録していません。受け側の条件と合わせて仕様書・現物で確認してください。' },
-    { key: 'outputIsolation', label: '第1出力と第2出力の間の絶縁', read: notInData, compare: 'equal',
-      whenMissing: '資料ごとに扱いが違い、データに登録していません。2つの出力を別の回路につないでいるかを確認してください。' },
+    // 1出力型には出さない（出力が1つなら出力間の絶縁は該当しない）。どちらかが2出力型なら出す
+    { key: 'outputIsolation', label: '第1出力と第2出力の間の絶縁', read: outputIsolationOf,
+      applies: (m, c) => typeof m.specs?.output2Signal === 'string' || typeof c.specs?.output2Signal === 'string',
+      compare: 'atMost', compareBy: (v) => v.coupled, format: (v) => v.text,
+      whenDiffers: '候補は2つの出力が同電位になります（基準は絶縁）。2つの出力の行き先の電位（マイナス側）が別の機器なら、'
+        + '候補では使えないおそれがあります。行き先の電位を現場で確認してください。',
+      whenField: '候補は2つの出力の間が絶縁されています（基準は同電位）。現場で片方の出力のマイナス側だけを配線して'
+        + '機器の中のつながりに頼っている場合は、もう片方の出力が働かないおそれがあります。マイナス側の配線を現場で確認してください。',
+      whenMissing: '出力間の絶縁の資料の値を持っていません。仕様書・現物で確認してください。' },
     { key: 'powerSupply', label: '電源電圧', read: (d) => d.specs?.powerSupply, compare: 'equal',
       whenDiffers: '電源電圧が違います。盤に来ている電源を確認してください。',
       whenMissing: '電源電圧が登録されていません。仕様書・現物で確認してください。' },
