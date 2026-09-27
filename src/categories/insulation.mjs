@@ -348,6 +348,9 @@ import { registerCategory } from '../core/registry.mjs';
 import { preferTrue, ascending } from '../core/compat.mjs';
 import { evidenceRank } from '../core/evidence.mjs';
 import { esc, num } from '../core/util.mjs';
+import { devicesOf } from '../core/store.mjs';
+import { compareValues } from '../core/tiers.mjs';
+import { signalRowOf, SIGNAL_FIELD_OF_KEY } from './insulation-signal-classes.mjs';
 
 /**
  * 信号種別の一致。
@@ -784,6 +787,44 @@ function optionPanel(m, c) {
   };
 }
 
+/**
+ * 信号名の分類（`insulation-signal-classes.mjs`）。キーを持たなければ undefined。
+ * 表に無い綴りは `signalRowOf` が例外で止める（分類の無い綴りを一致にも不一致にも倒さない）。
+ */
+function classesOf(d, key) {
+  const v = d.specs?.[key];
+  return typeof v === 'string' ? signalRowOf(SIGNAL_FIELD_OF_KEY[key], v).classes : undefined;
+}
+
+/** 入力の H と見る電圧の範囲（電圧パルス入力の行だけが持つ。分類表の `highV`） */
+function highVOf(d) {
+  const v = d.specs?.inputSignal;
+  return typeof v === 'string' ? signalRowOf('input', v).highV : undefined;
+}
+
+/** 分類が重なる関係（`docs/design-common-alternates.md` 5-1。D4 で coveredBy・overlap も含める） */
+const TOUCHING = ['equal', 'covers', 'coveredBy', 'overlap'];
+
+/**
+ * `classMatch` の条件のうち分類の部分（5-1）。入力・第1出力（1出力型は出力信号）は分類が重なること、
+ * 第2出力は両方無いか、候補が基準の分類をすべて持つ（`equal`・`covers`）こと。
+ * 第2出力に `coveredBy`・`overlap` を入れないのは、第2出力はスイッチで選ぶ機種が無く、
+ * 候補の第2出力が基準の出力を出せない組になるため。片方だけが持つ組は `unknown` で落ちる。
+ */
+function classesTouch(a, m, outKey) {
+  const rel = (key) => compareValues('set', classesOf(m, key), classesOf(a, key)).relation;
+  if (!TOUCHING.includes(rel('inputSignal')) || !TOUCHING.includes(rel(outKey))) return false;
+  if (a.specs?.output2Signal == null && m.specs?.output2Signal == null) return true;
+  return ['equal', 'covers'].includes(rel('output2Signal'));
+}
+
+/**
+ * 資料には値があるがデータに登録していない項目の読み出し。**必ず undefined を返す。**
+ * 確認項目では「未登録・現物で確認」になる（11-2-3。片方でも値が無ければ隠さない）。
+ * 12-7 の違いのうち、系列ごと・出力コードごとに値が違い、綴り1つに1つの値を持たせられないもの。
+ */
+const notInData = () => undefined;
+
 registerCategory({
   id: 'insulation',
   label: '絶縁変換器',
@@ -1092,5 +1133,97 @@ registerCategory({
       仕様欄に第1出力がある型式は、入力の相数（回路数）が違う組を候補にしません。
       この型式では、それを満たす登録型式がありませんでした。
       どの条件で外れたかはこの画面では判別できません。</div>`;
+  },
+  /**
+   * 下の段「分類が一致・違いあり」（`classMatch`）の候補。条件は `docs/design-common-alternates.md` 5-1。
+   *
+   *   - 出力信号のキー（系統）が同じ／入力の相数が同じ（`phasesMatch`。パルス側だけ）
+   *   - 入力・第1出力の分類が重なり、第2出力は両方無いか候補が基準の分類を持つ（`classesTouch`）
+   *   - 応答時間は `gate` と同じ `responseWithin`。**遅い候補と WGP-FV は下の段にも出さない**（D5）。
+   *     遅い側の不具合は動かすまで出ない、という `gate` の理由が下の段でも同じだから
+   *
+   * `gate` を通った型式・基準機自身・シリーズ単位はコアが除く（上の段が勝つ。設計 1-2）。
+   * 並びは登録順のまま。`rank` はコアが足す派生値（`sameMaker` など）を前提にしていて、
+   * 口の中では使えない。実データでは基準1台につき1件なので、並びの決め方は件数が増えたときに決める。
+   *
+   * `rework` の段は返さない。4-2 の組み合わせは D1（入力 14 は接点を含まない扱い）の間は
+   * 実データで0件なので、作ると一度も通らない経路になる（8-3 の順5 で扱う）。
+   */
+  alternates(m) {
+    const outKey = outputSignalKey(m);
+    if (!outKey) return [];
+    return devicesOf('insulation')
+      .filter((a) => a.id !== m.id && outputSignalKey(a) === outKey
+        && phasesMatch(a.specs?.inputPhases, m.specs?.inputPhases, outKey)
+        && responseWithin(a.specs?.responseUs, m.specs?.responseUs, outKey)
+        && classesTouch(a, m, outKey))
+      .map((a) => ({ tier: 'classMatch', parts: [{ id: a.id, qty: 1 }] }));
+  },
+  /**
+   * 下の段のカードの確認項目（設計 2-2）。`docs/design-insulation-converter.md` 12-7 の
+   * 「同じ分類にした行に残る違い」と、今のパネルの電源電圧・オプション・外形寸法（設計 2-3）。
+   * 文面は事実と「何を確かめるか」まで（8-4）。状態と印はコアが決める。
+   *
+   * **入力の H と見る電圧は向きがある**（12-6 の決定1）。比べ方 `fits` は「基準の範囲が候補に収まる」
+   * ときだけ「同じ」で、MS3749 が基準・WGP-FZ が候補のときは必ず「現場で確認」、逆向きは「同じ」になる。
+   * `tools/test-insulation-classes.mjs` が向きの入れ替わりを固定する。
+   *
+   * 下の段はいまパルス側だけに出る（アナログ側の同じ分類の組 25本はすべて遅い側で、D5 で出ない。12-8）。
+   * パルス側の項目がアナログ側のカードで「未登録」と出る並びは、アナログ側に下の段が出たときに見直す。
+   */
+  checkDefs: [
+    // 入力の行はいま全部 single なので「同じ」か「違う」にしかならない（IN-15 が selectable になるのは D1 が解けたとき）
+    { key: 'inputClass', label: '入力信号の分類', read: (d) => classesOf(d, 'inputSignal'), compare: 'set' },
+    { key: 'inputHighV', label: '入力の H と見る電圧', read: highVOf, compare: 'fits', format: (v) => v.text,
+      whenField: 'センサの H 電圧が、候補の範囲に入っているかを確認してください。',
+      whenDiffers: 'H と見る電圧の範囲が重なりません。センサの H 電圧を確認してください。',
+      whenMissing: 'H と見る電圧の範囲が登録されていません。仕様書・現物で確認してください。' },
+    { key: 'inputResistance', label: '入力抵抗', read: (d) => d.specs?.inputResistance, compare: 'equal',
+      whenDiffers: '入力抵抗が違います。送り側の機器で駆動できるかを確認してください。',
+      whenMissing: '入力抵抗が登録されていません。仕様書・現物で確認してください。' },
+    { key: 'inputPhases', label: '入力の相数（回路数）', read: (d) => d.specs?.inputPhases, compare: 'equal' },
+    { key: 'output1Class', label: '第1出力（出力信号）の分類', read: (d) => classesOf(d, outputSignalKey(d)), compare: 'set',
+      whenField: 'スイッチで選ぶ出力を含みます。基準で使っている出力と同じ分類に設定されているか・設定できるかを確認してください。'
+        + 'WGP-FZ の第1出力をワンショットにすると、第2出力もワンショットになります（資料の注記）。' },
+    { key: 'output2Class', label: '第2出力の分類', read: (d) => classesOf(d, 'output2Signal'), compare: 'set',
+      whenMissing: '第2出力が片方にしかありません。第2出力の配線を使っているかを確認してください。' },
+    { key: 'output1MaxFreqHz', label: '第1出力 最大周波数', read: (d) => d.specs?.output1MaxFreqHz, compare: 'equal', format: formatFreq,
+      whenDiffers: '最大出力周波数が違います。入力パルスの周波数を確認してください。',
+      whenMissing: '最大出力周波数が登録されていません（設定で変わる機種を含みます）。仕様書・現物で確認してください。' },
+    { key: 'output2MaxFreqHz', label: '第2出力 最大周波数', read: (d) => d.specs?.output2MaxFreqHz, compare: 'equal', format: formatFreq,
+      whenDiffers: '最大出力周波数が違います。入力パルスの周波数を確認してください。',
+      whenMissing: '最大出力周波数が登録されていません（設定で変わる機種を含みます）。仕様書・現物で確認してください。' },
+    { key: 'outputRating', label: '出力の定格（H・L の電圧、許容差、内部抵抗・許容負荷、オープンコレクタの定格）',
+      read: notInData, compare: 'equal',
+      whenMissing: '資料ごとに書き方と値が違い、データに登録していません。受け側の条件と合わせて仕様書・現物で確認してください。' },
+    { key: 'outputIsolation', label: '第1出力と第2出力の間の絶縁', read: notInData, compare: 'equal',
+      whenMissing: '資料ごとに扱いが違い、データに登録していません。2つの出力を別の回路につないでいるかを確認してください。' },
+    { key: 'powerSupply', label: '電源電圧', read: (d) => d.specs?.powerSupply, compare: 'equal',
+      whenDiffers: '電源電圧が違います。盤に来ている電源を確認してください。',
+      whenMissing: '電源電圧が登録されていません。仕様書・現物で確認してください。' },
+    { key: 'option', label: 'オプション', read: (d) => (d.specs?.option?.length ? optionText(d.specs.option) : undefined), compare: 'equal',
+      whenDiffers: 'オプションが違います。設置環境と接続先に基準のオプションが要るかを確認してください。',
+      whenMissing: 'オプションの指定が片方にありません（型式にオプション欄が無い機種を含みます）。基準のオプションが要るかを確認してください。' },
+    { key: 'dims', label: '外形寸法', read: (d) => (d.dims ? formatDims(d.dims) : undefined), compare: 'equal',
+      whenDiffers: '外形寸法が違います。取付スペースと、端子配列が同じかを確認してください。',
+      whenMissing: '外形寸法が登録されていません。取付スペースと端子配列を現物で確認してください。' },
+  ],
+  /**
+   * 交換前に現場で確かめること（設計 2-5 の絶縁変換器の4行）。基準機の性質だけから出す。
+   * どれも型式やデータからは決まらず、現物の配線・設定を見れば分かること。
+   */
+  fieldQuestions(m) {
+    const s = m.specs ?? {};
+    const qs = [];
+    // 2相の基準機は、B相を使っていなければ置き換えの幅が変わる（D2・D17。rework は順5）
+    if (s.inputPhases === 2) qs.push('B相の配線を使っているか（この型式は入力が2回路です）');
+    if (typeof s.output2Signal === 'string') qs.push('第2出力（OUT2）の配線を使っているか');
+    // スイッチで選ぶ出力は、今の設定が候補の出力と同じ分類かで決まる（D4）
+    const out1 = typeof s.output1Signal === 'string' ? signalRowOf('output', s.output1Signal) : null;
+    if (out1?.mode === 'selectable') {
+      qs.push(`第1出力のディップスイッチを今どれに設定しているか（${out1.classes.join('・')}）`);
+    }
+    if (typeof s.outputLogic === 'string') qs.push(`受け側が出力の論理（${s.outputLogic}）に合わせて組まれているか`);
+    return qs;
   },
 });
