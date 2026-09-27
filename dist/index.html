@@ -103,6 +103,8 @@ header .sub{color:var(--sub);font-size:12px;}
 .standing{font-size:11px;display:block;line-height:1.35;margin-top:2px;}
 .standing.below{color:var(--amber);}
 .dim-verdict.ok{color:var(--green);} .dim-verdict.warn{color:var(--amber);} .dim-verdict.dim{color:var(--dim);}
+/* 寸法の差は1方向を1行に（D23）。1行に並べると右の列が縮まず、375px 幅で型式の列を細らせてカードからはみ出す */
+.dim-verdict .dd{display:block;} .dim-verdict .dd-sep{display:none;}
 
 .badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
 .badge{font-size:10px;padding:2px 7px;border-radius:4px;font-family:var(--mono);
@@ -270,7 +272,8 @@ function dimDiff(a, b) {
  * 方向ごとの寸法の差（候補 c − 基準 b。候補のほうが大きければ ＋）。どちらか欠けていれば null。
  *
  * `dimDiff` の和では、どの方向がどれだけ違うかも、候補が大きいのか小さいのかも読めない（設計 1-7）。
- * いまは下の段のやることの文（取付スペース）だけが使う。カード右上の「差 Σ…」は変えていない（D23 は別の PR）。
+ * 下の段のやることの文（取付スペース）と、全カテゴリの候補カード右上の寸法の表示（`dim-verdict`。D23）が使う。
+ * 同じ関数で作るので、同じカードの右上とやることの文で差の書き方が食い違わない。
  * 差が 0 の方向も省かずに出す（省くと「その方向は比べていない」と読める）。
  */
 function dimDeltaText(c, b) {
@@ -1312,7 +1315,7 @@ function fieldQuestionsPanel(questions) {
  *   上の段の「他社互換」は変えない（接触器・サーマルの画面が広く変わるため。D10）。
  * - `detailPanels` の代わりに確認項目の表。両方出すと同じ差が枠と表で2回出る（設計 2-3）。
  *   表の前に要約とやることを置き、表は折りたたむ（`lowerCardBody`。D18）。`note` は今までどおりその前
- * - 右上の寸法の表示（`dim-verdict`）は上の段と同じ。方向ごとの差にする決定（D23）は別の PR で入れる
+ * - 右上の寸法の表示（`dim-verdict`）は上の段と同じ（方向ごとの差。D23 は全カテゴリ・全段のカードに当てる）
  * - rework で2台なら型式の横に「× 2台」。`.model` の中身は登録された綴りのままにする。
  */
 function candidateCard(category, m, c, index) {
@@ -1325,10 +1328,22 @@ function candidateCard(category, m, c, index) {
     : lower ? '<span class="badge b-cross">別メーカー</span>'
     : '<span class="badge b-cross">他社互換</span>';
 
+  /*
+   * 寸法が違うときは方向ごとの差（候補 − 基準）を出す（設計 1-7。D23）。
+   * 「差 Σ…mm」（`dimDiff` の和）では、どの方向がどれだけ違うかも、候補が大きいのか小さいのかも読めなかった。
+   * 分岐の条件（寸法未確認・寸法一致の判定）は `c.diff` のまま変えない。`diff` は各カテゴリの `rank` が
+   * 並び順に使っているので、表示のためだけに別の値を作り、`diff` そのものには触れない。
+   *
+   * 1方向を1行にする（`.dd` を block に。区切りの「・」は文字として残し、画面では隠す）。
+   * `.card-right` は縮まない（`flex-shrink:0`）ので、1行のままだと 375px 幅で右の列が 250px 前後に広がり、
+   * 型式の列が細って折り返し、10枚はカードの枠からはみ出した（実測）。文字として「・」を残すのは、
+   * 読み上げやコピーで3方向がつながって読めなくならないようにするため。
+   */
   const dimVerdict = !c.dimsTrustworthy
     ? '<span class="dim-verdict dim">寸法未確認</span>'
     : c.diff === 0 ? '<span class="dim-verdict ok">寸法一致</span>'
-    : `<span class="dim-verdict warn">差 Σ${num(c.diff)}mm</span>`;
+    : `<span class="dim-verdict warn">${dimDeltaText(c.dims, m.dims).split('・')
+      .map((t) => `<span class="dd">${esc(t)}</span>`).join('<span class="dd-sep">・</span>')}</span>`;
 
   const badges = [
     c.holeMatch === null ? badge(null, '取付穴', '取付穴 要検証') : badge(c.holeMatch, '取付穴一致'),
@@ -2924,8 +2939,9 @@ function sameDims(a, b) {
  * 判定はすべて通る。実際に30本の候補がシリーズをまたいで生じる。
  * 違うのは幅が約半分であることと、端子配列。どちらも③に出ていなかった。
  *
- * カード右上の `dim-verdict` は `差 Σ43.9mm`（マンハッタン距離）としか言わない。
+ * このパネルを足した時点では、カード右上の `dim-verdict` は `差 Σ43.9mm`（マンハッタン距離）としか言わなかった。
  * **どの辺がどれだけ違うのかは読めず、盤内に入るかどうかも決められない。**
+ * 右上が方向ごとの差（D23）になったいまも、右上に出るのは差だけで、基準機と候補の寸法そのものは出ない。
  * 電源電圧のパネル（`powerSupplyPanel`）と同じ形で、基準機の寸法とこの候補の
  * 寸法の両方を出す。
  *
@@ -3375,7 +3391,7 @@ registerCategory({
    * 2. ②の画面も 仕様欄（… → 電源電圧 → オプション）→ 外形寸法図 の順で描く
    *    （`src/core/app.mjs`）。②と③で並びが割れると、同じ項目を画面ごとに
    *    違う順で読むことになる
-   * 3. 外形寸法の差は、カード右上の `dim-verdict`（`差 Σ43.9mm`）で**カードの
+   * 3. 外形寸法の差は、カード右上の `dim-verdict`（方向ごとの差。D23）で**カードの
    *    先頭にすでに出ている**。パネルはその読み下しなので、カードのどこにも
    *    出ていない差（電源電圧・オプション）より後ろでよい
    *
@@ -3530,8 +3546,11 @@ registerCategory({
         : '2つの出力の行き先の電位（マイナス側）を確認する（基準は出力の間が絶縁、候補は2つの出力が同電位）') },
     { key: 'powerSupply', label: '電源電圧', read: (d) => d.specs?.powerSupply, compare: 'equal',
       whenDiffers: '電源電圧が違います。盤に来ている電源を確認してください。',
-      // 候補の電源電圧は使う側で変えられないので「変更する」ではなく「確認する」（D20）
-      todo: (r) => `盤の電源電圧を確認する（候補は ${r.cand} 専用）`,
+      // 候補の電源電圧は使う側で変えられないので「変更する」ではなく「確認する」（D20）。
+      // 「（候補は ○○ 専用）」と書くと、候補の範囲が基準より広い向き（基準 WGP-FZ-14FK-1、候補 MS3749-A-D44/H）では
+      // 候補が狭い機器のように読める。どちらの向きでも同じ意味に読めるよう、盤の電源が候補の範囲に入るかを問う形にする
+      // （依頼者の決定 2026-09-27。設計 2-7-4 の例文とは違う文になる。設計文書は次の文書の PR で直す）
+      todo: (r) => `盤の電源電圧が候補の範囲（${r.cand}）に入るか確認する`,
       whenMissing: '電源電圧が登録されていません。仕様書・現物で確認してください。' },
     { key: 'option', label: 'オプション', read: (d) => (d.specs?.option?.length ? optionText(d.specs.option) : undefined), compare: 'equal',
       whenDiffers: 'オプションが違います。設置環境と接続先に基準のオプションが要るかを確認してください。',
