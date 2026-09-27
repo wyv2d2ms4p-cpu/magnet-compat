@@ -105,6 +105,8 @@ header .sub{color:var(--sub);font-size:12px;}
 .dim-verdict.ok{color:var(--green);} .dim-verdict.warn{color:var(--amber);} .dim-verdict.dim{color:var(--dim);}
 /* 寸法の差は1方向を1行に（D23）。1行に並べると右の列が縮まず、375px 幅で型式の列を細らせてカードからはみ出す */
 .dim-verdict .dd{display:block;} .dim-verdict .dd-sep{display:none;}
+/* 差をどちらから見たか（「今の機器より」）を3方向の上に独立した1行で出す */
+.dim-verdict .dd-lead{display:block;}
 
 .badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
 .badge{font-size:10px;padding:2px 7px;border-radius:4px;font-family:var(--mono);

@@ -1,5 +1,5 @@
 /** 描画部品。3アプリに重複していたウィザード・外形図・バッジをここに集約。 */
-import { esc, num, dimDeltaText } from './util.mjs';
+import { esc, num, dimDeltaText, DIM_DELTA_LEAD } from './util.mjs';
 import { primarySpec, formatSpec } from './registry.mjs';
 import { evidenceRow, warningFor, stateOf } from './evidence.mjs';
 import { CHECK_STATES } from './tiers.mjs';
@@ -313,11 +313,15 @@ export function candidateCard(category, m, c, index) {
    * `.card-right` は縮まない（`flex-shrink:0`）ので、1行のままだと 375px 幅で右の列が 250px 前後に広がり、
    * 型式の列が細って折り返し、10枚はカードの枠からはみ出した（実測）。文字として「・」を残すのは、
    * 読み上げやコピーで3方向がつながって読めなくならないようにするため。
+   *
+   * 3方向の上に「今の機器より」を1行添える（依頼者の決定 2026-09-27）。符号だけでは、どちらから見た差かを
+   * 画面から読み取れなかった。後ろの空白は「・」と同じく文字として残して画面では隠す（`.dd-sep`）。
+   * 隠さないと行頭に空白が出る。残さないと textContent で「今の機器より高さ」と語がくっつく。
    */
   const dimVerdict = !c.dimsTrustworthy
     ? '<span class="dim-verdict dim">寸法未確認</span>'
     : c.diff === 0 ? '<span class="dim-verdict ok">寸法一致</span>'
-    : `<span class="dim-verdict warn">${dimDeltaText(c.dims, m.dims).split('・')
+    : `<span class="dim-verdict warn"><span class="dd-lead">${DIM_DELTA_LEAD}</span><span class="dd-sep"> </span>${dimDeltaText(c.dims, m.dims).split('・')
       .map((t) => `<span class="dd">${esc(t)}</span>`).join('<span class="dd-sep">・</span>')}</span>`;
 
   const badges = [
