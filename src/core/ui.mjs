@@ -1,5 +1,5 @@
 /** 描画部品。3アプリに重複していたウィザード・外形図・バッジをここに集約。 */
-import { esc, num } from './util.mjs';
+import { esc, num, dimDeltaText } from './util.mjs';
 import { primarySpec, formatSpec } from './registry.mjs';
 import { evidenceRow, warningFor, stateOf } from './evidence.mjs';
 import { CHECK_STATES } from './tiers.mjs';
@@ -290,7 +290,7 @@ export function fieldQuestionsPanel(questions) {
  *   上の段の「他社互換」は変えない（接触器・サーマルの画面が広く変わるため。D10）。
  * - `detailPanels` の代わりに確認項目の表。両方出すと同じ差が枠と表で2回出る（設計 2-3）。
  *   表の前に要約とやることを置き、表は折りたたむ（`lowerCardBody`。D18）。`note` は今までどおりその前
- * - 右上の寸法の表示（`dim-verdict`）は上の段と同じ。方向ごとの差にする決定（D23）は別の PR で入れる
+ * - 右上の寸法の表示（`dim-verdict`）は上の段と同じ（方向ごとの差。D23 は全カテゴリ・全段のカードに当てる）
  * - rework で2台なら型式の横に「× 2台」。`.model` の中身は登録された綴りのままにする。
  */
 export function candidateCard(category, m, c, index) {
@@ -303,10 +303,22 @@ export function candidateCard(category, m, c, index) {
     : lower ? '<span class="badge b-cross">別メーカー</span>'
     : '<span class="badge b-cross">他社互換</span>';
 
+  /*
+   * 寸法が違うときは方向ごとの差（候補 − 基準）を出す（設計 1-7。D23）。
+   * 「差 Σ…mm」（`dimDiff` の和）では、どの方向がどれだけ違うかも、候補が大きいのか小さいのかも読めなかった。
+   * 分岐の条件（寸法未確認・寸法一致の判定）は `c.diff` のまま変えない。`diff` は各カテゴリの `rank` が
+   * 並び順に使っているので、表示のためだけに別の値を作り、`diff` そのものには触れない。
+   *
+   * 1方向を1行にする（`.dd` を block に。区切りの「・」は文字として残し、画面では隠す）。
+   * `.card-right` は縮まない（`flex-shrink:0`）ので、1行のままだと 375px 幅で右の列が 250px 前後に広がり、
+   * 型式の列が細って折り返し、10枚はカードの枠からはみ出した（実測）。文字として「・」を残すのは、
+   * 読み上げやコピーで3方向がつながって読めなくならないようにするため。
+   */
   const dimVerdict = !c.dimsTrustworthy
     ? '<span class="dim-verdict dim">寸法未確認</span>'
     : c.diff === 0 ? '<span class="dim-verdict ok">寸法一致</span>'
-    : `<span class="dim-verdict warn">差 Σ${num(c.diff)}mm</span>`;
+    : `<span class="dim-verdict warn">${dimDeltaText(c.dims, m.dims).split('・')
+      .map((t) => `<span class="dd">${esc(t)}</span>`).join('<span class="dd-sep">・</span>')}</span>`;
 
   const badges = [
     c.holeMatch === null ? badge(null, '取付穴', '取付穴 要検証') : badge(c.holeMatch, '取付穴一致'),

@@ -499,7 +499,7 @@ const lowerGuides = [
   { screen: isoD44, card: d44Fz, pair: 'MS3749-A-D44/H → WGP-FZ-14FK-1', rows: 11,
     gist: ['同じ：入力の方式・入力の相数・第2出力の方式', '違う：電源電圧・外形寸法・入力の H と見る電圧・第1出力の方式・出力間の絶縁'],
     todos: [
-      '盤の電源電圧を確認する（候補は AC100〜120V 専用）',
+      '盤の電源電圧が候補の範囲（AC100〜120V）に入るか確認する',
       '第1出力のディップスイッチを「12V電圧パルス」に設定する',
       'センサの H 電圧が候補の範囲（5V以上30V以下）に入っているかを確認する',
       '2つの出力のマイナス側の配線を確認する（基準は2つの出力が同電位、候補は出力の間が絶縁）',
@@ -510,7 +510,7 @@ const lowerGuides = [
   { screen: fzFK1, card: fzD44, pair: 'WGP-FZ-14FK-1 → MS3749-A-D44/H', rows: 10,
     gist: ['同じ：入力の方式・入力の H と見る電圧・入力の相数・第2出力の方式', '違う：出力間の絶縁・電源電圧・外形寸法・第1出力の方式'],
     todos: [
-      '盤の電源電圧を確認する（候補は AC100〜240V 専用）',
+      '盤の電源電圧が候補の範囲（AC100〜240V）に入るか確認する',
       '基準の第1出力のディップスイッチが今どれに設定されているかを確認する（候補の第1出力は「12V電圧パルス」固定）',
       '2つの出力の行き先の電位（マイナス側）を確認する（基準は出力の間が絶縁、候補は2つの出力が同電位）',
       MAKER_LINE,
@@ -550,6 +550,95 @@ const guideAssertive = ['交換可', '互換品です', '使用可', '使用で�
 check(`下の段のカード（${lowerGuides.length} 枚）の要約・やること・詳細に断定語（${guideAssertive.join('・')}）が出ない`,
   lowerGuides.every(({ card }) => card && guideAssertive.every((w) => !card.body.includes(w))),
   lowerGuides.map(({ card }) => guideAssertive.filter((w) => card?.body.includes(w)).join('・')).join(' / '));
+
+/* ---- ③の候補カード右上: 外形寸法の差を方向ごとに出す（docs/design-common-alternates.md 1-7。D23） ---- */
+
+/**
+ * 寸法の差の表示（`dim-verdict`）を、Σ が出ていた6カテゴリの画面で読む。
+ *
+ * - 画面は、方向ごとの差が1枚以上出るもの（実測）を各カテゴリから選んだ。どの画面も寸法が違う候補が
+ *   0枚になれば、形の検査が「対象0件で PASS」にならないよう、カテゴリごとの枚数を条件に入れる
+ * - 「寸法一致」「寸法未確認」は D23 で変えない表示なので、同じ画面で文言がそのままかも見る
+ * - 画面幅は iPhone の 375px。`.card-right` は縮まないので、1行に並べると右の列が広がって
+ *   カードからはみ出す（実測で10枚）。1方向1行（3行）で、枠の中に収まるかを見る
+ * - 方向の並び・区切り・符号の書式は `dimDeltaText` と同じ（`・` は文字として残し画面では隠す）ので、textContent で読む
+ */
+async function dimVerdicts(cat, model) {
+  await gotoCategory(cat);
+  await search(model);
+  const reached = await page.waitForSelector('.model.big', { timeout: 3000 })
+    .then(async () => (await page.textContent('.model.big')).trim() === model, () => false);
+  if (!reached) return { reached: false, cards: [], scroll: false };
+  await page.click('[data-act="step"][data-v="3"]');
+  await page.waitForTimeout(200);
+  return page.evaluate(() => ({
+    reached: true,
+    scroll: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+    cards: [...document.querySelectorAll('#app .card')].map((card) => {
+      const v = card.querySelector('.dim-verdict');
+      const cr = card.getBoundingClientRect();
+      const rr = card.querySelector('.card-right').getBoundingClientRect();
+      // 行の数は、方向ごとの `.dd` が画面上で何段に並んだかで数える（高さを行の高さで割ると余白で狂う）
+      const tops = new Set([...(v?.querySelectorAll('.dd') ?? [])].map((e) => Math.round(e.getBoundingClientRect().top)));
+      return {
+        model: card.querySelector('.model').textContent.trim(),
+        tone: [...(v?.classList ?? [])].find((k) => k !== 'dim-verdict') ?? '',
+        text: v?.textContent.trim() ?? '',
+        lines: tops.size,
+        inside: rr.left >= cr.left - 0.5 && rr.right <= cr.right + 0.5,
+        todos: [...card.querySelectorAll('.todo li')].map((e) => e.textContent.replace(/\s+/g, ' ').trim()),
+      };
+    }),
+  }));
+}
+
+const dimViewport = page.viewportSize();
+await page.setViewportSize({ width: 375, height: 812 });
+const dimScreens = [
+  ['insulation', 'MS3749-A-D44/H'], ['insulation', 'WGP-FZ-14FK-1'], ['contactor', 'S-T12'], ['starter', 'MSO-T21'],
+  ['thermal', 'TH-T18'], ['photo', 'E3Z-R61'], ['proximity', '203.65R'],
+];
+const dimShots = [];
+for (const [cat, model] of dimScreens) dimShots.push({ cat, model, ...(await dimVerdicts(cat, model)) });
+await page.setViewportSize(dimViewport);
+
+const DELTA = /^高さ [+−±]\d+(\.\d+)?mm・幅 [+−±]\d+(\.\d+)?mm・奥行き [+−±]\d+(\.\d+)?mm$/;
+const dimAll = dimShots.flatMap((s) => s.cards.map((c) => ({ ...c, cat: s.cat, screen: s.model })));
+const dimWarn = dimAll.filter((c) => c.tone === 'warn');
+const dimCats = [...new Set(dimScreens.map(([cat]) => cat))];
+const warnPerCat = dimCats.map((cat) => [cat, dimWarn.filter((c) => c.cat === cat).length]);
+check(`③の候補カード右上に「差 Σ」が出ず、寸法が違う候補は高さ・幅・奥行きの3方向の差を出す（${dimCats.length} カテゴリ ${dimShots.length} 画面、${dimWarn.length} 枚）`,
+  dimShots.every((s) => s.reached) && warnPerCat.every(([, n]) => n > 0)
+  && dimAll.every((c) => !c.text.includes('Σ')) && dimWarn.every((c) => DELTA.test(c.text)),
+  [...dimShots.filter((s) => !s.reached).map((s) => `${s.model} に着かない`),
+    ...warnPerCat.filter(([, n]) => n === 0).map(([cat]) => `${cat} は寸法が違う候補が0枚`),
+    ...dimAll.filter((c) => c.text.includes('Σ') || (c.tone === 'warn' && !DELTA.test(c.text))).map((c) => `${c.screen}→${c.model}: ${c.text}`)].join(' / '));
+// D23 は寸法が違うときの表示だけを変える。一致・未確認の表示は同じ画面の中で文言ごと固定する
+const dimOk = dimAll.filter((c) => c.tone === 'ok');
+const dimNone = dimAll.filter((c) => c.tone === 'dim');
+check(`寸法が同じ候補は「寸法一致」、寸法を信用できない候補は「寸法未確認」のまま（${dimOk.length} 枚・${dimNone.length} 枚）`,
+  dimOk.length > 0 && dimNone.length > 0
+  && dimOk.every((c) => c.text === '寸法一致') && dimNone.every((c) => c.text === '寸法未確認'),
+  [...dimOk, ...dimNone].filter((c) => c.text !== (c.tone === 'ok' ? '寸法一致' : '寸法未確認')).map((c) => `${c.screen}→${c.model}: ${c.text}`).join(' / '));
+/**
+ * 符号は「候補 − 基準」（設計 1-7 の実測）。向きを逆にすると符号だけが入れ替わる。
+ * 右上と、同じカードのやることの「取付スペース」の行は同じ関数で作るので、括弧の中と一致する。
+ */
+const dimPairs = [
+  { screen: 'MS3749-A-D44/H', model: 'WGP-FZ-14FK-1', want: '高さ +19mm・幅 −3.4mm・奥行き +11.5mm' },
+  { screen: 'WGP-FZ-14FK-1', model: 'MS3749-A-D44/H', want: '高さ −19mm・幅 +3.4mm・奥行き −11.5mm' },
+];
+for (const { screen, model, want } of dimPairs) {
+  const card = dimAll.find((c) => c.screen === screen && c.model === model);
+  check(`${screen} → ${model} のカード右上が「${want}」（候補 − 基準）で、やることの取付スペースの行と同じ差を出す`,
+    card?.text === want && card.todos.includes(`取付スペースを確認する（${want}）`),
+    card ? `右上 ${card.text} / やること ${card.todos.find((t) => t.startsWith('取付スペース')) ?? '行が無い'}` : 'カードが無い');
+}
+// 203.65R の候補は差の桁が最も長い組（高さ +108mm・幅 +150mm・奥行き +43mm）。1行に並べたときはみ出した10枚に入る
+check(`画面幅 375px で、寸法の差は1方向1行（3行）で出て、右上の列がカードの枠からはみ出さない（${dimWarn.length} 枚）`,
+  dimWarn.length > 0 && dimWarn.every((c) => c.lines === 3 && c.inside) && dimShots.every((s) => !s.scroll),
+  [...dimWarn.filter((c) => c.lines !== 3 || !c.inside).map((c) => `${c.screen}→${c.model}: ${c.lines}行${c.inside ? '' : ' はみ出し'}`),
+    ...dimShots.filter((s) => s.scroll).map((s) => `${s.model} の③が横にスクロールする`)].join(' / '));
 
 /* ---- 絶縁変換器: オプション（specs.option）の表示 ---- */
 
