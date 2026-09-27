@@ -19,6 +19,10 @@ const categories = [];
  *   emptyNote(m)         … 候補0件のときの説明（任意・HTML）。既定はカテゴリに依らない中立文
  *   primaryStanding(a, m)… 主スペックが基準より小さいか（任意）。既定は「判定しない」
  *   standingNote         … 大小の表示に添える1文（任意）。既定は量に依らない中立文
+ *   alternates(m, ctx)   … 下の段（classMatch / rework）の候補（任意）。宣言しなければ下の段は空
+ *   checkDefs            … 下の段のカードに出す確認項目の定義（任意）
+ *   fieldQuestions(m)    … 交換前に現場で確かめる問い（任意）。基準機だけを受け取る
+ *   （この3つの形とコアが守らせることは src/core/tiers.mjs と docs/design-common-alternates.md 1・2章）
  */
 export function registerCategory(def) {
   if (!def.id || !def.label) throw new Error('カテゴリには id と label が必要です');

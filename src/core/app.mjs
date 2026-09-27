@@ -3,7 +3,8 @@ import { esc, normLoose, normExact, num, mountingOptions, successorChain } from 
 import { store, devicesOf, makersOf } from './store.mjs';
 import { allCategories, getCategory, primarySpec, distinguishingSpec, formatSpec, formatSpecValue } from './registry.mjs';
 import { computeCompatibles } from './compat.mjs';
-import { candidateCard, specGrid, dimDiagram, statusBadges, noteBox, warningBox, scopeNote, discontinuedNote, replacementLine, zoneHead, belowCount, loadCheckNote } from './ui.mjs';
+import { TIERS, tiersOf, fieldQuestionsOf } from './tiers.mjs';
+import { candidateCard, specGrid, dimDiagram, statusBadges, noteBox, warningBox, scopeNote, discontinuedNote, replacementLine, zoneHead, belowCount, loadCheckNote, fieldQuestionsPanel } from './ui.mjs';
 import { evidenceRow } from './evidence.mjs';
 
 const S = {
@@ -297,23 +298,45 @@ function viewResult() {
   const cat = category();
   if (!m) return viewSearch();
   const ps = primarySpec(cat);
-  const list = computeCompatibles(m, cat, { mounting: S.mounting });
+  const ctx = { mounting: S.mounting };
+  const list = computeCompatibles(m, cat, ctx);
 
   /**
-   * 候補を根拠で2分する。判定そのもの（gate / rank / 並び順）は触らず、
-   * `computeCompatibles` が返した順番のまま `isSuccessor` で振り分けるだけ。
+   * 候補を根拠で段に分ける（`src/core/tiers.mjs`）。判定そのもの（gate / rank / 並び順）は触らず、
+   * `computeCompatibles` が返した順番のまま `isSuccessor` で振り分け、下の2段は口から足すだけ。
    * どのカテゴリの `rank` も後継品を先頭に置くので、分けても候補の前後関係は変わらない。
    */
-  const succ = list.filter((c) => c.isSuccessor);
-  const judged = list.filter((c) => !c.isSuccessor);
-  // 見出しは両方に中身があるときだけ。片方しか無い列に見出しを付けても、
-  // 対比する相手がいないので情報が増えない（旧機種インバータ30件は必ず後継1件）。
-  const split = succ.length > 0 && judged.length > 0;
+  const tiers = tiersOf(list, m, cat, ctx);
+  const succ = tiers.successor;
+  const judged = tiers.exact;
+  const lower = [...tiers.classMatch, ...tiers.rework];
+  const filled = TIERS.filter((t) => tiers[t.id].length > 0);
+  /**
+   * 見出しは「中身のある段が2つ以上」または「下の段に中身がある」とき、中身のある段にだけ出す。
+   * 片方しか無い列に見出しを付けても、対比する相手がいないので情報が増えない
+   * （旧機種インバータ30件は必ず後継1件）。後者を足すのは、下の段の候補が見出し無しで並ぶと
+   * 判定条件がすべて一致した候補と区別できないため（設計 1-3）。
+   * 口を宣言しないカテゴリでは下の段が空なので、「後継品と判定候補の両方」という今の規則と同じになる。
+   */
+  const split = filled.length >= 2 || lower.length > 0;
+  /**
+   * 判定側の見出しは、口を宣言したカテゴリだけ設計 1-1 の「判定条件がすべて一致」にする。
+   * 宣言していないカテゴリは今の見出しのまま（D13）。接触器・サーマルは窓や重なり率で拾うので、
+   * 「すべて一致」と名乗ると「値が一致」と読まれる（S-N35 34A の候補に 26A が並ぶ）。
+   */
+  const tiered = typeof cat.alternates === 'function';
+  const title = (id) => (id === 'exact' && !tiered ? '当アプリの判定による候補' : TIERS.find((t) => t.id === id).title);
 
-  // 合算した件数は、根拠の違う候補を1つの数字にまとめてしまう。分けたときだけ内訳を出す
-  const count = split
-    ? `互換品候補 ${list.length}件（メーカー指定の後継品 ${succ.length}件 / 当アプリの判定による候補 ${judged.length}件）`
-    : `互換品候補 ${list.length}件`;
+  /**
+   * 合算した件数は、根拠の違う候補を1つの数字にまとめてしまう。分けたときだけ内訳を出す。
+   * 段を持つカテゴリでは合計を「互換品候補」と呼ばず、段ごとの件数だけにする（D9）。
+   * 理由は同じで、下の段まで足すと、根拠の違う候補がさらに1つの数字に溶ける（設計 1-4）。
+   */
+  const count = !split
+    ? `互換品候補 ${list.length}件`
+    : tiered
+      ? filled.map((t) => `${title(t.id)} ${tiers[t.id].length}件`).join(' / ')
+      : `互換品候補 ${list.length}件（メーカー指定の後継品 ${succ.length}件 / 当アプリの判定による候補 ${judged.length}件）`;
 
   // 型式を画面で最大に見せる場所なので、生産終了バッジは他の呼び出し箇所と同様にここでも出す。
   // バッジが無いと「発注してはいけない型式」が一番目立つ見た目になる。
@@ -323,8 +346,8 @@ function viewResult() {
       <span class="sub">${esc(m.maker)} ・ ${esc(formatSpec(ps, m))}</span>
     </div>
     <div class="sub">${esc(count)}</div>
-    ${loadCheckNote(cat, belowCount(cat, m, list))}
-  </div>`;
+    ${loadCheckNote(cat, belowCount(cat, m, [...list, ...lower]))}
+  </div>${fieldQuestionsPanel(fieldQuestionsOf(cat, m))}`;
 
   /**
    * 0件の理由はカテゴリごとに違う。説明を持っているカテゴリにはそれを言わせる。
@@ -350,15 +373,30 @@ function viewResult() {
    *
    * `candidateCard` は添字0に「候補No.1」バッジを付ける。ゾーンごとに数え直すと、
    * 公式後継の隣で判定候補の先頭が「候補No.1」を名乗ることになり、
-   * 分けた意味（根拠が違う）が見た目で消える。
+   * 分けた意味（根拠が違う）が見た目で消える。下の段は `list` に無いので -1 になり、
+   * どんな場合もバッジが付かない（設計 1-5）。
    */
   const zone = (cs) => cs.map((c) => candidateCard(cat, m, c, list.indexOf(c))).join('');
-  const body = !list.length
+  const LOWER_NOTES = {
+    classMatch: '判定条件の一部で登録値が基準と違います。違いは各候補の確認項目に示します。',
+    rework: '配線の変更または台数の追加を前提にした候補です。確認項目と現場への問いを確かめてください。',
+  };
+  const lowerZone = (id) => (tiers[id].length
+    ? zoneHead(id, title(id), LOWER_NOTES[id]) + zone(tiers[id]) : '');
+  /**
+   * 判定条件がすべて一致が0件で下の段があるときは、下の段の前に1行出す（D8。依頼者の決定）。
+   * カテゴリの0件パネルは全段が0件のときだけ。見出しの「見つかりませんでした」が下の段と矛盾する。
+   */
+  const noExact = judged.length === 0 && lower.length > 0
+    ? '<div class="panel tier-none">判定条件がすべて一致する候補はありません。</div>' : '';
+  // `.zone-head` と `.card` は `#app` の直下に並べる（smoke の resultZones が直下の子で所属を決める）
+  const body = !list.length && !lower.length
     ? `<div class="panel empty-note">${empty}</div>`
     : split
-      ? zoneHead('succ', 'メーカー指定の後継品') + zone(succ)
-        + zoneHead('judged', '当アプリの判定による候補',
-          'メーカーが後継として指定した型式ではありません。') + zone(judged)
+      ? (succ.length ? zoneHead('succ', 'メーカー指定の後継品') + zone(succ) : '')
+        + (judged.length ? zoneHead('judged', title('exact'),
+          'メーカーが後継として指定した型式ではありません。') + zone(judged) : '')
+        + noExact + lowerZone('classMatch') + lowerZone('rework')
       : zone(list);
 
   return `${head}${body}
