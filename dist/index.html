@@ -105,6 +105,8 @@ header .sub{color:var(--sub);font-size:12px;}
 .dim-verdict.ok{color:var(--green);} .dim-verdict.warn{color:var(--amber);} .dim-verdict.dim{color:var(--dim);}
 /* 寸法の差は1方向を1行に（D23）。1行に並べると右の列が縮まず、375px 幅で型式の列を細らせてカードからはみ出す */
 .dim-verdict .dd{display:block;} .dim-verdict .dd-sep{display:none;}
+/* 差をどちらから見たか（「今の機器より」）を3方向の上に独立した1行で出す */
+.dim-verdict .dd-lead{display:block;}
 
 .badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
 .badge{font-size:10px;padding:2px 7px;border-radius:4px;font-family:var(--mono);
@@ -267,6 +269,16 @@ function dimDiff(a, b) {
   if (!a || !b) return null;
   return Math.abs(a.w - b.w) + Math.abs(a.h - b.h) + Math.abs(a.d - b.d);
 }
+
+/**
+ * 寸法の差の頭に添える、差をどちらから見たかの語（依頼者の決定 2026-09-27）。
+ *
+ * 「高さ +19mm」だけでは、候補が大きいのか今の機器が大きいのかを画面から読み取れなかった
+ * （依頼者が実機の iPhone で確認）。`dimDeltaText` の中には入れず、右上とやることの2か所が
+ * この定数を前に置く。右上は1方向1行の頭に独立した行として出したいので、文字列に混ぜると分けられない。
+ * 2か所が同じ定数を使うので、片方だけ語が変わることはない。
+ */
+const DIM_DELTA_LEAD = '今の機器より';
 
 /**
  * 方向ごとの寸法の差（候補 c − 基準 b。候補のほうが大きければ ＋）。どちらか欠けていれば null。
@@ -1338,11 +1350,15 @@ function candidateCard(category, m, c, index) {
    * `.card-right` は縮まない（`flex-shrink:0`）ので、1行のままだと 375px 幅で右の列が 250px 前後に広がり、
    * 型式の列が細って折り返し、10枚はカードの枠からはみ出した（実測）。文字として「・」を残すのは、
    * 読み上げやコピーで3方向がつながって読めなくならないようにするため。
+   *
+   * 3方向の上に「今の機器より」を1行添える（依頼者の決定 2026-09-27）。符号だけでは、どちらから見た差かを
+   * 画面から読み取れなかった。後ろの空白は「・」と同じく文字として残して画面では隠す（`.dd-sep`）。
+   * 隠さないと行頭に空白が出る。残さないと textContent で「今の機器より高さ」と語がくっつく。
    */
   const dimVerdict = !c.dimsTrustworthy
     ? '<span class="dim-verdict dim">寸法未確認</span>'
     : c.diff === 0 ? '<span class="dim-verdict ok">寸法一致</span>'
-    : `<span class="dim-verdict warn">${dimDeltaText(c.dims, m.dims).split('・')
+    : `<span class="dim-verdict warn"><span class="dd-lead">${DIM_DELTA_LEAD}</span><span class="dd-sep"> </span>${dimDeltaText(c.dims, m.dims).split('・')
       .map((t) => `<span class="dd">${esc(t)}</span>`).join('<span class="dd-sep">・</span>')}</span>`;
 
   const badges = [
@@ -3557,7 +3573,8 @@ registerCategory({
       whenMissing: 'オプションの指定が片方にありません（型式にオプション欄が無い機種を含みます）。基準のオプションが要るかを確認してください。' },
     { key: 'dims', label: '外形寸法', read: (d) => (d.dims ? formatDims(d.dims) : undefined), compare: 'equal',
       whenDiffers: '外形寸法が違います。取付スペースと、端子配列が同じかを確認してください。',
-      todo: (r, m, c) => `取付スペースを確認する（${dimDeltaText(c.dims, m.dims)}）`,
+      // 括弧の中はカード右上と同じ「今の機器より」＋3方向の差（依頼者の決定 2026-09-27）。右上と語をそろえる
+      todo: (r, m, c) => `取付スペースを確認する（${DIM_DELTA_LEAD} ${dimDeltaText(c.dims, m.dims)}）`,
       whenMissing: '外形寸法が登録されていません。取付スペースと端子配列を現物で確認してください。' },
   ],
   /**

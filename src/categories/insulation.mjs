@@ -347,7 +347,7 @@
 import { registerCategory } from '../core/registry.mjs';
 import { preferTrue, ascending } from '../core/compat.mjs';
 import { evidenceRank } from '../core/evidence.mjs';
-import { esc, num, dimDeltaText } from '../core/util.mjs';
+import { esc, num, dimDeltaText, DIM_DELTA_LEAD } from '../core/util.mjs';
 import { devicesOf } from '../core/store.mjs';
 import { compareValues, MAKER_TODO } from '../core/tiers.mjs';
 import { signalRowOf, SIGNAL_FIELD_OF_KEY } from './insulation-signal-classes.mjs';
@@ -1294,7 +1294,8 @@ registerCategory({
       whenMissing: 'オプションの指定が片方にありません（型式にオプション欄が無い機種を含みます）。基準のオプションが要るかを確認してください。' },
     { key: 'dims', label: '外形寸法', read: (d) => (d.dims ? formatDims(d.dims) : undefined), compare: 'equal',
       whenDiffers: '外形寸法が違います。取付スペースと、端子配列が同じかを確認してください。',
-      todo: (r, m, c) => `取付スペースを確認する（${dimDeltaText(c.dims, m.dims)}）`,
+      // 括弧の中はカード右上と同じ「今の機器より」＋3方向の差（依頼者の決定 2026-09-27）。右上と語をそろえる
+      todo: (r, m, c) => `取付スペースを確認する（${DIM_DELTA_LEAD} ${dimDeltaText(c.dims, m.dims)}）`,
       whenMissing: '外形寸法が登録されていません。取付スペースと端子配列を現物で確認してください。' },
   ],
   /**

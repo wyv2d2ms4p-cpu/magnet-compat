@@ -504,7 +504,7 @@ const lowerGuides = [
       'センサの H 電圧が候補の範囲（5V以上30V以下）に入っているかを確認する',
       '2つの出力のマイナス側の配線を確認する（基準は2つの出力が同電位、候補は出力の間が絶縁）',
       MAKER_LINE,
-      '取付スペースを確認する（高さ +19mm・幅 −3.4mm・奥行き +11.5mm）',
+      '取付スペースを確認する（今の機器より 高さ +19mm・幅 −3.4mm・奥行き +11.5mm）',
       MISSING_LINE,
     ] },
   { screen: fzFK1, card: fzD44, pair: 'WGP-FZ-14FK-1 → MS3749-A-D44/H', rows: 10,
@@ -514,7 +514,7 @@ const lowerGuides = [
       '基準の第1出力のディップスイッチが今どれに設定されているかを確認する（候補の第1出力は「12V電圧パルス」固定）',
       '2つの出力の行き先の電位（マイナス側）を確認する（基準は出力の間が絶縁、候補は2つの出力が同電位）',
       MAKER_LINE,
-      '取付スペースを確認する（高さ −19mm・幅 +3.4mm・奥行き −11.5mm）',
+      '取付スペースを確認する（今の機器より 高さ −19mm・幅 +3.4mm・奥行き −11.5mm）',
       MISSING_LINE,
     ] },
 ];
@@ -562,6 +562,8 @@ check(`下の段のカード（${lowerGuides.length} 枚）の要約・やるこ
  * - 画面幅は iPhone の 375px。`.card-right` は縮まないので、1行に並べると右の列が広がって
  *   カードからはみ出す（実測で10枚）。1方向1行（3行）で、枠の中に収まるかを見る
  * - 方向の並び・区切り・符号の書式は `dimDeltaText` と同じ（`・` は文字として残し画面では隠す）ので、textContent で読む
+ * - 3方向の頭に「今の機器より」を独立した1行で添える（依頼者の決定 2026-09-27）。textContent では
+ *   「今の機器より 高さ …」と1続きに読めること、画面では3方向の上の別の行にあることを分けて見る
  */
 async function dimVerdicts(cat, model) {
   await gotoCategory(cat);
@@ -580,11 +582,17 @@ async function dimVerdicts(cat, model) {
       const rr = card.querySelector('.card-right').getBoundingClientRect();
       // 行の数は、方向ごとの `.dd` が画面上で何段に並んだかで数える（高さを行の高さで割ると余白で狂う）
       const tops = new Set([...(v?.querySelectorAll('.dd') ?? [])].map((e) => Math.round(e.getBoundingClientRect().top)));
+      // 「今の機器より」の行。3方向のどの行よりも上にあれば、独立した1行として出ている。
+      // 隠した要素（display:none）は位置が 0 になり「上にある」と数えてしまうので、描かれていることも見る
+      const lead = v?.querySelector('.dd-lead');
+      const leadTop = lead && lead.getClientRects().length > 0 ? Math.round(lead.getBoundingClientRect().top) : null;
       return {
         model: card.querySelector('.model').textContent.trim(),
         tone: [...(v?.classList ?? [])].find((k) => k !== 'dim-verdict') ?? '',
         text: v?.textContent.trim() ?? '',
         lines: tops.size,
+        lead: lead?.textContent ?? null,
+        leadAbove: leadTop !== null && tops.size > 0 && [...tops].every((t) => t > leadTop),
         inside: rr.left >= cr.left - 0.5 && rr.right <= cr.right + 0.5,
         todos: [...card.querySelectorAll('.todo li')].map((e) => e.textContent.replace(/\s+/g, ' ').trim()),
       };
@@ -602,12 +610,12 @@ const dimShots = [];
 for (const [cat, model] of dimScreens) dimShots.push({ cat, model, ...(await dimVerdicts(cat, model)) });
 await page.setViewportSize(dimViewport);
 
-const DELTA = /^高さ [+−±]\d+(\.\d+)?mm・幅 [+−±]\d+(\.\d+)?mm・奥行き [+−±]\d+(\.\d+)?mm$/;
+const DELTA = /^今の機器より 高さ [+−±]\d+(\.\d+)?mm・幅 [+−±]\d+(\.\d+)?mm・奥行き [+−±]\d+(\.\d+)?mm$/;
 const dimAll = dimShots.flatMap((s) => s.cards.map((c) => ({ ...c, cat: s.cat, screen: s.model })));
 const dimWarn = dimAll.filter((c) => c.tone === 'warn');
 const dimCats = [...new Set(dimScreens.map(([cat]) => cat))];
 const warnPerCat = dimCats.map((cat) => [cat, dimWarn.filter((c) => c.cat === cat).length]);
-check(`③の候補カード右上に「差 Σ」が出ず、寸法が違う候補は高さ・幅・奥行きの3方向の差を出す（${dimCats.length} カテゴリ ${dimShots.length} 画面、${dimWarn.length} 枚）`,
+check(`③の候補カード右上に「差 Σ」が出ず、寸法が違う候補は「今の機器より」に続けて高さ・幅・奥行きの3方向の差を出す（${dimCats.length} カテゴリ ${dimShots.length} 画面、${dimWarn.length} 枚）`,
   dimShots.every((s) => s.reached) && warnPerCat.every(([, n]) => n > 0)
   && dimAll.every((c) => !c.text.includes('Σ')) && dimWarn.every((c) => DELTA.test(c.text)),
   [...dimShots.filter((s) => !s.reached).map((s) => `${s.model} に着かない`),
@@ -625,8 +633,8 @@ check(`寸法が同じ候補は「寸法一致」、寸法を信用できない�
  * 右上と、同じカードのやることの「取付スペース」の行は同じ関数で作るので、括弧の中と一致する。
  */
 const dimPairs = [
-  { screen: 'MS3749-A-D44/H', model: 'WGP-FZ-14FK-1', want: '高さ +19mm・幅 −3.4mm・奥行き +11.5mm' },
-  { screen: 'WGP-FZ-14FK-1', model: 'MS3749-A-D44/H', want: '高さ −19mm・幅 +3.4mm・奥行き −11.5mm' },
+  { screen: 'MS3749-A-D44/H', model: 'WGP-FZ-14FK-1', want: '今の機器より 高さ +19mm・幅 −3.4mm・奥行き +11.5mm' },
+  { screen: 'WGP-FZ-14FK-1', model: 'MS3749-A-D44/H', want: '今の機器より 高さ −19mm・幅 +3.4mm・奥行き −11.5mm' },
 ];
 for (const { screen, model, want } of dimPairs) {
   const card = dimAll.find((c) => c.screen === screen && c.model === model);
@@ -639,6 +647,11 @@ check(`画面幅 375px で、寸法の差は1方向1行（3行）で出て、右
   dimWarn.length > 0 && dimWarn.every((c) => c.lines === 3 && c.inside) && dimShots.every((s) => !s.scroll),
   [...dimWarn.filter((c) => c.lines !== 3 || !c.inside).map((c) => `${c.screen}→${c.model}: ${c.lines}行${c.inside ? '' : ' はみ出し'}`),
     ...dimShots.filter((s) => s.scroll).map((s) => `${s.model} の③が横にスクロールする`)].join(' / '));
+// 「今の機器より」は3方向の上に別の行として出る。同じ行に入ると、右の列が広がって上の検査のはみ出しに戻る
+check(`寸法の差の頭に「今の機器より」が3方向の上の独立した1行で出る（${dimWarn.length} 枚）`,
+  dimWarn.length > 0 && dimWarn.every((c) => c.lead === '今の機器より' && c.leadAbove),
+  dimWarn.filter((c) => c.lead !== '今の機器より' || !c.leadAbove)
+    .map((c) => `${c.screen}→${c.model}: ${c.lead === null ? '行が無い' : c.leadAbove ? c.lead : `${c.lead}（3方向の上の行に出ていない）`}`).join(' / '));
 
 /* ---- 絶縁変換器: オプション（specs.option）の表示 ---- */
 
