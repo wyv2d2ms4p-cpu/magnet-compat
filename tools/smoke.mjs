@@ -192,8 +192,8 @@ check('絶縁変換器のカテゴリチップが出る',
   (await page.$('[data-act="cat"][data-v="insulation"]')) !== null, chips.join(','));
 
 const isoCount = await page.$eval('[data-act="cat"][data-v="insulation"] .cnt', (e) => Number(e.textContent));
-check('絶縁変換器が72件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP-DS/DE 9件・WGP-FZ 3件・WGP-MS 4件・WGP-FV 2件 + エムジー WRPP 1件）',
-  isoCount === 72, `実際 ${isoCount}件`);
+check('絶縁変換器が77件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP-DS/DE 9件・WGP-FZ 3件・WGP-MS 4件・WGP-FV 2件 + エムジー WRPP 1件・RPPD 5件）',
+  isoCount === 77, `実際 ${isoCount}件`);
 
 /**
  * ②の仕様欄を「ラベル → 値」の組で DOM 順のまま拾う。
@@ -1332,6 +1332,64 @@ check('同じ仮想のレコードに別の寸法を持たせると、外形寸�
   !!otherDims && dimsPanelTitles(noDimsBase, otherDims).includes('外形寸法') && otherRow?.state === 'differs',
   otherDims ? `パネル: ${dimsPanelTitles(noDimsBase, otherDims).join(' / ') || '無し'} / 確認項目: ${otherRow?.state ?? '無い'}`
     : '基準と寸法が違う登録品が無い');
+
+/* ---- 絶縁変換器: エムジー RPPD（入力2回路・出力2点） ---- */
+
+/**
+ * RPPD の5件は予備品リストに実在する型式だけを登録した（設計 13章）。画面の側で固定するのは次の6つ。
+ *
+ * - 予備品リストの表記 `RPPD-JJ1NN1NK`（⑧の前のハイフンが無い）で検索して、`RPPD-JJ1NN1N-K` の②に着くこと（D44）。
+ *   ハイフンの位置だけの違いは `normExact` が吸収する仕様なので、英数字が変わったとき（例：-R で登録）に落ちる
+ * - ②に入力の相数 2・出力の論理 非反転が出て、第1出力が仕様書の表記「12V 電圧パルス」（空白あり）で出ること（D32）。
+ *   仕様欄から読む（`#app` 全体だと `srcNote` の語で通る）
+ * - ②の note が、入力1→第1出力・入力2→第2出力、論理の対応が未確認、出力の間の絶縁の記載が無い、の3点を言うこと
+ * - 5件とも全段0件で0件パネルが出て、現場への問いに B相の配線が出ること（13-8 の見込み）。
+ *   候補が出るように `gate` や分類表が変わったら、ここで気づく
+ * - `dims` を持たないので、②に外形図が描かれず断りが出ること（D41）。図を確かめて `dims` を足すときは、
+ *   この検査を寸法の検査に置き換える（WRPP の PR #64 と同じ）。
+ *   ②の外形図は `evidence.dims` が `verified` のときだけ描かれる（`src/core/app.mjs`）ので、`dims` を推定のまま
+ *   （`estimated` で）足しても②は変わらない。それでも推定の寸法は③の並び順と寸法の差の表示に使われるので、
+ *   画面だけでなくデータの側でも、5件が `dims` をキーごと持たず `evidence.dims` が `unverified` であることを見る
+ */
+const rppdModels = isoDevicesOf('insulation').filter((d) => d.series === 'RPPD').map((d) => d.model);
+
+await gotoCategory('insulation');
+await search('RPPD-JJ1NN1NK');
+const rppdListBig = await page.waitForSelector('.model.big', { timeout: 3000 })
+  .then(async () => (await page.textContent('.model.big')).trim(), () => null);
+check('予備品リストの表記「RPPD-JJ1NN1NK」で検索すると RPPD-JJ1NN1N-K の②に直行する',
+  rppdListBig === 'RPPD-JJ1NN1N-K', `着いた画面: ${rppdListBig ?? '②に着かない'}`);
+
+const rppdDD4 = await insulationResult('RPPD-DD4NN1N-R');
+check('RPPD-DD4NN1N-R の②に入力の相数 2・出力の論理 非反転が出て、第1出力が仕様書の表記「12V 電圧パルス」で出る',
+  rppdDD4.reached && rppdDD4.specOf('入力の相数（回路数）') === '2' && rppdDD4.specOf('出力の論理') === '非反転'
+  && rppdDD4.specOf('第1出力') === '12V 電圧パルス',
+  `入力の相数: ${rppdDD4.specOf('入力の相数（回路数）') ?? '欄が無い'} / 出力の論理: ${rppdDD4.specOf('出力の論理') ?? '欄が無い'}`
+  + ` / 第1出力: ${rppdDD4.specOf('第1出力') ?? '欄が無い'}`);
+check('RPPD-DD4NN1N-R の②の note が、入力1→第1出力・入力2→第2出力であること、論理の対応が未確認であること、出力の間の絶縁の記載が無いことを言う',
+  rppdDD4.deviceNote.includes('入力1を第1出力、入力2を第2出力に出す')
+  && rppdDD4.deviceNote.includes('入力の ON/OFF と出力の H/L の対応は、資料の図を未確認')
+  && rppdDD4.deviceNote.includes('第1出力と第2出力の間に絶縁の記載が無い'),
+  `取得: "${rppdDD4.deviceNote}"`);
+
+const rppdScreens = [];
+for (const model of rppdModels) rppdScreens.push({ model, r: model === 'RPPD-DD4NN1N-R' ? rppdDD4 : await insulationResult(model) });
+const rppdQCounts = [...new Set(rppdScreens.map(({ r }) => r.questions.length))];
+const rppdBad = rppdScreens.filter(({ r }) => !(r.reached && r.cards.length === 0 && r.lowerCards.length === 0 && r.zoneTitles.length === 0
+  && r.note.includes('互換品候補は見つかりませんでした') && r.questions.some((q) => q.includes('B相の配線を使っているか'))));
+check(`RPPD の${rppdModels.length}件は全段0件で0件パネルが出て、現場への問いに B相の配線が出る（問い ${rppdQCounts.join('・')} 件）`,
+  rppdModels.length > 0 && rppdBad.length === 0,
+  rppdBad.map(({ model, r }) => `${model}: 到達 ${r.reached} / 上 ${r.cards.length} / 下 ${r.lowerCards.length}`
+    + ` / 0件パネル ${r.note ? 'あり' : '無い'} / 問い ${r.questions.join('・') || '無い'}`).join(' | ') || 'RPPD が data に無い');
+
+const rppdNN = rppdScreens.find(({ model }) => model === 'RPPD-JJ1NN1N-K')?.r;
+const rppdWithDims = isoDevicesOf('insulation').filter((d) => d.series === 'RPPD' && ('dims' in d || d.evidence?.dims?.state !== 'unverified'));
+check(`RPPD の${rppdModels.length}件は dims をキーごと持たず（evidence.dims は unverified）、RPPD-JJ1NN1N-K の②で外形図が描かれず、「外形寸法は未確認のため図を表示しません」が出る`,
+  rppdModels.length > 0 && rppdWithDims.length === 0
+  && !!rppdNN?.reached && !rppdNN.flow.includes('外形図') && rppdNN.flow.includes('外形図なしの断り')
+  && rppdNN.spec.includes('外形寸法は未確認のため図を表示しません'),
+  `dims を持つか unverified でない: ${rppdWithDims.map((d) => d.model).join(' / ') || '0件'}`
+  + ` / ${rppdNN ? `②の並び: ${rppdNN.flow.join(' → ') || '取得できない'}` : 'RPPD-JJ1NN1N-K が data に無い'}`);
 
 /* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
 

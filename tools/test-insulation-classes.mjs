@@ -21,7 +21,7 @@ import { getCategory } from '../src/core/registry.mjs';
 import { computeCompatibles } from '../src/core/compat.mjs';
 import { computeTiers, checkRows } from '../src/core/tiers.mjs';
 import { signalRowOf } from '../src/categories/insulation-signal-classes.mjs';
-import '../src/categories/insulation.mjs';
+import { OUTPUT_ISOLATION_UNREADABLE } from '../src/categories/insulation.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -56,6 +56,32 @@ for (const m of all) {
 }
 check(`絶縁変換器 ${all.length} 件で、後継＋判定一致が computeCompatibles と中身も並びも同じ（候補の辺 ${upperEdges} 本）`,
   all.length > 0 && upperEdges > 0 && upperBad.length === 0, upperBad.slice(0, 5).join(' '));
+
+/**
+ * 「判定条件がすべて一致」は綴りの一致で決まる段なので、別メーカーの組が入るのは、どこかで綴りが
+ * 別メーカーの語に寄ったとき（10-1-5・D32）。RPPD-JJ1AA1N-R の出力は MS3749・WGP-FZ と同じ綴り
+ * `オープンコレクタ` で、入力の綴りと相数だけが RPPD を MS3749 の③から外している。
+ * 綴りが寄ったときに黙って上の段に並ばないよう、上の段の全辺でメーカーが同じことを見る。
+ *
+ * 後半は空振りの担保。実データの上の段は全辺が同じメーカーなので、メーカーを見ない関数でも前半は通る。
+ * WGP-FZ-14FK-1 を複製してメーカーだけを変えたレコードを検査の中だけで作り（`data/` には入れない）、
+ * 同じ関数がその辺を別メーカーの組として見つけることを見る。
+ */
+const crossMakerExact = (pairs) => pairs.flatMap(([m, t]) => t.exact
+  .filter((c) => c.maker !== m.maker).map((c) => `${m.model} → ${c.model}`));
+const exactEdges = [...tiersOfModel.values()].reduce((s, t) => s + t.exact.length, 0);
+const realCross = crossMakerExact(all.map((m) => [m, tiersOfModel.get(m.model)]));
+const fkBase = all.find((d) => d.model === 'WGP-FZ-14FK-1');
+const otherMaker = fkBase && { ...fkBase, id: 'VIRTUAL_WGP_FZ_14FK_1_OTHER_MAKER', model: 'WGP-FZ-14FK-1（仮想・別メーカー）', maker: '（仮想のメーカー）' };
+const virtualCross = fkBase ? (() => {
+  loadDevices([...all, otherMaker]);
+  const t = computeTiers(fkBase, cat, {});
+  loadDevices(all);
+  return crossMakerExact([[fkBase, t]]);
+})() : [];
+check(`絶縁変換器の「判定条件がすべて一致」の辺 ${exactEdges} 本に、メーカーの違う組が無い（WGP-FZ-14FK-1 のメーカーだけを変えた仮想のレコードでは見つかる）`,
+  exactEdges > 0 && realCross.length === 0 && virtualCross.includes(`WGP-FZ-14FK-1 → ${otherMaker?.model}`),
+  `実データ: ${realCross.join(' / ') || '0本'} / 仮想: ${virtualCross.join(' / ') || '見つからない'}`);
 
 /* ---- 2. 下の段の件数 ---- */
 
@@ -211,16 +237,37 @@ check(`第1出力の分類は向きで covers ⇔ coveredBy に入れ替わり�
 
 /**
  * 値は資料から系列と出力の組み合わせで決まる（`insulation.mjs` の `OUTPUT_ISOLATION`）。
- * 2出力型の全件が値を持ち（資料の値の無い系列が混ざると「未登録」になる）、同電位と絶縁の両方が実在することを見る。
+ * 2出力型のうち、資料から読み取れないと宣言した系列（`OUTPUT_ISOLATION_UNREADABLE`。RPPD。D39）を除く全件が値を持ち
+ * （資料の値の付け忘れは「未登録」になって画面では読み取れない場合と見分けがつかない）、同電位と絶縁の両方が実在することを見る。
+ *
+ * もとは「2出力型の全件に値がある」の1件だった。RPPD を足すとそのままでは落ちるが、消さずに2つに分けた。
+ * 宣言から系列を外すと前者が落ち、宣言した系列に推測の値を足すと後者が落ちる。
  */
 const isoDef = cat.checkDefs.find((d) => d.key === 'outputIsolation');
 const twoOut = all.filter((d) => typeof d.specs?.output2Signal === 'string');
-const isoVals = twoOut.map((d) => ({ d, v: isoDef.read(d) }));
+const unreadableOut = twoOut.filter((d) => OUTPUT_ISOLATION_UNREADABLE.includes(d.series));
+const isoVals = twoOut.filter((d) => !OUTPUT_ISOLATION_UNREADABLE.includes(d.series)).map((d) => ({ d, v: isoDef.read(d) }));
 const samePot = isoVals.filter((x) => x.v?.coupled === 1);
 const isolated = isoVals.filter((x) => x.v?.coupled === 0);
-check(`2出力型 ${twoOut.length} 件すべてに出力間の絶縁の資料の値がある（同電位 ${samePot.length} 件・絶縁 ${isolated.length} 件）`,
-  twoOut.length > 0 && samePot.length > 0 && isolated.length > 0 && samePot.length + isolated.length === twoOut.length,
+check(`2出力型 ${twoOut.length} 件のうち、資料から読み取れないと宣言した系列（${OUTPUT_ISOLATION_UNREADABLE.join('・')} ${unreadableOut.length} 件）を除く全件に出力間の絶縁の資料の値がある（同電位 ${samePot.length} 件・絶縁 ${isolated.length} 件）`,
+  isoVals.length > 0 && samePot.length > 0 && isolated.length > 0 && samePot.length + isolated.length === isoVals.length,
   isoVals.filter((x) => !x.v).map((x) => x.d.model).join(' / '));
+
+/**
+ * 宣言した系列は data に1件以上あり（宣言が古くならない）、全件が値を持たず、確認項目が「未登録・現物で確認」になる。
+ * 確認項目は、同じレコードの複製を候補にした組で見る（RPPD は実データの下の段に出ないため。13-8）。
+ */
+const unreadableBySeries = OUTPUT_ISOLATION_UNREADABLE.map((series) => {
+  const recs = all.filter((d) => d.series === series);
+  const bad = recs.filter((d) => {
+    const row = rowOf(checkRows(cat, d, { ...d, id: `VIRTUAL_${d.id}` }), 'outputIsolation');
+    return isoDef.read(d) !== undefined || row?.state !== 'missing';
+  });
+  return { series, n: recs.length, bad };
+});
+check('出力間の絶縁を読み取れないと宣言した系列は data に1件以上あり、全件が値を持たない（「未登録・現物で確認」になる）',
+  unreadableBySeries.length > 0 && unreadableBySeries.every((x) => x.n > 0 && x.bad.length === 0),
+  unreadableBySeries.map((x) => `${x.series} ${x.n} 件（値を持つか未登録にならない: ${x.bad.map((d) => d.model).join(' / ') || '0件'}）`).join(' | ') || '宣言が空');
 
 /**
  * 基準が同電位・候補が絶縁 → 現場で確認、基準が絶縁・候補が同電位 → 違う。実データの下の段に1組ある。

@@ -17,7 +17,7 @@
  */
 
 /**
- * 分類名の閉じた一覧（12-3。入力18・出力10の28個）。表の行はこの一覧の名前しか使えない。
+ * 分類名の閉じた一覧（12-3。入力18・出力11の29個）。表の行はこの一覧の名前しか使えない。
  * 一覧を別に持つのは、行の分類名の綴り間違いが「どれとも重ならない新しい分類」として
  * 黙って通り、候補が静かに消えるのを検査で落とすため（3-3 の検査4）。
  */
@@ -32,12 +32,12 @@ export const SIGNAL_CLASS_NAMES = {
   output: [
     '直流電圧出力 0〜10V', '直流電圧出力 0〜5V', '直流電圧出力 1〜5V', '直流電圧出力 ±10V',
     '直流電流出力 4〜20mA',
-    '12V電圧パルス出力', '10V電圧パルス出力', '5V電圧パルス出力', 'オープンコレクタ出力', 'ラインドライバ出力',
+    '24V電圧パルス出力', '12V電圧パルス出力', '10V電圧パルス出力', '5V電圧パルス出力', 'オープンコレクタ出力', 'ラインドライバ出力',
   ],
 };
 
 /**
- * 分類表（12-4・12-5 の30行）。1行は「入力か出力か」と「綴り」の組。
+ * 分類表（12-4・12-5 の35行）。1行は「入力か出力か」と「綴り」の組。
  *
  * 出力は `outputSignal`・`output1Signal`・`output2Signal` を1つの欄として扱う（12-2）。
  * 「出力ごとに1台」のとき各台のどちらの出力を使ってもよい（D16）ので、第1出力と第2出力で
@@ -76,6 +76,11 @@ export const SIGNAL_CLASS_ROWS = [
     // 表示ではしきい値と区別する（FZ の 5V以上30V以下は資料どおりの H の範囲なので、そのまま）
     highV: { min: 2, max: 50, text: 'しきい値 約2V・入力許容 50V DC まで（資料 Rev.1.90 の値）' } },
   { src: 'IN-19', field: 'input', spelling: '無電圧スイッチ', classes: ['接点入力（検出 5V／10mA）'], mode: 'single' },
+  // RPPD の入力 J。MS3749 の L と同じく RS-422 の差動信号を受ける。回路の数は inputPhases が別に持つ（13-4）
+  { src: 'IN-20', field: 'input', spelling: 'RS-422 ラインドライバ・パルス', classes: ['ラインドライバ入力'], mode: 'single' },
+  // RPPD の入力 D。資料にあるのは H の下限（VH 5.25V以上）だけで上限の記載が無い。今の fits は閉じた区間しか
+  // 受けないので、資料に無い上限で埋めずに highV を持たせない（確認項目は「未登録・現物で確認」。D37）
+  { src: 'IN-21', field: 'input', spelling: '12V、24V電圧パルス', classes: ['電圧パルス入力'], mode: 'single' },
   { src: 'OUT-01', field: 'output', spelling: 'DC0～10V', classes: ['直流電圧出力 0〜10V'], mode: 'single' },
   { src: 'OUT-02', field: 'output', spelling: 'DC0～5V', classes: ['直流電圧出力 0〜5V'], mode: 'single' },
   { src: 'OUT-03', field: 'output', spelling: 'DC1～5V', classes: ['直流電圧出力 1〜5V'], mode: 'single' },
@@ -88,6 +93,12 @@ export const SIGNAL_CLASS_ROWS = [
   { src: 'OUT-10', field: 'output', spelling: '電圧パルス／オープンコレクタ（ディップスイッチ選択）',
     classes: ['5V電圧パルス出力', '12V電圧パルス出力', 'オープンコレクタ出力'], mode: 'selectable' },
   { src: 'OUT-11', field: 'output', spelling: '12V電圧パルス', classes: ['12V電圧パルス出力'], mode: 'single' },
+  // RPPD の出力 P。H の電圧の違う出力を同じ分類にすると、12V を受ける入力に 24V が行く組が「分類が一致」に入り得る（D35）
+  { src: 'OUT-12', field: 'output', spelling: '24V 電圧パルス', classes: ['24V電圧パルス出力'], mode: 'single' },
+  // RPPD の出力 N。WRPP の `12V電圧パルス`（OUT-11）とは空白の有無だけが違う綴りで、資料の表記のまま別の行にした（D32・D38）
+  { src: 'OUT-13', field: 'output', spelling: '12V 電圧パルス', classes: ['12V電圧パルス出力'], mode: 'single' },
+  // RPPD の出力 J。入力 J（IN-20）とは空白の有無が違うが、欄が違うので別の行になる（13-3）
+  { src: 'OUT-14', field: 'output', spelling: 'RS-422ラインドライバ・パルス', classes: ['ラインドライバ出力'], mode: 'single' },
 ];
 
 /** `specs` のキーから表の欄へ。出力の3つのキーは1つの欄（12-2） */
