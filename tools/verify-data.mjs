@@ -853,6 +853,42 @@ check(`分類表の分類名はすべて宣言した一覧（${classNameCount} �
   }
 });
 
+/**
+ * 同じ欄で、空白の有無だけが違う綴りを宣言した組に限る（`docs/design-insulation-converter.md` 13-3・D32・D38）。
+ *
+ * 信号名は資料の表記のまま持つので、空白だけが違う綴りは2社・2系列の資料の書き方の違いとして生じ得る。
+ * 実際 RPPD の出力 `12V 電圧パルス`（空白あり）と WRPP の `12V電圧パルス`（空白なし）は、同じメーカーの
+ * 同じ語が別の行として並んでいる（WRPP の綴りは直さないと決めた。D38）。
+ * 宣言の外でこの形が増えるのは、多くは書き写しの揺れで、別の行になったまま `gate` の一致から黙って外れる。
+ * 資料の表記どおりの違いなら、資料を確かめたうえでここに宣言を足す。
+ * 宣言した組が data から消えても落とす（宣言が古いまま残らないように）。
+ * 入力と出力は欄が違うので比べない（入力 `RS-422 ラインドライバ・パルス`／出力 `RS-422ラインドライバ・パルス`）。
+ */
+const SPACE_ONLY_PAIRS = [{ field: 'output', spellings: ['12V電圧パルス', '12V 電圧パルス'] }];
+const spaceKey = (field, spellings) => `${field}\t${[...spellings].sort().join('\t')}`;
+const spaceGroups = new Map();
+for (const s of isoSpellings) {
+  const k = `${s.field}\t${s.spelling.replace(/\s/g, '')}`;
+  if (!spaceGroups.has(k)) spaceGroups.set(k, { field: s.field, spellings: [] });
+  spaceGroups.get(k).spellings.push(s.spelling);
+}
+const spaceFound = [...spaceGroups.values()].filter((g) => g.spellings.length > 1);
+check(`絶縁変換器の同じ欄の信号名で、空白の有無だけが違う綴りは宣言した${SPACE_ONLY_PAIRS.length}組だけ`
+  + `（${SPACE_ONLY_PAIRS.map((p) => `${p.field === 'output' ? '出力' : '入力'}：${p.spellings.join('／')}`).join('、')}）`, (fail) => {
+  if (!isoSpellings.length) fail('絶縁変換器の信号名が1つも無い … 対象0件のまま PASS しないよう落とす');
+  const declared = new Set(SPACE_ONLY_PAIRS.map((p) => spaceKey(p.field, p.spellings)));
+  const found = new Set(spaceFound.map((g) => spaceKey(g.field, g.spellings)));
+  for (const g of spaceFound) {
+    if (!declared.has(spaceKey(g.field, g.spellings))) {
+      fail(`${g.field}: ${g.spellings.map((v) => `「${v}」`).join(' / ')} が空白の有無だけ違う`
+        + ' … 書き写しの揺れなら綴りを資料の表記に直す。資料どおりなら資料を確かめて宣言に足す');
+    }
+  }
+  for (const p of SPACE_ONLY_PAIRS) {
+    if (!found.has(spaceKey(p.field, p.spellings))) fail(`宣言した組 ${p.spellings.join(' / ')} が data の ${p.field} に揃っていない … 宣言を見直す`);
+  }
+});
+
 // ---- 追加: カテゴリの対応 ------------------------------------------------
 
 /**
