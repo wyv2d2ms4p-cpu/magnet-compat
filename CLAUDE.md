@@ -57,7 +57,8 @@
 
 - 変更後は必ず `npm run check` を **exit=0** で通す。
   内訳は `verify-data` → `verify-legacy` → `build` → `regress` →
-  `test-compat` → `smoke` → `test:ext`。
+  `test-compat` → `test-insulation-response` → `test-insulation-classes` →
+  `test-sensor-empty` → `smoke` → `test:ext`。
 - `smoke` は playwright を使う。未インストールなら `npm install` を実行する
   （`node_modules/` は `.gitignore` 済み）。
 - **検査を削除・無効化して通さない。** 落ちたら原因を直す。
