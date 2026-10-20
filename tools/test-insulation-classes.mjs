@@ -20,7 +20,7 @@ import { loadDevices, devicesOf } from '../src/core/store.mjs';
 import { getCategory } from '../src/core/registry.mjs';
 import { computeCompatibles } from '../src/core/compat.mjs';
 import { computeTiers, checkRows } from '../src/core/tiers.mjs';
-import { signalRowOf } from '../src/categories/insulation-signal-classes.mjs';
+import { signalRowOf, SIGNAL_CLASS_ROWS } from '../src/categories/insulation-signal-classes.mjs';
 import { OUTPUT_ISOLATION_UNREADABLE } from '../src/categories/insulation.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -288,6 +288,137 @@ const mixedRows = oneA && d44 ? checkRows(cat, oneA, d44) : [];
 check('1出力型どうしの組には「第1出力と第2出力の間の絶縁」の行を出さず、片方が2出力型なら出す（MS3749-A-D4/H で確認）',
   oneRows.length > 0 && !rowOf(oneRows, 'outputIsolation') && !!rowOf(mixedRows, 'outputIsolation'),
   `1出力どうし: ${rowOf(oneRows, 'outputIsolation') ? '出る' : '出ない'} / D4/H と D44/H: ${rowOf(mixedRows, 'outputIsolation') ? '出る' : '出ない'}`);
+
+/* ---- 6. アナログ側の下の段のカード（docs/design-insulation-converter.md 14-6・14-9 の検査の案1〜4。D52〜D54・D62・D63） ---- */
+
+/**
+ * 実データにはアナログ側の下の段の組が1本も無い（M2VS の登録は PR-B2。14-10）。`phasesMatch`・WGP-FV と同じく、
+ * 仮想の組を検査の中だけで作って固定する（`data/` には入れない）。
+ *
+ * WVP-DS-15A-1 を複製してメーカーを変えた2件を作る。片方は応答時間を速くし（500μs）、入力抵抗・許容負荷抵抗・
+ * 電源電圧も変える（14-6 の例1・例2 の「違う」がそろう形）。もう片方は応答時間を基準と同じにする。
+ *
+ * **分類表の行を検査の中だけで足す。** 綴りが基準と同じだと `gate` を通って「判定条件がすべて一致」に入り、
+ * 下の段に来ない（下の段は綴りが違い分類が同じ組。M2VS の `0～10V DC` 対 `DC0～10V` がその形）。
+ * そこで、既存の分類の綴りだけを変えた仮想の行を `SIGNAL_CLASS_ROWS` に足し、走査が終わったら必ず外す。
+ * ファイルの分類表は変えないので、`verify-data` が見る文書・コード・データの突き合わせには触れない。
+ */
+const ANALOG_ITEMS_PULSE_ONLY = ['inputHighV', 'inputPhases', 'output1Class', 'output1MaxFreqHz', 'outputRating'];
+const ANALOG_ITEMS_OUTPUT2 = ['output2Class', 'output2MaxFreqHz', 'outputIsolation'];
+const ds15 = all.find((d) => d.model === 'WVP-DS-15A-1');
+const virtualRows = ds15 ? [
+  { ...signalRowOf('input', ds15.specs.inputSignal), src: 'VIRTUAL-IN', spelling: `${ds15.specs.inputSignal}（仮想）` },
+  { ...signalRowOf('output', ds15.specs.outputSignal), src: 'VIRTUAL-OUT', spelling: `${ds15.specs.outputSignal}（仮想）` },
+] : [];
+const analogVirtual = (suffix, specs) => ({
+  ...ds15, id: `VIRTUAL_WVP_DS_15A_1_${suffix}`, model: `WVP-DS-15A-1（仮想・別メーカー・${suffix === 'FAST' ? '速い' : '応答時間が同じ'}）`,
+  maker: '（仮想のメーカー）',
+  specs: { ...ds15.specs, inputSignal: virtualRows[0].spelling, outputSignal: virtualRows[1].spelling, ...specs },
+});
+const vFast = ds15 && analogVirtual('FAST', { responseUs: 500, inputResistance: '1MΩ以上', outputLoad: '550Ω以下', powerSupply: 'DC24V' });
+const vSameRes = ds15 && analogVirtual('SAME', {});
+/** 仮想の行と組を足して下の段の全カードを集める。壊したときに例外で止まっても、検査として NG を出すよう捕まえる */
+const lowerCardsWithVirtual = (() => {
+  if (!ds15) return { cards: [], error: 'WVP-DS-15A-1 が data に無い' };
+  SIGNAL_CLASS_ROWS.push(...virtualRows);
+  try {
+    loadDevices([...all, vFast, vSameRes]);
+    const cards = devicesOf('insulation').flatMap((m) => computeTiers(m, cat, {}).classMatch.map((c) => ({ m, c })));
+    return { cards, error: '' };
+  } catch (e) {
+    return { cards: [], error: e.message };
+  } finally {
+    SIGNAL_CLASS_ROWS.splice(SIGNAL_CLASS_ROWS.length - virtualRows.length, virtualRows.length);
+    loadDevices(all);
+  }
+})();
+const cardOf = (base, cand) => lowerCardsWithVirtual.cards.find(({ m, c }) => m.model === base && c.id === cand?.id)?.c;
+const fastCard = cardOf('WVP-DS-15A-1', vFast);
+const sameCard = cardOf('WVP-DS-15A-1', vSameRes);
+const virtualCards = [fastCard, sameCard].filter(Boolean);
+const keysOf = (card) => card.checks.map((r) => r.key);
+
+/**
+ * 案1。パルス側だけの項目と、両方とも持たない第2出力の項目（出力間の絶縁を含む）とオプション（D52）は、
+ * アナログ側のカードに行が出ない。`applies` を1つでも外すと「未登録」の行が出て落ちる。
+ * 空振りでないことは、同じ項目がパルス側の実データの2枚には出ていることで見る（`applies` が全部の組で行を消していない）。
+ */
+const leaked = virtualCards.flatMap((card) => keysOf(card)
+  .filter((k) => [...ANALOG_ITEMS_PULSE_ONLY, ...ANALOG_ITEMS_OUTPUT2, 'option'].includes(k)).map((k) => `${card.model}: ${k}`));
+const pulseCards = classEdges.map(({ c }) => c);
+const pulseHasAll = pulseCards.length > 0 && pulseCards.every((card) => [...ANALOG_ITEMS_PULSE_ONLY, ...ANALOG_ITEMS_OUTPUT2, 'option']
+  .every((k) => keysOf(card).includes(k)));
+check('アナログ側の下の段のカードに、パルス側だけの項目（入力の H と見る電圧・入力の相数・第1出力 最大周波数・出力の定格）と、'
+  + '両方とも持たない第2出力の行とオプションの行が出ない（WVP-DS-15A-1 のメーカーと応答時間を変えた仮想の組で確認。パルス側の2枚には出る）',
+  virtualCards.length === 2 && leaked.length === 0 && pulseHasAll,
+  lowerCardsWithVirtual.error || `${leaked.join(' / ') || '漏れ無し'} / パルス側の2枚に全項目: ${pulseHasAll}`);
+
+/**
+ * 案2。新設の2項目（許容負荷抵抗・応答時間）がアナログ側のカードに出て、応答時間は向きのある `atMost` で、
+ * 速い候補は「現場で確認」・同じ値は「同じ」になる。比べ方を `equal` にすると速い候補が「違う」になって落ちる。
+ */
+const rowIn = (card, key) => card?.checks.find((r) => r.key === key);
+check('同じ仮想の組のカードに許容負荷抵抗と応答時間の行が出て、速い候補の応答時間は「現場で確認」、同じ値は「同じ」になる',
+  !!fastCard && !!sameCard && !!rowIn(fastCard, 'outputLoad') && !!rowIn(sameCard, 'outputLoad')
+  && rowIn(fastCard, 'responseUs')?.state === 'field' && rowIn(sameCard, 'responseUs')?.state === 'same',
+  lowerCardsWithVirtual.error || virtualCards.map((card) => `${card.model}: 許容負荷抵抗 ${rowIn(card, 'outputLoad')?.state ?? '行が無い'}・`
+    + `応答時間 ${rowIn(card, 'responseUs')?.state ?? '行が無い'}`).join(' / '));
+
+/**
+ * 案3。アナログ側は出力が1系統なので「第1出力」と呼ばない（`summary` の「WVP は出力が1系統なので『第1』と呼ばない」を
+ * カードにも当てる）。要約の2行と表の見出しの両方で見る。出力の分類の項目を分けずに戻すと「第1出力の方式」が出て落ちる。
+ */
+const gistWords = (card) => [...card.guide.same, ...card.guide.differs];
+const calledFirst = virtualCards.flatMap((card) => [...gistWords(card), ...card.checks.map((r) => r.label)]
+  .filter((w) => w.includes('第1出力')).map((w) => `${card.model}: ${w}`));
+check('アナログ側の下の段のカードの要約で、出力を「出力の方式」と呼び「第1出力」と呼ばない',
+  virtualCards.length === 2 && virtualCards.every((card) => gistWords(card).includes('出力の方式')) && calledFirst.length === 0,
+  lowerCardsWithVirtual.error || `${calledFirst.join(' / ') || '第1出力と呼ぶ語は無い'} / 要約 ${virtualCards.map((card) => gistWords(card).join('・')).join(' | ')}`);
+
+/**
+ * 案4。下の段の全カード（実データのパルス側2枚＋仮想の組）で、「違う」「現場で確認」の項目すべてに、やることの文と並びがある。
+ * コアは欠けを例外で止める（`cardGuide`）ので、例外は捕まえて NG にする。やることの行の数が「違う」「現場で確認」の項目の数
+ * ＋別メーカーの行＋登録の無い項目の行と合うことも見る（黙って行が落ちていない）。
+ * 対象が0件や、アナログ側の新しい項目が1つも「違う」「現場で確認」にならない形では通さない
+ * （入力抵抗・許容負荷抵抗・応答時間の todo を消したら落ちることを、検査の中で担保する）。
+ */
+const todoOrder = cat.todoOrder || [];
+const defsByKey = new Map(cat.checkDefs.map((d) => [d.key, d]));
+const openRows = lowerCardsWithVirtual.cards.flatMap(({ m, c }) => c.checks
+  .filter((r) => r.state === 'differs' || r.state === 'field').map((r) => ({ m, c, r })));
+const noTodo = openRows.filter(({ r }) => typeof defsByKey.get(r.key)?.todo !== 'function' || !todoOrder.includes(r.key));
+const lineCountBad = lowerCardsWithVirtual.cards.filter(({ c }) => {
+  const open = c.checks.filter((r) => r.state === 'differs' || r.state === 'field').length;
+  const missing = c.checks.some((r) => r.state === 'missing') ? 1 : 0;
+  return c.guide.todos.length !== open + (c.sameMaker ? 0 : 1) + missing;
+});
+const openKeys = new Set(openRows.map(({ r }) => r.key));
+const analogOpen = ['inputResistance', 'outputLoad', 'responseUs'].filter((k) => openKeys.has(k));
+check(`絶縁変換器の下の段の全カード（${lowerCardsWithVirtual.cards.length} 枚。実データのパルス側 ${classEdges.length} 枚＋仮想の組）で、`
+  + `「違う」「現場で確認」の項目すべて（${openRows.length} 行）にやることの文と並びがある`,
+  !lowerCardsWithVirtual.error && lowerCardsWithVirtual.cards.length > classEdges.length && classEdges.length > 0
+  && openRows.length > 0 && noTodo.length === 0 && lineCountBad.length === 0 && analogOpen.length === 3,
+  lowerCardsWithVirtual.error || [
+    noTodo.map(({ m, c, r }) => `${m.model} → ${c.model}: ${r.key}`).join(' / '),
+    lineCountBad.map(({ m, c }) => `${m.model} → ${c.model} の行数`).join(' / '),
+    `アナログ側の項目で開いたもの: ${analogOpen.join('・') || '無し'}`,
+  ].filter(Boolean).join(' | '));
+
+/**
+ * やることの並び（D54）。アナログ側で入力抵抗 → 許容負荷抵抗 → 応答時間が、電源電圧の後・別メーカーの端子の前に並ぶ。
+ * パルス側の並びは smoke が2枚のやることの全行で固定している（ここで二重に持たない）。
+ */
+const fastTodos = fastCard?.guide.todos ?? [];
+const wantFastTodos = [
+  '盤の電源電圧が候補の範囲（DC24V）に入るか確認する',
+  '送り側の機器が候補の入力抵抗（1MΩ以上）で働くか確認する',
+  '受け側（負荷）の抵抗が候補の許容負荷抵抗（550Ω以下）に入るか確認する',
+  '応答が速くなる（約25ms → 約500μs）。受け側の制御で困らないか確認する',
+  '別メーカーのため、端子の並びを確認して配線する',
+];
+check('アナログ側の仮想の組のやることが、電源電圧 → 入力抵抗 → 許容負荷抵抗 → 応答時間 → 別メーカーの端子の順に並ぶ（D54）',
+  JSON.stringify(fastTodos) === JSON.stringify(wantFastTodos),
+  lowerCardsWithVirtual.error || fastTodos.map((t, i) => `${i + 1}. ${t}`).join(' | ') || '下の段に無い');
 
 console.log('');
 if (failures.length) {

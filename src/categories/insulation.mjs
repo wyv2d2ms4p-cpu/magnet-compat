@@ -970,6 +970,31 @@ function outputTodo(which, keyOf) {
   };
 }
 
+/**
+ * 確認項目を出す組の分け方（`docs/design-insulation-converter.md` 14-6。D53）。
+ *
+ * パルス側（`output1Signal`）とアナログ側（`outputSignal`）は、語る量が違う。パルス側は入力の H 電圧・
+ * 相数・最大周波数・出力の定格で語り、アナログ側は許容負荷抵抗・応答時間で語る（`phasesMatch`・
+ * `responseWithin` の JSDoc と同じ分け方）。もう片方の系統の項目は値が無いのではなく**該当しない**ので、
+ * `applies` で行ごと出さない（11-2-3 が消してよいとする「該当しない組」）。出したままだと、アナログ側の
+ * カードにパルス側の6項目が「未登録」で並び、確かめようの無いことを確かめさせる（14-6 の見直しの前のカード）。
+ *
+ * **どちらか一方がその系統なら出す。** 下の段の組は `alternates` が系統の同じ組に限るので、実際には両方が
+ * 同じ系統になる。両方を要求すると、系統の違う組を `checkRows` に渡したとき（下の段には出ない組）に出力の
+ * 方式の行がどちらからも消え、未登録を隠すことになる。片方で足りる形なら、そういう組では両方の行が「未登録」で残る。
+ */
+const isPulsePair = (m, c) => outputSignalKey(m) === 'output1Signal' || outputSignalKey(c) === 'output1Signal';
+const isAnalogPair = (m, c) => outputSignalKey(m) === 'outputSignal' || outputSignalKey(c) === 'outputSignal';
+/** 第2出力の項目は、どちらかが2出力型の組だけ（1出力型どうしには該当しない。片方だけなら「未登録」で残す） */
+const hasOutput2 = (m, c) => typeof m.specs?.output2Signal === 'string' || typeof c.specs?.output2Signal === 'string';
+/**
+ * オプションの行は、どちらかがオプションを持つ組だけ（D52）。`option` は型式末尾のオプションの指定で、
+ * キーの不在は「指定なし」（③の `optionPanel` も両方とも持たない組には枠を出さない）。値が分からないのではなく
+ * 指定が無いので、両方とも持たない組は該当しない組として行を出さない。出すと「指定が片方にありません」と、
+ * 両方とも持たない組に意味の通らない文が出る（14-6）。片方だけが持つ組は今どおり「未登録・現物で確認」。
+ */
+const hasOption = (m, c) => !!m.specs?.option?.length || !!c.specs?.option?.length;
+
 registerCategory({
   id: 'insulation',
   label: '絶縁変換器',
@@ -1315,41 +1340,96 @@ registerCategory({
    * **第1出力と第2出力の間の絶縁も向きがある**（`OUTPUT_ISOLATION`）。MS3749-A-D44/H（同電位）が基準で
    * WGP-FZ-14FK-1（絶縁）が候補なら「現場で確認」、逆向きは「違う」。
    *
-   * 下の段はいまパルス側だけに出る（アナログ側の同じ分類の組 25本はすべて遅い側で、D5 で出ない。12-8）。
-   * パルス側の項目がアナログ側のカードで「未登録」と出る並びは、アナログ側に下の段が出たときに見直す。
+   * **系統ごとの項目は `applies` で分けた**（14-6・D53。`isPulsePair` / `isAnalogPair` の JSDoc）。
+   * もとはパルス側だけを見た並びで、アナログ側に下の段が出たときに見直すと書いていた。M2VS を登録すると
+   * アナログ側に下の段が初めて出る（14-9）ので、データ（PR-B2）より先にこの PR（PR-B1）で見直した（D55）。
+   * 実データの下の段はまだパルス側の2枚だけで、その2枚に出る行と文は見直しの前と同じ
+   * （パルス側だけの項目は今の行のまま、新しい項目はアナログ側の組にしか出ない）。
+   *   - パルス側の組だけ … 入力の H と見る電圧・入力の相数・第1出力の分類・第1出力 最大周波数・出力の定格
+   *   - アナログ側の組だけ … 出力信号の分類・許容負荷抵抗・応答時間
+   *   - どちらかが第2出力を持つ組だけ … 第2出力の分類・第2出力 最大周波数・出力間の絶縁
+   *   - どちらかがオプションを持つ組だけ … オプション（D52）
+   *   - どの組にも出す … 入力信号の分類・入力抵抗・電源電圧・外形寸法（両系統が同じ意味で持つ量）
+   *
+   * `checkDefs` を系統ごとに丸ごと2つ持たないのは、両系統に出す項目（入力抵抗・電源電圧・外形寸法）の文が
+   * 2か所に分かれ、片方だけ直す事故が起きるため（D53 の選ばなかった案）。
+   * 状態が同じ行は宣言の順に並ぶので、新しい項目はパルス側の項目の間に置いても、パルス側のカードの並びは変わらない。
    */
   checkDefs: [
     // 入力の行はいま全部 single なので「同じ」か「違う」にしかならない（IN-15 が selectable になるのは D1 が解けたとき）
     { key: 'inputClass', label: '入力信号の分類', short: '入力の方式', read: (d) => classesOf(d, 'inputSignal'), compare: 'set' },
-    { key: 'inputHighV', label: '入力の H と見る電圧', read: highVOf, compare: 'fits', format: (v) => v.text,
+    { key: 'inputHighV', label: '入力の H と見る電圧', read: highVOf, compare: 'fits', format: (v) => v.text, applies: isPulsePair,
       whenField: 'センサの H 電圧が、候補の範囲に入っているかを確認してください。',
       // 基準の値（MS3749 は しきい値と入力許容を分けた長い文）は詳細の表に任せ、やることには候補の範囲だけを書く
       todo: (r) => `センサの H 電圧が候補の範囲（${r.cand}）に入っているかを確認する`,
       whenDiffers: 'H と見る電圧の範囲が重なりません。センサの H 電圧を確認してください。',
       whenMissing: 'H と見る電圧の範囲が登録されていません。仕様書・現物で確認してください。' },
+    // 両系統に出す。比べ方は文字列の完全一致のまま（D62）。1MΩ と 1MΩ以上 は数値に読み替えず「違う」と出す。
+    // 読み替えの仕組みは誤りの元になり、高い入力抵抗の違いなら確かめる手間は小さい（依頼者の決定）。
+    // todo は M2VS で別メーカーの電流入力（250Ω 対 50Ω）が並ぶと「違う」になるので足した。無いとコアが例外で止める
+    // （`docs/design-common-alternates.md` 9章の14 の、並びに無い項目が「違う」になる最初の実例。14-6 の前提）
     { key: 'inputResistance', label: '入力抵抗', read: (d) => d.specs?.inputResistance, compare: 'equal',
       whenDiffers: '入力抵抗が違います。送り側の機器で駆動できるかを確認してください。',
+      todo: (r) => `送り側の機器が候補の入力抵抗（${r.cand}）で働くか確認する`,
       whenMissing: '入力抵抗が登録されていません。仕様書・現物で確認してください。' },
-    { key: 'inputPhases', label: '入力の相数（回路数）', short: '入力の相数', read: (d) => d.specs?.inputPhases, compare: 'equal' },
+    { key: 'inputPhases', label: '入力の相数（回路数）', short: '入力の相数', read: (d) => d.specs?.inputPhases, compare: 'equal', applies: isPulsePair },
+    // 第1出力の分類はパルス側だけにした。アナログ側は下の「出力信号の分類」（1出力型を「第1」と呼ばない。
+    // `summary` の「WVP は出力が1系統なので『第1』と呼ばない」をカードにも当てる。14-6）。
+    // 項目を分けたのは、label・short を組で出し分けると、パルス側のカードの文字列まで同じ関数を通ることになるため。
+    // 分ければパルス側の項目は今の文字列のまま残る
     { key: 'output1Class', label: '第1出力（出力信号）の分類', short: '第1出力の方式', read: (d) => classesOf(d, outputSignalKey(d)), compare: 'set',
+      applies: isPulsePair,
       whenField: 'スイッチで選ぶ出力を含みます。基準で使っている出力と同じ分類に設定されているか・設定できるかを確認してください。'
         + 'WGP-FZ の第1出力をワンショットにすると、第2出力もワンショットになります（資料の注記）。',
       todo: outputTodo('第1出力', outputSignalKey) },
+    // アナログ側の出力の分類。文は第1出力と同じ作り（`outputTodo`）にした。いまアナログ側の出力の行は全部 single で、
+    // 下の段では「同じ」にしかならないが、スイッチで選ぶ出力の行が入ったときに文が無くて止まらないようにするため。
+    // 第1出力の whenField の WGP-FZ の注記はパルス側の資料の話なので持たせない
+    { key: 'outputClass', label: '出力信号の分類', short: '出力の方式', read: (d) => classesOf(d, 'outputSignal'), compare: 'set',
+      applies: isAnalogPair,
+      whenField: 'スイッチで選ぶ出力を含みます。基準で使っている出力と同じ分類に設定されているか・設定できるかを確認してください。',
+      todo: outputTodo('出力', () => 'outputSignal') },
+    // 12-7 のアナログ側の行は「同じ綴りの中で全件が同じ値」を理由に許容負荷抵抗を項目にしていなかった。
+    // 別メーカー（M2VS の 10kΩ以上 対 渡辺電機工業の 5kΩ以上）が同じ分類に入ってその前提が崩れるので足した（14-4・14-6）。
+    // 入力抵抗と同じく文字列の完全一致で比べる（範囲の読み替えをしない。D62 と同じ考え方）
+    { key: 'outputLoad', label: '許容負荷抵抗', read: (d) => d.specs?.outputLoad, compare: 'equal', applies: isAnalogPair,
+      whenDiffers: '許容負荷抵抗が違います。受け側（負荷）の抵抗が候補の範囲に入るかを確認してください。',
+      todo: (r) => `受け側（負荷）の抵抗が候補の許容負荷抵抗（${r.cand}）に入るか確認する`,
+      whenMissing: '許容負荷抵抗が登録されていません。仕様書・現物で確認してください。' },
+    // 向きのある比べ方（`atMost`。候補が基準以下）。同じ値は「同じ」、速い候補は「現場で確認」。
+    // 遅い候補は下の段にも出さない（D5。`alternates` が `responseWithin` で落とす）ので、下の段で「違う」にはならない。
+    // 12-7 は「遅い組は出さない」とだけ書いていたが、M2VS で速い候補が下の段に並ぶようになるので差を表で見せ、
+    // 9-2 の「速い側へ替えて困る設計は現物と図面で分かる」の確認をやることで促す（14-6）。
+    // 表示は今の `formatResponse` のまま（「以下」の印は PR-B2。D51）
+    { key: 'responseUs', label: '応答時間', read: (d) => d.specs?.responseUs, compare: 'atMost', format: formatResponse, applies: isAnalogPair,
+      whenField: '候補の応答が基準より速くなります。受け側の制御が応答の速さに頼っていないかを確認してください。',
+      whenDiffers: '候補の応答が基準より遅くなります。受け側の制御が間に合うかを確認してください。',
+      whenMissing: '応答時間が登録されていません。仕様書・現物で確認してください。',
+      // 遅い向き（differs）の文は作らない。下の段に来ない組なので、来たら黙って文を作らずに止める（`outputTodo` と同じ）
+      todo: (r, m, c) => {
+        if (r.state === 'field') return `応答が速くなる（${r.base} → ${r.cand}）。受け側の制御で困らないか確認する`;
+        throw new Error(`応答時間のやること: 状態 ${r.state} の文はありません（${m.model} → ${c.model}。遅い候補は下の段に出さない。D5）`);
+      } },
+    // 1出力型どうしには該当しない（「出力間の絶縁」と同じ理由）。片方だけが持つ組は今どおり「未登録」で出す
     { key: 'output2Class', label: '第2出力の分類', short: '第2出力の方式', read: (d) => classesOf(d, 'output2Signal'), compare: 'set',
+      applies: hasOutput2,
       whenMissing: '第2出力が片方にしかありません。第2出力の配線を使っているかを確認してください。',
       todo: outputTodo('第2出力', () => 'output2Signal') },
     { key: 'output1MaxFreqHz', label: '第1出力 最大周波数', read: (d) => d.specs?.output1MaxFreqHz, compare: 'equal', format: formatFreq,
+      applies: isPulsePair,
       whenDiffers: '最大出力周波数が違います。入力パルスの周波数を確認してください。',
       whenMissing: '最大出力周波数が登録されていません（設定で変わる機種を含みます）。仕様書・現物で確認してください。' },
     { key: 'output2MaxFreqHz', label: '第2出力 最大周波数', read: (d) => d.specs?.output2MaxFreqHz, compare: 'equal', format: formatFreq,
+      applies: hasOutput2,
       whenDiffers: '最大出力周波数が違います。入力パルスの周波数を確認してください。',
       whenMissing: '最大出力周波数が登録されていません（設定で変わる機種を含みます）。仕様書・現物で確認してください。' },
+    // 語（H・L の電圧、オープンコレクタ）がパルス側の資料のもの。アナログ側の出力の条件は許容負荷抵抗で見る
     { key: 'outputRating', label: '出力の定格（H・L の電圧、許容差、内部抵抗・許容負荷、オープンコレクタの定格）', short: '出力の定格',
-      read: notInData, compare: 'equal',
+      read: notInData, compare: 'equal', applies: isPulsePair,
       whenMissing: '資料ごとに書き方と値が違い、データに登録していません。受け側の条件と合わせて仕様書・現物で確認してください。' },
     // 1出力型には出さない（出力が1つなら出力間の絶縁は該当しない）。どちらかが2出力型なら出す
     { key: 'outputIsolation', label: '第1出力と第2出力の間の絶縁', short: '出力間の絶縁', read: outputIsolationOf,
-      applies: (m, c) => typeof m.specs?.output2Signal === 'string' || typeof c.specs?.output2Signal === 'string',
+      applies: hasOutput2,
       compare: 'atMost', compareBy: (v) => v.coupled, format: (v) => v.text,
       whenDiffers: '候補は2つの出力が同電位になります（基準は絶縁）。2つの出力の行き先の電位（マイナス側）が別の機器なら、'
         + '候補では使えないおそれがあります。行き先の電位を現場で確認してください。',
@@ -1369,6 +1449,7 @@ registerCategory({
       todo: (r) => `盤の電源電圧が候補の範囲（${r.cand}）に入るか確認する`,
       whenMissing: '電源電圧が登録されていません。仕様書・現物で確認してください。' },
     { key: 'option', label: 'オプション', read: (d) => (d.specs?.option?.length ? optionText(d.specs.option) : undefined), compare: 'equal',
+      applies: hasOption,
       whenDiffers: 'オプションが違います。設置環境と接続先に基準のオプションが要るかを確認してください。',
       whenMissing: 'オプションの指定が片方にありません（型式にオプション欄が無い機種を含みます）。基準のオプションが要るかを確認してください。' },
     { key: 'dims', label: '外形寸法', read: (d) => (d.dims ? formatDims(d.dims) : undefined), compare: 'equal',
@@ -1385,8 +1466,16 @@ registerCategory({
    * 登録品が無い）が、仮想の組では出るので、同じ種類の設定である第1出力の直後に置いた（この PR の判断。決定ではない）。
    * 登録の無い項目の行はここに書かない（コアが常に最後に置く。D20 の3）。
    * ここに無い項目が「違う」「現場で確認」になると、コアが例外で止める（黙ってやることから落とさない）。
+   *
+   * **アナログ側の項目を足した**（D54・D63。14-6）。
+   *   - 入力抵抗 → 許容負荷抵抗 → 応答時間を、H と見る電圧の後・出力間の絶縁の前に置く（D54）。どれも配線先の
+   *     機器（送り側・受け側）に効く量で、D25 の「被害が大きい順」で出力間の絶縁より先に読ませる
+   *   - アナログ側の「出力の方式」（`outputClass`）は、パルス側の「第1出力の方式」と同じ位置（電源電圧の次）に置く（D63）。
+   *     どちらも「方式が違えば受け側がそのまま使えない」同じ重さの項目だから。2つは `applies` で系統が分かれていて
+   *     同じカードに並ばないので、隣に置くことで同じ位置になる
    */
-  todoOrder: ['powerSupply', 'output1Class', 'output2Class', 'inputHighV', 'outputIsolation', MAKER_TODO, 'dims'],
+  todoOrder: ['powerSupply', 'output1Class', 'outputClass', 'output2Class', 'inputHighV',
+    'inputResistance', 'outputLoad', 'responseUs', 'outputIsolation', MAKER_TODO, 'dims'],
   /**
    * 交換前に現場で確かめること（設計 2-5 の絶縁変換器の4行）。基準機の性質だけから出す。
    * どれも型式やデータからは決まらず、現物の配線・設定を見れば分かること。
