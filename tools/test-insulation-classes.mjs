@@ -36,7 +36,27 @@ function check(name, cond, detail) {
 loadDevices(JSON.parse(readFileSync(join(ROOT, 'data', 'insulation.json'), 'utf8')));
 const cat = getCategory('insulation');
 const all = devicesOf('insulation');
-const tiersOfModel = new Map(all.map((m) => [m.model, computeTiers(m, cat, {})]));
+/**
+ * 段を作るときにコアやカードの文が例外で止まっても、どの検査が何を見て落ちたかを出力に残すため、例外は捕まえて NG にする。
+ * たとえば下の段から応答時間の条件を外すと、遅い候補のカードで応答時間のやること（`checkDefs`）が例外で止まる。
+ * そのときも、下の段の中身を `alternates` から直接読む検査（遅い側へ辿らない）は NG として報告される。
+ */
+let tiersError = '';
+const tiersOfModel = new Map(all.map((m) => {
+  try { return [m.model, computeTiers(m, cat, {})]; } catch (e) {
+    tiersError ||= `${m.model}: ${e.message}`;
+    return [m.model, { successor: [], exact: [], classMatch: [], rework: [] }];
+  }
+}));
+check('絶縁変換器の全件で、段とカードが例外で止まらずに作れる', !tiersError, tiersError);
+/**
+ * 下の段の候補の id。カードを作らずに `alternates` の戻り値から読み、上の段（判定一致）に入ったものを除く（コアと同じ除き方）。
+ * カードの文が例外で止まる壊れ方でも、下の段に何が入ったかを見られるようにするため。
+ */
+const lowerIdsOf = (m) => {
+  const exact = new Set(computeCompatibles(m, cat, {}).map((c) => c.id));
+  return new Set(cat.alternates(m).filter((t) => t.tier === 'classMatch').flatMap((t) => t.parts.map((p) => p.id)).filter((id) => !exact.has(id)));
+};
 
 /* ---- 1. 上の2段は変わらない ---- */
 
@@ -86,16 +106,39 @@ check(`絶縁変換器の「判定条件がすべて一致」の辺 ${exactEdges
 /* ---- 2. 下の段の件数 ---- */
 
 /**
- * D1（入力 14 は接点を含まない扱い）・D4（coveredBy・overlap も出す）・D5 の組み合わせで2本（12-8）。
- * 本数を名前に入れる。データを足して変わったら数え直して、12-8 と合わせる。
+ * パルス側は D1（入力 14 は接点を含まない扱い）・D4（coveredBy・overlap も出す）・D5 の組み合わせで2本（12-8）。
+ * アナログ側は M2VS と渡辺電機工業の組（`docs/design-insulation-converter.md` 14-9 の表の36本）。
+ * 本数を名前に入れる。データを足して変わったら数え直して、12-8・14-9 と合わせる。
+ *
+ * アナログ側は本数だけでなく、14-9 の表の組と集合で突き合わせる。M2VS の行の分類を変えると組が入れ替わっても
+ * 本数が同じになることがあり（同じ本数の別の組）、数だけでは気づけないため。
  */
 const lowerEdges = (tier) => all.flatMap((m) => tiersOfModel.get(m.model)[tier].map((c) => ({ m, c })));
 const classEdges = lowerEdges('classMatch');
-const classNames = classEdges.map(({ m, c }) => `${m.model} → ${c.model}`);
-check(`分類が一致・違いありの辺は ${classEdges.length} 本（MS3749-A-D44/H ⇔ WGP-FZ-14FK-1 の両向き）`,
-  classNames.length === 2
-  && classNames.includes('MS3749-A-D44/H → WGP-FZ-14FK-1') && classNames.includes('WGP-FZ-14FK-1 → MS3749-A-D44/H'),
-  classNames.join(' / ') || '0本');
+const isPulseEdge = ({ m }) => typeof m.specs?.output1Signal === 'string';
+const pulseClassEdges = classEdges.filter(isPulseEdge);
+const analogClassEdges = classEdges.filter((e) => typeof e.m.specs?.outputSignal === 'string');
+const edgeName = ({ m, c }) => `${m.model} → ${c.model}`;
+const pulseNames = pulseClassEdges.map(edgeName);
+/** 14-9 の「分類が一致・違いありに足される36本」の表。基準 × 候補 */
+const M2VS_LOWER_TABLE = [
+  [['WVP-DS-15A-1', 'WVP-DS-15A-4', 'WGP-DS-15A-1'], ['M2VS-4A-R/K/N', 'M2VS-4A-M/K/N']],
+  [['WVP-DS-36P-1', 'WVP-DS-36P-3', 'WVP-DS-36P-4', 'WVP-DS-36P-5', 'WGP-DS-36P-1'], ['M2VS-A4-R/K/N', 'M2VS-A4-M/K/N']],
+  [['M2VS-4A-R/K/N', 'M2VS-4A-M/K/N'], ['WVP-DS-15A-1', 'WVP-DS-15A-4', 'WGP-DS-15A-1']],
+  [['M2VS-A4-R/K/N', 'M2VS-A4-M/K/N'], ['WVP-DS-36P-1', 'WVP-DS-36P-3', 'WVP-DS-36P-4', 'WVP-DS-36P-5', 'WVP-DE-36P-1', 'WGP-DS-36P-1']],
+  [['M2VS-5A-R/N/Q/C03'], ['WVP-DS-13A-1', 'WVP-DE-13A-1']],
+];
+const wantAnalog = new Set(M2VS_LOWER_TABLE.flatMap(([bases, cands]) => bases.flatMap((b) => cands.map((c) => `${b} → ${c}`))));
+const gotAnalog = new Set(analogClassEdges.map(edgeName));
+const analogExtra = [...gotAnalog].filter((x) => !wantAnalog.has(x));
+const analogLack = [...wantAnalog].filter((x) => !gotAnalog.has(x));
+check(`分類が一致・違いありの辺は ${classEdges.length} 本（パルス側 ${pulseClassEdges.length} 本＝MS3749-A-D44/H ⇔ WGP-FZ-14FK-1、`
+  + `アナログ側 ${analogClassEdges.length} 本＝M2VS と渡辺電機工業の組で 14-9 の表の ${wantAnalog.size} 本と同じ）`,
+  pulseNames.length === 2
+  && pulseNames.includes('MS3749-A-D44/H → WGP-FZ-14FK-1') && pulseNames.includes('WGP-FZ-14FK-1 → MS3749-A-D44/H')
+  && pulseClassEdges.length + analogClassEdges.length === classEdges.length
+  && analogClassEdges.length > 0 && analogExtra.length === 0 && analogLack.length === 0,
+  `パルス側: ${pulseNames.join(' / ') || '0本'} / 表に無い辺: ${analogExtra.join(' / ') || '0本'} / 表にあって無い辺: ${analogLack.join(' / ') || '0本'}`);
 check(`分類が一致・違いありの辺 ${classEdges.length} 本はすべて別メーカー`,
   classEdges.length > 0 && classEdges.every(({ c }) => !c.sameMaker));
 const reworkEdges = lowerEdges('rework');
@@ -106,8 +149,11 @@ check('配線変更または台数増の辺は0本（D1 の間は作らない。
 
 /**
  * 「下の段に遅い組が無い」だけでは、そもそも該当する組が無くても真になる。
- * 入力・出力の分類が同じで判定一致に入らないアナログ側の組を数え、それがすべて遅い側か
- * 応答時間を型式で決められない組（WGP-FV）で、どれも下の段に無いことを見る（12-8 の25本）。
+ * 入力・出力の分類が同じで判定一致に入らないアナログ側の組を数え、そのうち遅い側か
+ * 応答時間を型式で決められない組（WGP-FV）はどれも下の段に無く、残りはすべて下の段にあることを見る。
+ * M2VS を足す前（77件）は25本で、全部が遅い側か決まらない組だった（12-8）。M2VS を足して、
+ * 分類が同じで速いか同じ応答時間の別メーカーの組が初めて生じた（14-9 の 65本のうち 36本）。
+ * 前半は `alternates` から `responseWithin` を外すと、後半は下の段を出さなくすると落ちる。
  */
 const classKey = (d, key) => (typeof d.specs?.[key] === 'string'
   ? signalRowOf(key === 'inputSignal' ? 'input' : 'output', d.specs[key]).classes.join('・') : null);
@@ -118,15 +164,32 @@ for (const m of analog) {
   for (const a of analog) {
     if (a.id === m.id || t.exact.some((c) => c.id === a.id)) continue;
     if (classKey(a, 'inputSignal') === classKey(m, 'inputSignal') && classKey(a, 'outputSignal') === classKey(m, 'outputSignal')) {
-      sameClassNotExact.push({ m, a, inLower: t.classMatch.some((c) => c.id === a.id) });
+      sameClassNotExact.push({ m, a, inLower: lowerIdsOf(m).has(a.id) });
     }
   }
 }
 const slowOrUnknown = ({ m, a }) => typeof a.specs.responseUs !== 'number' || typeof m.specs.responseUs !== 'number'
   || a.specs.responseUs > m.specs.responseUs;
-check(`アナログ側で分類が同じで判定一致に入らない組 ${sameClassNotExact.length} 本は、すべて候補が遅いか応答時間が型式で決まらない組で、下の段に無い`,
-  sameClassNotExact.length > 0 && sameClassNotExact.every(slowOrUnknown) && sameClassNotExact.every((e) => !e.inLower),
-  sameClassNotExact.filter((e) => !slowOrUnknown(e) || e.inLower).map(({ m, a }) => `${m.model} → ${a.model}`).slice(0, 5).join(' / '));
+const slowPairs = sameClassNotExact.filter(slowOrUnknown);
+const restPairs = sameClassNotExact.filter((e) => !slowOrUnknown(e));
+check(`アナログ側で分類が同じで判定一致に入らない組 ${sameClassNotExact.length} 本のうち、候補が遅いか応答時間が型式で決まらない ${slowPairs.length} 本は下の段に無く、`
+  + `残る ${restPairs.length} 本はすべて下の段にある`,
+  slowPairs.length > 0 && restPairs.length > 0 && slowPairs.every((e) => !e.inLower) && restPairs.every((e) => e.inLower),
+  [...slowPairs.filter((e) => e.inLower).map(({ m, a }) => `遅いのに下の段: ${m.model} → ${a.model}`),
+    ...restPairs.filter((e) => !e.inLower).map(({ m, a }) => `下の段に無い: ${m.model} → ${a.model}`)].slice(0, 5).join(' / '));
+
+/**
+ * 遅い側へは下の段でも辿らない（D5）ことを、M2VS の実データの組1つで両向きに見る（14-5 の表）。
+ * M2VS-A4-R/K/N（約25ms）と WVP-DE-36P-1（約500μs）は入力・出力の分類が同じで、綴りが違うので判定一致には入らない。
+ * 速い WVP-DE-36P-1 は M2VS-A4-R/K/N の下の段に出て、逆向きは出ない。下の段の応答時間の条件を対称にすると後半が落ちる。
+ */
+const a4r = all.find((d) => d.model === 'M2VS-A4-R/K/N');
+const de36 = all.find((d) => d.model === 'WVP-DE-36P-1');
+const a4rLower = a4r && de36 ? lowerIdsOf(a4r).has(de36.id) : false;
+const de36Lower = a4r && de36 ? lowerIdsOf(de36).has(a4r.id) : true;
+check('下の段でも遅い側へは辿らない：M2VS-A4-R/K/N の下の段に WVP-DE-36P-1（約500μs）が出て、WVP-DE-36P-1 の下の段に M2VS-A4-R/K/N（約25ms）は出ない',
+  !!a4r && !!de36 && a4rLower && !de36Lower,
+  !a4r || !de36 ? 'M2VS-A4-R/K/N か WVP-DE-36P-1 が data に無い' : `M2VS-A4-R/K/N → WVP-DE-36P-1: ${a4rLower} / 逆: ${de36Lower}`);
 /**
  * WGP-FV は実データでは分類の同じ相手がいない（2件は出力が違う）ので、上の走査では対象0件になる。
  * `test-insulation-response.mjs` と同じく電源だけを変えた仮想の組を検査の中だけで作り（`data/` には入れない）、
@@ -226,10 +289,11 @@ check('比べ方を対称な range に差し替えると、向きの違う組が
 /**
  * 第1出力の分類は、候補がスイッチで選ぶ側なら covers、逆向きは coveredBy（3-4・3-5）。どちらも「現場で確認」。
  */
-const out1 = classEdges.map(({ m, c }) => ({ m, c, rel: rowOf(c.checks, 'output1Class')?.relation, state: rowOf(c.checks, 'output1Class')?.state }));
+// 第1出力の分類はパルス側の組だけの項目（アナログ側は「出力信号の分類」。14-6）なので、パルス側の辺だけを見る
+const out1 = pulseClassEdges.map(({ m, c }) => ({ m, c, rel: rowOf(c.checks, 'output1Class')?.relation, state: rowOf(c.checks, 'output1Class')?.state }));
 const coversPair = out1.filter((x) => x.rel === 'covers');
 check(`第1出力の分類は向きで covers ⇔ coveredBy に入れ替わり、どちらも現場で確認（covers ${coversPair.length} 本）`,
-  coversPair.length > 0 && coversPair.every((x) => out1.some((y) => y.m.id === x.c.id && y.c.id === x.m.id && y.rel === 'coveredBy'))
+  out1.length > 0 && coversPair.length > 0 && coversPair.every((x) => out1.some((y) => y.m.id === x.c.id && y.c.id === x.m.id && y.rel === 'coveredBy'))
   && out1.every((x) => x.state === 'field'),
   out1.map((x) => `${x.m.model}→${x.c.model} ${x.rel}/${x.state}`).join(' | '));
 
@@ -292,8 +356,10 @@ check('1出力型どうしの組には「第1出力と第2出力の間の絶縁�
 /* ---- 6. アナログ側の下の段のカード（docs/design-insulation-converter.md 14-6・14-9 の検査の案1〜4。D52〜D54・D62・D63） ---- */
 
 /**
- * 実データにはアナログ側の下の段の組が1本も無い（M2VS の登録は PR-B2。14-10）。`phasesMatch`・WGP-FV と同じく、
- * 仮想の組を検査の中だけで作って固定する（`data/` には入れない）。
+ * PR-B1 の時点では実データにアナログ側の下の段の組が1本も無かった（M2VS の登録は PR-B2。14-10）ので、`phasesMatch`・WGP-FV と同じく、
+ * 仮想の組を検査の中だけで作って固定した（`data/` には入れない）。M2VS を登録した今は実データにアナログ側の下の段が 36 本あり、
+ * 案4 の走査はその実データのカードも含む。仮想の組を残すのは、入力抵抗・許容負荷抵抗・電源電圧が違い応答時間が速い組と、
+ * 応答時間だけが同じ組を、同じ基準（WVP-DS-15A-1）の下で1組ずつ固定でき、実データの組み合わせが変わっても検査の前提が崩れないため。
  *
  * WVP-DS-15A-1 を複製してメーカーを変えた2件を作る。片方は応答時間を速くし（500μs）、入力抵抗・許容負荷抵抗・
  * 電源電圧も変える（14-6 の例1・例2 の「違う」がそろう形）。もう片方は応答時間を基準と同じにする。
@@ -345,7 +411,8 @@ const keysOf = (card) => card.checks.map((r) => r.key);
  */
 const leaked = virtualCards.flatMap((card) => keysOf(card)
   .filter((k) => [...ANALOG_ITEMS_PULSE_ONLY, ...ANALOG_ITEMS_OUTPUT2, 'option'].includes(k)).map((k) => `${card.model}: ${k}`));
-const pulseCards = classEdges.map(({ c }) => c);
+// パルス側の項目が出ることは、パルス側の実データの2枚で見る（アナログ側の実データのカードには出ないのが正しい）
+const pulseCards = pulseClassEdges.map(({ c }) => c);
 const pulseHasAll = pulseCards.length > 0 && pulseCards.every((card) => [...ANALOG_ITEMS_PULSE_ONLY, ...ANALOG_ITEMS_OUTPUT2, 'option']
   .every((k) => keysOf(card).includes(k)));
 check('アナログ側の下の段のカードに、パルス側だけの項目（入力の H と見る電圧・入力の相数・第1出力 最大周波数・出力の定格）と、'
@@ -394,7 +461,7 @@ const lineCountBad = lowerCardsWithVirtual.cards.filter(({ c }) => {
 });
 const openKeys = new Set(openRows.map(({ r }) => r.key));
 const analogOpen = ['inputResistance', 'outputLoad', 'responseUs'].filter((k) => openKeys.has(k));
-check(`絶縁変換器の下の段の全カード（${lowerCardsWithVirtual.cards.length} 枚。実データのパルス側 ${classEdges.length} 枚＋仮想の組）で、`
+check(`絶縁変換器の下の段の全カード（${lowerCardsWithVirtual.cards.length} 枚。実データ ${classEdges.length} 枚〔パルス側 ${pulseClassEdges.length}・アナログ側 ${analogClassEdges.length}〕＋仮想の組）で、`
   + `「違う」「現場で確認」の項目すべて（${openRows.length} 行）にやることの文と並びがある`,
   !lowerCardsWithVirtual.error && lowerCardsWithVirtual.cards.length > classEdges.length && classEdges.length > 0
   && openRows.length > 0 && noTodo.length === 0 && lineCountBad.length === 0 && analogOpen.length === 3,

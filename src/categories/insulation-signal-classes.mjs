@@ -17,7 +17,7 @@
  */
 
 /**
- * 分類名の閉じた一覧（12-3。入力18・出力11の29個）。表の行はこの一覧の名前しか使えない。
+ * 分類名の閉じた一覧（12-3。入力19・出力11の30個）。表の行はこの一覧の名前しか使えない。
  * 一覧を別に持つのは、行の分類名の綴り間違いが「どれとも重ならない新しい分類」として
  * 黙って通り、候補が静かに消えるのを検査で落とすため（3-3 の検査4）。
  */
@@ -25,6 +25,8 @@ export const SIGNAL_CLASS_NAMES = {
   input: [
     '直流電圧入力 0〜10V', '直流電圧入力 0〜5V', '直流電圧入力 1〜5V', '直流電圧入力 0〜60mV',
     '直流電圧入力 ±10V', '直流電圧入力 ±5V', '直流電圧入力 ±1V', '直流電圧入力 ±100mV', '直流電圧入力 ±50mV',
+    // M2VS の入力 2（0～100mV DC）。±100mV（IN-08）とはレンジが違うので別の分類（12-3・D50）
+    '直流電圧入力 0〜100mV',
     '直流電流入力 4〜20mA', '直流電流入力 0〜1mA',
     '抵抗入力 0〜500Ω', '抵抗入力 0〜1kΩ', '抵抗入力 0〜2kΩ',
     '電圧パルス入力', '接点・オープンコレクタ入力', '接点入力（検出 5V／10mA）', 'ラインドライバ入力',
@@ -37,7 +39,7 @@ export const SIGNAL_CLASS_NAMES = {
 };
 
 /**
- * 分類表（12-4・12-5 の35行）。1行は「入力か出力か」と「綴り」の組。
+ * 分類表（12-4・12-5 の41行）。1行は「入力か出力か」と「綴り」の組。
  *
  * 出力は `outputSignal`・`output1Signal`・`output2Signal` を1つの欄として扱う（12-2）。
  * 「出力ごとに1台」のとき各台のどちらの出力を使ってもよい（D16）ので、第1出力と第2出力で
@@ -81,6 +83,12 @@ export const SIGNAL_CLASS_ROWS = [
   // RPPD の入力 D。資料にあるのは H の下限（VH 5.25V以上）だけで上限の記載が無い。今の fits は閉じた区間しか
   // 受けないので、資料に無い上限で埋めずに highV を持たせない（確認項目は「未登録・現物で確認」。D37）
   { src: 'IN-21', field: 'input', spelling: '12V、24V電圧パルス', classes: ['電圧パルス入力'], mode: 'single' },
+  // M2VS の入力4行。綴りは仕様書の表記のまま（単位と DC の間に空白1つ）で、渡辺電機工業の `DC0～10V` などに寄せない（D49）。
+  // 寄せると `gate` が綴りで一致させ、別メーカーが「判定条件がすべて一致」に入る。分類で比べて下の段に出す（14-4）
+  { src: 'IN-22', field: 'input', spelling: '0～10V DC', classes: ['直流電圧入力 0〜10V'], mode: 'single' },
+  { src: 'IN-23', field: 'input', spelling: '4～20mA DC', classes: ['直流電流入力 4〜20mA'], mode: 'single' },
+  { src: 'IN-24', field: 'input', spelling: '0～100mV DC', classes: ['直流電圧入力 0〜100mV'], mode: 'single' },
+  { src: 'IN-25', field: 'input', spelling: '0～5V DC', classes: ['直流電圧入力 0〜5V'], mode: 'single' },
   { src: 'OUT-01', field: 'output', spelling: 'DC0～10V', classes: ['直流電圧出力 0〜10V'], mode: 'single' },
   { src: 'OUT-02', field: 'output', spelling: 'DC0～5V', classes: ['直流電圧出力 0〜5V'], mode: 'single' },
   { src: 'OUT-03', field: 'output', spelling: 'DC1～5V', classes: ['直流電圧出力 1〜5V'], mode: 'single' },
@@ -99,6 +107,9 @@ export const SIGNAL_CLASS_ROWS = [
   { src: 'OUT-13', field: 'output', spelling: '12V 電圧パルス', classes: ['12V電圧パルス出力'], mode: 'single' },
   // RPPD の出力 J。入力 J（IN-20）とは空白の有無が違うが、欄が違うので別の行になる（13-3）
   { src: 'OUT-14', field: 'output', spelling: 'RS-422ラインドライバ・パルス', classes: ['ラインドライバ出力'], mode: 'single' },
+  // M2VS の出力2行。入力と同じく仕様書の表記のまま（D49）。許容負荷抵抗の違いは確認項目で示す（12-7）
+  { src: 'OUT-15', field: 'output', spelling: '4～20mA DC', classes: ['直流電流出力 4〜20mA'], mode: 'single' },
+  { src: 'OUT-16', field: 'output', spelling: '0～10V DC', classes: ['直流電圧出力 0〜10V'], mode: 'single' },
 ];
 
 /** `specs` のキーから表の欄へ。出力の3つのキーは1つの欄（12-2） */

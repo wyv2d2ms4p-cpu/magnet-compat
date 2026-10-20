@@ -192,8 +192,8 @@ check('絶縁変換器のカテゴリチップが出る',
   (await page.$('[data-act="cat"][data-v="insulation"]')) !== null, chips.join(','));
 
 const isoCount = await page.$eval('[data-act="cat"][data-v="insulation"] .cnt', (e) => Number(e.textContent));
-check('絶縁変換器が77件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP-DS/DE 9件・WGP-FZ 3件・WGP-MS 4件・WGP-FV 2件 + エムジー WRPP 1件・RPPD 5件）',
-  isoCount === 77, `実際 ${isoCount}件`);
+check('絶縁変換器が83件で表示される（MTT MS3749 14件 + 渡辺電機工業 WVP 39件・WGP-DS/DE 9件・WGP-FZ 3件・WGP-MS 4件・WGP-FV 2件 + エムジー WRPP 1件・RPPD 5件・M2VS 6件）',
+  isoCount === 83, `実際 ${isoCount}件`);
 
 /**
  * ②の仕様欄を「ラベル → 値」の組で DOM 順のまま拾う。
@@ -1390,6 +1390,74 @@ check(`RPPD の${rppdModels.length}件は dims をキーごと持たず（eviden
   && rppdNN.spec.includes('外形寸法は未確認のため図を表示しません'),
   `dims を持つか unverified でない: ${rppdWithDims.map((d) => d.model).join(' / ') || '0件'}`
   + ` / ${rppdNN ? `②の並び: ${rppdNN.flow.join(' → ') || '取得できない'}` : 'RPPD-JJ1NN1N-K が data に無い'}`);
+
+/* ---- 絶縁変換器: エムジー M2VS（直流入力変換器。アナログ側の別メーカー） ---- */
+
+/**
+ * M2VS の6件は予備品リストに実在する型式だけを登録した（設計 14章）。画面の側で固定するのは次の7つ（14-9 の検査10〜13・15・16）。
+ *
+ * - 予備品リストの表記 `M2VS-5A-R/N/Q /C03`（／Q と ／C03 の間に空白）で検索して、`M2VS-5A-R/N/Q/C03` の②に着くこと（D48）。
+ *   空白の有無だけの違いは `normExact` が吸収する仕様なので、英数字が変わったときに落ちる
+ * - 5A の②の応答時間が「500ms以下」で「約」が付かないこと（D51）。印（`responseBound`）を落とすと「約500ms」に戻る
+ * - 6件が `dims` をキーごと持たず `evidence.dims` が `unverified` で、②に外形図が描かれず断りが出ること（D59）。
+ *   RPPD と同じく、推定の寸法を `estimated` で足しても②は変わらないので、データの側でも見る。
+ *   M2VS の型式が予備品リストの6件と同じであること（型式コード表から組み立てた型式を足していない・どれも落ちていない）もここで見る（D47）
+ * - WVP-DS-36P-1 の③に「分類が一致・違いあり」の見出しが出て、M2VS-A4-R/K/N と M2VS-A4-M/K/N が別メーカーのカードで並び、
+ *   判定一致の5件は M2VS を足す前と同じ並びのまま（14-9）。綴りを渡辺電機工業に寄せると M2VS が判定一致に入って落ちる
+ * - 入力 A の2件の②の note が、電流入力に抵抗器（0.5W）が付属することと、旧品の抵抗器の扱いを確認することを言い、
+ *   ほかの4件は note を持たないこと（D56）。note は②の欄から読む（`#app` 全体だと `srcNote` の語で通る）
+ * - 5A の②のオプションが「/C03 ラバーコーティング」だけで、／N・／K が出ないこと（D58）
+ */
+const M2VS_MODELS = ['M2VS-4A-R/K/N', 'M2VS-A4-R/K/N', 'M2VS-4A-M/K/N', 'M2VS-A4-M/K/N', 'M2VS-24-M/K/N', 'M2VS-5A-R/N/Q/C03'];
+const m2vsRecords = isoDevicesOf('insulation').filter((d) => d.series === 'M2VS');
+
+await gotoCategory('insulation');
+await search('M2VS-5A-R/N/Q /C03');
+const m2vsListBig = await page.waitForSelector('.model.big', { timeout: 3000 })
+  .then(async () => (await page.textContent('.model.big')).trim(), () => null);
+check('予備品リストの表記「M2VS-5A-R/N/Q /C03」で検索すると M2VS-5A-R/N/Q/C03 の②に直行する',
+  m2vsListBig === 'M2VS-5A-R/N/Q/C03', `着いた画面: ${m2vsListBig ?? '②に着かない'}`);
+
+const m2vs5A = await insulationResult('M2VS-5A-R/N/Q/C03');
+check('M2VS-5A-R/N/Q/C03 の②の応答時間が「500ms以下」で、「約」が付かない',
+  m2vs5A.reached && m2vs5A.specOf('応答時間') === '500ms以下',
+  `応答時間: ${m2vs5A.specOf('応答時間') ?? '欄が無い'}`);
+check('M2VS-5A-R/N/Q/C03 の②のオプションが「/C03 ラバーコーティング」で出て、／N・／K は出ない',
+  m2vs5A.reached && m2vs5A.specOf('オプション') === '/C03 ラバーコーティング',
+  `オプション: ${m2vs5A.specOf('オプション') ?? '欄が無い'}`);
+
+const m2vs4AR = await insulationResult('M2VS-4A-R/K/N');
+const m2vsModelsGot = m2vsRecords.map((d) => d.model).sort();
+const m2vsWithDims = m2vsRecords.filter((d) => 'dims' in d || d.evidence?.dims?.state !== 'unverified');
+check(`M2VS の${m2vsRecords.length}件は dims をキーごと持たず（evidence.dims は unverified）、M2VS-4A-R/K/N の②で外形図が描かれず、「外形寸法は未確認のため図を表示しません」が出る`,
+  JSON.stringify(m2vsModelsGot) === JSON.stringify([...M2VS_MODELS].sort()) && m2vsWithDims.length === 0
+  && m2vs4AR.reached && !m2vs4AR.flow.includes('外形図') && m2vs4AR.flow.includes('外形図なしの断り')
+  && m2vs4AR.spec.includes('外形寸法は未確認のため図を表示しません'),
+  `M2VS の型式: ${m2vsModelsGot.join(' / ') || '0件'} / dims を持つか unverified でない: ${m2vsWithDims.map((d) => d.model).join(' / ') || '0件'}`
+  + ` / ②の並び: ${m2vs4AR.flow.join(' → ') || '取得できない'}`);
+
+const ds36 = await insulationResult('WVP-DS-36P-1');
+const ds36Lower = ds36.lowerCards.filter((c) => c.zone === '分類が一致・違いあり');
+check('WVP-DS-36P-1 の③に「分類が一致・違いあり」の見出しが出て、M2VS-A4-R/K/N と M2VS-A4-M/K/N が別メーカーのカードで並び、判定一致の5件は変わらない',
+  ds36.reached && ds36.zoneTitles.includes('分類が一致・違いあり')
+  && JSON.stringify(ds36Lower.map((c) => c.model).sort()) === JSON.stringify(['M2VS-A4-M/K/N', 'M2VS-A4-R/K/N'])
+  && ds36Lower.every((c) => c.maker.includes('エムジー') && c.todos.includes('別メーカーのため、端子の並びを確認して配線する'))
+  && JSON.stringify(ds36.cards) === JSON.stringify(['WVP-DS-36P-3', 'WVP-DS-36P-4', 'WVP-DS-36P-5', 'WVP-DE-36P-1', 'WGP-DS-36P-1']),
+  `見出し: ${ds36.zoneTitles.join(' / ') || '無い'} / 下の段: ${ds36Lower.map((c) => `${c.model}（${c.maker}）`).join(' / ') || '0件'}`
+  + ` / 判定一致: ${ds36.cards.join(' / ') || '0件'}`);
+
+const m2vsNotes = [];
+for (const model of M2VS_MODELS) {
+  const r = model === 'M2VS-5A-R/N/Q/C03' ? m2vs5A : model === 'M2VS-4A-R/K/N' ? m2vs4AR : await insulationResult(model);
+  m2vsNotes.push({ model, reached: r.reached, note: r.deviceNote });
+}
+const m2vsInputA = ['M2VS-A4-R/K/N', 'M2VS-A4-M/K/N'];
+const m2vsNoteBad = m2vsNotes.filter(({ model, reached, note }) => !reached || (m2vsInputA.includes(model)
+  ? !(note.includes('電流入力には、入力端子に取り付ける抵抗器（0.5W）が付属する') && note.includes('旧品の入力端子に付いている抵抗器の扱いを確認すること'))
+  : note !== ''));
+check('M2VS-A4-R/K/N と M2VS-A4-M/K/N の②の note が、電流入力に抵抗器（0.5W）が付属することと、交換時に旧品の抵抗器の扱いを確認することを言い、ほかの M2VS 4件は note を持たない',
+  m2vsNotes.length === M2VS_MODELS.length && m2vsNoteBad.length === 0,
+  m2vsNoteBad.map(({ model, reached, note }) => `${model}: ${reached ? `"${note}"` : '②に着かない'}`).join(' | '));
 
 /* ---- 出典バッジがページを横に伸ばさない（`.evidence .badge` の折り返し） ---- */
 

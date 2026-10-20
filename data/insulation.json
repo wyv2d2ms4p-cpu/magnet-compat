@@ -2939,5 +2939,211 @@
         "srcNote": "エムジー 仕様書 RPPD（NS-1693 Rev.27）型式コード表（①②＝D：12V、24V電圧パルス（検出レベル 約5V）／③＝4：12V DC／60mA／④⑤＝N：12V 電圧パルス（100kHz）／⑥＝1：パルス幅変換なし／⑦＝N：非反転／⑧＝R：24V DC（許容範囲 ±10％、リップル含有率 10％p-p以下））。電源電圧の登録値は既存の表記（DC24V）。入力 D：VH 5.25V以上、VL 4.75V以下（ただし VH－VL≧500mV）、入力インピーダンス 10kΩ以上。この項に最大入力電圧の記載は無い。出力 N：12V ±10%、許容負荷抵抗 1.2kΩ以上、Lレベル電圧 0.5V以下。入力の相数（2）は型式コード表の ①入力信号1・②入力信号2 の2欄と、アイソレーションの原文「入力信号1・入力信号2・センサ用電源－第1出力・第2出力－電源間」から読んだ。信号名は型式コード表の表記から括弧の中（最大周波数・検出レベル）を除いたもので、資料の表記のまま（WRPP・MS3749 の綴りに寄せない）。第1出力と第2出力の間の絶縁は、資料から読み取れないので持たない（docs/msystem-rppd-verified.md 1章・2章・4章）。"
       }
     }
+  },
+  {
+    "id": "ISO_M2VS_4A_R_K_N",
+    "category": "insulation",
+    "maker": "エムジー（旧エム・システム技研）",
+    "model": "M2VS-4A-R/K/N",
+    "series": "M2VS",
+    "modelStatus": "catalog-confirmed",
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "0～10V DC",
+      "inputResistance": "1MΩ以上",
+      "outputSignal": "4～20mA DC",
+      "outputLoad": "750Ω以下",
+      "responseUs": 25000,
+      "powerSupply": "DC24V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内の予備品リスト（2026-10。依頼者が提供した写真を 2026-10-13 に受け取った。撮影日は読み取れない）。型式が社内に実在する根拠としてだけ使い、品目コードなどの社内情報は記載しない。この型式は公式資料には型式コードの組み合わせとしてしか存在せず、個別の型式として列挙されていないため、実在の根拠は予備品リストであって仕様書ではない。"
+      },
+      "dims": {
+        "state": "unverified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/M2/nsm2vs.pdf",
+        "srcNote": "仕様書 NS-5018 Rev.28 p.4 の外形寸法図の数値（抽出したテキスト）72・23・114 ほか。辺との対応は図の線を見ていないので未確定（docs/msystem-m2vs-verified.md 2章）。依頼者が図を確かめるまで外形寸法を登録しない。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/M2/nsm2vs.pdf",
+        "srcNote": "エムジー 仕様書 M2VS（NS-5018 Rev.28）型式コード表（①＝4：0～10V DC（入力抵抗 1MΩ以上）／②＝A：4～20mA DC（負荷抵抗 750Ω以下）／③＝R：24V DC（許容範囲 ±10％、リップル含有率 10％p-p以下）／④＝／K：高速応答形 約25ms（応答時間 0→90%）・／N：CE、UKCA、UL適合なし）。電源電圧の登録値は既存の表記（DC24V）。信号名は型式コード表の表記から括弧の中を除いたもので、資料の表記のまま（渡辺電機工業の綴りに寄せない）（docs/msystem-m2vs-verified.md 1章）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_M2VS_A4_R_K_N",
+    "category": "insulation",
+    "maker": "エムジー（旧エム・システム技研）",
+    "model": "M2VS-A4-R/K/N",
+    "series": "M2VS",
+    "modelStatus": "catalog-confirmed",
+    "mounting": "壁取付/DINレール 共用",
+    "note": "電流入力には、入力端子に取り付ける抵抗器（0.5W）が付属する（仕様書）。交換時は、旧品の入力端子に付いている抵抗器の扱いを確認すること。",
+    "specs": {
+      "inputSignal": "4～20mA DC",
+      "inputResistance": "250Ω",
+      "outputSignal": "0～10V DC",
+      "outputLoad": "10kΩ以上",
+      "responseUs": 25000,
+      "powerSupply": "DC24V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内の予備品リスト（2026-10。依頼者が提供した写真を 2026-10-13 に受け取った。撮影日は読み取れない）。型式が社内に実在する根拠としてだけ使い、品目コードなどの社内情報は記載しない。この型式は公式資料には型式コードの組み合わせとしてしか存在せず、個別の型式として列挙されていないため、実在の根拠は予備品リストであって仕様書ではない。"
+      },
+      "dims": {
+        "state": "unverified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/M2/nsm2vs.pdf",
+        "srcNote": "仕様書 NS-5018 Rev.28 p.4 の外形寸法図の数値（抽出したテキスト）72・23・114 ほか。辺との対応は図の線を見ていないので未確定（docs/msystem-m2vs-verified.md 2章）。依頼者が図を確かめるまで外形寸法を登録しない。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/M2/nsm2vs.pdf",
+        "srcNote": "エムジー 仕様書 M2VS（NS-5018 Rev.28）型式コード表（①＝A：4～20mA DC（入力抵抗 250Ω）／②＝4：0～10V DC（負荷抵抗 10kΩ以上）／③＝R：24V DC（許容範囲 ±10％、リップル含有率 10％p-p以下）／④＝／K：高速応答形 約25ms（応答時間 0→90%）・／N：CE、UKCA、UL適合なし）。電源電圧の登録値は既存の表記（DC24V）。信号名は型式コード表の表記から括弧の中を除いたもので、資料の表記のまま（渡辺電機工業の綴りに寄せない）（docs/msystem-m2vs-verified.md 1章）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_M2VS_4A_M_K_N",
+    "category": "insulation",
+    "maker": "エムジー（旧エム・システム技研）",
+    "model": "M2VS-4A-M/K/N",
+    "series": "M2VS",
+    "modelStatus": "catalog-confirmed",
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "0～10V DC",
+      "inputResistance": "1MΩ以上",
+      "outputSignal": "4～20mA DC",
+      "outputLoad": "750Ω以下",
+      "responseUs": 25000,
+      "powerSupply": "AC85〜264V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内の予備品リスト（2026-10。依頼者が提供した写真を 2026-10-13 に受け取った。撮影日は読み取れない）。型式が社内に実在する根拠としてだけ使い、品目コードなどの社内情報は記載しない。この型式は公式資料には型式コードの組み合わせとしてしか存在せず、個別の型式として列挙されていないため、実在の根拠は予備品リストであって仕様書ではない。"
+      },
+      "dims": {
+        "state": "unverified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/M2/nsm2vs.pdf",
+        "srcNote": "仕様書 NS-5018 Rev.28 p.4 の外形寸法図の数値（抽出したテキスト）72・23・114 ほか。辺との対応は図の線を見ていないので未確定（docs/msystem-m2vs-verified.md 2章）。依頼者が図を確かめるまで外形寸法を登録しない。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/M2/nsm2vs.pdf",
+        "srcNote": "エムジー 仕様書 M2VS（NS-5018 Rev.28）型式コード表（①＝4：0～10V DC（入力抵抗 1MΩ以上）／②＝A：4～20mA DC（負荷抵抗 750Ω以下）／③＝M：85～264V AC（許容範囲 85～264V AC、47～66Hz）／④＝／K：高速応答形 約25ms（応答時間 0→90%）・／N：CE、UKCA、UL適合なし）。電源電圧は定格の電圧の記載が無いので、許容範囲をそのまま既存の表記の形（AC85〜264V）で登録した。信号名は型式コード表の表記から括弧の中を除いたもので、資料の表記のまま（渡辺電機工業の綴りに寄せない）（docs/msystem-m2vs-verified.md 1章）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_M2VS_A4_M_K_N",
+    "category": "insulation",
+    "maker": "エムジー（旧エム・システム技研）",
+    "model": "M2VS-A4-M/K/N",
+    "series": "M2VS",
+    "modelStatus": "catalog-confirmed",
+    "mounting": "壁取付/DINレール 共用",
+    "note": "電流入力には、入力端子に取り付ける抵抗器（0.5W）が付属する（仕様書）。交換時は、旧品の入力端子に付いている抵抗器の扱いを確認すること。",
+    "specs": {
+      "inputSignal": "4～20mA DC",
+      "inputResistance": "250Ω",
+      "outputSignal": "0～10V DC",
+      "outputLoad": "10kΩ以上",
+      "responseUs": 25000,
+      "powerSupply": "AC85〜264V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内の予備品リスト（2026-10。依頼者が提供した写真を 2026-10-13 に受け取った。撮影日は読み取れない）。型式が社内に実在する根拠としてだけ使い、品目コードなどの社内情報は記載しない。この型式は公式資料には型式コードの組み合わせとしてしか存在せず、個別の型式として列挙されていないため、実在の根拠は予備品リストであって仕様書ではない。"
+      },
+      "dims": {
+        "state": "unverified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/M2/nsm2vs.pdf",
+        "srcNote": "仕様書 NS-5018 Rev.28 p.4 の外形寸法図の数値（抽出したテキスト）72・23・114 ほか。辺との対応は図の線を見ていないので未確定（docs/msystem-m2vs-verified.md 2章）。依頼者が図を確かめるまで外形寸法を登録しない。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/M2/nsm2vs.pdf",
+        "srcNote": "エムジー 仕様書 M2VS（NS-5018 Rev.28）型式コード表（①＝A：4～20mA DC（入力抵抗 250Ω）／②＝4：0～10V DC（負荷抵抗 10kΩ以上）／③＝M：85～264V AC（許容範囲 85～264V AC、47～66Hz）／④＝／K：高速応答形 約25ms（応答時間 0→90%）・／N：CE、UKCA、UL適合なし）。電源電圧は定格の電圧の記載が無いので、許容範囲をそのまま既存の表記の形（AC85〜264V）で登録した。信号名は型式コード表の表記から括弧の中を除いたもので、資料の表記のまま（渡辺電機工業の綴りに寄せない）（docs/msystem-m2vs-verified.md 1章）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_M2VS_24_M_K_N",
+    "category": "insulation",
+    "maker": "エムジー（旧エム・システム技研）",
+    "model": "M2VS-24-M/K/N",
+    "series": "M2VS",
+    "modelStatus": "catalog-confirmed",
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "0～100mV DC",
+      "outputSignal": "0～10V DC",
+      "outputLoad": "10kΩ以上",
+      "responseUs": 25000,
+      "powerSupply": "AC85〜264V"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内の予備品リスト（2026-10。依頼者が提供した写真を 2026-10-13 に受け取った。撮影日は読み取れない）。型式が社内に実在する根拠としてだけ使い、品目コードなどの社内情報は記載しない。この型式は公式資料には型式コードの組み合わせとしてしか存在せず、個別の型式として列挙されていないため、実在の根拠は予備品リストであって仕様書ではない。"
+      },
+      "dims": {
+        "state": "unverified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/M2/nsm2vs.pdf",
+        "srcNote": "仕様書 NS-5018 Rev.28 p.4 の外形寸法図の数値（抽出したテキスト）72・23・114 ほか。辺との対応は図の線を見ていないので未確定（docs/msystem-m2vs-verified.md 2章）。依頼者が図を確かめるまで外形寸法を登録しない。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/M2/nsm2vs.pdf",
+        "srcNote": "エムジー 仕様書 M2VS（NS-5018 Rev.28）型式コード表（①＝2：0～100mV DC（入力抵抗 100kΩ以上）／②＝4：0～10V DC（負荷抵抗 10kΩ以上）／③＝M：85～264V AC（許容範囲 85～264V AC、47～66Hz）／④＝／K：高速応答形 約25ms（応答時間 0→90%）・／N：CE、UKCA、UL適合なし）。電源電圧は定格の電圧の記載が無いので、許容範囲をそのまま既存の表記の形（AC85〜264V）で登録した。0～100mV 入力の入力抵抗は、型式コード表の「100kΩ以上」と入力仕様の表（スパン 10～100mV：入力抵抗 10kΩ以上）の2通りに読め、どちらの行に当たるかが資料から決まらないので登録しない（docs/msystem-m2vs-verified.md 2章・6章）。信号名は型式コード表の表記から括弧の中を除いたもので、資料の表記のまま（渡辺電機工業の綴りに寄せない）（docs/msystem-m2vs-verified.md 1章）。"
+      }
+    }
+  },
+  {
+    "id": "ISO_M2VS_5A_R_N_Q_C03",
+    "category": "insulation",
+    "maker": "エムジー（旧エム・システム技研）",
+    "model": "M2VS-5A-R/N/Q/C03",
+    "series": "M2VS",
+    "modelStatus": "catalog-confirmed",
+    "mounting": "壁取付/DINレール 共用",
+    "specs": {
+      "inputSignal": "0～5V DC",
+      "inputResistance": "1MΩ以上",
+      "outputSignal": "4～20mA DC",
+      "outputLoad": "750Ω以下",
+      "responseUs": 500000,
+      "responseBound": "max",
+      "powerSupply": "DC24V",
+      "option": [
+        {
+          "code": "C03",
+          "text": "ラバーコーティング"
+        }
+      ]
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcNote": "社内の予備品リスト（2026-10。依頼者が提供した写真を 2026-10-13 に受け取った。撮影日は読み取れない）。型式が社内に実在する根拠としてだけ使い、品目コードなどの社内情報は記載しない。この型式は公式資料には型式コードの組み合わせとしてしか存在せず、個別の型式として列挙されていないため、実在の根拠は予備品リストであって仕様書ではない。予備品リストの原表記は「M2VS-5A-R/N/Q /C03」（／Q と ／C03 の間に空白）。英数字は変えず、空白をメーカーの形式（／Q の後にオプション仕様を続けて書く。docs/msystem-m2vs-verified.md 3章）に合わせて除いた。"
+      },
+      "dims": {
+        "state": "unverified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/M2/nsm2vs.pdf",
+        "srcNote": "仕様書 NS-5018 Rev.28 p.4 の外形寸法図の数値（抽出したテキスト）72・23・114 ほか。辺との対応は図の線を見ていないので未確定（docs/msystem-m2vs-verified.md 2章）。依頼者が図を確かめるまで外形寸法を登録しない。"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mgco.jp/mssjapanese/PDF/NS/M2/nsm2vs.pdf",
+        "srcNote": "エムジー 仕様書 M2VS（NS-5018 Rev.28）型式コード表（①＝5：0～5V DC（入力抵抗 1MΩ以上）／②＝A：4～20mA DC（負荷抵抗 750Ω以下）／③＝R：24V DC（許容範囲 ±10％、リップル含有率 10％p-p以下）／④＝無記入：標準応答形 0.5s以下（応答時間 0→90%）・／N：CE、UKCA、UL適合なし・／Q：あり（オプション仕様より別途指定）・／C03：ラバーコーティング）。電源電圧の登録値は既存の表記（DC24V）。応答時間は原文「0.5s以下」の上限 500000μs を持ち、上限であることを responseBound（max）で示す（約の値ではない）。／N（規格適合）・／Q（オプション仕様ありの印）は option に入れず、option は ／C03 だけ（原文「／C03：ラバーコーティング　＋1,000円」）。信号名は型式コード表の表記から括弧の中を除いたもので、資料の表記のまま（渡辺電機工業の綴りに寄せない）（docs/msystem-m2vs-verified.md 1章）。"
+      }
+    }
   }
 ]
