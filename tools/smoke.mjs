@@ -1446,6 +1446,27 @@ check('WVP-DS-36P-1 の③に「分類が一致・違いあり」の見出しが
   `見出し: ${ds36.zoneTitles.join(' / ') || '無い'} / 下の段: ${ds36Lower.map((c) => `${c.model}（${c.maker}）`).join(' / ') || '0件'}`
   + ` / 判定一致: ${ds36.cards.join(' / ') || '0件'}`);
 
+/*
+ * ③の下の段の応答時間も②と同じく「500ms以下」と出す（D51）。③の表とやることの文は `checkDefs` の `format` を通るので、
+ * ②の `detailPanels` だけ印を渡していると③で「約500ms」に戻る（PR-B2 の途中まで、この形で食い違っていた）。
+ * 表の行とやることの両方を見るのは、やることの文が表の値（`r.base`）をそのまま埋め込むため、片方だけ見ると
+ * 文の側で値を組み立て直したときの食い違いを見逃すから。カードが0枚でも通らないよう、2枚が揃うことも見る
+ */
+const m2vs5ALowerModels = ['WVP-DE-13A-1', 'WVP-DS-13A-1'];
+const m2vs5ALower = await insulationResult('M2VS-5A-R/N/Q/C03');
+const m2vs5ABad = m2vs5ALowerModels.map((model) => {
+  const card = lowerOf(m2vs5ALower, model);
+  const row = card ? checkOf(card, '応答時間') : null;
+  const todo = card?.todos.find((t) => t.startsWith('応答が速くなる')) ?? null;
+  const ok = !!row && row.text.includes('500ms以下') && !row.text.includes('約500ms')
+    && !!todo && todo.includes('（500ms以下 → ') && !todo.includes('約500ms');
+  return ok ? null : `${model}: ${card ? `表 ${row?.text ?? '行が無い'} / やること ${todo ?? '文が無い'}` : 'カードが無い'}`;
+}).filter(Boolean);
+check('M2VS-5A-R/N/Q/C03 の③の下の段のカードで、応答時間が「500ms以下」と出て「約500ms」と出ない（表・やることの両方）',
+  m2vs5ALower.reached && JSON.stringify(m2vs5ALower.lowerCards.map((c) => c.model).sort()) === JSON.stringify(m2vs5ALowerModels)
+  && m2vs5ABad.length === 0,
+  `下の段: ${m2vs5ALower.lowerCards.map((c) => c.model).join(' / ') || '0件'} / ${m2vs5ABad.join(' | ')}`);
+
 const m2vsNotes = [];
 for (const model of M2VS_MODELS) {
   const r = model === 'M2VS-5A-R/N/Q/C03' ? m2vs5A : model === 'M2VS-4A-R/K/N' ? m2vs4AR : await insulationResult(model);

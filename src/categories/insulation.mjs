@@ -1468,8 +1468,13 @@ registerCategory({
     // 遅い候補は下の段にも出さない（D5。`alternates` が `responseWithin` で落とす）ので、下の段で「違う」にはならない。
     // 12-7 は「遅い組は出さない」とだけ書いていたが、M2VS で速い候補が下の段に並ぶようになるので差を表で見せ、
     // 9-2 の「速い側へ替えて困る設計は現物と図面で分かる」の確認をやることで促す（14-6）。
-    // 表示は今の `formatResponse` のまま（「以下」の印は PR-B2。D51）
-    { key: 'responseUs', label: '応答時間', read: (d) => d.specs?.responseUs, compare: 'atMost', format: formatResponse, applies: isAnalogPair,
+    // 表示は②の表（`detailPanels`）と同じく「以下」の印（`responseBound`）を `formatResponse` に渡す（D51）。
+    // 渡さないと、M2VS の標準応答形が②で「500ms以下」・③で「約500ms」と食い違い、上限をおおよその値と読ませる。
+    // 印は表示にだけ使い、比べるのは `compareBy` で取り出した数値だけ（`responseWithin` と同じく 500000 をそのまま比べる）。
+    // 値が無いときは無いまま返し、`checkRows` の欠けの扱い（「未登録」・「―」）を変えない
+    { key: 'responseUs', label: '応答時間',
+      read: (d) => (d.specs?.responseUs == null ? d.specs?.responseUs : { us: d.specs.responseUs, bound: d.specs.responseBound }),
+      compareBy: (v) => v.us, compare: 'atMost', format: (v) => formatResponse(v.us, v.bound), applies: isAnalogPair,
       whenField: '候補の応答が基準より速くなります。受け側の制御が応答の速さに頼っていないかを確認してください。',
       whenDiffers: '候補の応答が基準より遅くなります。受け側の制御が間に合うかを確認してください。',
       whenMissing: '応答時間が登録されていません。仕様書・現物で確認してください。',
