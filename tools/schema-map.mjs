@@ -122,12 +122,20 @@ export const ADDED_SPEC_KEYS = {
    *   （依頼者の判断）。型式コードで論理を選ぶ機種（WRPP の ④欄）だけが持つ。
    *   MS3749 は論理を前面の極性反転スイッチで決めるので型式から決まらず、キーごと不在
    *   （その旨は各レコードの `note` にある）。
+   *
+   * `responseBound` … `responseUs` が**上限**であることの印（`docs/design-insulation-converter.md` 14-5・D51）。
+   * 値は `'max'` だけ。エムジー M2VS の標準応答形は資料が「0.5s以下」と上限だけを書いているので、
+   * `responseUs: 500000` にこの印を添え、画面は「約」を付けずに「500ms以下」と出す。
+   * 印を `responseUs` の値の中（文字列 `'500ms以下'` など）に入れないのは、`gate`（`responseWithin`）が
+   * 数値の大小で比べる唯一の量で、値を数値のまま保つため。上限で比べるのは候補の側では安全側（D51）。
+   * `responseUs` を持たないレコードは持たない（`tools/verify-data.mjs` が落とす）。単位を持たない印なので、
+   * 単位の接尾辞は付けない（`inputPhases` と同じ。README「データの約束」の単位の約束は物理量の話）。
    */
   insulation: [
     'inputSignal', 'output1Signal', 'output2Signal',
     'output1MaxFreqHz', 'output2MaxFreqHz', 'powerSupply', 'option',
     'inputResistance', 'outputSignal', 'outputLoad', 'responseUs',
-    'inputPhases', 'outputLogic',
+    'inputPhases', 'outputLogic', 'responseBound',
   ],
 };
 

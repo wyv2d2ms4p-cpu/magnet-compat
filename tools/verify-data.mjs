@@ -738,13 +738,17 @@ check(`絶縁変換器のパルス側（第1出力を持つ ${pulseSide.length} 
  * 検査にするのは、**将来リストから機械的に流し込んだときに気づけるようにする**ため。
  * 人が1件ずつ見て弾く約束は、件数が増えれば必ず漏れる。
  *
+ * エムジー M2VS の「指定電圧レンジ」「指定電流レンジ」（入力 `0`・`Z`、出力 `0`）も同じ形で、レンジは注文時に
+ * 指定するもので型式から決まらない。予備品リストの M2VS 9型式のうち、このコードを含む3型式は登録していない
+ * （`docs/design-insulation-converter.md` 14章 D47・D60）。会社が違えば語も違うので、印を1語ではなく一覧で持つ。
+ *
  * 対象0件のまま「PASS」と出さないよう、キーごとに保有0件を失敗にする。
  */
-const CUSTOM_SIGNAL_MARK = '上記以外';
+const CUSTOM_SIGNAL_MARKS = ['上記以外', '指定電圧レンジ', '指定電流レンジ'];
 const CUSTOM_CHECKED_KEYS = ['inputSignal', 'outputSignal'];
 const holdersOf = (key) => dataRecords.filter((r) => key in (r.specs ?? {}));
 
-check(`入力信号・出力信号に「${CUSTOM_SIGNAL_MARK}」の特注コードが無い`
+check(`入力信号・出力信号に${CUSTOM_SIGNAL_MARKS.map((m) => `「${m}」`).join('')}の特注コードが無い`
   + `（保有 ${CUSTOM_CHECKED_KEYS.map((k) => `${k} ${holdersOf(k).length}`).join(' / ')} 件）`, (fail) => {
   for (const key of CUSTOM_CHECKED_KEYS) {
     const holders = holdersOf(key);
@@ -754,11 +758,40 @@ check(`入力信号・出力信号に「${CUSTOM_SIGNAL_MARK}」の特注コー�
     }
     for (const r of holders) {
       const v = r.specs[key];
-      if (typeof v === 'string' && v.includes(CUSTOM_SIGNAL_MARK)) {
+      if (typeof v === 'string' && CUSTOM_SIGNAL_MARKS.some((mark) => v.includes(mark))) {
         fail(`${r.id} (${r.model}): specs.${key}="${v}"`
           + ' … 実際のレンジが型式から決まらない特注コードは登録しない。'
           + '値として持つと特注どうしがすべて一致し、レンジの違う機器が互換だと表示される');
       }
+    }
+  }
+});
+
+// ---- 追加: 応答時間の「以下」の印 ----------------------------------------
+
+/**
+ * `responseBound` は `responseUs` が上限であることの印（`docs/design-insulation-converter.md` 14-5・D51）。
+ * 値は `'max'` だけで、`responseUs` を数値で持つレコードだけが持つ。
+ *
+ * 値を閉じておくのは、表示（`formatResponse`）が `'max'` のときだけ「以下」を付け、それ以外の値を黙って
+ * 「約」の表示に倒すため。綴り違い（`'Max'` など）は画面で「約500ms」に戻り、上限をおおよその値と読ませる。
+ * `responseUs` の無いレコードが印だけを持つと、何の上限かが無い印になる。
+ * 対象0件のまま PASS しないよう、印を持つレコードが0件なら失敗にする（M2VS-5A-R/N/Q/C03 が持つ）。
+ */
+const RESPONSE_BOUNDS = ['max'];
+const boundHolders = dataRecords.filter((r) => 'responseBound' in (r.specs ?? {}));
+check(`応答時間の「以下」の印（responseBound）は ${RESPONSE_BOUNDS.map((b) => `'${b}'`).join('・')} だけで、`
+  + `応答時間（responseUs）を数値で持つレコードだけが持つ（保有 ${boundHolders.length} 件）`, (fail) => {
+  if (!boundHolders.length) {
+    fail('specs.responseBound を持つレコードが1件も無い … 対象0件のまま PASS しないよう落とす');
+    return;
+  }
+  for (const r of boundHolders) {
+    if (!RESPONSE_BOUNDS.includes(r.specs.responseBound)) {
+      fail(`${r.id} (${r.model}): specs.responseBound=${JSON.stringify(r.specs.responseBound)} … ${RESPONSE_BOUNDS.join('・')} 以外は表示が「約」に倒れる`);
+    }
+    if (typeof r.specs.responseUs !== 'number') {
+      fail(`${r.id} (${r.model}): responseBound を持つのに responseUs を数値で持たない … 何の上限かが無い印になる`);
     }
   }
 });
