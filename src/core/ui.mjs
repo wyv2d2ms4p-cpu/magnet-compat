@@ -1,5 +1,5 @@
 /** 描画部品。3アプリに重複していたウィザード・外形図・バッジをここに集約。 */
-import { esc, num, dimDeltaText, DIM_DELTA_LEAD } from './util.mjs';
+import { esc, num, dimDeltaText, DIM_DELTA_LEAD, successorChain } from './util.mjs';
 import { primarySpec, formatSpec } from './registry.mjs';
 import { evidenceRow, warningFor, stateOf } from './evidence.mjs';
 import { CHECK_STATES } from './tiers.mjs';
@@ -88,11 +88,29 @@ export function scopeNote(d) {
  * 生産終了品25件のうち note が置換えの条件なのは5件（「置換えに FR-E8AT03 が必要」など）で、
  * 残り20件は仕様説明・来歴・データ品質の注記。全部を ⚠ にすると本当に警告すべき5件と
  * 同じ重みになり、警告そのものが読み流される。note は noteBox が中立の枠で出す。
+ *
+ * 後継も生産終了のときは、そのことを言う（設計 D68・4章）。「後継は S-N10 です」で
+ * 止めると、生産終了の S-N10 が発注番号として読まれ、上で防いだことが1段先で起きる。
+ * その先の型式名はここに並べず、下の「後継品」の欄（successorChain）へ案内する。
+ * 欄と同じ連鎖を同じ関数でたどるので、2つの表示の型式がずれない。
+ * 連鎖の終わりまで生産終了なら、欄を見ても発注できる型式が無いので、
+ * 登録が無いことまで言う（「アプリに無い」であって「後継が無い」とは言わない）。
+ * 後継が生産中なら文は今までどおりで、gate・候補・③は変えていない
+ * （後継バイパスを連鎖全体に広げる案は選ばなかった。設計 4章）。
  */
 export function discontinuedNote(d, byId) {
   if (!d.discontinued) return '';
   const succ = d.successorId ? byId?.get(d.successorId) : null;
-  const succLine = succ ? `後継は <b class="amber mono">${esc(succ.model)}</b> です。` : '';
+  let succLine = '';
+  if (succ) {
+    succLine = `後継は <b class="amber mono">${esc(succ.model)}</b> です。`;
+    if (succ.discontinued) {
+      const end = successorChain(d, byId).at(-1);
+      succLine += `<b class="amber mono">${esc(succ.model)}</b> も<b class="amber">生産終了</b>です。`
+        + 'その先の後継は下の「後継品」の欄を見てください。';
+      if (end?.discontinued) succLine += 'このアプリには、その先の後継の登録がありません。';
+    }
+  }
   return `<div class="warn"><div>⚠ この型式は<b class="amber">生産終了</b>です。
     新規発注はできません。${succLine}</div></div>`;
 }
