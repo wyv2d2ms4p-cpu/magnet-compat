@@ -1134,6 +1134,13 @@ function scopeNote(d) {
  * 登録が無いことまで言う（「アプリに無い」であって「後継が無い」とは言わない）。
  * 後継が生産中なら文は今までどおりで、gate・候補・③は変えていない
  * （後継バイパスを連鎖全体に広げる案は選ばなかった。設計 4章）。
+ *
+ * 後継そのものが連鎖の終わりなら、「欄を見てください」は出さない。欄には後継より
+ * 先が無いので、案内しても読み手は何も見つけられない（TH-K60KP → TH-N60KP の形）。
+ * 欄の先に型式があって終わりも生産終了なら、欄へ案内したうえで終わりの型式名を
+ * 添えて登録が無いことを言う。「その先」だけだと、後継の先なのか欄の終わりの先なのか
+ * 読み分けられない。終わりの型式名も successorChain から取り、直書きしない
+ * （依頼者の決定 2026-10-22）。
  */
 function discontinuedNote(d, byId) {
   if (!d.discontinued) return '';
@@ -1142,10 +1149,17 @@ function discontinuedNote(d, byId) {
   if (succ) {
     succLine = `後継は <b class="amber mono">${esc(succ.model)}</b> です。`;
     if (succ.discontinued) {
-      const end = successorChain(d, byId).at(-1);
-      succLine += `<b class="amber mono">${esc(succ.model)}</b> も<b class="amber">生産終了</b>です。`
-        + 'その先の後継は下の「後継品」の欄を見てください。';
-      if (end?.discontinued) succLine += 'このアプリには、その先の後継の登録がありません。';
+      // 後継が自分自身を指す壊れたデータでは連鎖が空になる。そのときは後継を終わりとみなす。
+      const end = successorChain(d, byId).at(-1) ?? succ;
+      succLine += `<b class="amber mono">${esc(succ.model)}</b> も<b class="amber">生産終了</b>です。`;
+      if (end.id === succ.id) {
+        succLine += 'このアプリには、その先の後継の登録がありません。';
+      } else {
+        succLine += 'その先の後継は下の「後継品」の欄を見てください。';
+        if (end.discontinued) {
+          succLine += `このアプリには、<b class="amber mono">${esc(end.model)}</b> より先の後継の登録がありません。`;
+        }
+      }
     }
   }
   return `<div class="warn"><div>⚠ この型式は<b class="amber">生産終了</b>です。
