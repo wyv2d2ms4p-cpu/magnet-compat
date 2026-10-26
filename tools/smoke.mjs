@@ -2697,6 +2697,163 @@ check('メーカー絞り込み中でもサジェストがカテゴリ全体を�
   sugModels.some((t) => t.includes('S-N10')) && sugModels.some((t) => t.includes('SN10')),
   sugModels.join(' | '));
 
+/* ---- 三菱 MS-K・MS-N の旧形（docs/design-mitsubishi-legacy-magnets.md 10章） ---- */
+
+/**
+ * **設備リストの表記のまま引けること（検査4）と、KP の付かない型式で KP の画面に黙って着かないこと（検査5）。**
+ *
+ * 検索は1件だけ当たると確定して②へ直行する（設計 1章の F4）。「TH-K60」を部分一致で引くと
+ * TH-K60KP にも当たるので、TH-K60 のレコードが無ければ黙って TH-K60KP（2E）の②に着く。
+ * 期待するのは曖昧一致リストではなく、打った型式そのものの②。
+ * 型式名は `.model.big` の全文で比べる（含むかで見ると TH-K60 と TH-K60KP を見分けられない）。
+ */
+const LEGACY_CAT = {
+  'S-K65': 'contactor', 'S-N11': 'contactor', 'TH-K60': 'thermal', 'TH-K60KP': 'thermal',
+  'TH-N60KP': 'thermal', 'TH-N20KP': 'thermal', 'TH-N20TAKP': 'thermal', 'TH-N20TA': 'thermal',
+  'TH-N20': 'thermal', 'TH-N60': 'thermal',
+};
+async function legacyJump(q) {
+  await gotoCategory(LEGACY_CAT[q]);
+  await search(q);
+  return jumpsToConfirm();
+}
+const listJumps = [];
+for (const q of ['S-K65', 'S-N11', 'TH-K60KP', 'TH-N20KP', 'TH-N20TAKP']) listJumps.push({ q, ...(await legacyJump(q)) });
+check('設備リストの表記 S-K65・S-N11・TH-K60KP・TH-N20KP・TH-N20TAKP で検索すると、それぞれの②に直行する',
+  listJumps.every((r) => r.model === r.q && r.ambiguous === 0),
+  listJumps.map((r) => `${r.q}→${r.model}（曖昧一致 ${r.ambiguous}件）`).join(' / '));
+const baseJumps = [];
+for (const q of ['TH-K60', 'TH-N20TA']) baseJumps.push({ q, ...(await legacyJump(q)) });
+check('TH-K60・TH-N20TA で検索すると、KP の付いた型式ではなく、それぞれの②に直行する',
+  baseJumps.every((r) => r.model === r.q && r.ambiguous === 0),
+  baseJumps.map((r) => `${r.q}→${r.model}（曖昧一致 ${r.ambiguous}件）`).join(' / '));
+
+/**
+ * **S-K65 の2段の後継（検査7）。** 後継品の欄は S-K65 → S-N65 → S-T65 まで届き、③は後継の S-N65 の1件だけ。
+ *
+ * S-K65 は定格を持たない（メーカー資料で確かめていない）ので、窓の候補は出ない。
+ * 出典の無い定格を足すと、窓で拾った候補が③に並び、この検査が落ちる。
+ * 2段目の S-T65 は③に出さない（`gate` の後継バイパスは1段目だけ。設計 4章で選ばなかった案）。
+ */
+await legacyJump('S-K65');
+const sk65Chain = (await page.textContent('.cmp-info > span')).replace(/\s+/g, ' ').trim();
+await page.click('[data-act="step"][data-v="3"]');
+await page.waitForSelector('.result-head');
+const sk65Cards = await page.$$eval('.card', (els) => els.map((e) => ({
+  model: e.querySelector('.model').textContent.trim(),
+  succ: !!e.querySelector('.badge.b-succ'),
+})));
+check('S-K65 の②の後継品の欄が S-K65 → S-N65 → S-T65 で、③はメーカー指定の後継品 S-N65 の1件だけ',
+  sk65Chain === 'S-K65 → S-N65 → S-T65'
+  && sk65Cards.length === 1 && sk65Cards[0].model === 'S-N65' && sk65Cards[0].succ,
+  `欄: ${sk65Chain} / ③: ${sk65Cards.map((c) => `${c.model}${c.succ ? '（後継）' : ''}`).join(', ') || '0件'}`);
+
+/**
+ * **KP の3型式の③は全段0件で、0件パネルが出る（検査8）。**
+ *
+ * KP の後継（KP どうしの代替形名）は資料に無く、整定範囲も資料で確かめていない（設計 3-1・3-2）。
+ * そのどちらかを推測で足すと③に候補が出るので、ここで落ちる。
+ * カードが無いことだけを見ると、画面に着けなかったときも0件で通るので、0件パネルが出ていることも要求する。
+ */
+const kpEmpty = [];
+for (const q of ['TH-N20KP', 'TH-N20TAKP', 'TH-N60KP']) {
+  await legacyJump(q);
+  await page.click('[data-act="step"][data-v="3"]');
+  await page.waitForSelector('.result-head');
+  kpEmpty.push({
+    q,
+    head: (await page.textContent('.result-head .mono')).trim(),
+    cards: (await page.$$('#app .card')).length,
+    zones: (await page.$$('#app .zone-head')).length,
+    panel: await emptyNoteText(),
+  });
+}
+check('TH-N20KP・TH-N20TAKP・TH-N60KP の③は全段0件で0件パネルが出る',
+  kpEmpty.every((r) => r.head === r.q && r.cards === 0 && r.zones === 0 && r.panel.includes('互換品候補は見つかりませんでした')),
+  kpEmpty.map((r) => `${r.q}: 画面 ${r.head} / カード ${r.cards} / 見出し ${r.zones} / パネル ${r.panel ? 'あり' : 'なし'}`).join(' / '));
+
+/** ②の note 枠（`.note`）の全文。枠が無ければ空文字 */
+async function confirmNote() {
+  const el = await page.$('#app .note');
+  return el ? (await el.textContent()).replace(/\s+/g, ' ').trim() : '';
+}
+
+/**
+ * **TH-N20TAKP の②の注記（検査9）。** 設備リストで S-N25 と組になっている TH-N20TAKP を、
+ * 「TH-N20TA の代替は TH-T50」とだけ読んで手配すると、TH-T50 は S-T25 に付かない（設計 7章）。
+ * その筋道を断つ3つの事実（S-N25 に組めるのは 22A、TH-T50 の取付先に S-T25 が無い、
+ * 置き換え先が資料から決まらない）が同じ枠にあることを見る。1文でも消すと落ちる。
+ */
+await legacyJump('TH-N20TAKP');
+const takpNote = await confirmNote();
+check('TH-N20TAKP の②の注記が、S-N25 に組めるヒータ呼びが 22A であること、TH-T50 の取付先に S-T25 が無いこと、置き換え先が資料から決まらないことを言う',
+  takpNote.includes('S-N25 に組めるのは 22A')
+  && takpNote.includes('取付先が S-T35・S-T50 で、S-N25 の代替 S-T25 は入っていない')
+  && takpNote.includes('組み合わせるサーマルは、メーカー資料からは決まらない'),
+  `注記: ${takpNote || '無い'}`);
+
+/**
+ * **S-K65 の②の注記（検査10）。** K シリーズ専用の補助接点ユニット（UA-AX2140 など）は代替品が無い
+ * （セールスとサービス 009 の原文）。S-N65 系に替えるとユニットを流用できないことは、同じ交換の手順の中の事実（設計 8章）。
+ */
+await legacyJump('S-K65');
+const sk65Note = await confirmNote();
+check('S-K65 の②の注記が、K シリーズ専用のオプションユニットに代替品が無いことを言う',
+  sk65Note.includes('K シリーズ専用のオプションユニット') && sk65Note.includes('代替品がありませんので注意願います'),
+  `注記: ${sk65Note || '無い'}`);
+
+/**
+ * **旧形は外形寸法を持たない（検査11）。** 寸法はメーカー資料で確かめていない（設計 3-1）。
+ * data にキーごと無いことと、②が外形図を描かず断りを出すことの両方を見る。
+ * 推定の寸法を足すと data の側で落ち、`evidence.dims` を verified にすると画面の側で落ちる。
+ * 型式の一覧は `tools/schema-map.mjs` の宣言から取る（ここに並べ直すと一覧が二重になる）。
+ */
+const { MITSUBISHI_LEGACY_MODELS } = await import('./schema-map.mjs');
+const legacyData = [
+  ...ctData,
+  ...JSON.parse(readCtData(join(ROOT, 'data', 'thermal.json'), 'utf8')),
+].filter((d) => MITSUBISHI_LEGACY_MODELS.includes(d.model) && d.maker === '三菱電機');
+const legacyDims = [];
+for (const model of MITSUBISHI_LEGACY_MODELS) {
+  const rec = legacyData.find((d) => d.model === model);
+  await legacyJump(model);
+  legacyDims.push({
+    model,
+    inData: !!rec,
+    keys: rec ? ['dims', 'holes'].filter((k) => k in rec) : [],
+    svg: (await page.$('#app svg')) !== null,
+    none: (await page.$('#app .dim-none')) !== null,
+  });
+}
+check(`新しく登録した旧形 ${legacyDims.filter((r) => r.inData).length} 件は dims をキーごと持たず、②で外形図を描かない`,
+  legacyDims.length > 0 && legacyDims.every((r) => r.inData && !r.keys.length && !r.svg && r.none),
+  legacyDims.filter((r) => !r.inData || r.keys.length || r.svg || !r.none)
+    .map((r) => `${r.model}: data ${r.inData ? 'あり' : '無し'} / キー ${r.keys.join(',') || '―'} / 図 ${r.svg ? 'あり' : '無し'}`).join(' / '));
+
+/**
+ * **KP の3型式の注記が、母体の型式で検索するよう案内し、その案内が実際に当たること（D75）。**
+ *
+ * KP の型式の③は全段0件（検査8）なので、KP を打った人は②の注記の最後の1文で母体の画面へ向かう。
+ * 文があることに加えて、案内どおりに母体を打つと母体の②に直行し（KP の付いた型式や曖昧一致リストに
+ * 落ちない）、その後継が文の名乗る代替であることまで見る。母体の後継が変われば文が嘘になるので落とす。
+ * 案内の文の型式名は、文を書いた依頼者の決定（設計 D75）のとおりにここで持つ。
+ */
+const KP_PARENTS = [['TH-N20KP', 'TH-N20', 'TH-T25'], ['TH-N20TAKP', 'TH-N20TA', 'TH-T50'], ['TH-N60KP', 'TH-N60', 'TH-T65']];
+const kpGuide = [];
+for (const [kp, parent, succ] of KP_PARENTS) {
+  await legacyJump(kp);
+  const note = await confirmNote();
+  const jump = await legacyJump(parent);
+  const chain = jump.model === parent ? (await page.textContent('.cmp-info > span')).replace(/\s+/g, ' ').trim() : '';
+  kpGuide.push({
+    kp, parent, succ, jump, chain,
+    says: note.endsWith(`このアプリでは、母体の ${parent} で検索すると、メーカーの代替 ${succ} と、整定範囲の近い候補が出ます。`),
+  });
+}
+check('TH-N20KP・TH-N20TAKP・TH-N60KP の②の注記が、それぞれの母体（TH-N20・TH-N20TA・TH-N60）で検索するよう案内し、母体を打つと母体の②に直行して後継が案内の代替になっている',
+  kpGuide.every((r) => r.says && r.jump.model === r.parent && r.jump.ambiguous === 0 && r.chain.startsWith(`${r.parent} → ${r.succ}`)),
+  kpGuide.map((r) => `${r.kp}: 案内 ${r.says ? 'あり' : '無し'} / ${r.parent}→${r.jump.model} / 欄 ${r.chain || '無し'}`).join(' / '));
+
 /* ---- 既知の不具合5件の修正確認 ---- */
 
 // (a) 接触器直付 — サーマルの取付方式が選択肢に出る

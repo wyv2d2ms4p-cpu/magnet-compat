@@ -1851,5 +1851,170 @@
         "state": "unverified"
       }
     }
+  },
+  {
+    "id": "MIT-THK60",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-K60",
+    "modelStatus": "catalog-confirmed",
+    "discontinued": true,
+    "successorId": "MIT-THN60",
+    "note": "代替は TH-N60（三菱電機 セールスとサービス 009（2001年2月））。TH-N60 も生産終了（代替 TH-T65。三菱電機 セールスとサービス 109（2016年2月））。",
+    "specs": {},
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/document/sales/lvsw/009/009.pdf",
+        "srcNote": "三菱電機 セールスとサービス 009（2001年2月）「電磁開閉器・電磁接触器 他 生産中止のお知らせ」の生産中止の機種に形名がある（TH-K60 → TH-N60）。設備リストには無い。「TH-K60」と打った人が TH-K60KP の画面に着かないよう、検索の取り違えを防ぐために登録する。"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-THK60KP",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-K60KP",
+    "modelStatus": "catalog-confirmed",
+    "discontinued": true,
+    "successorId": "MIT-THN60KP",
+    "note": "代替は TH-N60KP（三菱電機 セールスとサービス 009（2001年2月））。TH-N60KP も生産終了で、KP の代替形名は資料に無い（母体の TH-N60 の代替は TH-T65。三菱電機 セールスとサービス 109（2016年2月））。",
+    "specs": {
+      "protect": "2E"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/document/sales/lvsw/009/009.pdf",
+        "srcNote": "社内の設備リスト（依頼者が提供した写真を 2026-10-21 に受け取った。撮影日は読み取れない）。型式が社内に実在する根拠としてだけ使い、品目コードなどの社内情報は記載しない。三菱電機 セールスとサービス 009（2001年2月）「電磁開閉器・電磁接触器 他 生産中止のお知らせ」の生産中止の機種に形名がある（原文「TH-K60KP → TH-N60KP」）。"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified",
+        "srcNote": "保護方式（2E）は、三菱電磁開閉器 新旧比較資料「新形MS-TシリーズとMS-Nシリーズ」BON-120A423-F（発行年月は読み取れない）の「KP：3素子」と、三菱電機 セールスとサービス 001（1999年11月）の「TH-K18KP(2E式)」「TH-K20TAKP(2E式)」から読んだ。整定範囲・取付先は資料で確かめていないので登録していない。"
+      }
+    }
+  },
+  {
+    "id": "MIT-THN60KP",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-N60KP",
+    "modelStatus": "catalog-confirmed",
+    "discontinued": true,
+    "note": "母体の TH-N60 の代替は TH-T65（三菱電機 セールスとサービス 109（2016年2月））。KP の代替形名は同じ資料に書かれていない。生産終了は、メーカーの生産終了のお知らせにある『母体とした特殊仕様品も対象』という記載から読んだもので、KP の形名そのものは書かれていません。このアプリでは、母体の TH-N60 で検索すると、メーカーの代替 TH-T65 と、整定範囲の近い候補が出ます。",
+    "specs": {
+      "protect": "2E"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/document/sales/lvsw/009/009.pdf",
+        "srcNote": "三菱電機 セールスとサービス 009（2001年2月）「電磁開閉器・電磁接触器 他 生産中止のお知らせ」に、TH-K60KP の代替として形名がある（原文「TH-K60KP → TH-N60KP」）。設備リストには無い。TH-K60KP の後継をたどるために登録する。生産終了は、三菱電機 セールスとサービス 109（2016年2月）の「上記形名品を母体とした特殊仕様品(MSO-N35KP 等)についても対象となります」から読んだもので、TH-N60KP の形名は書かれていない。"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified",
+        "srcNote": "保護方式（2E）は、三菱電磁開閉器 新旧比較資料「新形MS-TシリーズとMS-Nシリーズ」BON-120A423-F（発行年月は読み取れない）の「KP：3素子」と、三菱電機 セールスとサービス 001（1999年11月）の「TH-K18KP(2E式)」「TH-K20TAKP(2E式)」から読んだ。整定範囲・取付先は資料で確かめていないので登録していない。"
+      }
+    }
+  },
+  {
+    "id": "MIT-THN20KP",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-N20KP",
+    "modelStatus": "catalog-confirmed",
+    "discontinued": true,
+    "note": "KP は3素子（2E式。過負荷＋欠相）。母体の TH-N20 の代替は TH-T25（三菱電機 セールスとサービス 109（2016年2月））。同じ資料は母体を元にした特殊仕様品も対象と書くが、KP の代替形名は書いていない。整定範囲・取付先は確かめていないので登録していない。交換前に銘板のヒータ呼び（A）を確かめ、メーカーの選定資料で確認してください。生産終了は、メーカーの生産終了のお知らせにある『母体とした特殊仕様品も対象』という記載から読んだもので、KP の形名そのものは書かれていません。このアプリでは、母体の TH-N20 で検索すると、メーカーの代替 TH-T25 と、整定範囲の近い候補が出ます。",
+    "specs": {
+      "protect": "2E"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://dl.mitsubishielectric.co.jp/dl/fa/document/catalog/lvsw/sh3539/SH(NA)3539.pdf",
+        "srcNote": "社内の設備リスト（依頼者が提供した写真を 2026-10-21 に受け取った。撮影日は読み取れない）。型式が社内に実在する根拠としてだけ使い、品目コードなどの社内情報は記載しない。三菱電磁開閉器 技術資料集「MS－Nシリーズ 電磁開閉器・接触器」SH(NA)3539（版・発行年月は読み取れない）の動作特性曲線の見出しに『TH－N20（KP）形』として形名が載っている。KP の値の表は読めていない。生産終了は、三菱電機 セールスとサービス 109（2016年2月）の「上記形名品を母体とした特殊仕様品(MSO-N35KP 等)についても対象となります」から読んだもので、TH-N20KP の形名は書かれていない。"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified",
+        "srcNote": "保護方式（2E）は、三菱電磁開閉器 新旧比較資料「新形MS-TシリーズとMS-Nシリーズ」BON-120A423-F（発行年月は読み取れない）の「KP：3素子」と、三菱電機 セールスとサービス 001（1999年11月）の「TH-K18KP(2E式)」「TH-K20TAKP(2E式)」から読んだ。整定範囲・取付先は資料で確かめていないので登録していない。"
+      }
+    }
+  },
+  {
+    "id": "MIT-THN20TAKP",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-N20TAKP",
+    "modelStatus": "catalog-confirmed",
+    "discontinued": true,
+    "note": "KP は2E式（三菱電磁開閉器 新旧比較資料「新形MS-TシリーズとMS-Nシリーズ」BON-120A423-F・三菱電機 セールスとサービス 001（1999年11月））。母体の TH-N20TA は整定範囲 18〜34A・ヒータ呼び 22A と 29A で、S-N25 に組めるのは 22A、29A は S-N35 用（三菱電機 FA「低圧開閉器 仕様から探す」の TH-N20TA の仕様ページ）。TH-N20TA の代替 TH-T50（三菱電機 セールスとサービス 109（2016年2月））は、このアプリの登録では取付先が S-T35・S-T50 で、S-N25 の代替 S-T25 は入っていない。S-N25 を S-T25 に替えるときに組み合わせるサーマルは、メーカー資料からは決まらない。交換前に、銘板のヒータ呼び（A）を確かめてください。生産終了は、メーカーの生産終了のお知らせにある『母体とした特殊仕様品も対象』という記載から読んだもので、KP の形名そのものは書かれていません。このアプリでは、母体の TH-N20TA で検索すると、メーカーの代替 TH-T50 と、整定範囲の近い候補が出ます。",
+    "specs": {
+      "protect": "2E"
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/document/sales/lvsw/001/001.pdf",
+        "srcNote": "社内の設備リスト（依頼者が提供した写真を 2026-10-21 に受け取った。撮影日は読み取れない）。型式が社内に実在する根拠としてだけ使い、品目コードなどの社内情報は記載しない。三菱電機 セールスとサービス 001（1999年11月）「電磁開閉器・電磁接触器 他 生産中止のお知らせ」に、TH-K20TAKP の代替として形名がある。生産終了は、三菱電機 セールスとサービス 109（2016年2月）の「上記形名品を母体とした特殊仕様品(MSO-N35KP 等)についても対象となります」から読んだもので、TH-N20TAKP の形名は書かれていない。"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified",
+        "srcNote": "保護方式（2E）は、三菱電磁開閉器 新旧比較資料「新形MS-TシリーズとMS-Nシリーズ」BON-120A423-F（発行年月は読み取れない）の「KP：3素子」と、三菱電機 セールスとサービス 001（1999年11月）の「TH-K18KP(2E式)」「TH-K20TAKP(2E式)」から読んだ。整定範囲・取付先は資料で確かめていないので登録していない。"
+      }
+    }
+  },
+  {
+    "id": "MIT-THN20TA",
+    "category": "thermal",
+    "maker": "三菱電機",
+    "model": "TH-N20TA",
+    "modelStatus": "catalog-confirmed",
+    "discontinued": true,
+    "successorId": "MIT-THT50",
+    "note": "整定範囲 18〜34A は、ヒータ呼び 22A と 29A を合わせた範囲（三菱電機 FA「低圧開閉器 仕様から探す」の TH-N20TA の仕様ページ）。取付先はヒータ呼びで変わり、22A は S-N25・S-N35、29A は S-N35。代替 TH-T50 の取付先は S-T35・S-T50（登録値）。",
+    "specs": {
+      "protect": "1E",
+      "mountsOn": [
+        "S-N25",
+        "S-N35"
+      ],
+      "setRangeA": {
+        "min": 18,
+        "max": 34
+      }
+    },
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/faspec/detail.page?kisyu=/lvsw&formNm=THERMAL_TH-N20TA_4204&category=ex&id=spec",
+        "srcNote": "三菱電機 FA「低圧開閉器 仕様から探す」の TH-N20TA の仕様ページ（2026-10-21 取得）。生産終了と代替 TH-T50 は 三菱電機 セールスとサービス 109（2016年2月）（抽出テキストで「TH-N20TA TH-T50」が同じ行に並ぶ）。設備リストには無い。「TH-N20TA」と打った人が TH-N20TAKP の画面に着かないよう、検索の取り違えを防ぎ、TH-T50 への代替を画面に出すために登録する。"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/products/faspec/detail.page?kisyu=/lvsw&formNm=THERMAL_TH-N20TA_4204&category=ex&id=spec",
+        "srcNote": "三菱電機 FA「低圧開閉器 仕様から探す」の TH-N20TA の仕様ページ（2026-10-21 取得）：整定範囲 18～34A、ヒータ呼び 22A・29A、組み合わせる接触器は 22A が N25・N35、29A が N35、2素子・過負荷保護。整定範囲はヒータ呼び 22A と 29A を合わせた範囲で、1台のダイヤルで回せる範囲ではない。保護方式は2素子・過負荷保護を 1E として登録した。"
+      }
+    }
   }
 ]

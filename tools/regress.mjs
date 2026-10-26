@@ -5,15 +5,28 @@
  * 候補リストを取る。同じ入力を統合アプリのエンジンに流し、差分が
  * 「意図した修正」だけで説明できることを確認する。
  *
- * 意図した修正:
+ * 説明できる差分:
  *   A. 容量帯の窓を対称化した（index.html:328 の m 基準の非対称を解消）
  *      → 接触器・開閉器で候補が増えることがある
  *   B. 出力極性(NPN/PNP)をハードフィルタにした
  *      → センサーで候補が減ることがある
- *   C. 寸法の信頼性を evidence で判定するようにした
- *      → 並び順のみに影響し、候補の集合は変わらない
+ *   C. 移行元に無い型式（追加レコード）が候補に加わった
+ *      → 出典つきで足した型式が、移行元の型式の候補に増えることがある
+ *
+ * 寸法の信頼性を evidence で判定するようにした修正もあるが、並び順のみに影響し、
+ * 候補の集合は変わらないので分類を持たない（以前はここに C として並べていた。
+ * 出力に出る分類の記号と重ならないよう、記号を外した）。
  *
  * これら以外の増減が1件でもあれば失敗させる。
+ *
+ * C を足した理由（`docs/design-mitsubishi-legacy-magnets.md` D69・10章）。
+ * この突合は移行元にある型式の候補集合しか見ないので、移行元に無い型式を出典つきで
+ * 足すと、その型式が既存の画面の候補に加わるだけで「説明不能」になる
+ * （TH-N20TA を足すと、既存のサーマル16画面に TH-N20TA が1件ずつ増える）。
+ * C は「増えた候補の id が移行元に無い」ことだけで判定し、A・B の判定には触れない。
+ * **増えた候補が移行元の型式なら今までどおり説明不能。** 既存どうしの辺が増えたら
+ * 落ちる性質は残り、移行元に無い型式の分だけを説明できる差分として数える。
+ * 移行元に無い型式が候補から「消える」ことは起きない（移行元の候補は移行元の型式だけ）。
  *
  *   node tools/regress.mjs
  */
@@ -94,7 +107,9 @@ const now = current();
 
 const stats = { same: 0, added: 0, removed: 0, reordered: 0 };
 const unexplained = [];
-const explained = { symmetry: 0, polarity: 0 };
+const explained = { symmetry: 0, polarity: 0, added: 0 };
+/** C の対象になった追加レコード（出力に型式名を出し、何が説明に使われたかを残す） */
+const addedModels = new Set();
 
 for (const [id, before] of legacy) {
   const after = now.get(id);
@@ -114,6 +129,8 @@ for (const [id, before] of legacy) {
       withinWindow(a.specs?.ratedCurrentA, m.specs?.ratedCurrentA, 0.3) &&
       Math.abs(a.specs.ratedCurrentA - m.specs.ratedCurrentA) > m.specs.ratedCurrentA * 0.3;
     if (symmetricOnly) { explained.symmetry++; stats.added++; continue; }
+    // C. 移行元に無い型式（追加レコード）。A の判定を先に通すので、A の件数は今までと変わらない
+    if (a && !legacy.has(x)) { explained.added++; stats.added++; addedModels.add(a.model); continue; }
     unexplained.push(`${id} (${m.category}): 候補に ${x} が増えた（説明不能）`);
   }
 
@@ -138,6 +155,8 @@ console.log('候補集合の差分:');
 console.log(`  完全一致              ${stats.same} 型式（うち並び順のみ変化 ${stats.reordered}）`);
 console.log(`  A. 窓の対称化で増加    ${explained.symmetry} 件`);
 console.log(`  B. 極性フィルタで減少  ${explained.polarity} 件`);
+console.log(`  C. 移行元に無い型式（追加レコード）が候補に加わった ${explained.added} 件`
+  + (addedModels.size ? `（${[...addedModels].join('・')}）` : ''));
 console.log(`  説明できない差分       ${unexplained.length} 件`);
 
 /*
