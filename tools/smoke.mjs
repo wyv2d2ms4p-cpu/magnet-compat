@@ -1902,6 +1902,101 @@ check('置換えの条件を持たない生産終了品の後継品枠には、�
   plainSuccBox.includes('S-T20') && !plainSuccBox.includes('別途必要')
   && (await page.$$('.cmp-info .amber')).length === 0, plainSuccBox);
 
+/**
+ * **後継も生産終了なら、②の注意書きがそれを言う（設計 D68・4章。検査6）。**
+ *
+ * 「後継は S-N10 です」で止めると、生産終了の S-N10 がそのまま発注番号として読まれる。
+ * 注意書きの文言と、後継品の欄の連鎖を同じ画面で見る。欄は変えていないが、注意書きが
+ * 「その先は欄を見て」と案内する以上、欄が S-T10 まで届いていなければ案内が空振りになる。
+ *
+ * 2つ目は反対側。後継 S-T20 が生産中の S-N18 では、文が今までどおりであること
+ * （「生産終了」の判定を外して、後継があれば必ず言う形に壊すとここで落ちる）。
+ * 最初の検査が S-2S に「登録がありません」が無いことも見るのは、連鎖の終わり S-T10 が
+ * 生産中だから（終わりの判定を外すと、ここで落ちる）。
+ */
+await gotoCategory('contactor');
+await search('S-2S');
+await page.waitForSelector('.model.big');
+const chainDisc = (await page.$$eval('.warn', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim())))
+  .find((t) => t.includes('生産終了')) ?? '';
+const chainBox = (await page.textContent('.cmp-info > span')).replace(/\s+/g, ' ').trim();
+check('S-2S の②で、後継 S-N10 も生産終了であることを注意書きが言い、後継品の欄が S-2S → S-N10 → S-T10',
+  chainDisc.includes('後継は S-N10 です。S-N10 も生産終了です。その先の後継は下の「後継品」の欄を見てください。')
+  && !chainDisc.includes('登録がありません')
+  && chainBox === 'S-2S → S-N10 → S-T10',
+  `注意書き: ${chainDisc || '無い'} / 欄: ${chainBox}`);
+await gotoCategory('contactor');
+await search('S-N18');
+await page.waitForSelector('.model.big');
+const liveSuccDisc = (await page.$$eval('.warn', (els) => els.map((e) => e.textContent.replace(/\s+/g, ' ').trim())))
+  .find((t) => t.includes('生産終了')) ?? '';
+check('後継が生産中の S-N18 の②の注意書きは「後継は S-T20 です。」で終わり、後継の生産終了を言わない',
+  liveSuccDisc.endsWith('後継は S-T20 です。') && !liveSuccDisc.includes('も生産終了'),
+  `注意書き: ${liveSuccDisc || '無い'}`);
+
+/**
+ * **連鎖の終わりまで生産終了なら、その先の登録が無いことを言う（設計 4章）。**
+ *
+ * 今の実データには当たる型式が無い（PR-B2 の TH-K60KP → TH-N60KP で初めて現れる）。
+ * 実データを歩く形にすると対象0件で通ってしまうので、`phasesMatch`・`dims` の検査と同じく
+ * 仮想のレコードを検査の中だけで作り（`data/` には入れない）、`discontinuedNote` に直接掛ける。
+ * S-2S と S-N10 を複製し、S-N10 の後継だけを外して「S-N10 で連鎖が終わる」形にする。
+ *
+ * 1つ目は「欄を見てください」が**出ない**ことも見る（依頼者の決定 2026-10-22）。欄には
+ * S-N10 より先が無いので、案内すると読み手は欄で何も見つけられない。
+ * 2つ目は、同じ仮想の連鎖の終わりを生産中にすると、文が今までどおりに戻ること
+ * （仮想のレコードの作り方で1つ目が通っているのではないと言える）。
+ * 後継は生産終了だが終わりは生産中、という組は実データの S-2S（上の検査6）が見ている。
+ */
+const { discontinuedNote: discNote } = await import('../src/core/ui.mjs');
+const { readFileSync: readCtData } = await import('node:fs');
+const ctData = JSON.parse(readCtData(join(ROOT, 'data', 'contactor.json'), 'utf8'));
+const ctS2S = ctData.find((d) => d.model === 'S-2S');
+const ctSN10 = ctData.find((d) => d.model === 'S-N10');
+const ctST10 = ctData.find((d) => d.model === 'S-T10');
+const plainText = (html) => html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+const endNote = (endDisc) => {
+  const head = { ...ctS2S, id: 'VIRTUAL_S2S_CHAIN_END', model: 'S-2S（仮想）', successorId: 'VIRTUAL_SN10_CHAIN_END' };
+  const end = { ...ctSN10, id: 'VIRTUAL_SN10_CHAIN_END', model: 'S-N10（仮想・後継なし）', discontinued: endDisc };
+  delete end.successorId;
+  return plainText(discNote(head, new Map([head, end].map((d) => [d.id, d]))));
+};
+const chainEndDisc = ctS2S && ctSN10 ? endNote(true) : '';
+check('後継が生産終了で連鎖の終わりでもあるとき、②の注意書きが「このアプリには、その先の後継の登録がありません。」と言い、欄へは案内しない（仮想の S-2S → S-N10 で確認）',
+  ctS2S?.discontinued === true && ctSN10?.discontinued === true
+  && chainEndDisc.endsWith('後継は S-N10（仮想・後継なし） です。S-N10（仮想・後継なし） も生産終了です。'
+    + 'このアプリには、その先の後継の登録がありません。')
+  && !chainEndDisc.includes('欄を見てください'),
+  `注意書き: ${chainEndDisc || 'S-2S か S-N10 が data に無い'}`);
+const chainEndLive = ctS2S && ctSN10 ? endNote(false) : '';
+check('同じ仮想の連鎖の終わりを生産中にすると、注意書きは「後継は … です。」に戻る（後継の生産終了も登録の不在も言わない）',
+  !!chainEndLive && chainEndLive.endsWith('後継は S-N10（仮想・後継なし） です。')
+  && !chainEndLive.includes('も生産終了') && !chainEndLive.includes('登録がありません'),
+  `注意書き: ${chainEndLive || 'S-2S か S-N10 が data に無い'}`);
+
+/**
+ * **後継も、その先の連鎖の終わりも生産終了なら、欄へ案内したうえで終わりの型式名を添えて
+ * 登録が無いことを言う（依頼者の決定 2026-10-22）。**
+ *
+ * 今の実データには当たる型式が無いので、上と同じく仮想のレコードで固定する。
+ * S-2S → S-N10 → S-T10 を複製し、終わりの S-T10 だけを生産終了にする。
+ * 終わりの型式名が文に出ることを見るのは、「その先」だけでは後継の先か欄の終わりの先かを
+ * 読み分けられないため。型式名は仮想の名前で見るので、実装が S-T10 を直書きしていれば落ちる。
+ */
+const twoStageNote = (() => {
+  if (!ctS2S || !ctSN10 || !ctST10) return '';
+  const head = { ...ctS2S, id: 'VIRTUAL_S2S_TWO_STAGE', model: 'S-2S（仮想）', successorId: 'VIRTUAL_SN10_TWO_STAGE' };
+  const mid = { ...ctSN10, id: 'VIRTUAL_SN10_TWO_STAGE', model: 'S-N10（仮想）', successorId: 'VIRTUAL_ST10_TWO_STAGE' };
+  const end = { ...ctST10, id: 'VIRTUAL_ST10_TWO_STAGE', model: 'S-T10（仮想・生産終了）', discontinued: true };
+  delete end.successorId;
+  return plainText(discNote(head, new Map([head, mid, end].map((d) => [d.id, d]))));
+})();
+check('後継もその先の連鎖の終わりも生産終了なら、②の注意書きが欄へ案内し、続けて「このアプリには、（終わりの型式）より先の後継の登録がありません。」と言う（仮想の S-2S → S-N10 → S-T10 で確認）',
+  twoStageNote.endsWith('後継は S-N10（仮想） です。S-N10（仮想） も生産終了です。'
+    + 'その先の後継は下の「後継品」の欄を見てください。'
+    + 'このアプリには、S-T10（仮想・生産終了） より先の後継の登録がありません。'),
+  `注意書き: ${twoStageNote || 'S-2S・S-N10・S-T10 のどれかが data に無い'}`);
+
 /* ---- ③の候補リストを根拠で2つに分ける ---- */
 
 /**
