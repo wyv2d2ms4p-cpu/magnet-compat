@@ -3109,5 +3109,53 @@
         "state": "unverified"
       }
     }
+  },
+  {
+    "id": "MIT-SK65",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-K65",
+    "modelStatus": "catalog-confirmed",
+    "discontinued": true,
+    "successorId": "MIT-SN65",
+    "note": "三菱電機 セールスとサービス 009（2001年2月）によると、2001年4月末で生産中止。代替は S-N65 で、S-N65 も生産終了（代替 S-T65。三菱電機 セールスとサービス 109（2016年2月））。K シリーズ専用のオプションユニット（補助接点ユニット UA-AX2140 など）は、三菱電機 セールスとサービス 009（2001年2月）に『代替品がありませんので注意願います』とある。交換前に、付いている補助接点ユニットの型式を確かめてください。定格・補助接点はメーカー資料で確かめていないので登録していない。",
+    "specs": {},
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/document/sales/lvsw/009/009.pdf",
+        "srcNote": "社内の設備リスト（依頼者が提供した写真を 2026-10-21 に受け取った。撮影日は読み取れない）。型式が社内に実在する根拠としてだけ使い、品目コードなどの社内情報は記載しない。生産中止の機種として、三菱電機 セールスとサービス 009（2001年2月）「電磁開閉器・電磁接触器 他 生産中止のお知らせ」に形名がある（2001年4月末で生産中止。代替は「原則として、形名の『K』を『N』に置き換えたものが代替機種」）。"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
+  },
+  {
+    "id": "MIT-SN11",
+    "category": "contactor",
+    "maker": "三菱電機",
+    "model": "S-N11",
+    "modelStatus": "catalog-confirmed",
+    "discontinued": true,
+    "successorId": "MIT-ST12",
+    "note": "代替は S-T12（三菱電機 セールスとサービス 076（2014年10月））。定格・補助接点・取付寸法はメーカー資料で確かめていないので登録していない。補助接点ユニット（UN-AX4 など）の MS-T 側の対応は、メーカー資料で確かめていない。",
+    "specs": {},
+    "evidence": {
+      "model": {
+        "state": "verified",
+        "srcUrl": "https://www.mitsubishielectric.co.jp/fa/document/sales/lvsw/076/076.pdf",
+        "srcNote": "社内の設備リスト（依頼者が提供した写真を 2026-10-21 に受け取った。撮影日は読み取れない）。型式が社内に実在する根拠としてだけ使い、品目コードなどの社内情報は記載しない。三菱電機 セールスとサービス 076（2014年10月）「MS-N シリーズ(28AF 以下)生産中止に関するお知らせ」の代替表に形名がある（「S-N11, S-N12 → S-T12」。受注停止 2015年9月末、生産停止 2015年10月末）。"
+      },
+      "dims": {
+        "state": "unverified"
+      },
+      "specs": {
+        "state": "unverified"
+      }
+    }
   }
 ]

@@ -20,7 +20,7 @@ import {
   EVIDENCE_SOURCE_KEYS, DROPPED, EVIDENCE_STATES, EVIDENCE_ASPECTS,
   MODEL_STATUS, MODEL_SCOPES, EXPECTED_COUNTS, generatedId, ADDED_SPEC_KEYS,
   DISCONTINUED_SERIES, discontinuedSeriesIds, RECORD_KEYS, ADDED_RECORD_RULES,
-  REPLACEMENT_NOTE_KEYS,
+  REPLACEMENT_NOTE_KEYS, MITSUBISHI_LEGACY_MODELS, MITSUBISHI_LEGACY_SOURCES, MITSUBISHI_LEGACY_SUCCESSORS,
 } from './schema-map.mjs';
 
 const DATA = join(REPO_ROOT, 'data');
@@ -996,6 +996,99 @@ check(`modelScope は宣言された値だけ（宣言 ${MODEL_SCOPES.length} �
         + ` … 許可値は ${MODEL_SCOPES.map((v) => `"${v}"`).join(' / ')}。`
         + '綴りが違うとシリーズ単位の除外・バッジ・警告・0件説明が黙って効かなくなる');
     }
+  }
+});
+
+// ---- 追加: 三菱の旧形（MS-K・MS-N）----------------------------------------
+
+/**
+ * 三菱の旧形の検査（`docs/design-mitsubishi-legacy-magnets.md` 10章の検査1・2・12）。
+ *
+ * 型式は電磁接触器・電磁開閉器・サーマルの三菱電機のレコードから model で引く。
+ * 同じ model が2件以上あると、どちらの後継を見たのかが決まらないので、それも落とす。
+ */
+const MAGNET_CATEGORIES = ['contactor', 'starter', 'thermal'];
+const mitsubishiMagnets = dataRecords.filter((r) => MAGNET_CATEGORIES.includes(r.category) && r.maker === '三菱電機');
+const mitsubishiByModel = (model) => mitsubishiMagnets.filter((r) => r.model === model);
+const legacyRecords = MITSUBISHI_LEGACY_MODELS.flatMap(mitsubishiByModel);
+
+/**
+ * 検査1。旧形の追加レコードの後継と、宣言した既存の後継が、宣言（`tools/schema-map.mjs` の
+ * `MITSUBISHI_LEGACY_SUCCESSORS`）と一致することを見る。
+ *
+ * 見る向きは3つ。
+ * - 宣言 → data … 宣言した型式が data にあり、その `successorId` が宣言の後継を指す
+ *   （後継を書き換える・宣言した型式を消すと落ちる）。
+ * - data → 宣言 … 旧形の追加レコードが持つ後継は、すべて宣言にある
+ *   （資料に無い KP どうしの後継 TH-N20KP → TH-T25KP などを足すと落ちる）。
+ * - 宣言の出典 … 出典はメモ 0章の代替表（S3・S4・S5）のどれか。
+ * 旧形の一覧の型式が data に1件ずつあることもここで見る（一覧が古いまま残ると、検査12と
+ * smoke の外形図の検査が見る範囲から型式が黙って抜ける）。
+ * 対象0件のまま PASS しないよう、宣言か一覧が空なら落とす。
+ */
+const legacySuccessorsFromData = legacyRecords.filter((r) => r.successorId);
+const existingDeclared = MITSUBISHI_LEGACY_SUCCESSORS.filter((s) => mitsubishiByModel(s.from).some((r) => !isAdded(r)));
+// 名前の N は、この検査が見た後継の本数（旧形の追加レコードの後継と、宣言した後継の和集合）
+const legacySuccessorsChecked = new Set([
+  ...legacySuccessorsFromData.map((r) => r.model),
+  ...MITSUBISHI_LEGACY_SUCCESSORS.map((s) => s.from),
+]);
+check(`三菱の旧形の後継 ${legacySuccessorsChecked.size} 本は、宣言したメーカー資料の代替表`
+  + `（${Object.keys(MITSUBISHI_LEGACY_SOURCES).join('・')}）と一致し、宣言はすべて data に使われている`
+  + `（宣言 ${MITSUBISHI_LEGACY_SUCCESSORS.length} 本。うち既存 ${existingDeclared.length} 本）`, (fail) => {
+  if (!MITSUBISHI_LEGACY_SUCCESSORS.length || !MITSUBISHI_LEGACY_MODELS.length) {
+    fail('宣言か旧形の一覧が空 … 対象0件のまま PASS しないよう落とす');
+    return;
+  }
+  for (const model of MITSUBISHI_LEGACY_MODELS) {
+    const hits = mitsubishiByModel(model);
+    if (hits.length !== 1) fail(`旧形の一覧の ${model} が data に ${hits.length} 件（1件であること）`);
+    else if (!isAdded(hits[0])) fail(`旧形の一覧の ${model} が移行由来のレコード … 一覧は追加レコードだけを持つ`);
+  }
+  const declaredKey = new Set(MITSUBISHI_LEGACY_SUCCESSORS.map((s) => `${s.from}→${s.to}`));
+  for (const s of MITSUBISHI_LEGACY_SUCCESSORS) {
+    if (!(s.src in MITSUBISHI_LEGACY_SOURCES)) fail(`${s.from} → ${s.to}: 出典 ${s.src} は代替表（${Object.keys(MITSUBISHI_LEGACY_SOURCES).join('・')}）に無い`);
+    const from = mitsubishiByModel(s.from);
+    if (from.length !== 1) { fail(`宣言の ${s.from} が data に ${from.length} 件 … 宣言した型式は data に1件あること`); continue; }
+    const succ = from[0].successorId ? byId.get(from[0].successorId) : null;
+    if (succ?.model !== s.to) {
+      fail(`${s.from} の後継が ${succ?.model ?? '無し'} … 宣言は ${s.to}（${s.src}）`);
+    }
+  }
+  for (const r of legacySuccessorsFromData) {
+    const to = byId.get(r.successorId)?.model;
+    if (!declaredKey.has(`${r.model}→${to}`)) {
+      fail(`${r.model} → ${to ?? r.successorId}: 旧形の後継が宣言に無い … メーカー資料の代替表で確かめた対応だけを successorId にする`);
+    }
+  }
+});
+
+/**
+ * 検査2。KP は3素子（2E式。過負荷＋欠相）で、形名から保護方式が決まる（メモ 2章。S6・S2）。
+ * KP の型式を 1E で登録すると、③の並び（`thermal.mjs` の `rank`）で 2E→1E の降格が見えなくなり、
+ * 欠相保護を失う置き換えが上位に出る。既存の TH-T18KP なども対象なので、旧形を足す前から N>0。
+ */
+const mitsubishiKpThermals = mitsubishiMagnets.filter((r) => r.category === 'thermal' && /KP$/.test(r.model));
+check(`形名が KP で終わる三菱のサーマル ${mitsubishiKpThermals.length} 件は、すべて保護方式 2E を持つ`, (fail) => {
+  if (!mitsubishiKpThermals.length) fail('形名が KP で終わる三菱のサーマルが1件も無い … 対象0件のまま PASS しないよう落とす');
+  for (const r of mitsubishiKpThermals) {
+    if (r.specs?.protect !== '2E') fail(`${r.id} (${r.model}): specs.protect=${JSON.stringify(r.specs?.protect)} … KP は 2E 式`);
+  }
+});
+
+/**
+ * 検査12。旧形の `note` は②に中立の枠で出る現場向けの文で、置き換え先が資料から決まらないことを
+ * 書いている。そこに断定語が入ると、資料に無い置き換えを画面が請け合うことになる。
+ * 語の一覧は `tools/smoke.mjs` のカードの検査（`guideAssertive`）と同じ6語。
+ * 旧形はどれも `note` を持つ（設計 3-3）ので、`note` が無いことも落とす（無いと検査が空振りする）。
+ */
+const LEGACY_ASSERTIVE = ['交換可', '互換品です', '使用可', '使用できません', '互換あり', '概ね互換'];
+check(`三菱の旧形の追加レコード ${legacyRecords.length} 件の note に、断定語（${LEGACY_ASSERTIVE.join('・')}）が無い`, (fail) => {
+  if (!legacyRecords.length) fail('旧形の追加レコードが1件も無い … 対象0件のまま PASS しないよう落とす');
+  for (const r of legacyRecords) {
+    if (typeof r.note !== 'string' || !r.note.trim()) { fail(`${r.id} (${r.model}): note が無い … 旧形は note を持つ（設計 3-3）`); continue; }
+    const hit = LEGACY_ASSERTIVE.filter((w) => r.note.includes(w));
+    if (hit.length) fail(`${r.id} (${r.model}): note に「${hit.join('」「')}」がある`);
   }
 });
 

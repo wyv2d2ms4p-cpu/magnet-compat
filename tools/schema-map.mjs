@@ -342,3 +342,51 @@ export const ADDED_RECORD_RULES = {
   /** evidence.model にこのいずれかが必要（出典URL または カタログ番号などの注記） */
   sourceKeys: ['srcUrl', 'srcNote'],
 };
+
+/**
+ * 三菱電機 MS-K・MS-N の旧形として足した追加レコード（`docs/design-mitsubishi-legacy-magnets.md` 3章）。
+ *
+ * 「旧形の追加レコード」を一覧で持つのは、`verify-data.mjs` の後継の宣言・断定語の検査と、
+ * `smoke.mjs` の外形図の検査が見る範囲をここで閉じるため。「三菱電機の追加レコード」のような
+ * 条件で拾うと、将来出典つきで足す現行品（寸法も定格も持つ）まで旧形の規則で縛ることになる。
+ * 一覧の型式が data に無ければ検査が落ちる（一覧が古いまま残らないように）。
+ */
+export const MITSUBISHI_LEGACY_MODELS = [
+  'S-K65', 'S-N11', 'TH-K60', 'TH-K60KP', 'TH-N60KP', 'TH-N20KP', 'TH-N20TAKP', 'TH-N20TA',
+];
+
+/**
+ * 三菱の旧形の後継（`successorId`）の出典の宣言（設計 6章・10章の検査1）。
+ *
+ * 出典は一次資料メモ `docs/mitsubishi-msn-msk-successors-verified.md` 0章の番号で、
+ * どれもメーカーの生産中止のお知らせの代替表（3-1・3-2）。
+ * 新しく足した5本に加えて、**メモで出典を確かめられた既存の6本**もここに載せる。
+ * 既存のレコードの `evidence.model.srcNote` に書くと、②の「型式 確認済」の出典として表示され、
+ * 型式の実在の出典と後継の出典が混ざる（設計 6章）。コード側に置けば表示を変えずに出典が残り、
+ * data の `successorId` を書き換えたら検査が落ちる。
+ *
+ * メモで出典を確かめられない既存の後継（TH-N12 → TH-T18 など15本。設計 6章）は載せない。
+ * 載せると、出典の無い対応に出典があるように見える。
+ * KP どうしの後継（TH-N20KP → TH-T25KP など）は資料に無いので載せない（設計 3-1・D75）。
+ * 宣言に無い後継を旧形の追加レコードに足すと、検査1が落ちる。
+ */
+export const MITSUBISHI_LEGACY_SOURCES = {
+  S3: 'セールスとサービス 009「電磁開閉器・電磁接触器 他 生産中止のお知らせ」（2001年2月）',
+  S4: 'セールスとサービス 076「MS-N シリーズ(28AF 以下)生産中止に関するお知らせ」（2014年10月）',
+  S5: 'セールスとサービス 109「MS-N シリーズ(中容量機種)生産終了に関するお知らせ」（2016年2月）',
+};
+export const MITSUBISHI_LEGACY_SUCCESSORS = [
+  // 今回足した旧形の5本
+  { from: 'S-K65', to: 'S-N65', src: 'S3' }, // 「原則として、形名の『K』を『N』に置き換えたものが代替機種」
+  { from: 'S-N11', to: 'S-T12', src: 'S4' }, // 表「S-N11, S-N12 → S-T12」
+  { from: 'TH-K60', to: 'TH-N60', src: 'S3' },
+  { from: 'TH-K60KP', to: 'TH-N60KP', src: 'S3' }, // 原文「TH-K60KP → TH-N60KP」
+  { from: 'TH-N20TA', to: 'TH-T50', src: 'S5' }, // 抽出テキストで「TH-N20TA TH-T50」が同じ行
+  // 既存の6本（data は変えない。出典だけをここに残す）
+  { from: 'S-N21', to: 'S-T21', src: 'S4' },
+  { from: 'S-N25', to: 'S-T25', src: 'S4' },
+  { from: 'S-N65', to: 'S-T65', src: 'S5' }, // 原文「S(D)-(2X)N65 → S(D)-(2X)T65」
+  { from: 'TH-N18', to: 'TH-T18', src: 'S4' },
+  { from: 'TH-N20', to: 'TH-T25', src: 'S5' },
+  { from: 'TH-N60', to: 'TH-T65', src: 'S5' },
+];
