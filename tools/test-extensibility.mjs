@@ -34,6 +34,7 @@ import { execFileSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from 'playwright';
+import { findChromium } from './find-chromium.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DATA_FILE = join(ROOT, 'data', 'dummy.json');
@@ -361,7 +362,9 @@ try {
 
   await tierUnitChecks();
 
-  browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const chromiumFound = findChromium();
+  console.log(`ブラウザ: ${chromiumFound.executablePath}（順${chromiumFound.step}：${chromiumFound.label}）`);
+  browser = await chromium.launch({ executablePath: chromiumFound.executablePath });
   const page = await browser.newPage();
   const errs = [];
   page.on('pageerror', (e) => errs.push(String(e)));

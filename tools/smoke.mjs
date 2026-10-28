@@ -7,6 +7,7 @@
  *   node tools/smoke.mjs
  */
 import { chromium } from 'playwright';
+import { findChromium } from './find-chromium.mjs';
 import { pathToFileURL } from 'node:url';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -22,7 +23,9 @@ function check(name, cond, detail) {
   else { failures.push(name); console.log(`  ${String(n).padStart(2)}. NG  ${name}${detail ? ` — ${detail}` : ''}`); }
 }
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const chromiumFound = findChromium();
+console.log(`ブラウザ: ${chromiumFound.executablePath}（順${chromiumFound.step}：${chromiumFound.label}）`);
+const browser = await chromium.launch({ executablePath: chromiumFound.executablePath });
 const page = await browser.newPage();
 
 const consoleErrors = [];

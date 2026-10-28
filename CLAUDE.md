@@ -61,6 +61,8 @@
   `test-sensor-empty` → `smoke` → `test:ext`。
 - `smoke` は playwright を使う。未インストールなら `npm install` を実行する
   （`node_modules/` は `.gitignore` 済み）。
+- `smoke`・`test:ext` のブラウザは `tools/find-chromium.mjs` が環境から探す（使った場所が出力の1行に出る）。
+  別のブラウザを使うときは `MAGNET_CHROMIUM_PATH` に実行ファイルの場所を指定する（指定先に無ければ失敗する）。
 - **検査を削除・無効化して通さない。** 落ちたら原因を直す。
 
 ### コメント
